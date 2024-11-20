@@ -12,7 +12,7 @@ if __name__ == '__main__':
     parser.add_argument('extracted_data_filepath', help='Input a filepath to the extracted data stored as a JSON file', type=str)
     parser.add_argument('data_core_filepath', help='Input a filepath for creating the output JSON file', type=str)
     args = parser.parse_args()
-    with open(args.extracted_data_filepath, 'r') as extracted_data_file:
+    with open(args.extracted_data_filepath) as extracted_data_file:
         extracted_data = json.load(extracted_data_file)
         rooms = {}
         for (stage_name, rooms_data) in extracted_data['Rooms'].items():

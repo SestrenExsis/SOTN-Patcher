@@ -1,5 +1,5 @@
 # SOTN-Patcher
-A tool for (eventually) generating PPF files for modifying SOTN
+A tool for generating PPF files for modifying SOTN
 
 ## Current status of the project
 
