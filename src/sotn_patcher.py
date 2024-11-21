@@ -6,14 +6,18 @@ import os
 # Local libraries
 import sotn_address
 
+def _hex(val: int, size: int) -> str:
+    result = ('{:0' + str(size) + 'X}').format(val)
+    return result
+
 class Room:
-    def __init__(self, room_index: int, box: tuple[int], flags: set[str], foreground_layer_id: int):
+    def __init__(self, room_index: int, box: tuple[int], special_flag: int, foreground_layer_id: int):
         self.room_index = room_index
         self.top = box[0]
         self.left = box[1]
         self.height = box[2]
         self.width = box[3]
-        self.flags = flags
+        self.special_flag = special_flag
         self.foreground_layer_id = foreground_layer_id
 
 class Teleporter:
@@ -69,7 +73,7 @@ class PPF:
         self.write_string(value)
     
     def patch_room_data(self, room: Room, address: sotn_address.Address):
-        self.write_u64(address.to_disc_address(8 * room.room_index))
+        self.write_u64(address.to_disc_address())
         size = 4
         self.write_byte(size)
         self.write_byte(room.left)
@@ -78,7 +82,7 @@ class PPF:
         self.write_byte(room.top + room.height - 1)
     
     def patch_teleporter_data(self, teleporter: Teleporter, address: sotn_address.Address):
-        self.write_u64(address.to_disc_address(10 * teleporter.teleporter_index))
+        self.write_u64(address.to_disc_address())
         size = 10
         self.write_byte(size) 
         self.write_u16(teleporter.x)
@@ -88,25 +92,12 @@ class PPF:
         self.write_u16(teleporter.next_stage_id)
     
     def patch_packed_room_data(self, room: Room, address: sotn_address.Address):
-        write_address = address.to_disc_address(0x10 * room.foreground_layer_id + 0x08)
+        write_address = address.to_disc_address()
         self.write_u64(write_address)
         size = 4
         self.write_byte(size)
-        flags_byte = 0x00
-        flags = {
-            'Load On Left': 0x40,
-            'Load On Right': 0x41,
-            'Save With Left Opening': 0x20,
-            'Save With Right Opening': 0x22,
-            'Scroll Type 1': 0x01,
-            'Special Type 1': 0x80,
-            'Special Type 2': 0x92,
-        }
-        for flag_name in room.flags:
-            if flag_name in flags:
-                flags_byte |= flags[flag_name]
         data = [
-            flags_byte,
+            room.special_flag,
             0x3F & (room.top + room.height - 1), # bottom
             0x3F & (room.left + room.width - 1), # right
             0x3F & (room.top),
@@ -120,55 +111,59 @@ class PPF:
             (data[4] << 0)
         )
 
-def get_room_rando_ppf(core_data, changes):
-    addresses = {
-        ('Teleporter Data'): sotn_address.Address(0x00097C5C),
-        ('Room Data', 'Alchemy Laboratory'): sotn_address.Address(0x049C0F2C),
-        ('Room Data', 'Castle Entrance'): sotn_address.Address(0x041AB4C4),
-        ('Room Data', 'Castle Entrance Revisited'): sotn_address.Address(0x0491E27C),
-        ('Room Data', 'Marble Gallery'): sotn_address.Address(0x03F8D7E0),
-        ('Room Data', 'Olrox\'s Quarters'): sotn_address.Address(0x040FE2A0),
-        ('Room Data', 'Outer Wall'): sotn_address.Address(0x0404A488),
-        ('Layer Data', 'Alchemy Laboratory'): sotn_address.Address(0x049BE964),
-        ('Layer Data', 'Castle Entrance'): sotn_address.Address(0x041A79C4),
-        ('Layer Data', 'Castle Entrance Revisited'): sotn_address.Address(0x0491A9D0),
-        ('Layer Data', 'Marble Gallery'): sotn_address.Address(0x03F8B150),
-        ('Layer Data', 'Olrox\'s Quarters'): sotn_address.Address(0x040FB110),
-        ('Layer Data', 'Outer Wall'): sotn_address.Address(0x040471D4),
+def get_changes_template_file(core_data):
+    result = {
+        'Rooms': {}
     }
+    for room_name in core_data['Rooms']:
+        result['Rooms'][room_name] = {
+            'Left': core_data['Rooms'][room_name]['Left'],
+            'Top': core_data['Rooms'][room_name]['Top'],
+        }
+    return result
+
+def get_ppf(core_data, changes):
+    print('get_ppf')
     result = PPF('Shuffled rooms in first few stages of the game')
     for room_name in sorted(changes['Rooms'].keys()):
+        print('', room_name)
         if (
             changes['Rooms'][room_name]['Top'] == core_data['Rooms'][room_name]['Top'] and
             changes['Rooms'][room_name]['Left'] == core_data['Rooms'][room_name]['Left']
         ):
             continue
-        flags = set()
-        if core_data['Rooms'][room_name]['Flags'] is not None:
-            flags = set(core_data['Rooms'][room_name]['Flags'])
-        foreground_layer_id = None
-        if 'Foreground Layer ID' in core_data['Rooms'][room_name]:
-            foreground_layer_id = core_data['Rooms'][room_name]['Foreground Layer ID']
+        print(' ', 'patching')
         room = Room(
-            core_data['Rooms'][room_name]['Index'],
+            core_data['Rooms'][room_name]['Room ID'],
             (
                 changes['Rooms'][room_name]['Top'],
                 changes['Rooms'][room_name]['Left'],
                 core_data['Rooms'][room_name]['Rows'],
                 core_data['Rooms'][room_name]['Columns'],
             ),
-            flags,
-            foreground_layer_id,
+            core_data['Rooms'][room_name]['Special Flag'],
+            core_data['Rooms'][room_name]['Foreground Layer ID'],
         )
-        result.patch_room_data(
-            room,
-            addresses[('Room Data', core_data['Rooms'][room_name]['Stage'])]
-        )
-        if 'Foreground Layer ID' in core_data['Rooms'][room_name]:
+        try:
+            result.patch_room_data(
+                room,
+                sotn_address.Address(
+                    core_data['Rooms'][room_name]['Addresses']['Room Data']
+                )
+            )
+        except KeyError:
+            print(' ', 'patch_room_data ERROR')
+            pass
+        try:
             result.patch_packed_room_data(
                 room,
-                addresses[('Layer Data', core_data['Rooms'][room_name]['Stage'])]
+                sotn_address.Address(
+                    core_data['Rooms'][room_name]['Addresses']['Packed Room Data']
+                )
             )
+        except KeyError:
+            print(' ', 'patch_packed_room_data ERROR')
+            pass
     return result
 
 if __name__ == '__main__':
@@ -184,22 +179,14 @@ if __name__ == '__main__':
     with open(args.core_data) as core_data_file:
         core_data = json.load(core_data_file)
         if args.changes is None:
-            changes = {
-                'Rooms': {}
-            }
-            for room_name in core_data['Rooms']:
-                changes['Rooms'][room_name] = {
-                    'Left': core_data['Rooms'][room_name]['Left'],
-                    'Top': core_data['Rooms'][room_name]['Top'],
-                }
             with open(os.path.join('build', 'changes.json'), 'w') as changes_file:
+                changes = get_changes_template_file(core_data)
                 json.dump(changes, changes_file, indent='    ', sort_keys=True)
         else:
             with (
-                open(args.ppf, 'w') as ppf_file,
                 open(args.changes) as changes_file,
+                open(args.ppf, 'wb') as ppf_file,
             ):
                 changes = json.load(changes_file)
-                patch = get_room_rando_ppf(core_data, changes)
-                with open(args.ppf, 'wb') as ppf_file:
-                    ppf_file.write(patch.bytes)
+                patch = get_ppf(core_data, changes)
+                ppf_file.write(patch.bytes)
