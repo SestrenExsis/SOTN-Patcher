@@ -2,6 +2,7 @@
 import argparse
 import json
 import os
+import yaml
 
 # Local libraries
 import sotn_address
@@ -122,11 +123,19 @@ def get_changes_template_file(core_data):
         }
     return result
 
+def validate_changes(changes):
+    for room_name in sorted(changes['Rooms'].keys()):
+        assert 0 <= changes['Rooms'][room_name]['Top'] <= 58
+        assert 0 <= changes['Rooms'][room_name]['Left'] <= 63
+
 def get_ppf(core_data, changes):
     print('get_ppf')
     result = PPF('Shuffled rooms in first few stages of the game')
+    print(sorted(changes['Rooms'].keys()))
     for room_name in sorted(changes['Rooms'].keys()):
         print('', room_name)
+        print(changes['Rooms'][room_name])
+        print(core_data['Rooms'][room_name])
         if (
             changes['Rooms'][room_name]['Top'] == core_data['Rooms'][room_name]['Top'] and
             changes['Rooms'][room_name]['Left'] == core_data['Rooms'][room_name]['Left']
@@ -161,7 +170,7 @@ def get_ppf(core_data, changes):
                     core_data['Rooms'][room_name]['Addresses']['Packed Room Data']
                 )
             )
-        except KeyError:
+        except (KeyError, TypeError):
             print(' ', 'patch_packed_room_data ERROR')
             pass
     return result
@@ -176,8 +185,16 @@ if __name__ == '__main__':
     parser.add_argument('--changes', help='Input an optional filepath to the changes JSON file', type=str)
     parser.add_argument('--ppf', help='Input an optional filepath to the output PPF file', type=str)
     args = parser.parse_args()
-    with open(args.core_data) as core_data_file:
+    with (
+        open(args.core_data) as core_data_file,
+        open(os.path.join('data', 'mnemonics.yaml')) as mnemonics_file,
+    ):
         core_data = json.load(core_data_file)
+        mnemonics = yaml.safe_load(mnemonics_file)
+        alt_keys = {}
+        for (key, values) in mnemonics.items():
+            for value in values:
+                alt_keys[value] = key
         if args.changes is None:
             with open(os.path.join('build', 'changes.json'), 'w') as changes_file:
                 changes = get_changes_template_file(core_data)
@@ -188,5 +205,13 @@ if __name__ == '__main__':
                 open(args.ppf, 'wb') as ppf_file,
             ):
                 changes = json.load(changes_file)
+                if 'Changes' in changes:
+                    changes = changes['Changes']
+                for room_name in list(changes['Rooms'].keys()):
+                    if room_name in alt_keys:
+                        room_data = changes['Rooms'].pop(room_name)
+                        alt_room_name = alt_keys[room_name]
+                        changes['Rooms'][alt_room_name] = room_data
+                validate_changes(changes)
                 patch = get_ppf(core_data, changes)
                 ppf_file.write(patch.bytes)
