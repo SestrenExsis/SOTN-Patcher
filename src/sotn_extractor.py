@@ -35,6 +35,7 @@ if __name__ == '__main__':
             ('Marble Gallery', sotn_address.Address(0x03F8D7E0, 'GAMEDATA')),
             ('Olrox\'s Quarters', sotn_address.Address(0x040FE2A0, 'GAMEDATA')),
             ('Outer Wall', sotn_address.Address(0x0404A488, 'GAMEDATA')),
+            ('Colosseum', sotn_address.Address(0x03B02E5C, 'GAMEDATA')),
         ):
             rooms_address = sotn_address.Address(room_address_start.address, 'GAMEDATA')
             extracted_data['Extractions']['Rooms'][stage_name] = {
@@ -98,6 +99,7 @@ if __name__ == '__main__':
             ('Marble Gallery', sotn_address.Address(0x03F8B150, 'GAMEDATA'), 54),
             ('Olrox\'s Quarters', sotn_address.Address(0x040FB110, 'GAMEDATA'), 35),
             ('Outer Wall', sotn_address.Address(0x040471D4, 'GAMEDATA'), 20),
+            ('Colosseum', sotn_address.Address(0x03B00218, 'GAMEDATA'), 20),
         ):
             layers_address = sotn_address.Address(layers_address_start.address, 'GAMEDATA')
             extracted_data['Extractions']['Layers'][stage_name] = {
