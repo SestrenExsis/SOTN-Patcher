@@ -97,7 +97,7 @@ if __name__ == '__main__':
             ('Castle Entrance Revisited', sotn_address.Address(0x0491A9D0, 'GAMEDATA'), 44),
             ('Marble Gallery', sotn_address.Address(0x03F8B150, 'GAMEDATA'), 54),
             ('Olrox\'s Quarters', sotn_address.Address(0x040FB110, 'GAMEDATA'), 35),
-            ('Outer Wall', sotn_address.Address(0x040471D4, 'GAMEDATA'), 19),
+            ('Outer Wall', sotn_address.Address(0x040471D4, 'GAMEDATA'), 20),
         ):
             layers_address = sotn_address.Address(layers_address_start.address, 'GAMEDATA')
             extracted_data['Extractions']['Layers'][stage_name] = {
