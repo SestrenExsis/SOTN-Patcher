@@ -129,13 +129,9 @@ def validate_changes(changes):
         assert 0 <= changes['Rooms'][room_name]['Left'] <= 63
 
 def get_ppf(core_data, changes):
-    print('get_ppf')
     result = PPF('Shuffled rooms in first few stages of the game')
-    print(sorted(changes['Rooms'].keys()))
     for room_name in sorted(changes['Rooms'].keys()):
-        print('', room_name)
         print(changes['Rooms'][room_name])
-        print(core_data['Rooms'][room_name])
         if (
             changes['Rooms'][room_name]['Top'] == core_data['Rooms'][room_name]['Top'] and
             changes['Rooms'][room_name]['Left'] == core_data['Rooms'][room_name]['Left']

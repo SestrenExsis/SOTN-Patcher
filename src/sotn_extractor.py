@@ -22,10 +22,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
     with open(args.binary_filepath, 'br') as open_file:
         extracted_data = {
+            'Extractions': {},
             'Rooms': {},
             'Layers': {},
             'Room-Layers': {},
-            'Extractions': {},
+            'Teleporters': {},
         }
         extracted_data['Extractions']['Rooms'] = {}
         for (stage_name, room_address_start) in (
@@ -49,7 +50,6 @@ if __name__ == '__main__':
                     'Disc Address': current_address.to_disc_address(),
                     'Gamedata Address': current_address.address,
                 }
-                room = {}
                 data = []
                 for i in range(8):
                     open_file.seek(current_address.to_disc_address(i))
@@ -159,5 +159,32 @@ if __name__ == '__main__':
                 }
                 room_layers.append(room_layer)
             extracted_data['Room-Layers'][stage_name] = room_layers
+            # Extract teleporter data
+            teleporters_address = sotn_address.Address(0x00097C5C, 'GAMEDATA')
+            extracted_data['Extractions']['Teleporters'] = {}
+            teleporters = []
+            current_address = sotn_address.Address(teleporters_address.address, 'GAMEDATA')
+            for _ in range(131):
+                extracted_data['Extractions']['Teleporters']['Teleporter ID ' + f'{len(teleporters):03d}'] = {
+                    'Disc Address': current_address.to_disc_address(),
+                    'Gamedata Address': current_address.address,
+                }
+                data = []
+                for i in range(10):
+                    open_file.seek(current_address.to_disc_address(i))
+                    byte = open_file.read(1)
+                    data.append(int.from_bytes(byte))
+                room_id = int.from_bytes(data[4:6], byteorder='little', signed=False) // 8
+                teleporter = {
+                    'Teleporter ID': len(teleporters),
+                    'Player X': int.from_bytes(data[0:2], byteorder='little', signed=False),
+                    'Player Y':  int.from_bytes(data[2:4], byteorder='little', signed=False),
+                    'Room ID': room_id,
+                    'Source Stage ID':  int.from_bytes(data[6:8], byteorder='little', signed=False),
+                    'Target Stage ID':  int.from_bytes(data[8:10], byteorder='little', signed=False),
+                }
+                teleporters.append(teleporter)
+                current_address.address += 10
+            extracted_data['Teleporters'] = teleporters
         with open(args.json_filepath, 'w') as extracted_data_json:
             json.dump(extracted_data, extracted_data_json, indent='    ', sort_keys=True)
