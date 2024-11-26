@@ -186,6 +186,8 @@ if __name__ == '__main__':
         open(os.path.join('data', 'mnemonics.yaml')) as mnemonics_file,
     ):
         core_data = json.load(core_data_file)
+        if 'Data Core' in core_data:
+            core_data = core_data['Data Core']
         mnemonics = yaml.safe_load(mnemonics_file)
         alt_keys = {}
         for (key, values) in mnemonics.items():
@@ -208,6 +210,11 @@ if __name__ == '__main__':
                         room_data = changes['Rooms'].pop(room_name)
                         alt_room_name = alt_keys[room_name]
                         changes['Rooms'][alt_room_name] = room_data
+                for room_name in list(core_data['Rooms'].keys()):
+                    if room_name in alt_keys:
+                        room_data = core_data['Rooms'].pop(room_name)
+                        alt_room_name = alt_keys[room_name]
+                        core_data['Rooms'][alt_room_name] = room_data
                 validate_changes(changes)
                 patch = get_ppf(core_data, changes)
                 ppf_file.write(patch.bytes)
