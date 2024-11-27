@@ -1,6 +1,8 @@
 # External libraries
 import argparse
 import json
+import os
+import yaml
 
 # Local libraries
 import sotn_address
@@ -20,7 +22,11 @@ if __name__ == '__main__':
     parser.add_argument('binary_filepath', help='Input a filepath to the input BIN file', type=str)
     parser.add_argument('json_filepath', help='Input a filepath for creating the output JSON file', type=str)
     args = parser.parse_args()
-    with open(args.binary_filepath, 'br') as open_file:
+    with (
+        open(args.binary_filepath, 'br') as binary_file,
+        open(os.path.join('data', 'Stages.yaml')) as stages_file,
+    ):
+        stages = yaml.safe_load(stages_file)
         extracted_data = {
             'Extractions': {},
             'Rooms': {},
@@ -37,6 +43,7 @@ if __name__ == '__main__':
             ('Olrox\'s Quarters', sotn_address.Address(0x040FE2A0, 'GAMEDATA')),
             ('Outer Wall', sotn_address.Address(0x0404A488, 'GAMEDATA')),
             ('Colosseum', sotn_address.Address(0x03B02E5C, 'GAMEDATA')),
+            ('Long Library', sotn_address.Address(0x03E626C0, 'GAMEDATA')),
         ):
             rooms_address = sotn_address.Address(room_address_start.address, 'GAMEDATA')
             extracted_data['Extractions']['Rooms'][stage_name] = {
@@ -46,18 +53,20 @@ if __name__ == '__main__':
             rooms = []
             current_address = sotn_address.Address(rooms_address.address, 'GAMEDATA')
             while True:
-                extracted_data['Extractions']['Rooms'][stage_name + ', Room ID ' + f'{len(rooms):02d}'] = {
+                room_index = len(rooms)
+                room_name = stages[stage_name][room_index]
+                extracted_data['Extractions']['Rooms'][stage_name + ', ' + room_name] = {
                     'Disc Address': current_address.to_disc_address(),
                     'Gamedata Address': current_address.address,
                 }
                 data = []
                 for i in range(8):
-                    open_file.seek(current_address.to_disc_address(i))
-                    byte = open_file.read(1)
+                    binary_file.seek(current_address.to_disc_address(i))
+                    byte = binary_file.read(1)
                     data.append(byte)
                 room = {
                     'Stage': stage_name,
-                    'Room ID': len(rooms),
+                    'Room ID': room_index,
                     'Left': int.from_bytes(data[0], byteorder='little', signed=False),
                     'Top':  int.from_bytes(data[1], byteorder='little', signed=False),
                     'Right':  int.from_bytes(data[2], byteorder='little', signed=False),
@@ -81,10 +90,11 @@ if __name__ == '__main__':
                     ((0x3F & room['Top']) << 6) |
                     ((0x3F & room['Left']) << 0)
                 ), 6)
+                room['Room Name'] = room_name
                 rooms.append(room)
                 current_address.address += 8
-                open_file.seek(current_address.to_disc_address())
-                byte = open_file.read(1)
+                binary_file.seek(current_address.to_disc_address())
+                byte = binary_file.read(1)
                 value = int.from_bytes(byte, byteorder='little', signed=False)
                 if value == 0x40:
                     break
@@ -100,6 +110,7 @@ if __name__ == '__main__':
             ('Olrox\'s Quarters', sotn_address.Address(0x040FB110, 'GAMEDATA'), 35),
             ('Outer Wall', sotn_address.Address(0x040471D4, 'GAMEDATA'), 20),
             ('Colosseum', sotn_address.Address(0x03B00218, 'GAMEDATA'), 20),
+            ('Long Library', sotn_address.Address(0x03E5F99C, 'GAMEDATA'), 16),
         ):
             layers_address = sotn_address.Address(layers_address_start.address, 'GAMEDATA')
             extracted_data['Extractions']['Layers'][stage_name] = {
@@ -116,8 +127,8 @@ if __name__ == '__main__':
                 layer = {}
                 data = []
                 for i in range(16):
-                    open_file.seek(current_address.to_disc_address(i))
-                    byte = open_file.read(1)
+                    binary_file.seek(current_address.to_disc_address(i))
+                    byte = binary_file.read(1)
                     data.append(int.from_bytes(byte))
                 layer = {
                     'Layer ID': len(layers),
@@ -143,8 +154,8 @@ if __name__ == '__main__':
                     continue
                 data = []
                 for i in range(8):
-                    open_file.seek(current_address.to_disc_address(8 * room_id + i))
-                    byte = open_file.read(1)
+                    binary_file.seek(current_address.to_disc_address(8 * room_id + i))
+                    byte = binary_file.read(1)
                     data.append(int.from_bytes(byte))
                 layer_ids = []
                 for (layer_id, layer) in enumerate(layers):
@@ -171,8 +182,8 @@ if __name__ == '__main__':
                 }
                 data = []
                 for i in range(10):
-                    open_file.seek(current_address.to_disc_address(i))
-                    byte = open_file.read(1)
+                    binary_file.seek(current_address.to_disc_address(i))
+                    byte = binary_file.read(1)
                     data.append(int.from_bytes(byte))
                 room_id = int.from_bytes(data[4:6], byteorder='little', signed=False) // 8
                 teleporter = {

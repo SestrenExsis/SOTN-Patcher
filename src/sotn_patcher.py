@@ -181,18 +181,10 @@ if __name__ == '__main__':
     parser.add_argument('--changes', help='Input an optional filepath to the changes JSON file', type=str)
     parser.add_argument('--ppf', help='Input an optional filepath to the output PPF file', type=str)
     args = parser.parse_args()
-    with (
-        open(args.core_data) as core_data_file,
-        open(os.path.join('data', 'mnemonics.yaml')) as mnemonics_file,
-    ):
+    with open(args.core_data) as core_data_file:
         core_data = json.load(core_data_file)
         if 'Data Core' in core_data:
             core_data = core_data['Data Core']
-        mnemonics = yaml.safe_load(mnemonics_file)
-        alt_keys = {}
-        for (key, values) in mnemonics.items():
-            for value in values:
-                alt_keys[value] = key
         if args.changes is None:
             with open(os.path.join('build', 'changes.json'), 'w') as changes_file:
                 changes = get_changes_template_file(core_data)
@@ -205,16 +197,6 @@ if __name__ == '__main__':
                 changes = json.load(changes_file)
                 if 'Changes' in changes:
                     changes = changes['Changes']
-                for room_name in list(changes['Rooms'].keys()):
-                    if room_name in alt_keys:
-                        room_data = changes['Rooms'].pop(room_name)
-                        alt_room_name = alt_keys[room_name]
-                        changes['Rooms'][alt_room_name] = room_data
-                for room_name in list(core_data['Rooms'].keys()):
-                    if room_name in alt_keys:
-                        room_data = core_data['Rooms'].pop(room_name)
-                        alt_room_name = alt_keys[room_name]
-                        core_data['Rooms'][alt_room_name] = room_data
                 validate_changes(changes)
                 patch = get_ppf(core_data, changes)
                 ppf_file.write(patch.bytes)

@@ -30,8 +30,7 @@ if __name__ == '__main__':
                     foreground_layer_id = None
                     special_flag = None
                     layer_data_address = None
-                room_name = 'Room ID ' + f'{room_id:02d}'
-                room_key = stage_name + ', ' + room_name
+                room_key = stage_name + ', ' + room_data['Room Name']
                 room = {
                     'Stage': room_data['Stage'],
                     'Room ID': room_id,
@@ -41,7 +40,7 @@ if __name__ == '__main__':
                     'Columns': room_data['Columns'],
                     'Special Flag': special_flag,
                     'Foreground Layer ID': foreground_layer_id,
-                    'Room Name': room_name,
+                    'Room Name': room_data['Room Name'],
                     'Addresses': {
                         'Room Data': extracted_data['Extractions']['Rooms'][room_key]['Gamedata Address'],
                         'Packed Room Data': None if layer_data_address is None else layer_data_address + 8,
