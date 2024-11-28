@@ -341,6 +341,43 @@ Stages:
         - Room ID 13
         - Room ID 14
         - Room ID 15 # 15
+  Catacombs:
+    Layers:
+      Start: 0x03BB3770
+      Count: 20
+    Rooms:
+      Start: 0x03BB5AF0
+      Names:
+        - Room ID 00 # 0
+        - Room ID 01
+        - Room ID 02
+        - Room ID 03
+        - Room ID 04
+        - Room ID 05
+        - Room ID 06
+        - Room ID 07
+        - Room ID 08
+        - Room ID 09
+        - Room ID 10
+        - Room ID 11
+        - Room ID 12
+        - Room ID 13
+        - Room ID 14
+        - Room ID 15
+        - Room ID 16
+        - Room ID 17
+        - Room ID 18
+        - Room ID 19
+        - Room ID 20
+        - Room ID 21
+        - Room ID 22
+        - Room ID 23
+        - Room ID 24
+        - Room ID 25
+        - Room ID 26
+        - Room ID 27
+        - Room ID 28
+        - Room ID 29 # 29
 Teleporters:
   Start: 0x00097C5C
   Count: 131
