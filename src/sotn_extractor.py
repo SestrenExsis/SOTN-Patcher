@@ -24,9 +24,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
     with (
         open(args.binary_filepath, 'br') as binary_file,
-        open(os.path.join('data', 'Stages.yaml')) as stages_file,
+        open(os.path.join('data', 'extraction-points.yaml')) as extraction_points_file,
     ):
-        stages = yaml.safe_load(stages_file)
+        extraction_points = yaml.safe_load(extraction_points_file)
         extracted_data = {
             'Extractions': {},
             'Rooms': {},
@@ -35,16 +35,10 @@ if __name__ == '__main__':
             'Teleporters': {},
         }
         extracted_data['Extractions']['Rooms'] = {}
-        for (stage_name, room_address_start) in (
-            ('Alchemy Laboratory', sotn_address.Address(0x049C0F2C, 'GAMEDATA')),
-            ('Castle Entrance', sotn_address.Address(0x041AB4C4, 'GAMEDATA')),
-            ('Castle Entrance Revisited', sotn_address.Address(0x0491E27C, 'GAMEDATA')),
-            ('Marble Gallery', sotn_address.Address(0x03F8D7E0, 'GAMEDATA')),
-            ('Olrox\'s Quarters', sotn_address.Address(0x040FE2A0, 'GAMEDATA')),
-            ('Outer Wall', sotn_address.Address(0x0404A488, 'GAMEDATA')),
-            ('Colosseum', sotn_address.Address(0x03B02E5C, 'GAMEDATA')),
-            ('Long Library', sotn_address.Address(0x03E626C0, 'GAMEDATA')),
-        ):
+        for (stage_name, stage) in extraction_points['Stages'].items():
+            if 'Rooms' not in stage or 'Start' not in stage['Rooms']:
+                continue
+            room_address_start = sotn_address.Address(stage['Rooms']['Start'], 'GAMEDATA')
             rooms_address = sotn_address.Address(room_address_start.address, 'GAMEDATA')
             extracted_data['Extractions']['Rooms'][stage_name] = {
                 'Disc Address': rooms_address.to_disc_address(),
@@ -54,7 +48,9 @@ if __name__ == '__main__':
             current_address = sotn_address.Address(rooms_address.address, 'GAMEDATA')
             while True:
                 room_index = len(rooms)
-                room_name = stages[stage_name][room_index]
+                print((stage_name, room_index), end='--> ')
+                room_name = stage['Rooms']['Names'][room_index]
+                print(room_name)
                 extracted_data['Extractions']['Rooms'][stage_name + ', ' + room_name] = {
                     'Disc Address': current_address.to_disc_address(),
                     'Gamedata Address': current_address.address,
@@ -102,16 +98,15 @@ if __name__ == '__main__':
         # Extract layer data
         extracted_data['Extractions']['Layers'] = {}
         extracted_data['Extractions']['Room-Layers'] = {}
-        for (stage_name, layers_address_start, layer_count) in (
-            ('Alchemy Laboratory', sotn_address.Address(0x049BE964, 'GAMEDATA'), 35),
-            ('Castle Entrance', sotn_address.Address(0x041A79C4, 'GAMEDATA'), 48),
-            ('Castle Entrance Revisited', sotn_address.Address(0x0491A9D0, 'GAMEDATA'), 44),
-            ('Marble Gallery', sotn_address.Address(0x03F8B150, 'GAMEDATA'), 54),
-            ('Olrox\'s Quarters', sotn_address.Address(0x040FB110, 'GAMEDATA'), 35),
-            ('Outer Wall', sotn_address.Address(0x040471D4, 'GAMEDATA'), 20),
-            ('Colosseum', sotn_address.Address(0x03B00218, 'GAMEDATA'), 20),
-            ('Long Library', sotn_address.Address(0x03E5F99C, 'GAMEDATA'), 16),
-        ):
+        for (stage_name, stage) in extraction_points['Stages'].items():
+            if (
+                'Layers' not in stage or
+                'Start' not in stage['Layers'] or
+                'Count' not in stage['Layers']
+            ):
+                continue
+            layers_address_start = sotn_address.Address(stage['Layers']['Start'], 'GAMEDATA')
+            layer_count = stage['Layers']['Count']
             layers_address = sotn_address.Address(layers_address_start.address, 'GAMEDATA')
             extracted_data['Extractions']['Layers'][stage_name] = {
                 'Disc Address': layers_address.to_disc_address(),
@@ -171,11 +166,13 @@ if __name__ == '__main__':
                 room_layers.append(room_layer)
             extracted_data['Room-Layers'][stage_name] = room_layers
             # Extract teleporter data
-            teleporters_address = sotn_address.Address(0x00097C5C, 'GAMEDATA')
+            teleporters_address = sotn_address.Address(
+                extraction_points['Teleporters']['Start'], 'GAMEDATA'
+            )
             extracted_data['Extractions']['Teleporters'] = {}
             teleporters = []
             current_address = sotn_address.Address(teleporters_address.address, 'GAMEDATA')
-            for _ in range(131):
+            for _ in range(extraction_points['Teleporters']['Count']):
                 extracted_data['Extractions']['Teleporters']['Teleporter ID ' + f'{len(teleporters):03d}'] = {
                     'Disc Address': current_address.to_disc_address(),
                     'Gamedata Address': current_address.address,
