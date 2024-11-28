@@ -318,6 +318,29 @@ Stages:
         - Room ID 13
         - Room ID 14
         - Room ID 15 # 15
+  Reverse Keep:
+    Layers:
+      Start: 0x04C840E8
+      Count: 14
+    Rooms:
+      Start: 0x04C85530
+      Names:
+        - Room ID 00 # 0
+        - Room ID 01
+        - Room ID 02
+        - Room ID 03
+        - Room ID 04
+        - Room ID 05
+        - Room ID 06
+        - Room ID 07
+        - Room ID 08
+        - Room ID 09
+        - Room ID 10
+        - Room ID 11
+        - Room ID 12
+        - Room ID 13
+        - Room ID 14
+        - Room ID 15 # 15
 Teleporters:
   Start: 0x00097C5C
   Count: 131
