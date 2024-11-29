@@ -490,6 +490,18 @@ Stages:
         - Room ID 39
         - Room ID 40
         - Room ID 41 # 41
+  Center Cube:
+    Layers:
+      Start: 0x03C650DC
+      Count: 4
+    Rooms:
+      Start: 0x03C662D4
+      Names:
+        - Room ID 00 # 0
+        - Room ID 01
+        - Room ID 02
+        - Room ID 03
+        - Room ID 04 # 4
 Teleporters:
   Start: 0x00097C5C
   Count: 131
