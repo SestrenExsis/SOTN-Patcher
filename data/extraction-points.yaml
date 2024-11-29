@@ -415,6 +415,32 @@ Stages:
         - Room ID 27
         - Room ID 28
         - Room ID 29 # 29
+  Abandoned Mine:
+    Layers:
+      Start: 0x03CDF8E8
+      Count: 19
+    Rooms:
+      Start: 0x03CE115C
+      Names:
+        - Room ID 00 # 0
+        - Room ID 01
+        - Room ID 02
+        - Room ID 03
+        - Room ID 04
+        - Room ID 05
+        - Room ID 06
+        - Room ID 07
+        - Room ID 08
+        - Room ID 09
+        - Room ID 10
+        - Room ID 11
+        - Room ID 12
+        - Room ID 13
+        - Room ID 14
+        - Room ID 15
+        - Room ID 16
+        - Room ID 17
+        - Room ID 18 # 18
 Teleporters:
   Start: 0x00097C5C
   Count: 131
