@@ -441,6 +441,55 @@ Stages:
         - Room ID 16
         - Room ID 17
         - Room ID 18 # 18
+  Underground Caverns:
+    Layers:
+      Start: 0x04257928
+      Count: 65
+    Rooms:
+      Start: 0x0425A8F0
+      Names:
+        - Room ID 00 # 0
+        - Room ID 01
+        - Room ID 02
+        - Room ID 03
+        - Room ID 04
+        - Room ID 05
+        - Room ID 06
+        - Room ID 07
+        - Room ID 08
+        - Room ID 09
+        - Room ID 10
+        - Room ID 11
+        - Room ID 12
+        - Room ID 13
+        - Room ID 14
+        - Room ID 15
+        - Room ID 16
+        - Room ID 17
+        - Room ID 18
+        - Room ID 19
+        - Room ID 20
+        - Room ID 21
+        - Room ID 22
+        - Room ID 23
+        - Room ID 24
+        - Room ID 25
+        - Room ID 26
+        - Room ID 27
+        - Room ID 28
+        - Room ID 29
+        - Room ID 30
+        - Room ID 31
+        - Room ID 32
+        - Room ID 33
+        - Room ID 34
+        - Room ID 35
+        - Room ID 36
+        - Room ID 37
+        - Room ID 38
+        - Room ID 39
+        - Room ID 40
+        - Room ID 41 # 41
 Teleporters:
   Start: 0x00097C5C
   Count: 131
