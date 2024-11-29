@@ -505,3 +505,10 @@ Stages:
 Teleporters:
   Start: 0x00097C5C
   Count: 131
+Entity Layouts:
+  Castle Entrance:
+    Horizontal: 0x041AB5C8
+    Vertical: 0x041ABD54
+  Castle Entrance Revisited:
+    Horizontal: 0x0491E368
+    Vertical: 0x0491EAA4
