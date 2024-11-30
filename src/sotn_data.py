@@ -47,8 +47,36 @@ if __name__ == '__main__':
                     }
                 }
                 rooms[room_key] = room
+        entity_layouts = {}
+        for (stage_name, entity_layouts_data) in extracted_data['Entity Layouts - Horizontal'].items():
+            entity_layouts[stage_name] = []
+            for (entity_layout_id, entity_layout_data) in enumerate(entity_layouts_data):
+                if entity_layout_data['X'] == -2:
+                    extraction_key = stage_name + ', Entity Layout ID ' + f'{entity_layout_id:04d}'
+                    entity_layout = {
+                        'Entities': [],
+                        'Entity Layout ID': len(entity_layouts[stage_name]),
+                        'Addresses': {
+                            'Horizontal Data': extracted_data['Extractions']['Entity Layouts - Horizontal'][extraction_key]['Gamedata Address'],
+                            'Vertical Data': extracted_data['Extractions']['Entity Layouts - Vertical'][extraction_key]['Gamedata Address'],
+                        },
+                    }
+                elif entity_layout_data['X'] == -1:
+                    entity_layouts[stage_name].append(entity_layout)
+                    continue
+                else:
+                    entity = {
+                        'Entity ID': len(entity_layout['Entities']),
+                        'X': entity_layout_data['X'],
+                        'Y': entity_layout_data['Y'],
+                        'Entity Type ID': entity_layout_data['Entity Type ID'],
+                        'Entity Room Index': entity_layout_data['Entity Room Index'],
+                        'Params': entity_layout_data['Params'],
+                    }
+                    entity_layout['Entities'].append(entity)
         data_core = {
-            'Rooms': rooms
+            'Rooms': rooms,
+            'Entity Layouts': entity_layouts,
         }
         with open(args.data_core_filepath, 'w') as data_core_file:
             json.dump(data_core, data_core_file, indent='    ', sort_keys=True)

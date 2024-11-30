@@ -33,7 +33,8 @@ if __name__ == '__main__':
             'Layers': {},
             'Room-Layers': {},
             'Teleporters': {},
-            'Entity Layouts': {},
+            'Entity Layouts - Horizontal': {},
+            'Entity Layouts - Vertical': {},
         }
         # =================
         # Extract room data
@@ -58,8 +59,9 @@ if __name__ == '__main__':
                     'Disc Address': current_address.to_disc_address(),
                     'Gamedata Address': current_address.address,
                 }
+                data_size = 8
                 data = []
-                for i in range(8):
+                for i in range(data_size):
                     binary_file.seek(current_address.to_disc_address(i))
                     byte = binary_file.read(1)
                     data.append(byte)
@@ -91,7 +93,7 @@ if __name__ == '__main__':
                 ), 6)
                 room['Room Name'] = room_name
                 rooms.append(room)
-                current_address.address += 8
+                current_address.address += data_size
                 binary_file.seek(current_address.to_disc_address())
                 byte = binary_file.read(1)
                 value = int.from_bytes(byte, byteorder='little', signed=False)
@@ -124,8 +126,9 @@ if __name__ == '__main__':
                     'Gamedata Address': current_address.address,
                 }
                 layer = {}
+                data_size = 16
                 data = []
-                for i in range(16):
+                for i in range(data_size):
                     binary_file.seek(current_address.to_disc_address(i))
                     byte = binary_file.read(1)
                     data.append(int.from_bytes(byte))
@@ -139,7 +142,7 @@ if __name__ == '__main__':
                     'Unknown 2': int.from_bytes(data[15:16], byteorder='little', signed=False),
                 }
                 layers.append(layer)
-                current_address.address += 16
+                current_address.address += data_size
             extracted_data['Layers'][stage_name] = layers
             # ------------------------------
             # Extract room-layer assignments, starting from the address where layouts left off
@@ -152,8 +155,9 @@ if __name__ == '__main__':
             for room_id in range(len(extracted_data['Rooms'][stage_name])):
                 if extracted_data['Rooms'][stage_name][room_id]['Tile Def ID'] == -1:
                     continue
+                data_size = 8
                 data = []
-                for i in range(8):
+                for i in range(data_size):
                     binary_file.seek(current_address.to_disc_address(8 * room_id + i))
                     byte = binary_file.read(1)
                     data.append(int.from_bytes(byte))
@@ -184,8 +188,9 @@ if __name__ == '__main__':
                 'Disc Address': current_address.to_disc_address(),
                 'Gamedata Address': current_address.address,
             }
+            data_size = 10
             data = []
-            for i in range(10):
+            for i in range(data_size):
                 binary_file.seek(current_address.to_disc_address(i))
                 byte = binary_file.read(1)
                 data.append(int.from_bytes(byte))
@@ -199,20 +204,21 @@ if __name__ == '__main__':
                 'Target Stage ID':  int.from_bytes(data[8:10], byteorder='little', signed=False),
             }
             teleporters.append(teleporter)
-            current_address.address += 10
+            current_address.address += data_size
         extracted_data['Teleporters'] = teleporters
         # ==========================
         # Extract entity layout data
-        extracted_data['Extractions']['Entity Layouts'] = {}
-        for (stage_name, stage) in extraction_points['Entity Layouts'].items():
-            extracted_data['Entity Layouts'][stage_name] = {}
-            for layout_type in (
-                'Horizontal',
-                'Vertical',
-            ):
+        for layout_type in (
+            'Horizontal',
+            'Vertical',
+        ):
+            extracted_data['Entity Layouts - ' + layout_type] = {}
+            extracted_data['Extractions']['Entity Layouts - ' + layout_type] = {}
+            for (stage_name, stage) in extraction_points['Entity Layouts'].items():
+                extracted_data['Entity Layouts - ' + layout_type][stage_name] = {}
                 layout_address_start = sotn_address.Address(stage[layout_type], 'GAMEDATA')
                 layout_address = sotn_address.Address(layout_address_start.address, 'GAMEDATA')
-                extracted_data['Extractions']['Entity Layouts'][stage_name + ', ' + layout_type] = {
+                extracted_data['Extractions']['Entity Layouts - ' + layout_type][stage_name] = {
                     'Disc Address': layout_address_start.to_disc_address(),
                     'Gamedata Address': layout_address_start.address,
                 }
@@ -221,7 +227,7 @@ if __name__ == '__main__':
                 while True:
                     entity_layout_id = len(entity_layouts)
                     print((stage_name, entity_layout_id))
-                    extracted_data['Extractions']['Entity Layouts'][stage_name + ', Entity Layout ID ' + f'{entity_layout_id:04d}' + ' - ' + layout_type] = {
+                    extracted_data['Extractions']['Entity Layouts - ' + layout_type][stage_name + ', Entity Layout ID ' + f'{entity_layout_id:04d}'] = {
                         'Disc Address': current_address.to_disc_address(),
                         'Gamedata Address': current_address.address,
                     }
@@ -236,7 +242,7 @@ if __name__ == '__main__':
                         'Entity Layout ID': entity_layout_id,
                         'X': int.from_bytes(data[0:2], byteorder='little', signed=True),
                         'Y':  int.from_bytes(data[2:4], byteorder='little', signed=True),
-                        'Entity ID':  int.from_bytes(data[4:6], byteorder='little', signed=False),
+                        'Entity Type ID':  int.from_bytes(data[4:6], byteorder='little', signed=False),
                         'Entity Room Index':  int.from_bytes(data[6:8], byteorder='little', signed=False),
                         'Params':  int.from_bytes(data[8:10], byteorder='little', signed=False),
                     }
@@ -248,7 +254,7 @@ if __name__ == '__main__':
                     value = int.from_bytes(byte, byteorder='little', signed=False)
                     if value == 0x00 and entity_layouts[-1]['X'] == -1:
                         break
-                extracted_data['Entity Layouts'][stage_name][layout_type] = entity_layouts
+                extracted_data['Entity Layouts - ' + layout_type][stage_name] = entity_layouts
         # =============
         # Write to file
         with open(args.json_filepath, 'w') as extracted_data_json:
