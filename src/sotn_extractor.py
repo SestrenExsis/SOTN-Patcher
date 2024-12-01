@@ -255,6 +255,30 @@ if __name__ == '__main__':
                     if value == 0x00 and entity_layouts[-1]['X'] == -1:
                         break
                 extracted_data['Entity Layouts - ' + layout_type][stage_name] = entity_layouts
+        # ===================
+        # Extract data arrays
+        arrays = {}
+        extracted_data['Extractions']['Arrays'] = {}
+        for (array_name, array) in extraction_points['Arrays'].items():
+            array_address_start = sotn_address.Address(array['Start'], 'GAMEDATA')
+            array_address = sotn_address.Address(array_address_start.address, 'GAMEDATA')
+            extracted_data['Extractions']['Arrays'][array_name] = {
+                'Disc Address': array_address_start.to_disc_address(),
+                'Gamedata Address': array_address_start.address,
+            }
+            current_address = sotn_address.Address(array_address.address, 'GAMEDATA')
+            arrays[array_name] = []
+            for _ in range(array['Count']):
+                data_size = array['Bytes']
+                data = []
+                for i in range(data_size):
+                    binary_file.seek(current_address.to_disc_address(i))
+                    byte = binary_file.read(1)
+                    data.append(int.from_bytes(byte))
+                value = int.from_bytes(data, byteorder='little', signed=False)
+                arrays[array_name].append(value)
+                current_address.address += data_size
+        extracted_data['Arrays'] = arrays
         # =============
         # Write to file
         with open(args.json_filepath, 'w') as extracted_data_json:

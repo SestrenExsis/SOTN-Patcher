@@ -506,9 +506,72 @@ Teleporters:
   Start: 0x00097C5C
   Count: 131
 Entity Layouts:
+  Alchemy Laboratory:
+    Horizontal: 0x049C1084
+    Vertical: 0x049C19C8
   Castle Entrance:
     Horizontal: 0x041AB5C8
     Vertical: 0x041ABD54
   Castle Entrance Revisited:
     Horizontal: 0x0491E368
     Vertical: 0x0491EAA4
+Arrays:
+  Relic Container Drop IDs:
+    Start: 0x049BF79C
+    Bytes: 2
+    Count: 4
+Aliases:
+  Relics:
+    Bat Card: 18
+    Cube of Zoe: 10
+    Power of Wolf: 5
+    Skill of Wolf: 6
+  Stages:
+    Castle Entrance:
+      Stage ID: 41
+  Entities:
+    Relic - Bat Card:
+      - Stage: Alchemy Laboratory
+        Entity Layout ID: 99
+        Entity ID: 99
+      - Stage: Alchemy Laboratory
+        Entity Layout ID: 99
+        Entity ID: 99
+    Relic - Cube of Zoe:
+      - Stage: Castle Entrance
+        Entity Layout ID: 16
+        Entity ID: 5
+      - Stage: Castle Entrance Revisited
+        Entity Layout ID: 16
+        Entity ID: 4
+    Relic - Faerie Card:
+      - Stage: Long Library
+        Entity Layout ID: 99
+        Entity ID: 99
+    Relic - Faerie Scroll:
+      - Stage: Long Library
+        Entity Layout ID: 99
+        Entity ID: 99
+    Relic - Gravity Boots:
+      - Stage: Marble Gallery
+        Entity Layout ID: 99
+        Entity ID: 99
+    Relic - Power of Wolf:
+      - Stage: Castle Entrance
+        Entity Layout ID: 15
+        Entity ID: 9
+      - Stage: Castle Entrance Revisited
+        Entity Layout ID: 15
+        Entity ID: 11
+    Relic - Skill of Wolf:
+      - Stage: Alchemy Laboratory
+        Entity Layout ID: 99
+        Entity ID: 99
+    Relic - Soul of Bat:
+      - Stage: Long Library
+        Entity Layout ID: 99
+        Entity ID: 99
+    Relic - Soul of Wolf:
+      - Stage: Outer Wall
+        Entity Layout ID: 99
+        Entity ID: 99
