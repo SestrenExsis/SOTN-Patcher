@@ -49,21 +49,23 @@ if __name__ == '__main__':
                 rooms[room_key] = room
         entity_layouts = {}
         for (stage_name, entity_layouts_data) in extracted_data['Entity Layouts - Horizontal'].items():
+            ext_meta_horizontal = extracted_data['Entity Layouts - Horizontal'][stage_name]['Extraction Metadata']
+            ext_meta_vertical = extracted_data['Entity Layouts - Vertical'][stage_name]['Extraction Metadata']
             entity_layouts[stage_name] = []
-            for (entity_layout_id, entity_layout_data) in enumerate(entity_layouts_data):
+            for (entity_layout_id, entity_layout_data) in enumerate(entity_layouts_data['Elements']):
                 if entity_layout_data['X'] == -2:
-                    extraction_key = stage_name + ', Entity Layout ID ' + f'{entity_layout_id:04d}'
+                    horizontal_address_start = (1 + entity_layout_data['Element Index']) * ext_meta_horizontal['Element Size'] + ext_meta_horizontal['Gamedata Address']
+                    vertical_address_start = (1 + entity_layout_data['Element Index']) * ext_meta_vertical['Element Size'] + ext_meta_vertical['Gamedata Address']
                     entity_layout = {
                         'Entities': [],
                         'Entity Layout ID': len(entity_layouts[stage_name]),
                         'Addresses': {
-                            'Horizontal Data': extracted_data['Extractions']['Entity Layouts - Horizontal'][extraction_key]['Gamedata Address'],
-                            'Vertical Data': extracted_data['Extractions']['Entity Layouts - Vertical'][extraction_key]['Gamedata Address'],
+                            'Horizontal Data': horizontal_address_start,
+                            'Vertical Data': vertical_address_start,
                         },
                     }
                 elif entity_layout_data['X'] == -1:
                     entity_layouts[stage_name].append(entity_layout)
-                    continue
                 else:
                     entity = {
                         'Entity ID': len(entity_layout['Entities']),

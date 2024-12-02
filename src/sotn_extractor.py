@@ -11,6 +11,74 @@ def _hex(val: int, size: int) -> str:
     result = ('{:0' + str(size) + 'X}').format(val)
     return result
 
+def extract_entity_layouts(extract_points, layout_type) -> dict:
+    result = {}
+    for (extract_name, extract) in extract_points.items():
+        address_start = sotn_address.Address(extract[layout_type], 'GAMEDATA')
+        cursor = sotn_address.Address(address_start.address, 'GAMEDATA')
+        elements = []
+        element_size = 10
+        while True:
+            element_index = len(elements)
+            bytes = []
+            for i in range(element_size):
+                binary_file.seek(cursor.to_disc_address(i))
+                byte = binary_file.read(1)
+                bytes.append(int.from_bytes(byte))
+            element = {
+                'Stage': extract_name,
+                'Element Index': element_index,
+                'X': int.from_bytes(bytes[0:2], byteorder='little', signed=True),
+                'Y':  int.from_bytes(bytes[2:4], byteorder='little', signed=True),
+                'Entity Type ID':  int.from_bytes(bytes[4:6], byteorder='little', signed=False),
+                'Entity Room Index':  int.from_bytes(bytes[6:8], byteorder='little', signed=False),
+                'Params':  int.from_bytes(bytes[8:10], byteorder='little', signed=False),
+            }
+            elements.append(element)
+            cursor.address += element_size
+            binary_file.seek(cursor.to_disc_address())
+            byte = binary_file.read(1)
+            value = int.from_bytes(byte, byteorder='little', signed=False)
+            if value == 0x00 and elements[-1]['X'] == -1:
+                break
+        result[extract_name] = {
+            'Extraction Metadata': {
+                'Disc Address': address_start.to_disc_address(),
+                'Gamedata Address': address_start.address,
+                'Element Size': element_size,
+                'Element Count': len(elements),
+            },
+            'Elements': elements,
+        }
+    return result
+
+def extract_arrays(extract_points) -> dict:
+    result = {}
+    for (extract_name, extract) in extract_points.items():
+        address_start = sotn_address.Address(extract['Start'], 'GAMEDATA')
+        cursor = sotn_address.Address(address_start.address, 'GAMEDATA')
+        elements = []
+        for _ in range(extract['Count']):
+            element_size = extract['Bytes']
+            bytes = []
+            for i in range(element_size):
+                binary_file.seek(cursor.to_disc_address(i))
+                byte = binary_file.read(1)
+                bytes.append(int.from_bytes(byte))
+            element = int.from_bytes(bytes, byteorder='little', signed=False)
+            elements.append(element)
+            cursor.address += element_size
+        result[extract_name] = {
+            'Extraction Metadata': {
+                'Disc Address': address_start.to_disc_address(),
+                'Gamedata Address': address_start.address,
+                'Element Size': extract['Bytes'],
+                'Element Count': len(elements),
+            },
+            'Elements': elements,
+        }
+    return result
+
 if __name__ == '__main__':
     '''
     Extract game data from a binary file and output it to a JSON file
@@ -206,79 +274,9 @@ if __name__ == '__main__':
             teleporters.append(teleporter)
             current_address.address += data_size
         extracted_data['Teleporters'] = teleporters
-        # ==========================
-        # Extract entity layout data
-        for layout_type in (
-            'Horizontal',
-            'Vertical',
-        ):
-            extracted_data['Entity Layouts - ' + layout_type] = {}
-            extracted_data['Extractions']['Entity Layouts - ' + layout_type] = {}
-            for (stage_name, stage) in extraction_points['Entity Layouts'].items():
-                extracted_data['Entity Layouts - ' + layout_type][stage_name] = {}
-                layout_address_start = sotn_address.Address(stage[layout_type], 'GAMEDATA')
-                layout_address = sotn_address.Address(layout_address_start.address, 'GAMEDATA')
-                extracted_data['Extractions']['Entity Layouts - ' + layout_type][stage_name] = {
-                    'Disc Address': layout_address_start.to_disc_address(),
-                    'Gamedata Address': layout_address_start.address,
-                }
-                entity_layouts = []
-                current_address = sotn_address.Address(layout_address.address, 'GAMEDATA')
-                while True:
-                    entity_layout_id = len(entity_layouts)
-                    print((stage_name, entity_layout_id))
-                    extracted_data['Extractions']['Entity Layouts - ' + layout_type][stage_name + ', Entity Layout ID ' + f'{entity_layout_id:04d}'] = {
-                        'Disc Address': current_address.to_disc_address(),
-                        'Gamedata Address': current_address.address,
-                    }
-                    data_size = 10
-                    data = []
-                    for i in range(data_size):
-                        binary_file.seek(current_address.to_disc_address(i))
-                        byte = binary_file.read(1)
-                        data.append(int.from_bytes(byte))
-                    entity_layout = {
-                        'Stage': stage_name,
-                        'Entity Layout ID': entity_layout_id,
-                        'X': int.from_bytes(data[0:2], byteorder='little', signed=True),
-                        'Y':  int.from_bytes(data[2:4], byteorder='little', signed=True),
-                        'Entity Type ID':  int.from_bytes(data[4:6], byteorder='little', signed=False),
-                        'Entity Room Index':  int.from_bytes(data[6:8], byteorder='little', signed=False),
-                        'Params':  int.from_bytes(data[8:10], byteorder='little', signed=False),
-                    }
-                    print(entity_layout)
-                    entity_layouts.append(entity_layout)
-                    current_address.address += data_size
-                    binary_file.seek(current_address.to_disc_address())
-                    byte = binary_file.read(1)
-                    value = int.from_bytes(byte, byteorder='little', signed=False)
-                    if value == 0x00 and entity_layouts[-1]['X'] == -1:
-                        break
-                extracted_data['Entity Layouts - ' + layout_type][stage_name] = entity_layouts
-        # ===================
-        # Extract data arrays
-        arrays = {}
-        extracted_data['Extractions']['Arrays'] = {}
-        for (array_name, array) in extraction_points['Arrays'].items():
-            array_address_start = sotn_address.Address(array['Start'], 'GAMEDATA')
-            array_address = sotn_address.Address(array_address_start.address, 'GAMEDATA')
-            extracted_data['Extractions']['Arrays'][array_name] = {
-                'Disc Address': array_address_start.to_disc_address(),
-                'Gamedata Address': array_address_start.address,
-            }
-            current_address = sotn_address.Address(array_address.address, 'GAMEDATA')
-            arrays[array_name] = []
-            for _ in range(array['Count']):
-                data_size = array['Bytes']
-                data = []
-                for i in range(data_size):
-                    binary_file.seek(current_address.to_disc_address(i))
-                    byte = binary_file.read(1)
-                    data.append(int.from_bytes(byte))
-                value = int.from_bytes(data, byteorder='little', signed=False)
-                arrays[array_name].append(value)
-                current_address.address += data_size
-        extracted_data['Arrays'] = arrays
+        for layout_type in ('Horizontal', 'Vertical'):
+            extracted_data['Entity Layouts - ' + layout_type] = extract_entity_layouts(extraction_points['Entity Layouts'], layout_type)
+        extracted_data['Arrays'] = extract_arrays(extraction_points['Arrays'])
         # =============
         # Write to file
         with open(args.json_filepath, 'w') as extracted_data_json:
