@@ -274,6 +274,8 @@ if __name__ == '__main__':
             teleporters.append(teleporter)
             current_address.address += data_size
         extracted_data['Teleporters'] = teleporters
+        # ======================================
+        # Extract Entity Layouts and Data Arrays
         for layout_type in ('Horizontal', 'Vertical'):
             extracted_data['Entity Layouts - ' + layout_type] = extract_entity_layouts(extraction_points['Entity Layouts'], layout_type)
         extracted_data['Arrays'] = extract_arrays(extraction_points['Arrays'])

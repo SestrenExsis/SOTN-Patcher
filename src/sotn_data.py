@@ -41,12 +41,20 @@ if __name__ == '__main__':
                     'Special Flag': special_flag,
                     'Foreground Layer ID': foreground_layer_id,
                     'Room Name': room_data['Room Name'],
-                    'Addresses': {
-                        'Room Data': extracted_data['Extractions']['Rooms'][room_key]['Gamedata Address'],
-                        'Packed Room Data': None if layer_data_address is None else layer_data_address + 8,
-                    }
+                    'Insertion Metadata': {
+                        'Room Data': {
+                            'Address Start': extracted_data['Extractions']['Rooms'][room_key]['Gamedata Address'],
+                            'Element Size': 16,
+                        },
+                    },
                 }
+                if layer_data_address is not None:
+                    room['Insertion Metadata']['Packed Room Data'] = {
+                        'Address Start': layer_data_address + 8,
+                        'Element Size': 4,
+                    }
                 rooms[room_key] = room
+        # Entity Layouts
         entity_layouts = {}
         for (stage_name, entity_layouts_data) in extracted_data['Entity Layouts - Horizontal'].items():
             ext_meta_horizontal = extracted_data['Entity Layouts - Horizontal'][stage_name]['Extraction Metadata']
@@ -59,9 +67,15 @@ if __name__ == '__main__':
                     entity_layout = {
                         'Entities': [],
                         'Entity Layout ID': len(entity_layouts[stage_name]),
-                        'Addresses': {
-                            'Horizontal Data': horizontal_address_start,
-                            'Vertical Data': vertical_address_start,
+                        'Insertion Metadata': {
+                            'Horizontal Data': {
+                                'Address Start': horizontal_address_start,
+                                'Element Size': 10,
+                            },
+                            'Vertical Data': {
+                                'Address Start': vertical_address_start,
+                                'Element Size': 10,
+                            },
                         },
                     }
                 elif entity_layout_data['X'] == -1:
@@ -76,9 +90,26 @@ if __name__ == '__main__':
                         'Params': entity_layout_data['Params'],
                     }
                     entity_layout['Entities'].append(entity)
+        drop_ids = extracted_data['Arrays']['Relic Container Drop IDs']
         data_core = {
             'Rooms': rooms,
             'Entity Layouts': entity_layouts,
+            'Constants': {
+                'Relic Container - Relic Drop A': {
+                    'Value': drop_ids['Elements'][2],
+                    'Insertion Metadata': {
+                        'Address Start': drop_ids['Extraction Metadata']['Gamedata Address'] + 2 * drop_ids['Extraction Metadata']['Element Size'],
+                        'Element Size': drop_ids['Extraction Metadata']['Element Size'],
+                    },
+                },
+                'Relic Container - Relic Drop B': {
+                    'Value': drop_ids['Elements'][3],
+                    'Insertion Metadata': {
+                        'Address Start': drop_ids['Extraction Metadata']['Gamedata Address'] + 3 * drop_ids['Extraction Metadata']['Element Size'],
+                        'Element Size': drop_ids['Extraction Metadata']['Element Size'],
+                    },
+                },
+            }
         }
         with open(args.data_core_filepath, 'w') as data_core_file:
             json.dump(data_core, data_core_file, indent='    ', sort_keys=True)

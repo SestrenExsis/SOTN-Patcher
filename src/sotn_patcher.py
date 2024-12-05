@@ -67,6 +67,18 @@ class PPF:
             value, byte = divmod(value, 0x100)
             self.write_byte(byte)
     
+    def patch_value(self, value: int, size: int, address: sotn_address.Address):
+        self.write_u64(address.to_disc_address())
+        self.write_byte(size)
+        if size == 1:
+            self.write_byte(value)
+        elif size == 2:
+            self.write_u16(value)
+        elif size == 4:
+            self.write_u32(value)
+        else:
+            raise Exception('Incorrect size for value:', (value, size))
+    
     def patch_string(self, offset_in_file: int, value: str):
         self.write_u64(offset_in_file)
         size = len(value)
@@ -114,61 +126,86 @@ class PPF:
 
 def get_changes_template_file(core_data):
     result = {
-        'Rooms': {}
+        'Rooms': {},
+        'Constants': {},
     }
     for room_name in core_data['Rooms']:
         result['Rooms'][room_name] = {
             'Left': core_data['Rooms'][room_name]['Left'],
             'Top': core_data['Rooms'][room_name]['Top'],
         }
+    for constant_name in core_data['Constants']:
+        result['Constants'][constant_name] = core_data['Constants'][constant_name]['Value']
     return result
 
 def validate_changes(changes):
-    for room_name in sorted(changes['Rooms'].keys()):
-        assert 0 <= changes['Rooms'][room_name]['Top'] <= 58
-        assert 0 <= changes['Rooms'][room_name]['Left'] <= 63
+    if 'Rooms' in changes:
+        for room_name in changes['Rooms']:
+            assert 0 <= changes['Rooms'][room_name]['Top'] <= 58
+            assert 0 <= changes['Rooms'][room_name]['Left'] <= 63
+    if 'Constants' in changes:
+        for constant_name in changes['Constants']:
+            assert 0 <= changes['Constants'][constant_name] <= 255
 
 def get_ppf(core_data, changes):
     result = PPF('Shuffled rooms in first few stages of the game')
-    for room_name in sorted(changes['Rooms'].keys()):
-        print(changes['Rooms'][room_name])
-        if (
-            changes['Rooms'][room_name]['Top'] == core_data['Rooms'][room_name]['Top'] and
-            changes['Rooms'][room_name]['Left'] == core_data['Rooms'][room_name]['Left']
-        ):
-            continue
-        print(' ', 'patching')
-        room = Room(
-            core_data['Rooms'][room_name]['Room ID'],
-            (
-                changes['Rooms'][room_name]['Top'],
-                changes['Rooms'][room_name]['Left'],
-                core_data['Rooms'][room_name]['Rows'],
-                core_data['Rooms'][room_name]['Columns'],
-            ),
-            core_data['Rooms'][room_name]['Special Flag'],
-            core_data['Rooms'][room_name]['Foreground Layer ID'],
-        )
-        try:
-            result.patch_room_data(
-                room,
-                sotn_address.Address(
-                    core_data['Rooms'][room_name]['Addresses']['Room Data']
-                )
+    if 'Rooms' in changes:
+        for room_name in sorted(changes['Rooms'].keys()):
+            print(room_name, changes['Rooms'][room_name], end=' ...')
+            if (
+                changes['Rooms'][room_name]['Top'] == core_data['Rooms'][room_name]['Top'] and
+                changes['Rooms'][room_name]['Left'] == core_data['Rooms'][room_name]['Left']
+            ):
+                print(' SKIPPED')
+                continue
+            print(' ', 'patching', end=' ...')
+            room = Room(
+                core_data['Rooms'][room_name]['Room ID'],
+                (
+                    changes['Rooms'][room_name]['Top'],
+                    changes['Rooms'][room_name]['Left'],
+                    core_data['Rooms'][room_name]['Rows'],
+                    core_data['Rooms'][room_name]['Columns'],
+                ),
+                core_data['Rooms'][room_name]['Special Flag'],
+                core_data['Rooms'][room_name]['Foreground Layer ID'],
             )
-        except KeyError:
-            print(' ', 'patch_room_data ERROR')
-            pass
-        try:
-            result.patch_packed_room_data(
-                room,
+            if 'Room Data' in core_data['Rooms'][room_name]['Insertion Metadata']:
+                try:
+                    result.patch_room_data(
+                        room,
+                        sotn_address.Address(
+                            core_data['Rooms'][room_name]['Insertion Metadata']['Room Data']['Address Start']
+                        )
+                    )
+                except KeyError:
+                    print(' ', 'patch_room_data ERROR')
+                    pass
+            if 'Packed Room Data' in core_data['Rooms'][room_name]['Insertion Metadata']:
+                try:
+                    result.patch_packed_room_data(
+                        room,
+                        sotn_address.Address(
+                            core_data['Rooms'][room_name]['Insertion Metadata']['Packed Room Data']['Address Start']
+                        )
+                    )
+                except (KeyError, TypeError):
+                    print(' ', 'patch_packed_room_data ERROR')
+                    pass
+            print(' DONE')
+    if 'Constants' in changes:
+        for constant_name in sorted(changes['Constants'].keys()):
+            print(changes['Constants'][constant_name])
+            if changes['Constants'][constant_name] == core_data['Constants'][constant_name]:
+                continue
+            print(' ', 'patching')
+            result.patch_value(
+                changes['Constants'][constant_name],
+                2,
                 sotn_address.Address(
-                    core_data['Rooms'][room_name]['Addresses']['Packed Room Data']
-                )
+                    core_data['Constants'][constant_name]['Insertion Metadata']['Address Start']
+                ),
             )
-        except (KeyError, TypeError):
-            print(' ', 'patch_packed_room_data ERROR')
-            pass
     return result
 
 if __name__ == '__main__':
