@@ -177,10 +177,8 @@ def get_changes_template_file(core_data):
                     # 'Entity Room Index': entity_data['Entity Room Index'],
                     'Entity Type ID': entity_data['Entity Type ID'],
                     'Params': entity_data['Params'],
-                    # TODO(sestren): Allow editing of 'X' values
-                    # 'X': entity_data['X'],
-                    # TODO(sestren): Allow editing of 'Y' values
-                    # 'Y': entity_data['Y'],
+                    'X': entity_data['X'],
+                    'Y': entity_data['Y'],
                 }
                 entity_key = f'{stage_name}, Entity Layout ID {entity_layout_id}, Entity ID {entity_id}'
                 result['Entity Layouts'][entity_key] = entity
@@ -201,7 +199,7 @@ def validate_changes(changes):
             assert 0 <= changes['Constants'][constant_name] <= 255
 
 def get_ppf(core_data, changes):
-    result = PPF('Shuffled rooms in first few stages of the game')
+    result = PPF('Just messing around')
     if 'Rooms' in changes:
         for room_name in sorted(changes['Rooms'].keys()):
             print(room_name, changes['Rooms'][room_name], end=' ...')

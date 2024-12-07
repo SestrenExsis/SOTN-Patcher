@@ -41,6 +41,17 @@ def extract_entity_layouts(extract_points, layout_type) -> dict:
             value = int.from_bytes(byte, byteorder='little', signed=False)
             if value == 0x00 and elements[-1]['X'] == -1:
                 break
+            if (
+                len(elements) >= 4 and
+                elements[-4]['X'] == -1 and
+                elements[-3]['X'] == -2 and
+                elements[-2]['X'] == -1 and
+                elements[-1]['X'] == -2
+            ):
+                elements.pop()
+                elements.pop()
+                elements.pop()
+                break
         result[extract_name] = {
             'Extraction Metadata': {
                 'Disc Address': address_start.to_disc_address(),

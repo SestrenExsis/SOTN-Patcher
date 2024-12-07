@@ -506,6 +506,9 @@ Teleporters:
   Start: 0x00097C5C
   Count: 131
 Entity Layouts:
+  Long Library:
+    Horizontal: 0x03E629F0
+    Vertical: 0x03E630A8
   Alchemy Laboratory:
     Horizontal: 0x049C1084
     Vertical: 0x049C19C8
@@ -539,10 +542,10 @@ Aliases:
         Entity ID: 99
     Relic - Cube of Zoe:
       - Stage: Castle Entrance
-        Entity Layout ID: 16
+        Entity Layout ID: 14
         Entity ID: 5
       - Stage: Castle Entrance Revisited
-        Entity Layout ID: 16
+        Entity Layout ID: 14
         Entity ID: 4
     Relic - Faerie Card:
       - Stage: Long Library
