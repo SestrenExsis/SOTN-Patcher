@@ -1,8 +1,9 @@
 # External libraries
 import argparse
 import json
+from operator import attrgetter, itemgetter
 import os
-import yaml
+# import yaml
 
 # Local libraries
 import sotn_address
@@ -123,17 +124,66 @@ class PPF:
             (data[3] << 6) |
             (data[4] << 0)
         )
+    
+    def patch_entity_layout(self,
+        entities,
+        horizontal_address: sotn_address.Address,
+        vertical_address: sotn_address.Address,
+    ):
+        # Sort entities horizontally
+        for (i, entity) in enumerate(sorted(entities, key=itemgetter('X'))):
+            for (offset, size, property) in (
+                (0, 2, 'X'),
+                (2, 2, 'Y'),
+                (4, 2, 'Entity Type ID'),
+                (6, 2, 'Entity Room Index'),
+                (8, 2, 'Params'),
+            ):
+                write_address = sotn_address.Address(
+                    horizontal_address.address + 10 * i + offset
+                )
+                self.patch_value(entity[property], size, write_address)
+        # Sort entities vertically
+        for (i, entity) in enumerate(sorted(entities, key=itemgetter('Y'))):
+            for (offset, size, property) in (
+                (0, 2, 'X'),
+                (2, 2, 'Y'),
+                (4, 2, 'Entity Type ID'),
+                (6, 2, 'Entity Room Index'),
+                (8, 2, 'Params'),
+            ):
+                write_address = sotn_address.Address(
+                    vertical_address.address + 10 * i + offset
+                )
+                self.patch_value(entity[property], size, write_address)
 
 def get_changes_template_file(core_data):
     result = {
         'Rooms': {},
         'Constants': {},
+        'Entity Layouts': {},
     }
     for room_name in core_data['Rooms']:
         result['Rooms'][room_name] = {
             'Left': core_data['Rooms'][room_name]['Left'],
             'Top': core_data['Rooms'][room_name]['Top'],
         }
+    for (stage_name, entity_layouts_data) in core_data['Entity Layouts'].items():
+        for entity_layout_data in entity_layouts_data:
+            entity_layout_id = entity_layout_data['Entity Layout ID']
+            for entity_data in entity_layout_data['Entities']:
+                entity_id = entity_data['Entity ID']
+                entity = {
+                    # 'Entity Room Index': entity_data['Entity Room Index'],
+                    'Entity Type ID': entity_data['Entity Type ID'],
+                    'Params': entity_data['Params'],
+                    # TODO(sestren): Allow editing of 'X' values
+                    # 'X': entity_data['X'],
+                    # TODO(sestren): Allow editing of 'Y' values
+                    # 'Y': entity_data['Y'],
+                }
+                entity_key = f'{stage_name}, Entity Layout ID {entity_layout_id}, Entity ID {entity_id}'
+                result['Entity Layouts'][entity_key] = entity
     for constant_name in core_data['Constants']:
         result['Constants'][constant_name] = core_data['Constants'][constant_name]['Value']
     return result
@@ -143,6 +193,9 @@ def validate_changes(changes):
         for room_name in changes['Rooms']:
             assert 0 <= changes['Rooms'][room_name]['Top'] <= 58
             assert 0 <= changes['Rooms'][room_name]['Left'] <= 63
+    if 'Entity Layouts' in changes:
+        # TODO(sestren): Validate changes to entity layouts
+        pass
     if 'Constants' in changes:
         for constant_name in changes['Constants']:
             assert 0 <= changes['Constants'][constant_name] <= 255
@@ -193,6 +246,67 @@ def get_ppf(core_data, changes):
                     print(' ', 'patch_packed_room_data ERROR')
                     pass
             print(' DONE')
+    if 'Entity Layouts' in changes:
+        entity_layouts = {}
+        for entity_key in sorted(changes['Entity Layouts'].keys()):
+            print(entity_key, end=' ...')
+            change_entity = changes['Entity Layouts'][entity_key]
+            parts = entity_key.split(', ')
+            stage_name = parts[0]
+            entity_layout_id = int(parts[1].split(' ')[-1])
+            entity_id = int(parts[2].split(' ')[-1])
+            core_entity = core_data['Entity Layouts'][stage_name][entity_layout_id]['Entities'][entity_id]
+            if (
+                'Entity Room Index' in change_entity and
+                change_entity['Entity Room Index'] == core_entity['Entity Room Index'] and
+                'Entity Type ID' in change_entity and 
+                change_entity['Entity Type ID'] == core_entity['Entity Type ID'] and
+                'Params' in change_entity and 
+                change_entity['Params'] == core_entity['Params'] and
+                'X' in change_entity and 
+                change_entity['X'] == core_entity['X'] and
+                'Y' in change_entity and 
+                change_entity['Y'] == core_entity['Y']
+            ):
+                print(' SKIPPED')
+                continue
+            print((stage_name, entity_layout_id, entity_id))
+            print(' ', 'patching')
+            entity = {
+                'Entity ID': entity_id,
+                'Entity Room Index': core_entity['Entity Room Index'],
+                'Entity Type ID': core_entity['Entity Type ID'],
+                'Params': core_entity['Params'],
+                'X': core_entity['X'],
+                'Y': core_entity['Y'],
+            }
+            if 'Entity Room Index' in change_entity:
+                entity['Entity Room Index'] = change_entity['Entity Room Index']
+            if 'Entity Type ID' in change_entity:
+                entity['Entity Type ID'] = change_entity['Entity Type ID']
+            if 'Params' in change_entity:
+                entity['Params'] = change_entity['Params']
+            if 'X' in change_entity:
+                entity['X'] = change_entity['X']
+            if 'Y' in change_entity:
+                entity['Y'] = change_entity['Y']
+            entity_layout_key = (stage_name, entity_layout_id)
+            if entity_layout_key not in entity_layouts:
+                entity_layouts[entity_layout_key] = [None] * len(core_data['Entity Layouts'][stage_name][entity_layout_id]['Entities'])
+            entity_layouts[entity_layout_key][entity_id] = entity
+        for entity_layout_key in entity_layouts.keys():
+            (stage_name, entity_layout_id) = entity_layout_key
+            for entity_id in range(len(entity_layouts[entity_layout_key])):
+                if entity_layouts[entity_layout_key][entity_id] is None:
+                    core_entity = core_data['Entity Layouts'][stage_name][entity_layout_id]['Entities'][entity_id]
+                    entity_layouts[entity_layout_key][entity_id] = core_entity
+        for ((stage_name, entity_layout_id), entities) in entity_layouts.items():
+            insertion_metadata = core_data['Entity Layouts'][stage_name][entity_layout_id]['Insertion Metadata']
+            result.patch_entity_layout(
+                entities,
+                sotn_address.Address(insertion_metadata['Horizontal Data']['Address Start']),
+                sotn_address.Address(insertion_metadata['Vertical Data']['Address Start']),
+            )
     if 'Constants' in changes:
         for constant_name in sorted(changes['Constants'].keys()):
             print(changes['Constants'][constant_name])
