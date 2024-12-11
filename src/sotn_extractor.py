@@ -14,6 +14,7 @@ def _hex(val: int, size: int) -> str:
 def extract_entity_layouts(extract_points, layout_type) -> dict:
     result = {}
     for (extract_name, extract) in extract_points.items():
+        layout_count = 0
         address_start = sotn_address.Address(extract[layout_type], 'GAMEDATA')
         cursor = sotn_address.Address(address_start.address, 'GAMEDATA')
         elements = []
@@ -39,19 +40,26 @@ def extract_entity_layouts(extract_points, layout_type) -> dict:
             binary_file.seek(cursor.to_disc_address())
             byte = binary_file.read(1)
             value = int.from_bytes(byte, byteorder='little', signed=False)
+            if elements[-1]['X'] == -2:
+                layout_count += 1
+            if len(elements) > 4096:
+                break
             if value == 0x00 and elements[-1]['X'] == -1:
+                # Padding encountered
                 break
-            if (
-                len(elements) >= 4 and
-                elements[-4]['X'] == -1 and
-                elements[-3]['X'] == -2 and
-                elements[-2]['X'] == -1 and
-                elements[-1]['X'] == -2
-            ):
-                elements.pop()
-                elements.pop()
-                elements.pop()
+            if layout_count >= 53:
                 break
+            # if (
+            #     len(elements) >= 4 and
+            #     elements[-4]['X'] == -1 and
+            #     elements[-3]['X'] == -2 and
+            #     elements[-2]['X'] == -1 and
+            #     elements[-1]['X'] == -2
+            # ):
+            #     elements.pop()
+            #     elements.pop()
+            #     elements.pop()
+            #     break
         result[extract_name] = {
             'Extraction Metadata': {
                 'Disc Address': address_start.to_disc_address(),
