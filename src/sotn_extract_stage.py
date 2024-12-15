@@ -121,121 +121,105 @@ if __name__ == '__main__':
     ):
         stages = {
             'Abandoned Mine': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x03CDF800,
                     'Size': 193576,
                 },
-                'Data': {},
             },
             'Alchemy Laboratory': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x049BE800,
                     'Size': 309120,
                 },
-                'Data': {},
             },
             'Castle Entrance': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x041A7800,
                     'Size': 0,
                 },
-                'Data': {},
             },
             'Castle Entrance Revisited': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x0491A800,
                     'Size': 0,
                 },
-                'Data': {},
             },
             'Castle Keep': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x04AEF000,
                     'Size': 247132,
                 },
-                'Data': {},
             },
             'Catacombs': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x03BB3000,
                     'Size': 361920,
                 },
-                'Data': {},
             },
             'Clock Tower': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x04A67000,
                     'Size': 271168,
                 },
-                'Data': {},
             },
             'Center Cube': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x03C65000,
                     'Size': 119916,
                 },
-                'Data': {},
             },
             'Colosseum': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x03B00000,
                     'Size': 352636,
                 },
-                'Data': {},
             },
             'Long Library': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x03E5F800,
                     'Size': 348876,
                 },
-                'Data': {},
             },
             'Marble Gallery': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x03F8B000,
                     'Size': 390540,
                 },
-                'Data': {},
             },
             'Olrox\'s Quarters': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x040FB000,
                     'Size': 327100,
                 },
-                'Data': {},
             },
             'Outer Wall': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x04047000,
                     'Size': 356452,
                 },
-                'Data': {},
             },
             'Royal Chapel': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x03D5A800,
                     'Size': 373764,
                 },
-                'Data': {},
             },
             'Underground Caverns': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x04257800,
                     'Size': 391260,
                 },
-                'Data': {},
             },
             'Warp Room': {
-                'Metadata': {
+                'Stage': {
                     'Start': 0x04D12800,
                     'Size': 83968,
                 },
-                'Data': {},
             },
         }
         for stage_name in stages.keys():
             cursors = {}
-            stage_offset = stages[stage_name]['Metadata']['Start']
+            stage_offset = stages[stage_name]['Stage']['Start']
             cursors['Stage'] = BIN(binary_file, stage_offset)
             for (address, cursor_name) in (
                 # (0x00, '???'), # 801C187C for Castle Entrance
@@ -254,19 +238,19 @@ if __name__ == '__main__':
                 cursors[cursor_name] = cursors['Stage'].clone(stage_offset)
             # Extract room data
             room_count = 0
-            rooms = []
+            stages[stage_name]['Rooms'] = []
             while cursors['Room'].u8(0x08 * room_count) != 0x40:
                 room = {
-                    'Left': cursors['Room'].u8(0x08 * room_count + 0x00),
-                    'Top': cursors['Room'].u8(0x08 * room_count + 0x01),
-                    'Right': cursors['Room'].u8(0x08 * room_count + 0x02),
-                    'Bottom': cursors['Room'].u8(0x08 * room_count + 0x03),
-                    'Tile Layout ID': cursors['Room'].u8(0x08 * room_count + 0x04),
-                    'Tileset ID': cursors['Room'].s8(0x08 * room_count + 0x05),
-                    'Object Graphics ID': cursors['Room'].u8(0x08 * room_count + 0x06),
-                    'Object Layout ID': cursors['Room'].u8(0x08 * room_count + 0x07),
+                    'Left': cursors['Room'].u8(0x08 * room_count + 0x00, True),
+                    'Top': cursors['Room'].u8(0x08 * room_count + 0x01, True),
+                    'Right': cursors['Room'].u8(0x08 * room_count + 0x02, True),
+                    'Bottom': cursors['Room'].u8(0x08 * room_count + 0x03, True),
+                    'Tile Layout ID': cursors['Room'].u8(0x08 * room_count + 0x04, True),
+                    'Tileset ID': cursors['Room'].s8(0x08 * room_count + 0x05, True),
+                    'Object Graphics ID': cursors['Room'].u8(0x08 * room_count + 0x06, True),
+                    'Object Layout ID': cursors['Room'].u8(0x08 * room_count + 0x07, True),
                 }
-                rooms.append(room)
+                stages[stage_name]['Rooms'].append(room)
                 room_count += 1
             # Extract room layouts
             ids = []
@@ -308,7 +292,7 @@ if __name__ == '__main__':
                     entity_layouts.append(None)
                     continue
                 horizontal_entity_layout_offset = cursors['Entities X Indirect'].u32(
-                    4 * rooms[room_id]['Object Layout ID']
+                    4 * stages[stage_name]['Rooms'][room_id]['Object Layout ID']['Value']
                 ) - OFFSET
                 cursors['Entity X'] = cursors['Stage'].clone(horizontal_entity_layout_offset)
                 h_entities = []
@@ -333,7 +317,7 @@ if __name__ == '__main__':
                     }
                     h_entities.append(entity)
                 vertical_entity_layout_offset = cursors['Entities Y Indirect'].u32(
-                    4 * rooms[room_id]['Object Layout ID']
+                    4 * stages[stage_name]['Rooms'][room_id]['Object Layout ID']['Value']
                 ) - OFFSET
                 cursors['Entity Y'] = cursors['Stage'].clone(vertical_entity_layout_offset)
                 v_entities = []
@@ -367,7 +351,6 @@ if __name__ == '__main__':
                 'Entity Layouts': entity_layouts,
                 'Layouts': layouts,
                 'Room Count': room_count,
-                'Rooms': rooms,
             }
         with open(args.json_filepath, 'w') as stages_json:
             json.dump(stages, stages_json, indent='    ', sort_keys=True)
