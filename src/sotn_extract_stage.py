@@ -252,19 +252,12 @@ if __name__ == '__main__':
                 }
                 stages[stage_name]['Rooms'].append(room)
                 room_count += 1
-            # Extract room layouts
-            ids = []
-            for room_id in range(room_count):
-                id = cursors['Room'].s8(0x08 * room_id + 0x5)
-                if id == -1:
-                    ids.append(None)
-                else:
-                    ids.append(cursors['Room'].u8(0x08 * room_id + 0x4))
-            layouts = []
-            for id in ids:
-                if id is None:
-                    layouts.append(None)
+            # Extract layouts
+            stages[stage_name]['Layouts'] = []
+            for (room_id, room) in enumerate(stages[stage_name]['Rooms']):
+                if room['Tileset ID']['Value'] == -1:
                     continue
+                id = room['Tile Layout ID']['Value']
                 layout_offset = cursors['Layouts'].u32(0x08 * id) - OFFSET
                 cursors['Current Layout'] = cursors['Stage'].clone(layout_offset)
                 # Parse the layout data.
@@ -282,13 +275,13 @@ if __name__ == '__main__':
                 layout_data['Columns'] = 1 + layout_data['Right'] - layout_data['Left']
                 layout_data['Room Flags'] = cursors['Current Layout'].u8(0xa)
                 layout_data['Draw Flags'] = cursors['Current Layout'].u8(0xd)
-                layouts.append(layout_data)
+                stages[stage_name]['Layouts'].append(layout_data)
             # Extract entity layouts
             cursors['Entities X Indirect'] = cursors['Stage'].clone(cursors['Entities'].u16(0x1C))
             cursors['Entities Y Indirect'] = cursors['Stage'].clone(cursors['Entities'].u16(0x28))
             entity_layouts = []
-            for room_id in range(room_count):
-                if ids[room_id] is None:
+            for (room_id, room) in enumerate(stages[stage_name]['Rooms']):
+                if room['Tileset ID']['Value'] == -1:
                     entity_layouts.append(None)
                     continue
                 horizontal_entity_layout_offset = cursors['Entities X Indirect'].u32(
@@ -349,7 +342,6 @@ if __name__ == '__main__':
             # Store extracted data
             stages[stage_name]['Data'] = {
                 'Entity Layouts': entity_layouts,
-                'Layouts': layouts,
                 'Room Count': room_count,
             }
         with open(args.json_filepath, 'w') as stages_json:
