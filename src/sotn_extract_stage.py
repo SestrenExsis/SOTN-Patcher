@@ -42,7 +42,7 @@ class BIN:
             result = {
                 'Value': value,
                 'Start': self.cursor.address + offset,
-                'Size': size,
+                'Type': 'u8',
             }
         else:
             result = value
@@ -56,7 +56,7 @@ class BIN:
             result = {
                 'Value': value,
                 'Start': self.cursor.address + offset,
-                'Size': size,
+                'Type': 's8',
             }
         else:
             result = value
@@ -70,7 +70,7 @@ class BIN:
             result = {
                 'Value': value,
                 'Start': self.cursor.address + offset,
-                'Size': size,
+                'Type': 'u16',
             }
         else:
             result = value
@@ -84,7 +84,7 @@ class BIN:
             result = {
                 'Value': value,
                 'Start': self.cursor.address + offset,
-                'Size': size,
+                'Type': 's16',
             }
         else:
             result = value
@@ -98,7 +98,7 @@ class BIN:
             result = {
                 'Value': value,
                 'Start': self.cursor.address + offset,
-                'Size': size,
+                'Type': 'u32',
             }
         else:
             result = value
@@ -236,113 +236,69 @@ if __name__ == '__main__':
             ):
                 stage_offset = cursors['Stage'].u32(address) - OFFSET
                 cursors[cursor_name] = cursors['Stage'].clone(stage_offset)
-            # Extract room data
-            room_count = 0
-            stages[stage_name]['Rooms'] = []
-            while cursors['Room'].u8(0x08 * room_count) != 0x40:
-                room = {
-                    'Left': cursors['Room'].u8(0x08 * room_count + 0x00, True),
-                    'Top': cursors['Room'].u8(0x08 * room_count + 0x01, True),
-                    'Right': cursors['Room'].u8(0x08 * room_count + 0x02, True),
-                    'Bottom': cursors['Room'].u8(0x08 * room_count + 0x03, True),
-                    'Tile Layout ID': cursors['Room'].u8(0x08 * room_count + 0x04, True),
-                    'Tileset ID': cursors['Room'].s8(0x08 * room_count + 0x05, True),
-                    'Object Graphics ID': cursors['Room'].u8(0x08 * room_count + 0x06, True),
-                    'Object Layout ID': cursors['Room'].u8(0x08 * room_count + 0x07, True),
+            #
+            # Room data
+            stages[stage_name]['Rooms'] = {}
+            for room_id in range(256):
+                print(room_id)
+                cursors['Current Room'] = cursors['Room'].clone(0x08 * room_id)
+                if cursors['Current Room'].u8() == 0x40:
+                    break
+                stages[stage_name]['Rooms'][room_id] = {
+                    'Left': cursors['Current Room'].u8(0x00, True),
+                    'Top': cursors['Current Room'].u8(0x01, True),
+                    'Right': cursors['Current Room'].u8(0x02, True),
+                    'Bottom': cursors['Current Room'].u8(0x03, True),
+                    'Tile Layout ID': cursors['Current Room'].u8(0x04, True),
+                    'Tileset ID': cursors['Current Room'].s8(0x05, True),
+                    'Object Graphics ID': cursors['Current Room'].u8(0x06, True),
+                    'Object Layout ID': cursors['Current Room'].u8(0x07, True),
                 }
-                stages[stage_name]['Rooms'].append(room)
-                room_count += 1
-            # Extract layouts
-            stages[stage_name]['Layouts'] = []
-            for (room_id, room) in enumerate(stages[stage_name]['Rooms']):
-                if room['Tileset ID']['Value'] == -1:
+                # Tile layout for the current room
+                if stages[stage_name]['Rooms'][room_id]['Tileset ID']['Value'] == -1:
                     continue
-                id = room['Tile Layout ID']['Value']
-                layout_offset = cursors['Layouts'].u32(0x08 * id) - OFFSET
-                cursors['Current Layout'] = cursors['Stage'].clone(layout_offset)
-                # Parse the layout data.
-                ltrb = 0xFFFFFF & cursors['Current Layout'].u32(0x8)
-                layout_data = {
-                    'Tiles': cursors['Current Layout'].u32(0) - OFFSET,
-                    'Defs': cursors['Current Layout'].u32(0x4) - OFFSET,
-                    'Packed LTRB': ltrb,
+                tile_layout_id = stages[stage_name]['Rooms'][room_id]['Tile Layout ID']['Value']
+                tile_layout_offset = cursors['Layouts'].u32(0x08 * tile_layout_id) - OFFSET
+                cursors['Current Tile Layout'] = cursors['Stage'].clone(tile_layout_offset)
+                stages[stage_name]['Rooms'][room_id]['Tile Layout'] = {
+                    'Tiles': cursors['Current Tile Layout'].u32(0x0, True),
+                    'Defs': cursors['Current Tile Layout'].u32(0x4, True),
+                    'Layout Rect': cursors['Current Tile Layout'].u32(0x8, True),
+                    'Z Priority': cursors['Current Tile Layout'].u16(0xC, True),
+                    'Flags': cursors['Current Tile Layout'].u16(0xE, True),
                 }
-                layout_data['Left'] = 0x3F & (ltrb)
-                layout_data['Top'] = 0x3F & (ltrb >> 6)
-                layout_data['Right'] = 0x3F & (ltrb >> 12)
-                layout_data['Bottom'] = 0x3F & (ltrb >> 18)
-                layout_data['Rows'] = 1 + layout_data['Bottom'] - layout_data['Top']
-                layout_data['Columns'] = 1 + layout_data['Right'] - layout_data['Left']
-                layout_data['Room Flags'] = cursors['Current Layout'].u8(0xa)
-                layout_data['Draw Flags'] = cursors['Current Layout'].u8(0xd)
-                stages[stage_name]['Layouts'].append(layout_data)
-            # Extract entity layouts
-            cursors['Entities X Indirect'] = cursors['Stage'].clone(cursors['Entities'].u16(0x1C))
-            cursors['Entities Y Indirect'] = cursors['Stage'].clone(cursors['Entities'].u16(0x28))
-            entity_layouts = []
-            for (room_id, room) in enumerate(stages[stage_name]['Rooms']):
-                if room['Tileset ID']['Value'] == -1:
-                    entity_layouts.append(None)
-                    continue
-                horizontal_entity_layout_offset = cursors['Entities X Indirect'].u32(
-                    4 * stages[stage_name]['Rooms'][room_id]['Object Layout ID']['Value']
-                ) - OFFSET
-                cursors['Entity X'] = cursors['Stage'].clone(horizontal_entity_layout_offset)
-                h_entities = []
-                offset = 0
-                while True:
-                    x = cursors['Entity X'].s16(offset + 0x0)
-                    y = cursors['Entity X'].s16(offset + 0x2)
-                    entity_type_id = cursors['Entity X'].u16(offset + 0x4)
-                    entity_room_index = cursors['Entity X'].u16(offset + 0x6)
-                    params = cursors['Entity X'].u16(offset + 0x8)
-                    offset += 10
-                    if x == -2:
-                        continue
-                    elif x == -1:
-                        break
-                    entity = {
-                        'X': x,
-                        'Y': y,
-                        'Entity Type ID': entity_type_id,
-                        'Entity Room Index': entity_room_index,
-                        'Params': params,
-                    }
-                    h_entities.append(entity)
-                vertical_entity_layout_offset = cursors['Entities Y Indirect'].u32(
-                    4 * stages[stage_name]['Rooms'][room_id]['Object Layout ID']['Value']
-                ) - OFFSET
-                cursors['Entity Y'] = cursors['Stage'].clone(vertical_entity_layout_offset)
-                v_entities = []
-                offset = 0
-                while True:
-                    x = cursors['Entity Y'].s16(offset + 0x0)
-                    y = cursors['Entity Y'].s16(offset + 0x2)
-                    entity_type_id = cursors['Entity Y'].s16(offset + 0x4)
-                    entity_room_index = cursors['Entity Y'].s16(offset + 0x6)
-                    params = cursors['Entity Y'].s16(offset + 0x8)
-                    offset += 10
-                    if x == -2:
-                        continue
-                    elif x == -1:
-                        break
-                    entity = {
-                        'X': x,
-                        'Y': y,
-                        'Entity Type ID': entity_type_id,
-                        'Entity Room Index': entity_room_index,
-                        'Params': params,
-                    }
-                    v_entities.append(entity)
-                entity_layout = {
-                    'Entities Horizontal': h_entities,
-                    'Entities Vertical': v_entities,
-                }
-                entity_layouts.append(entity_layout)
+                # Object layouts for the current room
+                object_layout_id = stages[stage_name]['Rooms'][room_id]['Object Layout ID']['Value']
+                for (direction, indirect_offset) in (
+                    ('Horizontal', 0x1C),
+                    ('Vertical', 0x28),
+                ):
+                    cursors[direction + ' Indirect'] = cursors['Stage'].clone(cursors['Entities'].u16(indirect_offset))
+                    # Object list
+                    object_layout_offset = cursors[direction + ' Indirect'].u32(4 * object_layout_id) - OFFSET
+                    cursors[direction] = cursors['Stage'].clone(object_layout_offset)
+                    objects = []
+                    offset = 0
+                    while True:
+                        x = cursors[direction].s16(offset + 0x0, True)
+                        y = cursors[direction].s16(offset + 0x2, True)
+                        entity_type_id = cursors[direction].u16(offset + 0x4, True)
+                        entity_room_index = cursors[direction].u16(offset + 0x6, True)
+                        params = cursors[direction].u16(offset + 0x8, True)
+                        offset += 10
+                        if x['Value'] == -2:
+                            continue
+                        elif x['Value'] == -1:
+                            break
+                        _object = {
+                            'X': x,
+                            'Y': y,
+                            'Entity Type ID': entity_type_id,
+                            'Entity Room Index': entity_room_index,
+                            'Params': params,
+                        }
+                        objects.append(_object)
+                    stages[stage_name]['Rooms'][room_id]['Object Layout - ' + direction] = objects
             # Store extracted data
-            stages[stage_name]['Data'] = {
-                'Entity Layouts': entity_layouts,
-                'Room Count': room_count,
-            }
         with open(args.json_filepath, 'w') as stages_json:
-            json.dump(stages, stages_json, indent='    ', sort_keys=True)
+            json.dump(stages, stages_json, indent='  ', sort_keys=True)
