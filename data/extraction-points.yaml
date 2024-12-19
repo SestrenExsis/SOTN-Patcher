@@ -506,9 +506,9 @@ Teleporters:
   Start: 0x00097C5C
   Count: 131
 Entity Layouts:
-  Long Library:
-    Horizontal: 0x03E629F0
-    Vertical: 0x03E630A8
+  Abandoned Mine:
+    Horizontal: 0x03CE11F8
+    Vertical: 0x03CE1568
   Alchemy Laboratory:
     Horizontal: 0x049C1084
     Vertical: 0x049C19C8
@@ -518,6 +518,33 @@ Entity Layouts:
   Castle Entrance Revisited:
     Horizontal: 0x0491E368
     Vertical: 0x0491EAA4
+  Castle Keep:
+    Horizontal: 0x04AF10AC
+    Vertical: 0x04AF1658
+  Catacombs:
+    Horizontal: 0x03BB5BE4
+    Vertical: 0x03BB64C4
+  Center Cube:
+    Horizontal: 0x03C66300
+    Vertical: 0x03C66378
+  Clock Tower:
+    Horizontal: 0x04A6941C
+    Vertical: 0x04A69E28
+  Colosseum:
+    Horizontal: 0x03B02F00
+    Vertical: 0x03B03588
+  Long Library:
+    Horizontal: 0x03E629F0
+    Vertical: 0x03E630A8
+  Marble Gallery:
+    Horizontal: 0x03F8D91C
+    Vertical: 0x03F8E79C
+  Olrox's Quarters:
+    Horizontal: 0x040FE3F8
+    Vertical: 0x040FEB20
+  Outer Wall:
+    Horizontal: 0x0404A65C
+    Vertical: 0x0404AD20
 Arrays:
   Relic Container Drop IDs:
     Start: 0x049BF79C

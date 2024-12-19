@@ -157,49 +157,92 @@ class PPF:
                 )
                 self.patch_value(entity[property], size, write_address)
 
-def get_changes_template_file(core_data):
+def get_changes_template_file(extract):
+    print('get_changes_template_file')
     result = {
-        'Rooms': {},
         'Constants': {},
-        'Entity Layouts': {},
+        'Stages': {},
     }
-    for room_name in core_data['Rooms']:
-        result['Rooms'][room_name] = {
-            'Left': core_data['Rooms'][room_name]['Left'],
-            'Top': core_data['Rooms'][room_name]['Top'],
-        }
-    for (stage_name, entity_layouts_data) in core_data['Entity Layouts'].items():
-        for entity_layout_data in entity_layouts_data:
-            entity_layout_id = entity_layout_data['Entity Layout ID']
-            for entity_data in entity_layout_data['Entities']:
-                entity_id = entity_data['Entity ID']
-                entity = {
-                    # 'Entity Room Index': entity_data['Entity Room Index'],
-                    'Entity Type ID': entity_data['Entity Type ID'],
-                    'Params': entity_data['Params'],
-                    'X': entity_data['X'],
-                    'Y': entity_data['Y'],
-                }
-                entity_key = f'{stage_name}, Entity Layout ID {entity_layout_id}, Entity ID {entity_id}'
-                result['Entity Layouts'][entity_key] = entity
-    for constant_name in core_data['Constants']:
-        result['Constants'][constant_name] = core_data['Constants'][constant_name]['Value']
+    for (stage_id, stage_data) in extract['Stages'].items():
+        print('', stage_id)
+        result['Stages'][stage_id] = {}
+        result['Stages'][stage_id]['Rooms'] = {}
+        for (room_id, room_data) in stage_data['Rooms'].items():
+            print(' ', room_id)
+            relic_found_ind = False
+            object_layout_h = None
+            object_layout_v = None
+            if room_data['Tileset ID']['Value'] != -1:
+                object_layout_h = {}
+                for (index, object_layout_data) in enumerate(room_data['Object Layout - Horizontal']):
+                    entity_type_id = object_layout_data['Entity Type ID']['Value']
+                    if entity_type_id == 11:
+                        relic_found_ind = True
+                        object_h = {
+                            'Entity Type ID': entity_type_id,
+                            'Params': object_layout_data['Params']['Value'],
+                        }
+                        object_layout_h[index] = object_h
+                object_layout_v = {}
+                for (index, object_layout_data) in enumerate(room_data['Object Layout - Vertical']):
+                    entity_type_id = object_layout_data['Entity Type ID']['Value']
+                    if entity_type_id == 11:
+                        relic_found_ind = True
+                        object_h = {
+                            'Entity Type ID': entity_type_id,
+                            'Params': object_layout_data['Params']['Value'],
+                        }
+                        object_layout_v[index] = object_h
+            result['Stages'][stage_id]['Rooms'][room_id] = {
+                'Left': room_data['Left']['Value'],
+                'Top': room_data['Top']['Value'],
+            }
+            if relic_found_ind:
+                room = result['Stages'][stage_id]['Rooms'][room_id]
+                room['Object Layout - Horizontal'] = object_layout_h
+                room['Object Layout - Vertical'] = object_layout_v
+    for constant_name in extract['Constants']:
+        result['Constants'][constant_name] = extract['Constants'][constant_name]['Value']
     return result
 
 def validate_changes(changes):
-    if 'Rooms' in changes:
-        for room_name in changes['Rooms']:
-            assert 0 <= changes['Rooms'][room_name]['Top'] <= 58
-            assert 0 <= changes['Rooms'][room_name]['Left'] <= 63
-    if 'Entity Layouts' in changes:
-        # TODO(sestren): Validate changes to entity layouts
-        pass
+    if 'Stages' in changes:
+        for (stage_id, stage_data) in changes['Stages'].items():
+            if 'Rooms' in stage_data:
+                for (room_id, room_data) in stage_data['Rooms']:
+                    if 'Top' in room_data:
+                        assert 0 <= room_data['Top'] <= 58
+                    if 'Left' in room_data:
+                        assert 0 <= room_data['Left'] <= 63
+                    if 'Object Layout - Horizontal' in room_data:
+                        # TODO(sestren): Validate changes to object layouts
+                        pass
     if 'Constants' in changes:
-        for constant_name in changes['Constants']:
-            assert 0 <= changes['Constants'][constant_name] <= 255
+        for (constant_name, constant_data) in changes['Constants'].items():
+            assert 0 <= constant_data <= 255
 
-def get_ppf(core_data, changes):
+def get_ppf(extract, changes):
     result = PPF('Just messing around')
+    # Patch constants
+    if 'Constants' in changes:
+        for constant_name in sorted(changes['Constants'].keys()):
+            print(changes['Constants'][constant_name])
+            extracted_constant = extract['Constants'][constant_name]
+            if changes['Constants'][constant_name] == extracted_constant['Value']:
+                continue
+            print(' ', 'patching')
+            result.patch_value(
+                changes['Constants'][constant_name],
+                extracted_constant['Type'],
+                sotn_address.Address(
+                    extracted_constant['Start']
+                ),
+            )
+    # Patch stage data
+    if 'Stages' in changes:
+        for (stage_id, stage_data) in changes['Stages'].items():
+            pass
+    # ------------------------------------
     if 'Rooms' in changes:
         for room_name in sorted(changes['Rooms'].keys()):
             print(room_name, changes['Rooms'][room_name], end=' ...')
@@ -305,19 +348,6 @@ def get_ppf(core_data, changes):
                 sotn_address.Address(insertion_metadata['Horizontal Data']['Address Start']),
                 sotn_address.Address(insertion_metadata['Vertical Data']['Address Start']),
             )
-    if 'Constants' in changes:
-        for constant_name in sorted(changes['Constants'].keys()):
-            print(changes['Constants'][constant_name])
-            if changes['Constants'][constant_name] == core_data['Constants'][constant_name]:
-                continue
-            print(' ', 'patching')
-            result.patch_value(
-                changes['Constants'][constant_name],
-                2,
-                sotn_address.Address(
-                    core_data['Constants'][constant_name]['Insertion Metadata']['Address Start']
-                ),
-            )
     return result
 
 if __name__ == '__main__':
@@ -326,17 +356,17 @@ if __name__ == '__main__':
     python sotn_patcher.py CORE_DATA_JSON --changes CHANGES_JSON --ppf OUTPUT_PPF
     '''
     parser = argparse.ArgumentParser()
-    parser.add_argument('core_data', help='Input a filepath to the core data JSON file', type=str)
+    parser.add_argument('extract_file', help='Input a filepath to the extract JSON file', type=str)
     parser.add_argument('--changes', help='Input an optional filepath to the changes JSON file', type=str)
     parser.add_argument('--ppf', help='Input an optional filepath to the output PPF file', type=str)
     args = parser.parse_args()
-    with open(args.core_data) as core_data_file:
-        core_data = json.load(core_data_file)
-        if 'Data Core' in core_data:
-            core_data = core_data['Data Core']
+    with open(args.extract_file) as extract_file:
+        extract = json.load(extract_file)
+        if 'Extract' in extract:
+            extract = extract['Extract']
         if args.changes is None:
             with open(os.path.join('build', 'changes.json'), 'w') as changes_file:
-                changes = get_changes_template_file(core_data)
+                changes = get_changes_template_file(extract)
                 json.dump(changes, changes_file, indent='    ', sort_keys=True)
         else:
             with (
@@ -347,5 +377,5 @@ if __name__ == '__main__':
                 if 'Changes' in changes:
                     changes = changes['Changes']
                 validate_changes(changes)
-                patch = get_ppf(core_data, changes)
+                patch = get_ppf(extract, changes)
                 ppf_file.write(patch.bytes)
