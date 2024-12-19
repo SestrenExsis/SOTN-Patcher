@@ -49,40 +49,91 @@ class PPF:
         assert 0x00 <= byte < 0x100
         self.bytes.append(byte)
     
+    def write_u8(self, value):
+        write_value = value
+        for _ in range(1):
+            write_value, byte = divmod(write_value, 0x100)
+            self.write_byte(byte)
+    
+    def write_s8(self, value):
+        write_value = (value & 0x7F) + (0x80 if value < 0 else 0x00)
+        for _ in range(1):
+            write_value, byte = divmod(write_value, 0x100)
+            self.write_byte(byte)
+    
+    def write_u16(self, value):
+        write_value = value
+        for _ in range(2):
+            write_value, byte = divmod(write_value, 0x100)
+            self.write_byte(byte)
+    
+    def write_s16(self, value):
+        write_value = (value & 0x7FFF) + (0x8000 if value < 0 else 0x0000)
+        for _ in range(2):
+            write_value, byte = divmod(write_value, 0x100)
+            self.write_byte(byte)
+    
+    def write_u32(self, value):
+        write_value = value
+        for _ in range(4):
+            write_value, byte = divmod(write_value, 0x100)
+            self.write_byte(byte)
+    
+    def write_u32(self, value):
+        write_value = value
+        for _ in range(4):
+            write_value, byte = divmod(write_value, 0x100)
+            self.write_byte(byte)
+    
+    def write_s32(self, value):
+        write_value = (value & 0x7FFFFFFF) + (0x80000000 if value < 0 else 0x00000000)
+        for _ in range(4):
+            write_value, byte = divmod(write_value, 0x100)
+            self.write_byte(byte)
+    
+    def write_u64(self, value):
+        write_value = value
+        for _ in range(8):
+            write_value, byte = divmod(write_value, 0x100)
+            self.write_byte(byte)
+    
     def write_string(self, string):
         for char in string:
             self.write_byte(ord(char))
     
-    def write_u16(self, value):
-        for _ in range(2):
-            value, byte = divmod(value, 0x100)
-            self.write_byte(byte)
-    
-    def write_u32(self, value):
-        for _ in range(4):
-            value, byte = divmod(value, 0x100)
-            self.write_byte(byte)
-    
-    def write_u64(self, value):
-        for _ in range(8):
-            value, byte = divmod(value, 0x100)
-            self.write_byte(byte)
-    
-    def patch_value(self, value: int, size: int, address: sotn_address.Address):
+    def patch_value(self, value: int, type: str, address: sotn_address.Address):
         self.write_u64(address.to_disc_address())
-        self.write_byte(size)
-        if size == 1:
-            self.write_byte(value)
-        elif size == 2:
+        if type == 'u8':
+            size = 1
+            self.write_byte(size)
+            self.write_u8(value)
+        elif type == 's8':
+            size = 1
+            self.write_byte(size)
+            self.write_s8(value)
+        elif type == 'u16':
+            size = 2
+            self.write_byte(size)
             self.write_u16(value)
-        elif size == 4:
+        elif type == 's16':
+            size = 2
+            self.write_byte(size)
+            self.write_s16(value)
+        elif type == 'u32':
+            size = 4
+            self.write_byte(size)
             self.write_u32(value)
+        elif type == 's32':
+            size = 4
+            self.write_byte(size)
+            self.write_s32(value)
         else:
             raise Exception('Incorrect size for value:', (value, size))
     
     def patch_string(self, offset_in_file: int, value: str):
         self.write_u64(offset_in_file)
         size = len(value)
+        assert size <= 64
         self.write_byte(size)
         self.write_string(value)
     
@@ -209,7 +260,7 @@ def validate_changes(changes):
     if 'Stages' in changes:
         for (stage_id, stage_data) in changes['Stages'].items():
             if 'Rooms' in stage_data:
-                for (room_id, room_data) in stage_data['Rooms']:
+                for (room_id, room_data) in stage_data['Rooms'].items():
                     if 'Top' in room_data:
                         assert 0 <= room_data['Top'] <= 58
                     if 'Left' in room_data:
@@ -225,129 +276,111 @@ def get_ppf(extract, changes):
     result = PPF('Just messing around')
     # Patch constants
     if 'Constants' in changes:
-        for constant_name in sorted(changes['Constants'].keys()):
-            print(changes['Constants'][constant_name])
-            extracted_constant = extract['Constants'][constant_name]
-            if changes['Constants'][constant_name] == extracted_constant['Value']:
-                continue
-            print(' ', 'patching')
-            result.patch_value(
-                changes['Constants'][constant_name],
-                extracted_constant['Type'],
-                sotn_address.Address(
-                    extracted_constant['Start']
-                ),
-            )
+        for constant_id in sorted(changes['Constants']):
+            constant_data = changes['Constants'][constant_id]
+            constant_extract = extract['Constants'][constant_id]
+            if constant_data != constant_extract['Value']:
+                result.patch_value(
+                    constant_data,
+                    constant_extract['Type'],
+                    sotn_address.Address(constant_extract['Start']),
+                )
     # Patch stage data
     if 'Stages' in changes:
-        for (stage_id, stage_data) in changes['Stages'].items():
-            pass
-    # ------------------------------------
-    if 'Rooms' in changes:
-        for room_name in sorted(changes['Rooms'].keys()):
-            print(room_name, changes['Rooms'][room_name], end=' ...')
-            if (
-                changes['Rooms'][room_name]['Top'] == core_data['Rooms'][room_name]['Top'] and
-                changes['Rooms'][room_name]['Left'] == core_data['Rooms'][room_name]['Left']
-            ):
-                print(' SKIPPED')
-                continue
-            print(' ', 'patching', end=' ...')
-            room = Room(
-                core_data['Rooms'][room_name]['Room ID'],
-                (
-                    changes['Rooms'][room_name]['Top'],
-                    changes['Rooms'][room_name]['Left'],
-                    core_data['Rooms'][room_name]['Rows'],
-                    core_data['Rooms'][room_name]['Columns'],
-                ),
-                core_data['Rooms'][room_name]['Special Flag'],
-                core_data['Rooms'][room_name]['Foreground Layer ID'],
-            )
-            if 'Room Data' in core_data['Rooms'][room_name]['Insertion Metadata']:
-                try:
-                    result.patch_room_data(
-                        room,
-                        sotn_address.Address(
-                            core_data['Rooms'][room_name]['Insertion Metadata']['Room Data']['Address Start']
-                        )
+        for stage_id in sorted(changes['Stages']):
+            print('', stage_id)
+            stage_data = changes['Stages'][stage_id]
+            stage_extract = extract['Stages'][stage_id]
+            # Stage: Patch room data
+            if 'Rooms' in stage_data:
+                for room_id in sorted(stage_data['Rooms']):
+                    print(' ', room_id)
+                    room_data = stage_data['Rooms'][room_id]
+                    room_extract = stage_extract['Rooms'][room_id]
+                    tile_layout_extract = room_extract['Tile Layout']
+                    layout_rect = {
+                        'Left': (0x3F & tile_layout_extract['Layout Rect']['Value']) >> 0,
+                        'Top': (0x3F & tile_layout_extract['Layout Rect']['Value']) >> 6,
+                        'Right': (0x3F & tile_layout_extract['Layout Rect']['Value']) >> 12,
+                        'Bottom': (0x3F & tile_layout_extract['Layout Rect']['Value']) >> 18,
+                        'Flags': (0x3F & tile_layout_extract['Layout Rect']['Value']) >> 24,
+                    }
+                    # Room: Patch left and right
+                    if 'Left' in room_data:
+                        if room_data['Left'] != room_extract['Left']['Value']:
+                            layout_rect['Left'] = room_data['Left']
+                            result.patch_value(
+                                layout_rect['Left'],
+                                room_extract['Left']['Type'],
+                                sotn_address.Address(room_extract['Left']['Start']),
+                            )
+                            width = 1 + room_extract['Right']['Value'] - room_extract['Left']['Value']
+                            layout_rect['Right'] = room_data['Left'] + width - 1
+                            result.patch_value(
+                                layout_rect['Right'],
+                                room_extract['Right']['Type'],
+                                sotn_address.Address(room_extract['Right']['Start']),
+                            )
+                    # Room: Patch top and bottom
+                    if 'Top' in room_data:
+                        if room_data['Top'] != room_extract['Top']['Value']:
+                            layout_rect['Top'] = room_data['Top']
+                            result.patch_value(
+                                layout_rect['Top'],
+                                room_extract['Top']['Type'],
+                                sotn_address.Address(room_extract['Top']['Start']),
+                            )
+                            height = 1 + room_extract['Bottom']['Value'] - room_extract['Top']['Value']
+                            layout_rect['Bottom'] = room_data['Top'] + height - 1
+                            result.patch_value(
+                                layout_rect['Bottom'],
+                                room_extract['Bottom']['Type'],
+                                sotn_address.Address(room_extract['Bottom']['Start']),
+                            )
+                    # Room: Patch layout rect if any derived values changed
+                    layout_rect = (
+                        layout_rect['Left'] << 0 |
+                        layout_rect['Top'] << 6 |
+                        layout_rect['Right'] << 12  |
+                        layout_rect['Bottom'] << 18 |
+                        layout_rect['Flags'] << 24
                     )
-                except KeyError:
-                    print(' ', 'patch_room_data ERROR')
-                    pass
-            if 'Packed Room Data' in core_data['Rooms'][room_name]['Insertion Metadata']:
-                try:
-                    result.patch_packed_room_data(
-                        room,
-                        sotn_address.Address(
-                            core_data['Rooms'][room_name]['Insertion Metadata']['Packed Room Data']['Address Start']
+                    if layout_rect != tile_layout_extract['Layout Rect']['Value']:
+                        result.patch_value(
+                            layout_rect,
+                            tile_layout_extract['Layout Rect']['Type'],
+                            sotn_address.Address(tile_layout_extract['Layout Rect']['Start']),
                         )
-                    )
-                except (KeyError, TypeError):
-                    print(' ', 'patch_packed_room_data ERROR')
-                    pass
-            print(' DONE')
-    if 'Entity Layouts' in changes:
-        entity_layouts = {}
-        for entity_key in sorted(changes['Entity Layouts'].keys()):
-            print(entity_key, end=' ...')
-            change_entity = changes['Entity Layouts'][entity_key]
-            parts = entity_key.split(', ')
-            stage_name = parts[0]
-            entity_layout_id = int(parts[1].split(' ')[-1])
-            entity_id = int(parts[2].split(' ')[-1])
-            core_entity = core_data['Entity Layouts'][stage_name][entity_layout_id]['Entities'][entity_id]
-            if (
-                'Entity Room Index' in change_entity and
-                change_entity['Entity Room Index'] == core_entity['Entity Room Index'] and
-                'Entity Type ID' in change_entity and 
-                change_entity['Entity Type ID'] == core_entity['Entity Type ID'] and
-                'Params' in change_entity and 
-                change_entity['Params'] == core_entity['Params'] and
-                'X' in change_entity and 
-                change_entity['X'] == core_entity['X'] and
-                'Y' in change_entity and 
-                change_entity['Y'] == core_entity['Y']
-            ):
-                print(' SKIPPED')
-                continue
-            print((stage_name, entity_layout_id, entity_id))
-            print(' ', 'patching')
-            entity = {
-                'Entity ID': entity_id,
-                'Entity Room Index': core_entity['Entity Room Index'],
-                'Entity Type ID': core_entity['Entity Type ID'],
-                'Params': core_entity['Params'],
-                'X': core_entity['X'],
-                'Y': core_entity['Y'],
-            }
-            if 'Entity Room Index' in change_entity:
-                entity['Entity Room Index'] = change_entity['Entity Room Index']
-            if 'Entity Type ID' in change_entity:
-                entity['Entity Type ID'] = change_entity['Entity Type ID']
-            if 'Params' in change_entity:
-                entity['Params'] = change_entity['Params']
-            if 'X' in change_entity:
-                entity['X'] = change_entity['X']
-            if 'Y' in change_entity:
-                entity['Y'] = change_entity['Y']
-            entity_layout_key = (stage_name, entity_layout_id)
-            if entity_layout_key not in entity_layouts:
-                entity_layouts[entity_layout_key] = [None] * len(core_data['Entity Layouts'][stage_name][entity_layout_id]['Entities'])
-            entity_layouts[entity_layout_key][entity_id] = entity
-        for entity_layout_key in entity_layouts.keys():
-            (stage_name, entity_layout_id) = entity_layout_key
-            for entity_id in range(len(entity_layouts[entity_layout_key])):
-                if entity_layouts[entity_layout_key][entity_id] is None:
-                    core_entity = core_data['Entity Layouts'][stage_name][entity_layout_id]['Entities'][entity_id]
-                    entity_layouts[entity_layout_key][entity_id] = core_entity
-        for ((stage_name, entity_layout_id), entities) in entity_layouts.items():
-            insertion_metadata = core_data['Entity Layouts'][stage_name][entity_layout_id]['Insertion Metadata']
-            result.patch_entity_layout(
-                entities,
-                sotn_address.Address(insertion_metadata['Horizontal Data']['Address Start']),
-                sotn_address.Address(insertion_metadata['Vertical Data']['Address Start']),
-            )
+                    # Room: Patch object layout horizontal
+                    if 'Object Layout - Horizontal' in room_data:
+                        object_layout_data = room_data['Object Layout - Horizontal']
+                        object_layout_extract = room_extract['Object Layout - Horizontal']
+                        for object_id in sorted(object_layout_data):
+                            object_index = int(object_id)
+                            object_data = object_layout_data[object_id]
+                            object_extract = object_layout_extract[object_index]
+                            if 'Params' in object_data:
+                                if object_data['Params'] != object_extract['Params']['Value']:
+                                    result.patch_value(
+                                        object_data['Params'],
+                                        object_extract['Params']['Type'],
+                                        sotn_address.Address(object_extract['Params']['Start']),
+                                    )
+                    # Room: Patch object layout vertical
+                    if 'Object Layout - Vertical' in room_data:
+                        object_layout_data = room_data['Object Layout - Vertical']
+                        object_layout_extract = room_extract['Object Layout - Vertical']
+                        for object_id in sorted(object_layout_data):
+                            object_index = int(object_id)
+                            object_data = object_layout_data[object_id]
+                            object_extract = object_layout_extract[object_index]
+                            if 'Params' in object_data:
+                                if object_data['Params'] != object_extract['Params']['Value']:
+                                    result.patch_value(
+                                        object_data['Params'],
+                                        object_extract['Params']['Type'],
+                                        sotn_address.Address(object_extract['Params']['Start']),
+                                    )
     return result
 
 if __name__ == '__main__':
