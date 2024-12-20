@@ -129,6 +129,8 @@ class PPF:
             self.write_s32(value)
         else:
             raise Exception('Incorrect size for value:', (value, size))
+        debug = (address.to_disc_address(), size, value)
+        print(debug)
     
     def patch_string(self, offset_in_file: int, value: str):
         self.write_u64(offset_in_file)
@@ -209,6 +211,9 @@ class PPF:
                 self.patch_value(entity[property], size, write_address)
 
 def get_changes_template_file(extract):
+    '''
+    0xC467B604 = 2
+    '''
     print('get_changes_template_file')
     result = {
         'Constants': {},
@@ -280,6 +285,7 @@ def get_ppf(extract, changes):
             constant_data = changes['Constants'][constant_id]
             constant_extract = extract['Constants'][constant_id]
             if constant_data != constant_extract['Value']:
+                print('patch = constant_id')
                 result.patch_value(
                     constant_data,
                     constant_extract['Type'],
@@ -297,60 +303,62 @@ def get_ppf(extract, changes):
                     print(' ', room_id)
                     room_data = stage_data['Rooms'][room_id]
                     room_extract = stage_extract['Rooms'][room_id]
-                    tile_layout_extract = room_extract['Tile Layout']
-                    layout_rect = {
-                        'Left': (0x3F & tile_layout_extract['Layout Rect']['Value']) >> 0,
-                        'Top': (0x3F & tile_layout_extract['Layout Rect']['Value']) >> 6,
-                        'Right': (0x3F & tile_layout_extract['Layout Rect']['Value']) >> 12,
-                        'Bottom': (0x3F & tile_layout_extract['Layout Rect']['Value']) >> 18,
-                        'Flags': (0x3F & tile_layout_extract['Layout Rect']['Value']) >> 24,
-                    }
+                    left = room_extract['Left']['Value']
+                    right = room_extract['Right']['Value']
                     # Room: Patch left and right
                     if 'Left' in room_data:
-                        if room_data['Left'] != room_extract['Left']['Value']:
-                            layout_rect['Left'] = room_data['Left']
+                        if room_data['Left'] != left:
+                            left = room_data['Left']
+                            # print('patch = Left')
                             result.patch_value(
-                                layout_rect['Left'],
+                                left,
                                 room_extract['Left']['Type'],
                                 sotn_address.Address(room_extract['Left']['Start']),
                             )
                             width = 1 + room_extract['Right']['Value'] - room_extract['Left']['Value']
-                            layout_rect['Right'] = room_data['Left'] + width - 1
+                            right = left + width - 1
+                            # print('patch = Right')
                             result.patch_value(
-                                layout_rect['Right'],
+                                right,
                                 room_extract['Right']['Type'],
                                 sotn_address.Address(room_extract['Right']['Start']),
                             )
                     # Room: Patch top and bottom
+                    top = room_extract['Top']['Value']
+                    bottom = room_extract['Bottom']['Value']
                     if 'Top' in room_data:
-                        if room_data['Top'] != room_extract['Top']['Value']:
-                            layout_rect['Top'] = room_data['Top']
+                        if room_data['Top'] != top:
+                            top = room_data['Top']
                             result.patch_value(
-                                layout_rect['Top'],
+                                top,
                                 room_extract['Top']['Type'],
                                 sotn_address.Address(room_extract['Top']['Start']),
                             )
                             height = 1 + room_extract['Bottom']['Value'] - room_extract['Top']['Value']
-                            layout_rect['Bottom'] = room_data['Top'] + height - 1
+                            bottom = top + height - 1
                             result.patch_value(
-                                layout_rect['Bottom'],
+                                bottom,
                                 room_extract['Bottom']['Type'],
                                 sotn_address.Address(room_extract['Bottom']['Start']),
                             )
-                    # Room: Patch layout rect if any derived values changed
-                    layout_rect = (
-                        layout_rect['Left'] << 0 |
-                        layout_rect['Top'] << 6 |
-                        layout_rect['Right'] << 12  |
-                        layout_rect['Bottom'] << 18 |
-                        layout_rect['Flags'] << 24
-                    )
-                    if layout_rect != tile_layout_extract['Layout Rect']['Value']:
-                        result.patch_value(
-                            layout_rect,
-                            tile_layout_extract['Layout Rect']['Type'],
-                            sotn_address.Address(tile_layout_extract['Layout Rect']['Start']),
+                    # Room: Patch layout rect if applicable and any derived values changed
+                    if 'Tile Layout' in room_extract:
+                        tile_layout_extract = room_extract['Tile Layout']
+                        flags = 0x3F & (tile_layout_extract['Layout Rect']['Value'] >> 24)
+                        layout_rect = (
+                            left << 0 |
+                            top << 6 |
+                            right << 12  |
+                            bottom << 18 |
+                            flags << 24
                         )
+                        if layout_rect != tile_layout_extract['Layout Rect']['Value']:
+                            # print('patch = Layout Rect')
+                            result.patch_value(
+                                layout_rect,
+                                tile_layout_extract['Layout Rect']['Type'],
+                                sotn_address.Address(tile_layout_extract['Layout Rect']['Start']),
+                            )
                     # Room: Patch object layout horizontal
                     if 'Object Layout - Horizontal' in room_data:
                         object_layout_data = room_data['Object Layout - Horizontal']
@@ -361,6 +369,7 @@ def get_ppf(extract, changes):
                             object_extract = object_layout_extract[object_index]
                             if 'Params' in object_data:
                                 if object_data['Params'] != object_extract['Params']['Value']:
+                                    # print('patch = Params')
                                     result.patch_value(
                                         object_data['Params'],
                                         object_extract['Params']['Type'],
@@ -376,6 +385,7 @@ def get_ppf(extract, changes):
                             object_extract = object_layout_extract[object_index]
                             if 'Params' in object_data:
                                 if object_data['Params'] != object_extract['Params']['Value']:
+                                    # print('patch = Params')
                                     result.patch_value(
                                         object_data['Params'],
                                         object_extract['Params']['Type'],
