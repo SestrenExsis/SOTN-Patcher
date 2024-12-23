@@ -299,16 +299,29 @@ if __name__ == '__main__':
                         }
                         objects.append(_object)
                     stages[stage_name]['Rooms'][room_id]['Object Layout - ' + direction] = objects
-            # Store extracted data
-        # TODO(sestren): Extract teleporter data: { Start: 0x00097C5C, Count: 131 }
+        # Extract teleporter data
+        teleporters = {}
+        cursor = BIN(binary_file, 0x00097C5C)
+        for teleporter_id in range(131):
+            data = {
+                'Player X': cursor.u16(10 * teleporter_id + 0x0, True),
+                'Player Y':  cursor.u16(10 * teleporter_id + 0x2, True),
+                'Room Offset': cursor.u16(10 * teleporter_id + 0x4, True),
+                'Source Stage ID':  cursor.u16(10 * teleporter_id + 0x6, True),
+                'Target Stage ID':  cursor.u16(10 * teleporter_id + 0x8, True),
+            }
+            teleporters[teleporter_id] = data
+        # Extract constant data
         constants = {}
         cursor = BIN(binary_file, 0x049BF79C)
         for drop_index in range(2, 4):
             data = cursor.u16(2 * drop_index, True)
             constants[f'Relic Container Drop ID {str(drop_index)}'] = data
+        # Store extracted data
         extraction = {
-            'Stages': stages,
             'Constants': constants,
+            'Stages': stages,
+            'Teleporters': teleporters,
         }
         with open(args.json_filepath, 'w') as extraction_json:
             json.dump(extraction, extraction_json, indent='  ', sort_keys=True)
