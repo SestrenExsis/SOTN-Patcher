@@ -1,304 +1,324 @@
 # External libraries
 import argparse
 import json
-import os
-import yaml
 
 # Local libraries
 import sotn_address
 
-def _hex(val: int, size: int) -> str:
-    result = ('{:0' + str(size) + 'X}').format(val)
-    return result
-
-def extract_entity_layouts(extract_points, layout_type) -> dict:
-    result = {}
-    for (extract_name, extract) in extract_points.items():
-        layout_count = 0
-        address_start = sotn_address.Address(extract[layout_type], 'GAMEDATA')
-        cursor = sotn_address.Address(address_start.address, 'GAMEDATA')
-        elements = []
-        element_size = 10
-        while True:
-            element_index = len(elements)
-            bytes = []
-            for i in range(element_size):
-                binary_file.seek(cursor.to_disc_address(i))
-                byte = binary_file.read(1)
-                bytes.append(int.from_bytes(byte))
-            element = {
-                'Stage': extract_name,
-                'Element Index': element_index,
-                'X': int.from_bytes(bytes[0:2], byteorder='little', signed=True),
-                'Y':  int.from_bytes(bytes[2:4], byteorder='little', signed=True),
-                'Entity Type ID':  int.from_bytes(bytes[4:6], byteorder='little', signed=False),
-                'Entity Room Index':  int.from_bytes(bytes[6:8], byteorder='little', signed=False),
-                'Params':  int.from_bytes(bytes[8:10], byteorder='little', signed=False),
-            }
-            elements.append(element)
-            cursor.address += element_size
-            binary_file.seek(cursor.to_disc_address())
+class BIN:
+    def __init__(self, binary_file, stage_offset: int=0):
+        self.binary_file = binary_file
+        self.cursor = sotn_address.Address(stage_offset, 'GAMEDATA')
+        print(self.cursor.to_disc_address())
+    
+    def clone(self, offset: int=0):
+        result = BIN(self.binary_file, self.cursor.address + offset)
+        return result
+    
+    def set(self, offset: int):
+        self.cursor.address = offset
+    
+    def seek(self, offset: int):
+        self.cursor.address += offset
+    
+    def read(self, offset, byte_count, endianness, sign):
+        bytes = []
+        for i in range(byte_count):
+            binary_file.seek(self.cursor.to_disc_address(offset + i))
             byte = binary_file.read(1)
-            value = int.from_bytes(byte, byteorder='little', signed=False)
-            if elements[-1]['X'] == -2:
-                layout_count += 1
-            if len(elements) > 4096:
-                break
-            if value == 0x00 and elements[-1]['X'] == -1:
-                # Padding encountered
-                break
-            if layout_count >= 53:
-                break
-            # if (
-            #     len(elements) >= 4 and
-            #     elements[-4]['X'] == -1 and
-            #     elements[-3]['X'] == -2 and
-            #     elements[-2]['X'] == -1 and
-            #     elements[-1]['X'] == -2
-            # ):
-            #     elements.pop()
-            #     elements.pop()
-            #     elements.pop()
-            #     break
-        result[extract_name] = {
-            'Extraction Metadata': {
-                'Disc Address': address_start.to_disc_address(),
-                'Gamedata Address': address_start.address,
-                'Element Size': element_size,
-                'Element Count': len(elements),
-            },
-            'Elements': elements,
-        }
-    return result
-
-def extract_arrays(extract_points) -> dict:
-    result = {}
-    for (extract_name, extract) in extract_points.items():
-        address_start = sotn_address.Address(extract['Start'], 'GAMEDATA')
-        cursor = sotn_address.Address(address_start.address, 'GAMEDATA')
-        elements = []
-        for _ in range(extract['Count']):
-            element_size = extract['Bytes']
-            bytes = []
-            for i in range(element_size):
-                binary_file.seek(cursor.to_disc_address(i))
-                byte = binary_file.read(1)
-                bytes.append(int.from_bytes(byte))
-            element = int.from_bytes(bytes, byteorder='little', signed=False)
-            elements.append(element)
-            cursor.address += element_size
-        result[extract_name] = {
-            'Extraction Metadata': {
-                'Disc Address': address_start.to_disc_address(),
-                'Gamedata Address': address_start.address,
-                'Element Size': extract['Bytes'],
-                'Element Count': len(elements),
-            },
-            'Elements': elements,
-        }
-    return result
+            bytes.append(int.from_bytes(byte))
+        # self.cursor.address += byte_count
+        result = int.from_bytes(bytes, byteorder=endianness, signed=sign)
+        return result
+    
+    def u8(self, offset: int=0, include_meta: bool=False):
+        result = None
+        size = 1
+        value = self.read(offset, size, 'little', False)
+        if include_meta:
+            result = {
+                'Value': value,
+                'Start': self.cursor.address + offset,
+                'Type': 'u8',
+            }
+        else:
+            result = value
+        return result
+    
+    def s8(self, offset: int=0, include_meta: bool=False):
+        result = None
+        size = 1
+        value = self.read(offset, size, 'little', True)
+        if include_meta:
+            result = {
+                'Value': value,
+                'Start': self.cursor.address + offset,
+                'Type': 's8',
+            }
+        else:
+            result = value
+        return result
+    
+    def u16(self, offset: int=0, include_meta: bool=False):
+        result = None
+        size = 2
+        value = self.read(offset, size, 'little', False)
+        if include_meta:
+            result = {
+                'Value': value,
+                'Start': self.cursor.address + offset,
+                'Type': 'u16',
+            }
+        else:
+            result = value
+        return result
+    
+    def s16(self, offset: int=0, include_meta: bool=False):
+        result = None
+        size = 2
+        value = self.read(offset, size, 'little', True)
+        if include_meta:
+            result = {
+                'Value': value,
+                'Start': self.cursor.address + offset,
+                'Type': 's16',
+            }
+        else:
+            result = value
+        return result
+    
+    def u32(self, offset: int=0, include_meta: bool=False):
+        result = None
+        size = 4
+        value = self.read(offset, size, 'little', False)
+        if include_meta:
+            result = {
+                'Value': value,
+                'Start': self.cursor.address + offset,
+                'Type': 'u32',
+            }
+        else:
+            result = value
+        return result
 
 if __name__ == '__main__':
     '''
     Extract game data from a binary file and output it to a JSON file
 
     Usage
-    python src/sotn_extractor.py INPUT_BIN OUTPUT_JSON
+    python src/sotn_extract_stage.py INPUT_BIN OUTPUT_JSON
     '''
+    OFFSET = 0x80180000
     parser = argparse.ArgumentParser()
     parser.add_argument('binary_filepath', help='Input a filepath to the input BIN file', type=str)
     parser.add_argument('json_filepath', help='Input a filepath for creating the output JSON file', type=str)
     args = parser.parse_args()
     with (
         open(args.binary_filepath, 'br') as binary_file,
-        open(os.path.join('data', 'extraction-points.yaml')) as extraction_points_file,
     ):
-        extraction_points = yaml.safe_load(extraction_points_file)
-        extracted_data = {
-            'Extractions': {},
-            'Rooms': {},
-            'Layers': {},
-            'Room-Layers': {},
-            'Teleporters': {},
-            'Entity Layouts - Horizontal': {},
-            'Entity Layouts - Vertical': {},
+        stages = {
+            'Abandoned Mine': {
+                'Stage': {
+                    'Start': 0x03CDF800,
+                    'Size': 193576,
+                },
+            },
+            'Alchemy Laboratory': {
+                'Stage': {
+                    'Start': 0x049BE800,
+                    'Size': 309120,
+                },
+            },
+            'Castle Entrance': {
+                'Stage': {
+                    'Start': 0x041A7800,
+                    'Size': 0,
+                },
+            },
+            'Castle Entrance Revisited': {
+                'Stage': {
+                    'Start': 0x0491A800,
+                    'Size': 0,
+                },
+            },
+            'Castle Keep': {
+                'Stage': {
+                    'Start': 0x04AEF000,
+                    'Size': 247132,
+                },
+            },
+            'Catacombs': {
+                'Stage': {
+                    'Start': 0x03BB3000,
+                    'Size': 361920,
+                },
+            },
+            'Clock Tower': {
+                'Stage': {
+                    'Start': 0x04A67000,
+                    'Size': 271168,
+                },
+            },
+            'Center Cube': {
+                'Stage': {
+                    'Start': 0x03C65000,
+                    'Size': 119916,
+                },
+            },
+            'Colosseum': {
+                'Stage': {
+                    'Start': 0x03B00000,
+                    'Size': 352636,
+                },
+            },
+            'Long Library': {
+                'Stage': {
+                    'Start': 0x03E5F800,
+                    'Size': 348876,
+                },
+            },
+            'Marble Gallery': {
+                'Stage': {
+                    'Start': 0x03F8B000,
+                    'Size': 390540,
+                },
+            },
+            'Olrox\'s Quarters': {
+                'Stage': {
+                    'Start': 0x040FB000,
+                    'Size': 327100,
+                },
+            },
+            'Outer Wall': {
+                'Stage': {
+                    'Start': 0x04047000,
+                    'Size': 356452,
+                },
+            },
+            'Royal Chapel': {
+                'Stage': {
+                    'Start': 0x03D5A800,
+                    'Size': 373764,
+                },
+            },
+            'Underground Caverns': {
+                'Stage': {
+                    'Start': 0x04257800,
+                    'Size': 391260,
+                },
+            },
+            'Warp Room': {
+                'Stage': {
+                    'Start': 0x04D12800,
+                    'Size': 83968,
+                },
+            },
         }
-        # =================
-        # Extract room data
-        extracted_data['Extractions']['Rooms'] = {}
-        for (stage_name, stage) in extraction_points['Stages'].items():
-            if 'Rooms' not in stage or 'Start' not in stage['Rooms']:
-                continue
-            room_address_start = sotn_address.Address(stage['Rooms']['Start'], 'GAMEDATA')
-            rooms_address = sotn_address.Address(room_address_start.address, 'GAMEDATA')
-            extracted_data['Extractions']['Rooms'][stage_name] = {
-                'Disc Address': rooms_address.to_disc_address(),
-                'Gamedata Address': rooms_address.address,
-            }
-            rooms = []
-            current_address = sotn_address.Address(rooms_address.address, 'GAMEDATA')
-            while True:
-                room_index = len(rooms)
-                print((stage_name, room_index), end='--> ')
-                room_name = stage['Rooms']['Names'][room_index]
-                print(room_name)
-                extracted_data['Extractions']['Rooms'][stage_name + ', ' + room_name] = {
-                    'Disc Address': current_address.to_disc_address(),
-                    'Gamedata Address': current_address.address,
-                }
-                data_size = 8
-                data = []
-                for i in range(data_size):
-                    binary_file.seek(current_address.to_disc_address(i))
-                    byte = binary_file.read(1)
-                    data.append(byte)
-                room = {
-                    'Stage': stage_name,
-                    'Room ID': room_index,
-                    'Left': int.from_bytes(data[0], byteorder='little', signed=False),
-                    'Top':  int.from_bytes(data[1], byteorder='little', signed=False),
-                    'Right':  int.from_bytes(data[2], byteorder='little', signed=False),
-                    'Bottom':  int.from_bytes(data[3], byteorder='little', signed=False),
-                    'Layer ID':  int.from_bytes(data[4], byteorder='little', signed=False),
-                    'Tile Def ID':  int.from_bytes(data[5], byteorder='little', signed=True),
-                    'Entity Gfx ID':  int.from_bytes(data[6], byteorder='little', signed=False),
-                    'Entity Layout ID':  int.from_bytes(data[7], byteorder='little', signed=False),
-                }
-                room['Columns'] = 1 + room['Right'] - room['Left']
-                room['Rows'] = 1 + room['Bottom'] - room['Top']
-                room['LTRB'] = _hex((
-                    ((0x3F & room['Bottom']) << 24) |
-                    ((0x3F & room['Right']) << 16) |
-                    ((0x3F & room['Top']) << 8) |
-                    ((0x3F & room['Left']) << 0)
-                ), 8)
-                room['Packed LTRB'] = _hex((
-                    ((0x3F & room['Bottom']) << 18) |
-                    ((0x3F & room['Right']) << 12) |
-                    ((0x3F & room['Top']) << 6) |
-                    ((0x3F & room['Left']) << 0)
-                ), 6)
-                room['Room Name'] = room_name
-                rooms.append(room)
-                current_address.address += data_size
-                binary_file.seek(current_address.to_disc_address())
-                byte = binary_file.read(1)
-                value = int.from_bytes(byte, byteorder='little', signed=False)
-                if value == 0x40:
-                    break
-            extracted_data['Rooms'][stage_name] = rooms
-        # ==================
-        # Extract layer data
-        extracted_data['Extractions']['Layers'] = {}
-        extracted_data['Extractions']['Room-Layers'] = {}
-        for (stage_name, stage) in extraction_points['Stages'].items():
-            if (
-                'Layers' not in stage or
-                'Start' not in stage['Layers'] or
-                'Count' not in stage['Layers']
+        for stage_name in stages.keys():
+            cursors = {}
+            stage_offset = stages[stage_name]['Stage']['Start']
+            cursors['Stage'] = BIN(binary_file, stage_offset)
+            for (address, cursor_name) in (
+                # (0x00, '???'), # 801C187C for Castle Entrance
+                # (0x04, '???'), # 801C1C80 for Castle Entrance
+                # (0x08, '???'), # 801C3E10 for Castle Entrance
+                (0x0C, 'Entities'),
+                (0x10, 'Room'),
+                # (0x14, '???'), # 8018002C for Castle Entrance
+                # (0x18, '???'), # 801801C0 for Castle Entrance
+                # (0x1C, '???'), # 8018077C for Castle Entrance
+                (0x20, 'Layouts'),
+                # (0x24, '???'), # 8018072C for Castle Entrance
+                # (0x28, '???'), # 801C1B78 for Castle Entrance
             ):
-                continue
-            layers_address_start = sotn_address.Address(stage['Layers']['Start'], 'GAMEDATA')
-            layer_count = stage['Layers']['Count']
-            layers_address = sotn_address.Address(layers_address_start.address, 'GAMEDATA')
-            extracted_data['Extractions']['Layers'][stage_name] = {
-                'Disc Address': layers_address.to_disc_address(),
-                'Gamedata Address': layers_address.address,
-            }
-            layers = []
-            current_address = sotn_address.Address(layers_address.address, 'GAMEDATA')
-            for _ in range(layer_count):
-                extracted_data['Extractions']['Layers'][stage_name + ', Layer ID ' + f'{len(layers):02d}'] = {
-                    'Disc Address': current_address.to_disc_address(),
-                    'Gamedata Address': current_address.address,
+                stage_offset = cursors['Stage'].u32(address) - OFFSET
+                cursors[cursor_name] = cursors['Stage'].clone(stage_offset)
+            #
+            # Room data
+            stages[stage_name]['Rooms'] = {}
+            for room_id in range(256):
+                print(room_id)
+                cursors['Current Room'] = cursors['Room'].clone(0x08 * room_id)
+                if cursors['Current Room'].u8() == 0x40:
+                    break
+                stages[stage_name]['Rooms'][room_id] = {
+                    'Left': cursors['Current Room'].u8(0x00, True),
+                    'Top': cursors['Current Room'].u8(0x01, True),
+                    'Right': cursors['Current Room'].u8(0x02, True),
+                    'Bottom': cursors['Current Room'].u8(0x03, True),
+                    'Tile Layout ID': cursors['Current Room'].u8(0x04, True),
+                    'Tileset ID': cursors['Current Room'].s8(0x05, True),
+                    'Object Graphics ID': cursors['Current Room'].u8(0x06, True),
+                    'Object Layout ID': cursors['Current Room'].u8(0x07, True),
                 }
-                layer = {}
-                data_size = 16
-                data = []
-                for i in range(data_size):
-                    binary_file.seek(current_address.to_disc_address(i))
-                    byte = binary_file.read(1)
-                    data.append(int.from_bytes(byte))
-                layer = {
-                    'Layer ID': len(layers),
-                    'Tilemap': _hex(int.from_bytes(data[0:4], byteorder='little', signed=False), 8),
-                    'Tiledef': _hex(int.from_bytes(data[4:8], byteorder='little', signed=False), 8),
-                    'Packed Layout': _hex(int.from_bytes(data[8:12], byteorder='little', signed=False), 8),
-                    'Z-Priority':  int.from_bytes(data[12:14], byteorder='little', signed=False),
-                    'Unknown 1': int.from_bytes(data[14:15], byteorder='little', signed=False),
-                    'Unknown 2': int.from_bytes(data[15:16], byteorder='little', signed=False),
-                }
-                layers.append(layer)
-                current_address.address += data_size
-            extracted_data['Layers'][stage_name] = layers
-            # ------------------------------
-            # Extract room-layer assignments, starting from the address where layouts left off
-            extracted_data['Extractions']['Room-Layers'][stage_name] = {
-                'Disc Address': current_address.to_disc_address(),
-                'Gamedata Address': current_address.address,
-            }
-            extracted_data['Room-Layers'][stage_name] = []
-            room_layers = []
-            for room_id in range(len(extracted_data['Rooms'][stage_name])):
-                if extracted_data['Rooms'][stage_name][room_id]['Tile Def ID'] == -1:
+                # Tile layout for the current room
+                if stages[stage_name]['Rooms'][room_id]['Tileset ID']['Value'] == -1:
                     continue
-                data_size = 8
-                data = []
-                for i in range(data_size):
-                    binary_file.seek(current_address.to_disc_address(8 * room_id + i))
-                    byte = binary_file.read(1)
-                    data.append(int.from_bytes(byte))
-                layer_ids = []
-                for (layer_id, layer) in enumerate(layers):
-                    if layer['Packed Layout'][2:] == extracted_data['Rooms'][stage_name][room_id]['Packed LTRB']:
-                        layer_ids.append(layer_id)
-                room_layer = {
-                    'Stage': stage_name,
-                    'Room ID': room_id,
-                    'Foreground Layer Pointer': _hex(int.from_bytes(data[0:4], byteorder='little', signed=False), 8),
-                    'Background Layer Pointer': _hex(int.from_bytes(data[4:8], byteorder='little', signed=False), 8),
-                    'Layer IDs': layer_ids,
+                tile_layout_id = stages[stage_name]['Rooms'][room_id]['Tile Layout ID']['Value']
+                tile_layout_offset = cursors['Layouts'].u32(0x08 * tile_layout_id) - OFFSET
+                cursors['Current Tile Layout'] = cursors['Stage'].clone(tile_layout_offset)
+                stages[stage_name]['Rooms'][room_id]['Tile Layout'] = {
+                    'Tiles': cursors['Current Tile Layout'].u32(0x0, True),
+                    'Defs': cursors['Current Tile Layout'].u32(0x4, True),
+                    'Layout Rect': cursors['Current Tile Layout'].u32(0x8, True),
+                    'Z Priority': cursors['Current Tile Layout'].u16(0xC, True),
+                    'Flags': cursors['Current Tile Layout'].u16(0xE, True),
                 }
-                room_layers.append(room_layer)
-            extracted_data['Room-Layers'][stage_name] = room_layers
-        # =======================
+                # Object layouts for the current room
+                object_layout_id = stages[stage_name]['Rooms'][room_id]['Object Layout ID']['Value']
+                for (direction, indirect_offset) in (
+                    ('Horizontal', 0x1C),
+                    ('Vertical', 0x28),
+                ):
+                    cursors[direction + ' Indirect'] = cursors['Stage'].clone(cursors['Entities'].u16(indirect_offset))
+                    # Object list
+                    object_layout_offset = cursors[direction + ' Indirect'].u32(4 * object_layout_id) - OFFSET
+                    cursors[direction] = cursors['Stage'].clone(object_layout_offset)
+                    objects = []
+                    offset = 0
+                    while True:
+                        x = cursors[direction].s16(offset + 0x0, True)
+                        y = cursors[direction].s16(offset + 0x2, True)
+                        entity_type_id = cursors[direction].u16(offset + 0x4, True)
+                        entity_room_index = cursors[direction].u16(offset + 0x6, True)
+                        params = cursors[direction].u16(offset + 0x8, True)
+                        offset += 10
+                        if x['Value'] == -2:
+                            continue
+                        elif x['Value'] == -1:
+                            break
+                        _object = {
+                            'X': x,
+                            'Y': y,
+                            'Entity Type ID': entity_type_id,
+                            'Entity Room Index': entity_room_index,
+                            'Params': params,
+                        }
+                        objects.append(_object)
+                    stages[stage_name]['Rooms'][room_id]['Object Layout - ' + direction] = objects
         # Extract teleporter data
-        print('Extract teleporter data')
-        teleporters_address = sotn_address.Address(
-            extraction_points['Teleporters']['Start'], 'GAMEDATA'
-        )
-        extracted_data['Extractions']['Teleporters'] = {}
-        teleporters = []
-        current_address = sotn_address.Address(teleporters_address.address, 'GAMEDATA')
-        for _ in range(extraction_points['Teleporters']['Count']):
-            extracted_data['Extractions']['Teleporters']['Teleporter ID ' + f'{len(teleporters):03d}'] = {
-                'Disc Address': current_address.to_disc_address(),
-                'Gamedata Address': current_address.address,
+        teleporters = {}
+        cursor = BIN(binary_file, 0x00097C5C)
+        for teleporter_id in range(131):
+            data = {
+                'Player X': cursor.u16(10 * teleporter_id + 0x0, True),
+                'Player Y':  cursor.u16(10 * teleporter_id + 0x2, True),
+                'Room Offset': cursor.u16(10 * teleporter_id + 0x4, True),
+                'Source Stage ID':  cursor.u16(10 * teleporter_id + 0x6, True),
+                'Target Stage ID':  cursor.u16(10 * teleporter_id + 0x8, True),
             }
-            data_size = 10
-            data = []
-            for i in range(data_size):
-                binary_file.seek(current_address.to_disc_address(i))
-                byte = binary_file.read(1)
-                data.append(int.from_bytes(byte))
-            room_id = int.from_bytes(data[4:6], byteorder='little', signed=False) // 8
-            teleporter = {
-                'Teleporter ID': len(teleporters),
-                'Player X': int.from_bytes(data[0:2], byteorder='little', signed=False),
-                'Player Y':  int.from_bytes(data[2:4], byteorder='little', signed=False),
-                'Room ID': room_id,
-                'Source Stage ID':  int.from_bytes(data[6:8], byteorder='little', signed=False),
-                'Target Stage ID':  int.from_bytes(data[8:10], byteorder='little', signed=False),
-            }
-            teleporters.append(teleporter)
-            current_address.address += data_size
-        extracted_data['Teleporters'] = teleporters
-        # ======================================
-        # Extract Entity Layouts and Data Arrays
-        for layout_type in ('Horizontal', 'Vertical'):
-            extracted_data['Entity Layouts - ' + layout_type] = extract_entity_layouts(extraction_points['Entity Layouts'], layout_type)
-        extracted_data['Arrays'] = extract_arrays(extraction_points['Arrays'])
-        # =============
-        # Write to file
-        with open(args.json_filepath, 'w') as extracted_data_json:
-            json.dump(extracted_data, extracted_data_json, indent='    ', sort_keys=True)
+            teleporters[teleporter_id] = data
+        # Extract constant data
+        constants = {}
+        cursor = BIN(binary_file, 0x049BF79C)
+        for drop_index in range(2, 4):
+            data = cursor.u16(2 * drop_index, True)
+            constants[f'Relic Container Drop ID {str(drop_index)}'] = data
+        # Store extracted data
+        extraction = {
+            'Constants': constants,
+            'Stages': stages,
+            'Teleporters': teleporters,
+        }
+        with open(args.json_filepath, 'w') as extraction_json:
+            json.dump(extraction, extraction_json, indent='  ', sort_keys=True)
