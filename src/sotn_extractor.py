@@ -288,7 +288,7 @@ if __name__ == '__main__':
                 # (0x04, '???'), # 801C1C80 for Castle Entrance
                 # (0x08, '???'), # 801C3E10 for Castle Entrance
                 (0x0C, 'Entities'), # 801C3C98 for Castle Entrance
-                (0x10, 'Room'), # 80183CC4 for Castle Entrance
+                (0x10, 'Rooms'), # 80183CC4 for Castle Entrance
                 # (0x14, '???'), # 8018002C for Castle Entrance
                 # (0x18, '???'), # 801801C0 for Castle Entrance
                 # (0x1C, '???'), # 8018077C for Castle Entrance
@@ -302,7 +302,7 @@ if __name__ == '__main__':
             # Room data
             stages[stage_name]['Rooms'] = {}
             for room_id in range(256):
-                cursors['Current Room'] = cursors['Room'].clone(0x08 * room_id)
+                cursors['Current Room'] = cursors['Rooms'].clone(0x08 * room_id)
                 if cursors['Current Room'].u8() == 0x40:
                     break
                 stages[stage_name]['Rooms'][room_id] = {
