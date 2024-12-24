@@ -105,7 +105,7 @@ if __name__ == '__main__':
     Extract game data from a binary file and output it to a JSON file
 
     Usage
-    python src/sotn_extract_stage.py INPUT_BIN OUTPUT_JSON
+    python src/sotn_extractor.py INPUT_BIN OUTPUT_JSON
     '''
     OFFSET = 0x80180000
     parser = argparse.ArgumentParser()
@@ -126,6 +126,18 @@ if __name__ == '__main__':
                 'Stage': {
                     'Start': 0x049BE800,
                     'Size': 309120,
+                },
+            },
+            'Anti-Chapel': {
+                'Stage': {
+                    'Start': 0x04416000,
+                    'Size': 295736,
+                },
+            },
+            'Black Marble Gallery': {
+                'Stage': {
+                    'Start': 0x0453D800,
+                    'Size': 347020,
                 },
             },
             'Castle Entrance': {
@@ -170,6 +182,18 @@ if __name__ == '__main__':
                     'Size': 352636,
                 },
             },
+            'Death Wing\'s Lair': {
+                'Stage': {
+                    'Start': 0x04680800,
+                    'Size': 313816,
+                },
+            },
+            'Forbidden Library': {
+                'Stage': {
+                    'Start': 0x044B0000,
+                    'Size': 201776,
+                },
+            },
             'Long Library': {
                 'Stage': {
                     'Start': 0x03E5F800,
@@ -182,6 +206,12 @@ if __name__ == '__main__':
                     'Size': 390540,
                 },
             },
+            'Necromancy Laboratory': {
+                'Stage': {
+                    'Start': 0x04D81000,
+                    'Size': 281512,
+                },
+            },
             'Olrox\'s Quarters': {
                 'Stage': {
                     'Start': 0x040FB000,
@@ -192,6 +222,42 @@ if __name__ == '__main__':
                 'Stage': {
                     'Start': 0x04047000,
                     'Size': 356452,
+                },
+            },
+            'Reverse Caverns': {
+                'Stage': {
+                    'Start': 0x047C3800,
+                    'Size': 384020,
+                },
+            },
+            'Reverse Clock Tower': {
+                'Stage': {
+                    'Start': 0x04E22000,
+                    'Size': 260960,
+                },
+            },
+            'Reverse Entrance': {
+                'Stage': {
+                    'Start': 0x0471E000,
+                    'Size': 304428,
+                },
+            },
+            'Reverse Keep': {
+                'Stage': {
+                    'Start': 0x04C84000,
+                    'Size': 200988,
+                },
+            },
+            'Reverse Outer Wall': {
+                'Stage': {
+                    'Start': 0x045EE000,
+                    'Size': 357020,
+                },
+            },
+            'Reverse Warp Room': {
+                'Stage': {
+                    'Start': 0x04EBE000,
+                    'Size': 92160,
                 },
             },
             'Royal Chapel': {
@@ -222,7 +288,7 @@ if __name__ == '__main__':
                 # (0x04, '???'), # 801C1C80 for Castle Entrance
                 # (0x08, '???'), # 801C3E10 for Castle Entrance
                 (0x0C, 'Entities'), # 801C3C98 for Castle Entrance
-                (0x10, 'Room'), # 80183CC4 for Castle Entrance
+                (0x10, 'Rooms'), # 80183CC4 for Castle Entrance
                 # (0x14, '???'), # 8018002C for Castle Entrance
                 # (0x18, '???'), # 801801C0 for Castle Entrance
                 # (0x1C, '???'), # 8018077C for Castle Entrance
@@ -236,7 +302,7 @@ if __name__ == '__main__':
             # Room data
             stages[stage_name]['Rooms'] = {}
             for room_id in range(256):
-                cursors['Current Room'] = cursors['Room'].clone(0x08 * room_id)
+                cursors['Current Room'] = cursors['Rooms'].clone(0x08 * room_id)
                 if cursors['Current Room'].u8() == 0x40:
                     break
                 stages[stage_name]['Rooms'][room_id] = {

@@ -51,7 +51,7 @@ def _hex(val: int, size: int):
 if __name__ == '__main__':
     '''
     Usage
-    python sotn_address.py 0x049BEA1C DISC
+    python sotn_address.py ADDRESS TYPE
     '''
     parser = argparse.ArgumentParser()
     parser.add_argument('address', help='Input a hex address', type=str)
