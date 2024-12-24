@@ -1,35 +1,10 @@
 # External libraries
 import argparse
 import json
-from operator import attrgetter, itemgetter
 import os
-# import yaml
 
 # Local libraries
 import sotn_address
-
-def _hex(val: int, size: int) -> str:
-    result = ('{:0' + str(size) + 'X}').format(val)
-    return result
-
-class Room:
-    def __init__(self, room_index: int, box: tuple[int], special_flag: int, foreground_layer_id: int):
-        self.room_index = room_index
-        self.top = box[0]
-        self.left = box[1]
-        self.height = box[2]
-        self.width = box[3]
-        self.special_flag = special_flag
-        self.foreground_layer_id = foreground_layer_id
-
-class Teleporter:
-    def __init__(self, teleporter_index: int, x: int, y: int, room_index: int, current_stage_id: int, next_stage_id: int):
-        self.teleporter_index = teleporter_index
-        self.x = x
-        self.y = y
-        self.room_index = room_index
-        self.current_stage_id = current_stage_id
-        self.next_stage_id = next_stage_id
 
 class PPF:
     def __init__(self, description):
@@ -129,102 +104,16 @@ class PPF:
             self.write_s32(value)
         else:
             raise Exception('Incorrect size for value:', (value, size))
-        debug = (address.to_disc_address(), size, value)
-        print(debug)
-    
-    def patch_string(self, offset_in_file: int, value: str):
-        self.write_u64(offset_in_file)
-        size = len(value)
-        assert size <= 64
-        self.write_byte(size)
-        self.write_string(value)
-    
-    def patch_room_data(self, room: Room, address: sotn_address.Address):
-        self.write_u64(address.to_disc_address())
-        size = 4
-        self.write_byte(size)
-        self.write_byte(room.left)
-        self.write_byte(room.top)
-        self.write_byte(room.left + room.width - 1)
-        self.write_byte(room.top + room.height - 1)
-    
-    def patch_teleporter_data(self, teleporter: Teleporter, address: sotn_address.Address):
-        self.write_u64(address.to_disc_address())
-        size = 10
-        self.write_byte(size) 
-        self.write_u16(teleporter.x)
-        self.write_u16(teleporter.y)
-        self.write_u16(8 * teleporter.room_index)
-        self.write_u16(teleporter.current_stage_id)
-        self.write_u16(teleporter.next_stage_id)
-    
-    def patch_packed_room_data(self, room: Room, address: sotn_address.Address):
-        write_address = address.to_disc_address()
-        self.write_u64(write_address)
-        size = 4
-        self.write_byte(size)
-        data = [
-            room.special_flag,
-            0x3F & (room.top + room.height - 1), # bottom
-            0x3F & (room.left + room.width - 1), # right
-            0x3F & (room.top),
-            0x3F & (room.left),
-        ]
-        self.write_u32(
-            (data[0] << 24) |
-            (data[1] << 18) |
-            (data[2] << 12) |
-            (data[3] << 6) |
-            (data[4] << 0)
-        )
-    
-    def patch_entity_layout(self,
-        entities,
-        horizontal_address: sotn_address.Address,
-        vertical_address: sotn_address.Address,
-    ):
-        # Sort entities horizontally
-        for (i, entity) in enumerate(sorted(entities, key=itemgetter('X'))):
-            for (offset, size, property) in (
-                (0, 2, 'X'),
-                (2, 2, 'Y'),
-                (4, 2, 'Entity Type ID'),
-                (6, 2, 'Entity Room Index'),
-                (8, 2, 'Params'),
-            ):
-                write_address = sotn_address.Address(
-                    horizontal_address.address + 10 * i + offset
-                )
-                self.patch_value(entity[property], size, write_address)
-        # Sort entities vertically
-        for (i, entity) in enumerate(sorted(entities, key=itemgetter('Y'))):
-            for (offset, size, property) in (
-                (0, 2, 'X'),
-                (2, 2, 'Y'),
-                (4, 2, 'Entity Type ID'),
-                (6, 2, 'Entity Room Index'),
-                (8, 2, 'Params'),
-            ):
-                write_address = sotn_address.Address(
-                    vertical_address.address + 10 * i + offset
-                )
-                self.patch_value(entity[property], size, write_address)
 
 def get_changes_template_file(extract):
-    '''
-    0xC467B604 = 2
-    '''
-    print('get_changes_template_file')
     result = {
         'Constants': {},
         'Stages': {},
     }
     for (stage_id, stage_data) in extract['Stages'].items():
-        print('', stage_id)
         result['Stages'][stage_id] = {}
         result['Stages'][stage_id]['Rooms'] = {}
         for (room_id, room_data) in stage_data['Rooms'].items():
-            print(' ', room_id)
             relic_found_ind = False
             object_layout_h = None
             object_layout_v = None
@@ -285,7 +174,6 @@ def get_ppf(extract, changes):
             constant_data = changes['Constants'][constant_id]
             constant_extract = extract['Constants'][constant_id]
             if constant_data != constant_extract['Value']:
-                print('patch = constant_id')
                 result.patch_value(
                     constant_data,
                     constant_extract['Type'],
@@ -294,13 +182,11 @@ def get_ppf(extract, changes):
     # Patch stage data
     if 'Stages' in changes:
         for stage_id in sorted(changes['Stages']):
-            print('', stage_id)
             stage_data = changes['Stages'][stage_id]
             stage_extract = extract['Stages'][stage_id]
             # Stage: Patch room data
             if 'Rooms' in stage_data:
                 for room_id in sorted(stage_data['Rooms']):
-                    print(' ', room_id)
                     room_data = stage_data['Rooms'][room_id]
                     room_extract = stage_extract['Rooms'][room_id]
                     left = room_extract['Left']['Value']
@@ -309,7 +195,6 @@ def get_ppf(extract, changes):
                     if 'Left' in room_data:
                         if room_data['Left'] != left:
                             left = room_data['Left']
-                            # print('patch = Left')
                             result.patch_value(
                                 left,
                                 room_extract['Left']['Type'],
@@ -317,7 +202,6 @@ def get_ppf(extract, changes):
                             )
                             width = 1 + room_extract['Right']['Value'] - room_extract['Left']['Value']
                             right = left + width - 1
-                            # print('patch = Right')
                             result.patch_value(
                                 right,
                                 room_extract['Right']['Type'],
@@ -353,7 +237,6 @@ def get_ppf(extract, changes):
                             flags << 24
                         )
                         if layout_rect != tile_layout_extract['Layout Rect']['Value']:
-                            # print('patch = Layout Rect')
                             result.patch_value(
                                 layout_rect,
                                 tile_layout_extract['Layout Rect']['Type'],
@@ -369,7 +252,6 @@ def get_ppf(extract, changes):
                             object_extract = object_layout_extract[object_index]
                             if 'Params' in object_data:
                                 if object_data['Params'] != object_extract['Params']['Value']:
-                                    # print('patch = Params')
                                     result.patch_value(
                                         object_data['Params'],
                                         object_extract['Params']['Type'],
@@ -385,7 +267,6 @@ def get_ppf(extract, changes):
                             object_extract = object_layout_extract[object_index]
                             if 'Params' in object_data:
                                 if object_data['Params'] != object_extract['Params']['Value']:
-                                    # print('patch = Params')
                                     result.patch_value(
                                         object_data['Params'],
                                         object_extract['Params']['Type'],
