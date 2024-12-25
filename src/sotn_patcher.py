@@ -78,7 +78,6 @@ class PPF:
             self.write_byte(ord(char))
     
     def patch_value(self, value: int, type: str, address: sotn_address.Address):
-        print(value, type, address.address)
         self.write_u64(address.to_disc_address())
         if type == 'u8':
             size = 1
