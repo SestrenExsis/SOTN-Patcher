@@ -230,7 +230,7 @@ def get_ppf(extract, changes):
                     # Room: Patch layout rect if applicable and any derived values changed
                     if 'Tile Layout' in room_extract:
                         tile_layout_extract = room_extract['Tile Layout']
-                        flags = 0x3F & (tile_layout_extract['Layout Rect']['Value'] >> 24)
+                        flags = 0xFF & (tile_layout_extract['Layout Rect']['Value'] >> 24)
                         layout_rect = (
                             left << 0 |
                             top << 6 |
