@@ -2,6 +2,7 @@
 import argparse
 import json
 import os
+import yaml
 
 # Local libraries
 import sotn_address
@@ -228,7 +229,7 @@ def get_ppf(extract, changes):
                     # Room: Patch layout rect if applicable and any derived values changed
                     if 'Tile Layout' in room_extract:
                         tile_layout_extract = room_extract['Tile Layout']
-                        flags = 0x3F & (tile_layout_extract['Layout Rect']['Value'] >> 24)
+                        flags = 0xFF & (tile_layout_extract['Layout Rect']['Value'] >> 24)
                         layout_rect = (
                             left << 0 |
                             top << 6 |
@@ -300,6 +301,22 @@ if __name__ == '__main__':
                 changes = json.load(changes_file)
                 if 'Changes' in changes:
                     changes = changes['Changes']
+                with open(os.path.join('data', 'aliases.yaml')) as aliases_file:
+                    aliases = yaml.safe_load(aliases_file)
+                for (stage_name, stage_changes) in changes['Stages'].items():
+                    aliases_found = {}
+                    print(stage_name)
+                    for room_name in stage_changes['Rooms']:
+                        print('', room_name)
+                        if room_name in aliases['Rooms']:
+                            room_index = aliases['Rooms'][room_name]['Index']
+                            aliases_found[room_name] = str(room_index)
+                        else:
+                            print(stage_name, room_name)
+                            raise Exception('Cannot find alias')
+                    for (key, value) in aliases_found.items():
+                        room_data = stage_changes['Rooms'].pop(key)
+                        stage_changes['Rooms'][value] = room_data
                 validate_changes(changes)
                 patch = get_ppf(extract, changes)
                 ppf_file.write(patch.bytes)
