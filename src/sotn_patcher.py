@@ -2,6 +2,7 @@
 import argparse
 import json
 import os
+import yaml
 
 # Local libraries
 import sotn_address
@@ -77,6 +78,7 @@ class PPF:
             self.write_byte(ord(char))
     
     def patch_value(self, value: int, type: str, address: sotn_address.Address):
+        print(value, type, address.address)
         self.write_u64(address.to_disc_address())
         if type == 'u8':
             size = 1
@@ -300,6 +302,22 @@ if __name__ == '__main__':
                 changes = json.load(changes_file)
                 if 'Changes' in changes:
                     changes = changes['Changes']
+                with open(os.path.join('data', 'aliases.yaml')) as aliases_file:
+                    aliases = yaml.safe_load(aliases_file)
+                for (stage_name, stage_changes) in changes['Stages'].items():
+                    aliases_found = {}
+                    print(stage_name)
+                    for room_name in stage_changes['Rooms']:
+                        print('', room_name)
+                        if room_name in aliases['Rooms']:
+                            room_index = aliases['Rooms'][room_name]['Index']
+                            aliases_found[room_name] = str(room_index)
+                        else:
+                            print(stage_name, room_name)
+                            raise Exception('Cannot find alias')
+                    for (key, value) in aliases_found.items():
+                        room_data = stage_changes['Rooms'].pop(key)
+                        stage_changes['Rooms'][value] = room_data
                 validate_changes(changes)
                 patch = get_ppf(extract, changes)
                 ppf_file.write(patch.bytes)
