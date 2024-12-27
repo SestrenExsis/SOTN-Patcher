@@ -164,6 +164,12 @@ if __name__ == '__main__':
                     'Size': 361920,
                 },
             },
+            'Cave': {
+                'Stage': {
+                    'Start': 0x0439B800,
+                    'Size': 174880,
+                },
+            },
             'Clock Tower': {
                 'Stage': {
                     'Start': 0x04A67000,
@@ -186,6 +192,12 @@ if __name__ == '__main__':
                 'Stage': {
                     'Start': 0x04680800,
                     'Size': 313816,
+                },
+            },
+            'Floating Catacombs': {
+                'Stage': {
+                    'Start': 0x04307000,
+                    'Size': 278188,
                 },
             },
             'Forbidden Library': {
@@ -230,10 +242,22 @@ if __name__ == '__main__':
                     'Size': 384020,
                 },
             },
+            'Reverse Center Cube': {
+                'Stage': {
+                    'Start': 0x04B87800,
+                    'Size': 186368,
+                },
+            },
             'Reverse Clock Tower': {
                 'Stage': {
                     'Start': 0x04E22000,
                     'Size': 260960,
+                },
+            },
+            'Reverse Colosseum': {
+                'Stage': {
+                    'Start': 0x04C07800,
+                    'Size': 234384,
                 },
             },
             'Reverse Entrance': {

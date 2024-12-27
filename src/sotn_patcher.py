@@ -312,8 +312,9 @@ if __name__ == '__main__':
                             room_index = aliases['Rooms'][room_name]['Index']
                             aliases_found[room_name] = str(room_index)
                         else:
-                            print(stage_name, room_name)
-                            raise Exception('Cannot find alias')
+                            pass
+                            # print('Cannot find alias', (stage_name, room_name))
+                            # raise Exception('Cannot find alias')
                     for (key, value) in aliases_found.items():
                         room_data = stage_changes['Rooms'].pop(key)
                         stage_changes['Rooms'][value] = room_data
