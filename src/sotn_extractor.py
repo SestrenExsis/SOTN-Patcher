@@ -278,7 +278,7 @@ if __name__ == '__main__':
                     'Size': 357020,
                 },
             },
-            'Reverse Warp Room': {
+            'Reverse Warp Rooms': {
                 'Stage': {
                     'Start': 0x04EBE000,
                     'Size': 92160,
@@ -296,7 +296,7 @@ if __name__ == '__main__':
                     'Size': 391260,
                 },
             },
-            'Warp Room': {
+            'Warp Rooms': {
                 'Stage': {
                     'Start': 0x04D12800,
                     'Size': 83968,

@@ -185,6 +185,40 @@ Rooms:
         Index: 9
     Castle Entrance Revisited, Zombie Hallway:
         Index: 2
+    Clock Tower, Belfry:
+        Index: 9
+    Clock Tower, Exit to Courtyard:
+        Index: 8
+    Clock Tower, Fake Room With Teleporter A:
+        Index: 15
+    Clock Tower, Fake Room With Teleporter B:
+        Index: 16
+    Clock Tower, Fire of Bat Room:
+        Index: 12
+    Clock Tower, Healing Mail Room:
+        Index: 2
+    Clock Tower, Hidden Armory:
+        Index: 5
+    Clock Tower, Karasuman's Room:
+        Index: 0
+    Clock Tower, Left Gear Room:
+        Index: 6
+    Clock Tower, Loading Room A:
+        Index: 13
+    Clock Tower, Loading Room B:
+        Index: 14
+    Clock Tower, Open Courtyard:
+        Index: 10
+    Clock Tower, Path to Karasuman:
+        Index: 1
+    Clock Tower, Pendulum Room:
+        Index: 3
+    Clock Tower, Right Gear Room:
+        Index: 7
+    Clock Tower, Spire:
+        Index: 4
+    Clock Tower, Stairwell to Outer Wall:
+        Index: 11
     Colosseum, Arena:
         Index: 5
     Colosseum, Blade Master Room:
@@ -431,3 +465,33 @@ Rooms:
         Index: 3
     Outer Wall, Top of Outer Wall:
         Index: 1
+    Warp Rooms, Fake Room With Teleporter A:
+        Index: 10
+    Warp Rooms, Fake Room With Teleporter B:
+        Index: 11
+    Warp Rooms, Fake Room With Teleporter C:
+        Index: 12
+    Warp Rooms, Fake Room With Teleporter D:
+        Index: 13
+    Warp Rooms, Fake Room With Teleporter E:
+        Index: 14
+    Warp Rooms, Loading Room A:
+        Index: 5
+    Warp Rooms, Loading Room B:
+        Index: 6
+    Warp Rooms, Loading Room C:
+        Index: 7
+    Warp Rooms, Loading Room D:
+        Index: 8
+    Warp Rooms, Loading Room E:
+        Index: 9
+    Warp Rooms, Warp Room A:
+        Index: 0
+    Warp Rooms, Warp Room B:
+        Index: 1
+    Warp Rooms, Warp Room C:
+        Index: 2
+    Warp Rooms, Warp Room D:
+        Index: 3
+    Warp Rooms, Warp Room E:
+        Index: 4
