@@ -495,3 +495,35 @@ Rooms:
         Index: 3
     Warp Rooms, Warp Room E:
         Index: 4
+    Castle Keep, Bend:
+        Index: 4
+    Castle Keep, Dual Platforms:
+        Index: 7
+    Castle Keep, Fake Room With Teleporter A:
+        Index: 13
+    Castle Keep, Fake Room With Teleporter B:
+        Index: 14
+    Castle Keep, Fake Room With Teleporter C:
+        Index: 15
+    Castle Keep, Falchion Room:
+        Index: 5
+    Castle Keep, Ghost Card Room:
+        Index: 3
+    Castle Keep, Keep Area:
+        Index: 2
+    Castle Keep, Lion Torch Platform:
+        Index: 6
+    Castle Keep, Loading Room A:
+        Index: 10
+    Castle Keep, Loading Room B:
+        Index: 11
+    Castle Keep, Loading Room C:
+        Index: 12
+    Castle Keep, Lower Attic:
+        Index: 1
+    Castle Keep, Save Room A:
+        Index: 9
+    Castle Keep, Tyrfing Room:
+        Index: 8
+    Castle Keep, Upper Attic:
+        Index: 0
