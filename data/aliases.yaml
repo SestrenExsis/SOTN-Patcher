@@ -527,3 +527,55 @@ Rooms:
         Index: 8
     Castle Keep, Upper Attic:
         Index: 0
+    Royal Chapel, Chapel Staircase:
+        Index: 11
+    Royal Chapel, Confessional Booth:
+        Index: 7
+    Royal Chapel, Empty Room:
+        Index: 10
+    Royal Chapel, Fake Room With Teleporter A:
+        Index: 22
+    Royal Chapel, Fake Room With Teleporter B:
+        Index: 23
+    Royal Chapel, Fake Room With Teleporter C:
+        Index: 24
+    Royal Chapel, Fake Room With Teleporter D:
+        Index: 25
+    Royal Chapel, Goggles Room:
+        Index: 8
+    Royal Chapel, Hippogryph Room:
+        Index: 4
+    Royal Chapel, Left Tower:
+        Index: 13
+    Royal Chapel, Loading Room A:
+        Index: 15
+    Royal Chapel, Loading Room B:
+        Index: 19
+    Royal Chapel, Loading Room C:
+        Index: 20
+    Royal Chapel, Loading Room D:
+        Index: 21
+    Royal Chapel, Middle Tower:
+        Index: 14
+    Royal Chapel, Nave:
+        Index: 9
+    Royal Chapel, Pushing Statue Shortcut:
+        Index: 6
+    Royal Chapel, Right Tower:
+        Index: 17
+    Royal Chapel, Save Room A:
+        Index: 18
+    Royal Chapel, Save Room B:
+        Index: 16
+    Royal Chapel, Silver Ring Room:
+        Index: 0
+    Royal Chapel, Spike Hallway:
+        Index: 1
+    Royal Chapel, Statue Ledge:
+        Index: 12
+    Royal Chapel, Walkway Between Towers:
+        Index: 2
+    Royal Chapel, Walkway Left of Hippogryph:
+        Index: 3
+    Royal Chapel, Walkway Right of Hippogryph:
+        Index: 5
