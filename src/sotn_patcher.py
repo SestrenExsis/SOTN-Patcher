@@ -111,6 +111,7 @@ def get_changes_template_file(extract):
         'Boss Teleporters': {},
         'Constants': {},
         'Stages': {},
+        'Teleporters': {},
     }
     for boss_teleporter_index in extract['Boss Teleporters']:
         result['Boss Teleporters'][boss_teleporter_index] = {
@@ -155,6 +156,13 @@ def get_changes_template_file(extract):
                 room = result['Stages'][stage_id]['Rooms'][room_id]
                 room['Object Layout - Horizontal'] = object_layout_h
                 room['Object Layout - Vertical'] = object_layout_v
+    for teleporter_index in extract['Teleporters']:
+        result['Teleporters'][teleporter_index] = {
+            'Player X': extract['Teleporters'][teleporter_index]['Player X']['Value'],
+            'Player Y': extract['Teleporters'][teleporter_index]['Player Y']['Value'],
+            'Room Offset': extract['Teleporters'][teleporter_index]['Room Offset']['Value'],
+            'Target Stage ID': extract['Teleporters'][teleporter_index]['Target Stage ID']['Value'],
+        }
     return result
 
 def validate_changes(changes):
@@ -175,6 +183,9 @@ def validate_changes(changes):
     if 'Boss Teleporters' in changes:
         # TODO(sestren): Validate boss teleporters
         pass
+    if 'Teleporters' in changes:
+        # TODO(sestren): Validate teleporters
+        pass
 
 def get_ppf(extract, changes):
     result = PPF('Just messing around')
@@ -183,7 +194,7 @@ def get_ppf(extract, changes):
         for boss_teleporter_index in sorted(changes['Boss Teleporters']):
             boss_teleporter_data = changes['Boss Teleporters'][boss_teleporter_index]
             boss_teleporter_extract = extract['Boss Teleporters'][boss_teleporter_index]
-            # Room: Patch room X
+            # Boss Teleporter: Patch room X
             room_x = boss_teleporter_extract['Room X']['Value']
             if 'Room X' in boss_teleporter_data:
                 if boss_teleporter_data['Room X'] != room_x:
@@ -193,7 +204,7 @@ def get_ppf(extract, changes):
                         boss_teleporter_extract['Room X']['Type'],
                         sotn_address.Address(boss_teleporter_extract['Room X']['Start']),
                     )
-            # Room: Patch room Y
+            # Boss Teleporter: Patch room Y
             room_y = boss_teleporter_extract['Room Y']['Value']
             if 'Room Y' in boss_teleporter_data:
                 if boss_teleporter_data['Room Y'] != room_x:
@@ -203,8 +214,6 @@ def get_ppf(extract, changes):
                         boss_teleporter_extract['Room Y']['Type'],
                         sotn_address.Address(boss_teleporter_extract['Room Y']['Start']),
                     )
-    # TODO(sestren): Patch teleporters
-    # Leaving the Minotaur and Werewolf Boss Fight sends you to the vanilla rooms
     # Patch constants
     if 'Constants' in changes:
         for constant_id in sorted(changes['Constants']):
@@ -311,6 +320,51 @@ def get_ppf(extract, changes):
                                         object_extract['Params']['Type'],
                                         sotn_address.Address(object_extract['Params']['Start']),
                                     )
+    # Patch teleporters
+    if 'Teleporters' in changes:
+        for teleporter_index in sorted(changes['Teleporters']):
+            teleporter_data = changes['Teleporters'][teleporter_index]
+            teleporter_extract = extract['Teleporters'][teleporter_index]
+            # Teleporter: Patch player X
+            player_x = teleporter_extract['Player X']['Value']
+            if 'Player X' in teleporter_data:
+                if teleporter_data['Player X'] != player_x:
+                    player_x = teleporter_data['Player X']
+                    result.patch_value(
+                        player_x,
+                        teleporter_extract['Player X']['Type'],
+                        sotn_address.Address(teleporter_extract['Player X']['Start']),
+                    )
+            # Teleporter: Patch player Y
+            player_y = teleporter_extract['Player Y']['Value']
+            if 'Player Y' in teleporter_data:
+                if teleporter_data['Player Y'] != player_y:
+                    player_y = teleporter_data['Player Y']
+                    result.patch_value(
+                        player_y,
+                        teleporter_extract['Player Y']['Type'],
+                        sotn_address.Address(teleporter_extract['Player Y']['Start']),
+                    )
+            # Teleporter: Patch room offset
+            room_offset = teleporter_extract['Room Offset']['Value']
+            if 'Room Offset' in teleporter_data:
+                if teleporter_data['Room Offset'] != room_offset:
+                    room_offset = teleporter_data['Room Offset']
+                    result.patch_value(
+                        room_offset,
+                        teleporter_extract['Room Offset']['Type'],
+                        sotn_address.Address(teleporter_extract['Room Offset']['Start']),
+                    )
+            # Teleporter: Patch target stage ID
+            target_stage_id = teleporter_extract['Room Offset']['Value']
+            if 'Target Stage ID' in teleporter_data:
+                if teleporter_data['Target Stage ID'] != target_stage_id:
+                    target_stage_id = teleporter_data['Target Stage ID']
+                    result.patch_value(
+                        target_stage_id,
+                        teleporter_extract['Target Stage ID']['Type'],
+                        sotn_address.Address(teleporter_extract['Target Stage ID']['Start']),
+                    )
     return result
 
 if __name__ == '__main__':
