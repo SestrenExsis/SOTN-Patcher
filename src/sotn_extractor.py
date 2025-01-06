@@ -517,8 +517,8 @@ if __name__ == '__main__':
         cursor = BIN(binary_file, 0x0009817C)
         for boss_teleporter_id in range(28):
             data = {
-                'Player X': cursor.s32(0x14 * boss_teleporter_id + 0x00, True),
-                'Player Y':  cursor.s32(0x14 * boss_teleporter_id + 0x04, True),
+                'Room X': cursor.u8(0x14 * boss_teleporter_id + 0x00, True),
+                'Room Y':  cursor.u8(0x14 * boss_teleporter_id + 0x04, True),
                 'Stage ID': cursor.u32(0x14 * boss_teleporter_id + 0x08, True),
                 'Event ID':  cursor.s8(0x14 * boss_teleporter_id + 0x0C, True),
                 'Teleporter Index':  cursor.s32(0x14 * boss_teleporter_id + 0x10, True),

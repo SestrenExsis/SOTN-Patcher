@@ -108,9 +108,17 @@ class PPF:
 
 def get_changes_template_file(extract):
     result = {
+        'Boss Teleporters': {},
         'Constants': {},
         'Stages': {},
     }
+    for boss_teleporter_index in extract['Boss Teleporters']:
+        result['Boss Teleporters'][boss_teleporter_index] = {
+            'Room X': extract['Boss Teleporters'][boss_teleporter_index]['Room X']['Value'],
+            'Room Y': extract['Boss Teleporters'][boss_teleporter_index]['Room Y']['Value'],
+        }
+    for constant_name in extract['Constants']:
+        result['Constants'][constant_name] = extract['Constants'][constant_name]['Value']
     for (stage_id, stage_data) in extract['Stages'].items():
         result['Stages'][stage_id] = {}
         result['Stages'][stage_id]['Rooms'] = {}
@@ -147,8 +155,6 @@ def get_changes_template_file(extract):
                 room = result['Stages'][stage_id]['Rooms'][room_id]
                 room['Object Layout - Horizontal'] = object_layout_h
                 room['Object Layout - Vertical'] = object_layout_v
-    for constant_name in extract['Constants']:
-        result['Constants'][constant_name] = extract['Constants'][constant_name]['Value']
     return result
 
 def validate_changes(changes):
@@ -166,9 +172,39 @@ def validate_changes(changes):
     if 'Constants' in changes:
         for (constant_name, constant_data) in changes['Constants'].items():
             assert 0 <= constant_data <= 255
+    if 'Boss Teleporters' in changes:
+        # TODO(sestren): Validate boss teleporters
+        pass
 
 def get_ppf(extract, changes):
     result = PPF('Just messing around')
+    # Patch boss teleporters
+    if 'Boss Teleporters' in changes:
+        for boss_teleporter_index in sorted(changes['Boss Teleporters']):
+            boss_teleporter_data = changes['Boss Teleporters'][boss_teleporter_index]
+            boss_teleporter_extract = extract['Boss Teleporters'][boss_teleporter_index]
+            # Room: Patch room X
+            room_x = boss_teleporter_extract['Room X']['Value']
+            if 'Room X' in boss_teleporter_data:
+                if boss_teleporter_data['Room X'] != room_x:
+                    room_x = boss_teleporter_data['Room X']
+                    result.patch_value(
+                        room_x,
+                        boss_teleporter_extract['Room X']['Type'],
+                        sotn_address.Address(boss_teleporter_extract['Room X']['Start']),
+                    )
+            # Room: Patch room Y
+            room_y = boss_teleporter_extract['Room Y']['Value']
+            if 'Room Y' in boss_teleporter_data:
+                if boss_teleporter_data['Room Y'] != room_x:
+                    room_y = boss_teleporter_data['Room Y']
+                    result.patch_value(
+                        room_y,
+                        boss_teleporter_extract['Room Y']['Type'],
+                        sotn_address.Address(boss_teleporter_extract['Room Y']['Start']),
+                    )
+    # TODO(sestren): Patch teleporters
+    # Leaving the Minotaur and Werewolf Boss Fight sends you to the vanilla rooms
     # Patch constants
     if 'Constants' in changes:
         for constant_id in sorted(changes['Constants']):
@@ -183,11 +219,13 @@ def get_ppf(extract, changes):
     # Patch stage data
     if 'Stages' in changes:
         for stage_id in sorted(changes['Stages']):
+            print(stage_id)
             stage_data = changes['Stages'][stage_id]
             stage_extract = extract['Stages'][stage_id]
             # Stage: Patch room data
             if 'Rooms' in stage_data:
                 for room_id in sorted(stage_data['Rooms']):
+                    print('', room_id)
                     room_data = stage_data['Rooms'][room_id]
                     room_extract = stage_extract['Rooms'][room_id]
                     left = room_extract['Left']['Value']
