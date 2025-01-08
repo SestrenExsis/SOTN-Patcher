@@ -701,9 +701,45 @@ Rooms:
         Index: 17
     Abandoned Mine, Fake Room With Teleporter C:
         Index: 18
+    Boss - Cerberus, Cerberus Room:
+        Index: 0
+    Boss - Cerberus, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Cerberus, Fake Room With Teleporter B:
+        Index: 2
+    Boss - Doppelganger 10, Doppelganger Room:
+        Index: 0
+    Boss - Doppelganger 10, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Doppelganger 10, Fake Room With Teleporter B:
+        Index: 2
+    Boss - Hippogryph, Hippogryph Room:
+        Index: 0
+    Boss - Hippogryph, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Hippogryph, Fake Room With Teleporter B:
+        Index: 2
     Boss - Minotaur and Werewolf, Arena:
         Index: 0
     Boss - Minotaur and Werewolf, Fake Room With Teleporter A:
         Index: 1
     Boss - Minotaur and Werewolf, Fake Room With Teleporter B:
         Index: 2
+    Boss - Olrox, Olrox's Room:
+        Index: 0
+    Boss - Olrox, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Olrox, Fake Room With Teleporter B:
+        Index: 2
+    Boss - Scylla, Crystal Cloak Room:
+        Index: 3
+    Boss - Scylla, Rising Water Room:
+        Index: 2
+    Boss - Scylla, Scylla Room:
+        Index: 0
+    Boss - Scylla, Scylla Wyrm Room:
+        Index: 1
+    Boss - Scylla, Fake Room With Teleporter A:
+        Index: 4
+    Boss - Richter, Throne Room:
+        Index: 0

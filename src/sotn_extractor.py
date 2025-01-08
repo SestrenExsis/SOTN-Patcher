@@ -178,7 +178,7 @@ if __name__ == '__main__':
                     'Size': 210224,
                 },
             },
-            'Boss - Doppleganger 10': {
+            'Boss - Doppelganger 10': {
                 'Stage': {
                     'Start': 0x05593000,
                     'Size': 347704,
