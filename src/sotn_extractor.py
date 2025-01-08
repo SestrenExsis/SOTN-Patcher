@@ -286,22 +286,28 @@ if __name__ == '__main__':
                     'Size': 174880,
                 },
             },
-            'Clock Tower': {
-                'Stage': {
-                    'Start': 0x04A67000,
-                    'Size': 271168,
-                },
-            },
             'Center Cube': {
                 'Stage': {
                     'Start': 0x03C65000,
                     'Size': 119916,
                 },
             },
+            'Clock Tower': {
+                'Stage': {
+                    'Start': 0x04A67000,
+                    'Size': 271168,
+                },
+            },
             'Colosseum': {
                 'Stage': {
                     'Start': 0x03B00000,
                     'Size': 352636,
+                },
+            },
+            'Cutscene - Meeting Maria in Clock Room': {
+                'Stage': {
+                    'Start': 0x057F9800,
+                    'Size': 0,
                 },
             },
             'Death Wing\'s Lair': {
