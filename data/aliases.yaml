@@ -743,3 +743,13 @@ Rooms:
         Index: 4
     Boss - Richter, Throne Room:
         Index: 0
+    Castle Center, Elevator Shaft:
+        Index: 0
+    Castle Center, Center Cube:
+        Index: 1
+    Castle Center, Fake Room With Teleporter A:
+        Index: 3
+    Castle Center, Unknown Room ID 02:
+        Index: 2
+    Castle Center, Unknown Room ID 04:
+        Index: 4

@@ -256,6 +256,12 @@ if __name__ == '__main__':
                     'Size': 161212,
                 },
             },
+            'Castle Center': {
+                'Stage': {
+                    'Start': 0x03C65000,
+                    'Size': 119916,
+                },
+            },
             'Castle Entrance': {
                 'Stage': {
                     'Start': 0x041A7800,
@@ -284,12 +290,6 @@ if __name__ == '__main__':
                 'Stage': {
                     'Start': 0x0439B800,
                     'Size': 174880,
-                },
-            },
-            'Center Cube': {
-                'Stage': {
-                    'Start': 0x03C65000,
-                    'Size': 119916,
                 },
             },
             'Clock Tower': {
@@ -364,7 +364,7 @@ if __name__ == '__main__':
                     'Size': 384020,
                 },
             },
-            'Reverse Center Cube': {
+            'Reverse Castle Center': {
                 'Stage': {
                     'Start': 0x04B87800,
                     'Size': 186368,
