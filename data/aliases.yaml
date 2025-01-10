@@ -713,6 +713,12 @@ Rooms:
         Index: 1
     Boss - Doppelganger 10, Fake Room With Teleporter B:
         Index: 2
+    Boss - Granfaloon, Granfaloon's Lair:
+        Index: 0
+    Boss - Granfaloon, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Granfaloon, Fake Room With Teleporter B:
+        Index: 2
     Boss - Hippogryph, Hippogryph Room:
         Index: 0
     Boss - Hippogryph, Fake Room With Teleporter A:
@@ -753,3 +759,63 @@ Rooms:
         Index: 2
     Castle Center, Unknown Room ID 04:
         Index: 4
+    Catacombs, Room ID 00:
+        Index: 0
+    Catacombs, Mormegil Room:
+        Index: 1
+    Catacombs, Room ID 02:
+        Index: 2
+    Catacombs, Granfaloon's Lair:
+        Index: 3
+    Catacombs, Room ID 04:
+        Index: 4
+    Catacombs, Room ID 05:
+        Index: 5
+    Catacombs, Small Gremlin Room:
+        Index: 6
+    Catacombs, Save Room A:
+        Index: 7
+    Catacombs, Walk Armor Room:
+        Index: 8
+    Catacombs, Icebrand Room:
+        Index: 9
+    Catacombs, Left Lava Path:
+        Index: 10
+    Catacombs, Ballroom Mask Room:
+        Index: 11
+    Catacombs, Right Lava Path:
+        Index: 12
+    Catacombs, Cat-Eye Circlet Room:
+        Index: 13
+    Catacombs, Room ID 14:
+        Index: 14
+    Catacombs, Save Room B:
+        Index: 15
+    Catacombs, Hellfire Beast Room:
+        Index: 16
+    Catacombs, Exit to Abandoned Mine:
+        Index: 17
+    Catacombs, Bone Ark Room:
+        Index: 18
+    Catacombs, Room ID 19:
+        Index: 19
+    Catacombs, Room ID 20:
+        Index: 20
+    Catacombs, Room ID 21:
+        Index: 21
+    Catacombs, Room ID 22:
+        Index: 22
+    Catacombs, Room ID 23:
+        Index: 23
+    Catacombs, Pitch Black Spike Maze:
+        Index: 24
+    Catacombs, Room ID 25:
+        Index: 25
+    Catacombs, Room ID 26:
+        Index: 26
+    Catacombs, Spike Breaker Room:
+        Index: 27
+    Catacombs, Loading Room A:
+        Index: 28
+    Catacombs, Fake Room With Teleporter A:
+        Index: 29

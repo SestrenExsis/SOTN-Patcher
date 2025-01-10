@@ -160,7 +160,7 @@ if __name__ == '__main__':
                     'Size': 320948,
                 },
             },
-            'Boss - Legion': {
+            'Boss - Granfaloon': {
                 'Stage': {
                     'Start': 0x053F7000,
                     'Size': 205756,
