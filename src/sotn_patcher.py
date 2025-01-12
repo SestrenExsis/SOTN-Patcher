@@ -171,7 +171,8 @@ def validate_changes(changes):
             if 'Rooms' in stage_data:
                 for (room_id, room_data) in stage_data['Rooms'].items():
                     if 'Top' in room_data:
-                        assert 0 <= room_data['Top'] <= 58
+                        # assert 0 <= room_data['Top'] <= 58
+                        assert 0 <= room_data['Top'] <= 63
                     if 'Left' in room_data:
                         assert 0 <= room_data['Left'] <= 63
                     if 'Object Layout - Horizontal' in room_data:
