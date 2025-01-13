@@ -99,6 +99,20 @@ class BIN:
         else:
             result = value
         return result
+    
+    def s32(self, offset: int=0, include_meta: bool=False):
+        result = None
+        size = 4
+        value = self.read(offset, size, 'little', True)
+        if include_meta:
+            result = {
+                'Value': value,
+                'Start': self.cursor.address + offset,
+                'Type': 's32',
+            }
+        else:
+            result = value
+        return result
 
 if __name__ == '__main__':
     '''
@@ -140,6 +154,114 @@ if __name__ == '__main__':
                     'Size': 347020,
                 },
             },
+            'Boss - Olrox': {
+                'Stage': {
+                    'Start': 0x0534C800,
+                    'Size': 320948,
+                },
+            },
+            'Boss - Granfaloon': {
+                'Stage': {
+                    'Start': 0x053F7000,
+                    'Size': 205756,
+                },
+            },
+            'Boss - Minotaur and Werewolf': {
+                'Stage': {
+                    'Start': 0x05473800,
+                    'Size': 223540,
+                },
+            },
+            'Boss - Scylla': {
+                'Stage': {
+                    'Start': 0x05507000,
+                    'Size': 210224,
+                },
+            },
+            'Boss - Doppelganger 10': {
+                'Stage': {
+                    'Start': 0x05593000,
+                    'Size': 347704,
+                },
+            },
+            'Boss - Hippogryph': {
+                'Stage': {
+                    'Start': 0x05638800,
+                    'Size': 218672,
+                },
+            },
+            'Boss - Richter': {
+                'Stage': {
+                    'Start': 0x056C8800,
+                    'Size': 333544,
+                },
+            },
+            'Boss - Cerberus': {
+                'Stage': {
+                    'Start': 0x0596D000,
+                    'Size': 144480,
+                },
+            },
+            'Boss - Trio': {
+                'Stage': {
+                    'Start': 0x05775000,
+                    'Size': 160988,
+                },
+            },
+            'Boss - Beezlebub': {
+                'Stage': {
+                    'Start': 0x05870000,
+                    'Size': 139104,
+                },
+            },
+            'Boss - Death': {
+                'Stage': {
+                    'Start': 0x058ED800,
+                    'Size': 190792,
+                },
+            },
+            'Boss - Medusa': {
+                'Stage': {
+                    'Start': 0x059E9800,
+                    'Size': 132656,
+                },
+            },
+            'Boss - Creature': {
+                'Stage': {
+                    'Start': 0x05A65000,
+                    'Size': 154660,
+                },
+            },
+            'Boss - Doppleganger 40': {
+                'Stage': {
+                    'Start': 0x05AE3800,
+                    'Size': 345096,
+                },
+            },
+            'Boss - Shaft and Dracula': {
+                'Stage': {
+                    'Start': 0x05B93800,
+                    'Size': 213060,
+                },
+            },
+            'Boss - Akmodan II': {
+                'Stage': {
+                    'Start': 0x05C24000,
+                    'Size': 142572,
+                },
+            },
+            'Boss - Galamoth': {
+                'Stage': {
+                    'Start': 0x05C9F800,
+                    'Size': 161212,
+                },
+            },
+            'Castle Center': {
+                'Stage': {
+                    'Start': 0x03C65000,
+                    'Size': 119916,
+                },
+            },
             'Castle Entrance': {
                 'Stage': {
                     'Start': 0x041A7800,
@@ -176,16 +298,16 @@ if __name__ == '__main__':
                     'Size': 271168,
                 },
             },
-            'Center Cube': {
-                'Stage': {
-                    'Start': 0x03C65000,
-                    'Size': 119916,
-                },
-            },
             'Colosseum': {
                 'Stage': {
                     'Start': 0x03B00000,
                     'Size': 352636,
+                },
+            },
+            'Cutscene - Meeting Maria in Clock Room': {
+                'Stage': {
+                    'Start': 0x057F9800,
+                    'Size': 0,
                 },
             },
             'Death Wing\'s Lair': {
@@ -242,7 +364,7 @@ if __name__ == '__main__':
                     'Size': 384020,
                 },
             },
-            'Reverse Center Cube': {
+            'Reverse Castle Center': {
                 'Stage': {
                     'Start': 0x04B87800,
                     'Size': 186368,
@@ -389,13 +511,25 @@ if __name__ == '__main__':
         cursor = BIN(binary_file, 0x00097C5C)
         for teleporter_id in range(131):
             data = {
-                'Player X': cursor.u16(10 * teleporter_id + 0x0, True),
-                'Player Y':  cursor.u16(10 * teleporter_id + 0x2, True),
-                'Room Offset': cursor.u16(10 * teleporter_id + 0x4, True),
-                'Source Stage ID':  cursor.u16(10 * teleporter_id + 0x6, True),
-                'Target Stage ID':  cursor.u16(10 * teleporter_id + 0x8, True),
+                'Player X': cursor.u16(10 * teleporter_id + 0x00, True),
+                'Player Y':  cursor.u16(10 * teleporter_id + 0x02, True),
+                'Room Offset': cursor.u16(10 * teleporter_id + 0x04, True),
+                'Source Stage ID':  cursor.u16(10 * teleporter_id + 0x06, True),
+                'Target Stage ID':  cursor.u16(10 * teleporter_id + 0x08, True),
             }
             teleporters[teleporter_id] = data
+        # Extract boss teleporter data
+        boss_teleporters = {}
+        cursor = BIN(binary_file, 0x0009817C)
+        for boss_teleporter_id in range(28):
+            data = {
+                'Room X': cursor.u8(0x14 * boss_teleporter_id + 0x00, True),
+                'Room Y':  cursor.u8(0x14 * boss_teleporter_id + 0x04, True),
+                'Stage ID': cursor.u32(0x14 * boss_teleporter_id + 0x08, True),
+                'Event ID':  cursor.s8(0x14 * boss_teleporter_id + 0x0C, True),
+                'Teleporter Index':  cursor.s32(0x14 * boss_teleporter_id + 0x10, True),
+            }
+            boss_teleporters[boss_teleporter_id] = data
         # Extract constant data
         constants = {}
         cursor = BIN(binary_file, 0x049BF79C)
@@ -407,6 +541,7 @@ if __name__ == '__main__':
             'Constants': constants,
             'Stages': stages,
             'Teleporters': teleporters,
+            'Boss Teleporters': boss_teleporters,
         }
         with open(args.json_filepath, 'w') as extraction_json:
             json.dump(extraction, extraction_json, indent='  ', sort_keys=True)
