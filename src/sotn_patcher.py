@@ -156,12 +156,12 @@ def get_changes_template_file(extract):
                 room = result['Stages'][stage_id]['Rooms'][room_id]
                 room['Object Layout - Horizontal'] = object_layout_h
                 room['Object Layout - Vertical'] = object_layout_v
-    for teleporter_index in extract['Teleporters']:
+    for teleporter_index in extract['Teleporters']['Data']:
         result['Teleporters'][teleporter_index] = {
-            'Player X': extract['Teleporters'][teleporter_index]['Player X']['Value'],
-            'Player Y': extract['Teleporters'][teleporter_index]['Player Y']['Value'],
-            'Room Offset': extract['Teleporters'][teleporter_index]['Room Offset']['Value'],
-            'Target Stage ID': extract['Teleporters'][teleporter_index]['Target Stage ID']['Value'],
+            'Player X': extract['Teleporters']['Data'][teleporter_index]['Player X'],
+            'Player Y': extract['Teleporters']['Data'][teleporter_index]['Player Y'],
+            'Room Offset': extract['Teleporters']['Data'][teleporter_index]['Room Offset'],
+            'Target Stage ID': extract['Teleporters']['Data'][teleporter_index]['Target Stage ID'],
         }
     return result
 
@@ -324,48 +324,45 @@ def get_ppf(extract, changes):
                                     )
     # Patch teleporters
     if 'Teleporters' in changes:
+        extract_metadata = extract['Teleporters']['Metadata']
         for teleporter_index in sorted(changes['Teleporters']):
             teleporter_data = changes['Teleporters'][teleporter_index]
-            teleporter_extract = extract['Teleporters'][teleporter_index]
+            extract_data = extract['Teleporters']['Data'][teleporter_index]
             # Teleporter: Patch player X
-            player_x = teleporter_extract['Player X']['Value']
+            player_x = extract_data['Player X']
             if 'Player X' in teleporter_data:
                 if teleporter_data['Player X'] != player_x:
                     player_x = teleporter_data['Player X']
-                    result.patch_value(
-                        player_x,
-                        teleporter_extract['Player X']['Type'],
-                        sotn_address.Address(teleporter_extract['Player X']['Start']),
+                    result.patch_value(player_x,
+                        extract_metadata['Fields']['Player X']['Type'],
+                        sotn_address.Address(extract_metadata['Start'] + int(teleporter_index) * extract_metadata['Size'] + extract_metadata['Fields']['Player X']['Offset']),
                     )
             # Teleporter: Patch player Y
-            player_y = teleporter_extract['Player Y']['Value']
+            player_y = extract_data['Player Y']
             if 'Player Y' in teleporter_data:
                 if teleporter_data['Player Y'] != player_y:
                     player_y = teleporter_data['Player Y']
-                    result.patch_value(
-                        player_y,
-                        teleporter_extract['Player Y']['Type'],
-                        sotn_address.Address(teleporter_extract['Player Y']['Start']),
+                    result.patch_value(player_y,
+                        extract_metadata['Fields']['Player Y']['Type'],
+                        sotn_address.Address(extract_metadata['Start'] + int(teleporter_index) * extract_metadata['Size'] + extract_metadata['Fields']['Player Y']['Offset']),
                     )
             # Teleporter: Patch room offset
-            room_offset = teleporter_extract['Room Offset']['Value']
+            room_offset = extract_data['Room Offset']
             if 'Room Offset' in teleporter_data:
                 if teleporter_data['Room Offset'] != room_offset:
                     room_offset = teleporter_data['Room Offset']
-                    result.patch_value(
-                        room_offset,
-                        teleporter_extract['Room Offset']['Type'],
-                        sotn_address.Address(teleporter_extract['Room Offset']['Start']),
+                    result.patch_value(room_offset,
+                        extract_metadata['Fields']['Room Offset']['Type'],
+                        sotn_address.Address(extract_metadata['Start'] + int(teleporter_index) * extract_metadata['Size'] + extract_metadata['Fields']['Room Offset']['Offset']),
                     )
             # Teleporter: Patch target stage ID
-            target_stage_id = teleporter_extract['Room Offset']['Value']
+            target_stage_id = extract_data['Target Stage ID']
             if 'Target Stage ID' in teleporter_data:
                 if teleporter_data['Target Stage ID'] != target_stage_id:
                     target_stage_id = teleporter_data['Target Stage ID']
-                    result.patch_value(
-                        target_stage_id,
-                        teleporter_extract['Target Stage ID']['Type'],
-                        sotn_address.Address(teleporter_extract['Target Stage ID']['Start']),
+                    result.patch_value(target_stage_id,
+                        extract_metadata['Fields']['Target Stage ID']['Type'],
+                        sotn_address.Address(extract_metadata['Start'] + int(teleporter_index) * extract_metadata['Size'] + extract_metadata['Fields']['Target Stage ID']['Offset']),
                     )
     return result
 

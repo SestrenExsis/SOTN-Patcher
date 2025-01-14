@@ -507,17 +507,46 @@ if __name__ == '__main__':
                         objects.append(_object)
                     stages[stage_name]['Rooms'][room_id]['Object Layout - ' + direction] = objects
         # Extract teleporter data
-        teleporters = {}
         cursor = BIN(binary_file, 0x00097C5C)
+        teleporters = {
+            'Metadata': {
+                'Start': cursor.cursor.address,
+                'Size': 0x0A,
+                'Count': 131,
+                'Fields': {
+                    'Player X': {
+                        'Offset': 0x00,
+                        'Type': 'u16',
+                    },
+                    'Player Y': {
+                        'Offset': 0x02,
+                        'Type': 'u16',
+                    },
+                    'Room Offset': {
+                        'Offset': 0x04,
+                        'Type': 'u16',
+                    },
+                    'Source Stage ID': {
+                        'Offset': 0x06,
+                        'Type': 'u16',
+                    },
+                    'Target Stage ID': {
+                        'Offset': 0x08,
+                        'Type': 'u16',
+                    },
+                },
+            },
+            'Data': {},
+        }
         for teleporter_id in range(131):
             data = {
-                'Player X': cursor.u16(10 * teleporter_id + 0x00, True),
-                'Player Y':  cursor.u16(10 * teleporter_id + 0x02, True),
-                'Room Offset': cursor.u16(10 * teleporter_id + 0x04, True),
-                'Source Stage ID':  cursor.u16(10 * teleporter_id + 0x06, True),
-                'Target Stage ID':  cursor.u16(10 * teleporter_id + 0x08, True),
+                'Player X': cursor.u16(0x0A * teleporter_id + 0x00),
+                'Player Y':  cursor.u16(0x0A * teleporter_id + 0x02),
+                'Room Offset': cursor.u16(0x0A * teleporter_id + 0x04),
+                'Source Stage ID':  cursor.u16(0x0A * teleporter_id + 0x06),
+                'Target Stage ID':  cursor.u16(0x0A * teleporter_id + 0x08),
             }
-            teleporters[teleporter_id] = data
+            teleporters['Data'][teleporter_id] = data
         # Extract boss teleporter data
         cursor = BIN(binary_file, 0x0009817C)
         boss_teleporters = {
