@@ -113,10 +113,10 @@ def get_changes_template_file(extract):
         'Stages': {},
         'Teleporters': {},
     }
-    for boss_teleporter_index in extract['Boss Teleporters']:
+    for boss_teleporter_index in extract['Boss Teleporters']['Data']:
         result['Boss Teleporters'][boss_teleporter_index] = {
-            'Room X': extract['Boss Teleporters'][boss_teleporter_index]['Room X']['Value'],
-            'Room Y': extract['Boss Teleporters'][boss_teleporter_index]['Room Y']['Value'],
+            'Room X': extract['Boss Teleporters']['Data'][boss_teleporter_index]['Room X'],
+            'Room Y': extract['Boss Teleporters']['Data'][boss_teleporter_index]['Room Y'],
         }
     for constant_name in extract['Constants']:
         result['Constants'][constant_name] = extract['Constants'][constant_name]['Value']
@@ -192,28 +192,29 @@ def get_ppf(extract, changes):
     result = PPF('Just messing around')
     # Patch boss teleporters
     if 'Boss Teleporters' in changes:
+        extract_metadata = extract['Boss Teleporters']['Metadata']
         for boss_teleporter_index in sorted(changes['Boss Teleporters']):
             boss_teleporter_data = changes['Boss Teleporters'][boss_teleporter_index]
-            boss_teleporter_extract = extract['Boss Teleporters'][boss_teleporter_index]
+            extract_data = extract['Boss Teleporters']['Data'][boss_teleporter_index]
             # Boss Teleporter: Patch room X
-            room_x = boss_teleporter_extract['Room X']['Value']
+            room_x = extract_data['Room X']
             if 'Room X' in boss_teleporter_data:
                 if boss_teleporter_data['Room X'] != room_x:
                     room_x = boss_teleporter_data['Room X']
                     result.patch_value(
                         room_x,
-                        boss_teleporter_extract['Room X']['Type'],
-                        sotn_address.Address(boss_teleporter_extract['Room X']['Start']),
+                        extract_metadata['Fields']['Room X']['Type'],
+                        sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_index) * extract_metadata['Size'] + extract_metadata['Fields']['Room X']['Offset']),
                     )
             # Boss Teleporter: Patch room Y
-            room_y = boss_teleporter_extract['Room Y']['Value']
-            if 'Room Y' in boss_teleporter_data:
+            room_y = extract_data['Room Y']
+            if 'Room X' in boss_teleporter_data:
                 if boss_teleporter_data['Room Y'] != room_x:
-                    room_y = boss_teleporter_data['Room Y']
+                    room_x = boss_teleporter_data['Room Y']
                     result.patch_value(
                         room_y,
-                        boss_teleporter_extract['Room Y']['Type'],
-                        sotn_address.Address(boss_teleporter_extract['Room Y']['Start']),
+                        extract_metadata['Fields']['Room Y']['Type'],
+                        sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_index) * extract_metadata['Size'] + extract_metadata['Fields']['Room Y']['Offset']),
                     )
     # Patch constants
     if 'Constants' in changes:

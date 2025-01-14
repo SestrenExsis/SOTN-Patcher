@@ -519,23 +519,54 @@ if __name__ == '__main__':
             }
             teleporters[teleporter_id] = data
         # Extract boss teleporter data
-        boss_teleporters = {}
         cursor = BIN(binary_file, 0x0009817C)
+        boss_teleporters = {
+            'Metadata': {
+                'Start': cursor.cursor.address,
+                'Size': 0x14,
+                'Count': 28,
+                'Fields': {
+                    'Room X': {
+                        'Offset': 0x00,
+                        'Type': 'u8',
+                    },
+                    'Room Y': {
+                        'Offset': 0x04,
+                        'Type': 'u8',
+                    },
+                    'Stage ID': {
+                        'Offset': 0x08,
+                        'Type': 'u32',
+                    },
+                    'Event ID': {
+                        'Offset': 0x0C,
+                        'Type': 's8',
+                    },
+                    'Teleporter Index': {
+                        'Offset': 0x10,
+                        'Type': 's32',
+                    },
+                },
+            },
+            'Data': {},
+        }
         for boss_teleporter_id in range(28):
             data = {
-                'Room X': cursor.u8(0x14 * boss_teleporter_id + 0x00, True),
-                'Room Y':  cursor.u8(0x14 * boss_teleporter_id + 0x04, True),
-                'Stage ID': cursor.u32(0x14 * boss_teleporter_id + 0x08, True),
-                'Event ID':  cursor.s8(0x14 * boss_teleporter_id + 0x0C, True),
-                'Teleporter Index':  cursor.s32(0x14 * boss_teleporter_id + 0x10, True),
+                'Room X': cursor.u8(0x14 * boss_teleporter_id + 0x00),
+                'Room Y':  cursor.u8(0x14 * boss_teleporter_id + 0x04),
+                'Stage ID': cursor.u32(0x14 * boss_teleporter_id + 0x08),
+                'Event ID':  cursor.s8(0x14 * boss_teleporter_id + 0x0C),
+                'Teleporter Index':  cursor.s32(0x14 * boss_teleporter_id + 0x10),
             }
-            boss_teleporters[boss_teleporter_id] = data
+            boss_teleporters['Data'][boss_teleporter_id] = data
         # Extract constant data
         constants = {}
         cursor = BIN(binary_file, 0x049BF79C)
         for drop_index in range(2, 4):
             data = cursor.u16(2 * drop_index, True)
             constants[f'Relic Container Drop ID {str(drop_index)}'] = data
+        # Extract minimap data
+        cursor = BIN(binary_file, 0x001AF800)
         # Store extracted data
         extraction = {
             'Constants': constants,
