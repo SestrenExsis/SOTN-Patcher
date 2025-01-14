@@ -484,27 +484,57 @@ if __name__ == '__main__':
                     # Object list
                     object_layout_offset = cursors[direction + ' Indirect'].u32(4 * object_layout_id) - OFFSET
                     cursors[direction] = cursors['Stage'].clone(object_layout_offset)
-                    objects = []
+                    objects = {
+                        'Metadata': {
+                            'Start': cursors[direction].cursor.address,
+                            'Size': 0x0A,
+                            'Count': 0,
+                            'Fields': {
+                                'X': {
+                                    'Offset': 0x00,
+                                    'Type': 's16',
+                                },
+                                'Y': {
+                                    'Offset': 0x02,
+                                    'Type': 's16',
+                                },
+                                'Entity Type ID': {
+                                    'Offset': 0x04,
+                                    'Type': 'u16',
+                                },
+                                'Entity Room Index': {
+                                    'Offset': 0x06,
+                                    'Type': 'u16',
+                                },
+                                'Params': {
+                                    'Offset': 0x08,
+                                    'Type': 'u16',
+                                },
+                            },
+                        },
+                        'Data': [],
+                    }
                     offset = 0
                     while True:
-                        x = cursors[direction].s16(offset + 0x0, True)
-                        y = cursors[direction].s16(offset + 0x2, True)
-                        entity_type_id = cursors[direction].u16(offset + 0x4, True)
-                        entity_room_index = cursors[direction].u16(offset + 0x6, True)
-                        params = cursors[direction].u16(offset + 0x8, True)
+                        x = cursors[direction].s16(offset + 0x0)
+                        y = cursors[direction].s16(offset + 0x2)
+                        entity_type_id = cursors[direction].u16(offset + 0x4)
+                        entity_room_index = cursors[direction].u16(offset + 0x6)
+                        params = cursors[direction].u16(offset + 0x8)
                         offset += 10
-                        if x['Value'] == -2:
+                        if x == -2:
                             continue
-                        elif x['Value'] == -1:
+                        elif x == -1:
                             break
-                        _object = {
+                        data = {
                             'X': x,
                             'Y': y,
                             'Entity Type ID': entity_type_id,
                             'Entity Room Index': entity_room_index,
                             'Params': params,
                         }
-                        objects.append(_object)
+                        objects['Data'].append(data)
+                    objects['Metadata']['Count'] = len(objects['Data'])
                     stages[stage_name]['Rooms'][room_id]['Object Layout - ' + direction] = objects
         # Extract teleporter data
         cursor = BIN(binary_file, 0x00097C5C)

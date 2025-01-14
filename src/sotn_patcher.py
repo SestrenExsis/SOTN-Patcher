@@ -129,23 +129,23 @@ def get_changes_template_file(extract):
             object_layout_v = None
             if room_data['Tileset ID']['Value'] != -1:
                 object_layout_h = {}
-                for (index, object_layout_data) in enumerate(room_data['Object Layout - Horizontal']):
-                    entity_type_id = object_layout_data['Entity Type ID']['Value']
+                for (index, object_layout_data) in enumerate(room_data['Object Layout - Horizontal']['Data']):
+                    entity_type_id = object_layout_data['Entity Type ID']
                     if entity_type_id == 11:
                         relic_found_ind = True
                         object_h = {
                             'Entity Type ID': entity_type_id,
-                            'Params': object_layout_data['Params']['Value'],
+                            'Params': object_layout_data['Params'],
                         }
                         object_layout_h[index] = object_h
                 object_layout_v = {}
-                for (index, object_layout_data) in enumerate(room_data['Object Layout - Vertical']):
-                    entity_type_id = object_layout_data['Entity Type ID']['Value']
+                for (index, object_layout_data) in enumerate(room_data['Object Layout - Vertical']['Data']):
+                    entity_type_id = object_layout_data['Entity Type ID']
                     if entity_type_id == 11:
                         relic_found_ind = True
                         object_h = {
                             'Entity Type ID': entity_type_id,
-                            'Params': object_layout_data['Params']['Value'],
+                            'Params': object_layout_data['Params'],
                         }
                         object_layout_v[index] = object_h
             result['Stages'][stage_id]['Rooms'][room_id] = {
@@ -299,13 +299,13 @@ def get_ppf(extract, changes):
                         for object_id in sorted(object_layout_data):
                             object_index = int(object_id)
                             object_data = object_layout_data[object_id]
-                            object_extract = object_layout_extract[object_index]
+                            object_extract = object_layout_extract['Data'][object_index]
                             if 'Params' in object_data:
-                                if object_data['Params'] != object_extract['Params']['Value']:
+                                if object_data['Params'] != object_extract['Params']:
                                     result.patch_value(
                                         object_data['Params'],
-                                        object_extract['Params']['Type'],
-                                        sotn_address.Address(object_extract['Params']['Start']),
+                                        object_layout_extract['Metadata']['Fields']['Params']['Type'],
+                                        sotn_address.Address(object_layout_extract['Metadata']['Start']),
                                     )
                     # Room: Patch object layout vertical
                     if 'Object Layout - Vertical' in room_data:
@@ -314,13 +314,13 @@ def get_ppf(extract, changes):
                         for object_id in sorted(object_layout_data):
                             object_index = int(object_id)
                             object_data = object_layout_data[object_id]
-                            object_extract = object_layout_extract[object_index]
+                            object_extract = object_layout_extract['Data'][object_index]
                             if 'Params' in object_data:
-                                if object_data['Params'] != object_extract['Params']['Value']:
+                                if object_data['Params'] != object_extract['Params']:
                                     result.patch_value(
                                         object_data['Params'],
-                                        object_extract['Params']['Type'],
-                                        sotn_address.Address(object_extract['Params']['Start']),
+                                        object_layout_extract['Metadata']['Fields']['Params']['Type'],
+                                        sotn_address.Address(object_layout_extract['Metadata']['Start']),
                                     )
     # Patch teleporters
     if 'Teleporters' in changes:
