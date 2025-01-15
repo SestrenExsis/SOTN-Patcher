@@ -374,7 +374,7 @@ def get_ppf(extract, changes):
             row_data = changes['Castle Map'][row]
             for col in range(0, extract_metadata['Columns'], 2):
                 (left, right) = (col, col + 1)
-                (big, little) = (int(row_data[left], base=16), int(row_data[right], base=16))
+                (little, big) = (int(row_data[left], base=16), int(row_data[right], base=16))
                 pixel_pair_value = 0x10 * big + little
                 col_span = col // 2
                 result.patch_value(pixel_pair_value,
