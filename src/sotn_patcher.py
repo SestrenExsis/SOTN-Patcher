@@ -112,8 +112,9 @@ def get_changes_template_file(extract):
         'Constants': {},
         'Stages': {},
         'Teleporters': {},
+        'Castle Map': [],
     }
-    for boss_teleporter_index in extract['Boss Teleporters']['Data']:
+    for boss_teleporter_index in range(len(extract['Boss Teleporters']['Data'])):
         result['Boss Teleporters'][boss_teleporter_index] = {
             'Room X': extract['Boss Teleporters']['Data'][boss_teleporter_index]['Room X'],
             'Room Y': extract['Boss Teleporters']['Data'][boss_teleporter_index]['Room Y'],
@@ -156,13 +157,16 @@ def get_changes_template_file(extract):
                 room = result['Stages'][stage_id]['Rooms'][room_id]
                 room['Object Layout - Horizontal'] = object_layout_h
                 room['Object Layout - Vertical'] = object_layout_v
-    for teleporter_index in extract['Teleporters']['Data']:
+    for teleporter_index in range(len(extract['Teleporters']['Data'])):
         result['Teleporters'][teleporter_index] = {
             'Player X': extract['Teleporters']['Data'][teleporter_index]['Player X'],
             'Player Y': extract['Teleporters']['Data'][teleporter_index]['Player Y'],
             'Room Offset': extract['Teleporters']['Data'][teleporter_index]['Room Offset'],
             'Target Stage ID': extract['Teleporters']['Data'][teleporter_index]['Target Stage ID'],
         }
+    for row in range(len(extract['Castle Map']['Data'])):
+        row_data = extract['Castle Map']['Data'][row]
+        result['Castle Map'].append(row_data)
     return result
 
 def validate_changes(changes):
@@ -195,7 +199,7 @@ def get_ppf(extract, changes):
         extract_metadata = extract['Boss Teleporters']['Metadata']
         for boss_teleporter_index in sorted(changes['Boss Teleporters']):
             boss_teleporter_data = changes['Boss Teleporters'][boss_teleporter_index]
-            extract_data = extract['Boss Teleporters']['Data'][boss_teleporter_index]
+            extract_data = extract['Boss Teleporters']['Data'][int(boss_teleporter_index)]
             # Boss Teleporter: Patch room X
             room_x = extract_data['Room X']
             if 'Room X' in boss_teleporter_data:
@@ -327,7 +331,7 @@ def get_ppf(extract, changes):
         extract_metadata = extract['Teleporters']['Metadata']
         for teleporter_index in sorted(changes['Teleporters']):
             teleporter_data = changes['Teleporters'][teleporter_index]
-            extract_data = extract['Teleporters']['Data'][teleporter_index]
+            extract_data = extract['Teleporters']['Data'][int(teleporter_index)]
             # Teleporter: Patch player X
             player_x = extract_data['Player X']
             if 'Player X' in teleporter_data:
@@ -364,6 +368,19 @@ def get_ppf(extract, changes):
                         extract_metadata['Fields']['Target Stage ID']['Type'],
                         sotn_address.Address(extract_metadata['Start'] + int(teleporter_index) * extract_metadata['Size'] + extract_metadata['Fields']['Target Stage ID']['Offset']),
                     )
+    if 'Castle Map' in changes:
+        extract_metadata = extract['Castle Map']['Metadata']
+        for row in range(extract_metadata['Rows']):
+            row_data = changes['Castle Map'][row]
+            for col in range(0, extract_metadata['Columns'], 2):
+                (left, right) = (col, col + 1)
+                (big, little) = (int(row_data[left], base=16), int(row_data[right], base=16))
+                pixel_pair_value = 0x10 * big + little
+                col_span = col // 2
+                result.patch_value(pixel_pair_value,
+                    'u8',
+                    sotn_address.Address(extract_metadata['Start'] + row * extract_metadata['Columns'] + col_span),
+                )
     return result
 
 if __name__ == '__main__':
