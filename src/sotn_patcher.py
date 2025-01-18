@@ -212,9 +212,9 @@ def get_ppf(extract, changes):
                     )
             # Boss Teleporter: Patch room Y
             room_y = extract_data['Room Y']
-            if 'Room X' in boss_teleporter_data:
-                if boss_teleporter_data['Room Y'] != room_x:
-                    room_x = boss_teleporter_data['Room Y']
+            if 'Room Y' in boss_teleporter_data:
+                if boss_teleporter_data['Room Y'] != room_y:
+                    room_y = boss_teleporter_data['Room Y']
                     result.patch_value(
                         room_y,
                         extract_metadata['Fields']['Room Y']['Type'],
@@ -234,13 +234,13 @@ def get_ppf(extract, changes):
     # Patch stage data
     if 'Stages' in changes:
         for stage_id in sorted(changes['Stages']):
-            print(stage_id)
+            # print(stage_id)
             stage_data = changes['Stages'][stage_id]
             stage_extract = extract['Stages'][stage_id]
             # Stage: Patch room data
             if 'Rooms' in stage_data:
                 for room_id in sorted(stage_data['Rooms']):
-                    print('', room_id)
+                    # print('', room_id)
                     room_data = stage_data['Rooms'][room_id]
                     room_extract = stage_extract['Rooms'][room_id]
                     left = room_extract['Left']['Value']
@@ -372,7 +372,7 @@ def get_ppf(extract, changes):
         extract_metadata = extract['Castle Map']['Metadata']
         for row in range(extract_metadata['Rows']):
             row_data = changes['Castle Map'][row]
-            for col in range(0, extract_metadata['Columns'], 2):
+            for col in range(0, 2 * extract_metadata['Columns'], 2):
                 (left, right) = (col, col + 1)
                 (little, big) = (int(row_data[left], base=16), int(row_data[right], base=16))
                 pixel_pair_value = 0x10 * big + little
@@ -413,9 +413,9 @@ if __name__ == '__main__':
                     aliases = yaml.safe_load(aliases_file)
                 for (stage_name, stage_changes) in changes['Stages'].items():
                     aliases_found = {}
-                    print(stage_name)
+                    # print(stage_name)
                     for room_name in stage_changes['Rooms']:
-                        print('', room_name)
+                        # print('', room_name)
                         if room_name in aliases['Rooms']:
                             room_index = aliases['Rooms'][room_name]['Index']
                             aliases_found[room_name] = str(room_index)

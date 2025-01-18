@@ -208,7 +208,7 @@ if __name__ == '__main__':
                     'Size': 160988,
                 },
             },
-            'Boss - Beezlebub': {
+            'Boss - Beelzebub': {
                 'Stage': {
                     'Start': 0x05870000,
                     'Size': 139104,
@@ -242,6 +242,12 @@ if __name__ == '__main__':
                 'Stage': {
                     'Start': 0x05B93800,
                     'Size': 213060,
+                },
+            },
+            'Boss - Succubus': {
+                'Stage': {
+                    'Start': 0x04F31000,
+                    'Size': 147456,
                 },
             },
             'Boss - Akmodan II': {
@@ -642,6 +648,7 @@ if __name__ == '__main__':
                 data = row_cursor.u8(col)
                 row_data += ''.join(reversed('{:02X}'.format(data)))
             castle_map['Data'].append(row_data)
+        # TODO(sestren): Extract Warp Room coordinates list
         # Store extracted data
         extraction = {
             'Constants': constants,
