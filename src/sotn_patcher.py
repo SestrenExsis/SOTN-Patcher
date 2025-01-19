@@ -170,6 +170,12 @@ def get_changes_template_file(extract):
     return result
 
 def validate_changes(changes):
+    if 'Boss Teleporters' in changes:
+        # TODO(sestren): Validate boss teleporters
+        pass
+    if 'Constants' in changes:
+        # TODO(sestren): Validate constants
+        pass
     if 'Stages' in changes:
         for (stage_id, stage_data) in changes['Stages'].items():
             if 'Rooms' in stage_data:
@@ -182,12 +188,6 @@ def validate_changes(changes):
                     if 'Object Layout - Horizontal' in room_data:
                         # TODO(sestren): Validate changes to object layouts
                         pass
-    if 'Constants' in changes:
-        for (constant_name, constant_data) in changes['Constants'].items():
-            assert 0 <= constant_data <= 255
-    if 'Boss Teleporters' in changes:
-        # TODO(sestren): Validate boss teleporters
-        pass
     if 'Teleporters' in changes:
         # TODO(sestren): Validate teleporters
         pass
