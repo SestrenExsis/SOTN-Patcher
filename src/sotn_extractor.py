@@ -630,6 +630,10 @@ if __name__ == '__main__':
         for drop_index in range(2, 4):
             data = cursor.u16(2 * drop_index, True)
             constants[f'Relic Container Drop ID {str(drop_index)}'] = data
+        cursor = BIN(binary_file, 0x000FFCE4) # 0x2442E0C0 --> subiu v0, $1F40
+        constants[f'Castle Teleporter, X Offset'] = cursor.s16(0, True)
+        cursor = BIN(binary_file, 0x000FFD18) # 0x2442F7B1 --> subiu v0, $084F
+        constants[f'Castle Teleporter, Y Offset'] = cursor.s16(0, True)
         # Extract castle map data
         cursor = BIN(binary_file, 0x001AF800)
         castle_map = {
