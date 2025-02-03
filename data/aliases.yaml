@@ -75,13 +75,13 @@ Rooms:
         Index: 15
     Castle Entrance, Drop Under Portcullis:
         Index: 1
-    Castle Entrance, Fake Room With Teleporter ID 013:
+    Castle Entrance, Fake Room With Teleporter C:
         Index: 28
-    Castle Entrance, Fake Room With Teleporter ID 011:
+    Castle Entrance, Fake Room With Teleporter A:
         Index: 29
-    Castle Entrance, Fake Room With Teleporter ID 014:
+    Castle Entrance, Fake Room With Teleporter D:
         Index: 30
-    Castle Entrance, Fake Room With Teleporter ID 012:
+    Castle Entrance, Fake Room With Teleporter B:
         Index: 31
     Castle Entrance, Forest Cutscene:
         Index: 18
@@ -139,13 +139,13 @@ Rooms:
         Index: 15
     Castle Entrance Revisited, Drop Under Portcullis:
         Index: 1
-    Castle Entrance Revisited, Fake Room With Teleporter ID 058:
+    Castle Entrance Revisited, Fake Room With Teleporter C:
         Index: 25
-    Castle Entrance Revisited, Fake Room With Teleporter ID 056:
+    Castle Entrance Revisited, Fake Room With Teleporter A:
         Index: 26
-    Castle Entrance Revisited, Fake Room With Teleporter ID 059:
+    Castle Entrance Revisited, Fake Room With Teleporter D:
         Index: 27
-    Castle Entrance Revisited, Fake Room With Teleporter ID 057:
+    Castle Entrance Revisited, Fake Room With Teleporter B:
         Index: 28
     Castle Entrance Revisited, Gargoyle Room:
         Index: 13
@@ -757,7 +757,7 @@ Rooms:
         Index: 3
     Castle Center, Unknown Room ID 02:
         Index: 2
-    Castle Center, Unknown Room ID 04:
+    Castle Center, Fake Room With Teleporter ID 008:
         Index: 4
     Catacombs, Room ID 00:
         Index: 0
@@ -901,13 +901,13 @@ Rooms:
         Index: 15
     Reverse Entrance, Drop Under Portcullis:
         Index: 1
-    Reverse Entrance, Fake Room With Teleporter ID 057:
+    Reverse Entrance, Fake Room With Teleporter B:
         Index: 28
-    Reverse Entrance, Fake Room With Teleporter ID 059:
+    Reverse Entrance, Fake Room With Teleporter D:
         Index: 29
-    Reverse Entrance, Fake Room With Teleporter ID 056:
+    Reverse Entrance, Fake Room With Teleporter A:
         Index: 30
-    Reverse Entrance, Fake Room With Teleporter ID 058:
+    Reverse Entrance, Fake Room With Teleporter C:
         Index: 31
     Reverse Entrance, Forest Cutscene:
         Index: 18
@@ -1477,7 +1477,7 @@ Rooms:
         Index: 3
     Reverse Castle Center, Unknown Room ID 02:
         Index: 2
-    Reverse Castle Center, Unknown Room ID 04:
+    Reverse Castle Center, Fake Room With Teleporter ID 007:
         Index: 4
     Floating Catacombs, Room ID 00:
         Index: 0
