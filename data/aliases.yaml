@@ -701,11 +701,29 @@ Rooms:
         Index: 17
     Abandoned Mine, Fake Room With Teleporter ID 018:
         Index: 18
+    Boss - Akmodan II, Olrox's Room:
+        Index: 0
+    Boss - Akmodan II, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Akmodan II, Fake Room With Teleporter B:
+        Index: 2
     Boss - Cerberus, Cerberus Room:
         Index: 0
     Boss - Cerberus, Fake Room With Teleporter A:
         Index: 1
     Boss - Cerberus, Fake Room With Teleporter B:
+        Index: 2
+    Boss - Creature, Doppelganger Room:
+        Index: 0
+    Boss - Creature, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Creature, Fake Room With Teleporter B:
+        Index: 2
+    Boss - Death, Cerberus Room:
+        Index: 0
+    Boss - Death, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Death, Fake Room With Teleporter B:
         Index: 2
     Boss - Doppelganger 10, Doppelganger Room:
         Index: 0
@@ -724,6 +742,12 @@ Rooms:
     Boss - Hippogryph, Fake Room With Teleporter A:
         Index: 1
     Boss - Hippogryph, Fake Room With Teleporter B:
+        Index: 2
+    Boss - Medusa, Hippogryph Room:
+        Index: 0
+    Boss - Medusa, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Medusa, Fake Room With Teleporter B:
         Index: 2
     Boss - Minotaur and Werewolf, Arena:
         Index: 0

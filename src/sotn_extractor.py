@@ -232,7 +232,7 @@ if __name__ == '__main__':
                     'Size': 154660,
                 },
             },
-            'Boss - Doppleganger 40': {
+            'Boss - Doppelganger 40': {
                 'Stage': {
                     'Start': 0x05AE3800,
                     'Size': 345096,
