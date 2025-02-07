@@ -53,7 +53,7 @@ Rooms:
         Index: 13
     Alchemy Laboratory, Skill of Wolf Room:
         Index: 8
-    Alchemy Laboratory, Slogra and Gaibon Boss Room:
+    Alchemy Laboratory, Slogra and Gaibon Room:
         Index: 16
     Alchemy Laboratory, Sunglasses Room:
         Index: 6
@@ -707,6 +707,14 @@ Rooms:
         Index: 1
     Boss - Akmodan II, Fake Room With Teleporter B:
         Index: 2
+    Boss - Beelzebub, Slogra and Gaibon Room:
+        Index: 0
+    Boss - Beelzebub, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Beelzebub, Fake Room With Teleporter B:
+        Index: 2
+    Boss - Beelzebub, Fake Room With Teleporter C:
+        Index: 3
     Boss - Cerberus, Cerberus Room:
         Index: 0
     Boss - Cerberus, Fake Room With Teleporter A:
@@ -730,6 +738,18 @@ Rooms:
     Boss - Doppelganger 10, Fake Room With Teleporter A:
         Index: 1
     Boss - Doppelganger 10, Fake Room With Teleporter B:
+        Index: 2
+    Boss - Doppelganger 40, Scylla Wyrm Room:
+        Index: 0
+    Boss - Doppelganger 40, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Doppelganger 40, Fake Room With Teleporter B:
+        Index: 2
+    Boss - Galamoth, Granfaloon's Lair:
+        Index: 0
+    Boss - Galamoth, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Galamoth, Fake Room With Teleporter B:
         Index: 2
     Boss - Granfaloon, Granfaloon's Lair:
         Index: 0
@@ -761,6 +781,8 @@ Rooms:
         Index: 1
     Boss - Olrox, Fake Room With Teleporter B:
         Index: 2
+    Boss - Richter, Throne Room:
+        Index: 0
     Boss - Scylla, Crystal Cloak Room:
         Index: 3
     Boss - Scylla, Rising Water Room:
@@ -771,8 +793,12 @@ Rooms:
         Index: 1
     Boss - Scylla, Fake Room With Teleporter A:
         Index: 4
-    Boss - Richter, Throne Room:
+    Boss - Trio, Arena:
         Index: 0
+    Boss - Trio, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Trio, Fake Room With Teleporter B:
+        Index: 2
     Castle Center, Elevator Shaft:
         Index: 0
     Castle Center, Center Cube:
@@ -903,7 +929,7 @@ Rooms:
         Index: 13
     Necromancy Laboratory, Skill of Wolf Room:
         Index: 8
-    Necromancy Laboratory, Slogra and Gaibon Boss Room:
+    Necromancy Laboratory, Slogra and Gaibon Room:
         Index: 16
     Necromancy Laboratory, Sunglasses Room:
         Index: 6
