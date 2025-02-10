@@ -23,11 +23,11 @@ Rooms:
         Index: 20
     Alchemy Laboratory, Exit to Royal Chapel:
         Index: 1
-    Alchemy Laboratory, Fake Room With Teleporter A:
+    Alchemy Laboratory, Fake Room With Teleporter ID 022:
         Index: 29
-    Alchemy Laboratory, Fake Room With Teleporter B:
+    Alchemy Laboratory, Fake Room With Teleporter ID 023:
         Index: 30
-    Alchemy Laboratory, Fake Room With Teleporter C:
+    Alchemy Laboratory, Fake Room With Teleporter ID 021:
         Index: 31
     Alchemy Laboratory, Glass Vats:
         Index: 7
@@ -53,7 +53,7 @@ Rooms:
         Index: 13
     Alchemy Laboratory, Skill of Wolf Room:
         Index: 8
-    Alchemy Laboratory, Slogra and Gaibon Boss Room:
+    Alchemy Laboratory, Slogra and Gaibon Room:
         Index: 16
     Alchemy Laboratory, Sunglasses Room:
         Index: 6
@@ -75,13 +75,13 @@ Rooms:
         Index: 15
     Castle Entrance, Drop Under Portcullis:
         Index: 1
-    Castle Entrance, Fake Room With Teleporter A:
-        Index: 28
-    Castle Entrance, Fake Room With Teleporter B:
-        Index: 29
     Castle Entrance, Fake Room With Teleporter C:
-        Index: 30
+        Index: 28
+    Castle Entrance, Fake Room With Teleporter A:
+        Index: 29
     Castle Entrance, Fake Room With Teleporter D:
+        Index: 30
+    Castle Entrance, Fake Room With Teleporter B:
         Index: 31
     Castle Entrance, Forest Cutscene:
         Index: 18
@@ -139,13 +139,13 @@ Rooms:
         Index: 15
     Castle Entrance Revisited, Drop Under Portcullis:
         Index: 1
-    Castle Entrance Revisited, Fake Room With Teleporter A:
-        Index: 25
-    Castle Entrance Revisited, Fake Room With Teleporter B:
-        Index: 26
     Castle Entrance Revisited, Fake Room With Teleporter C:
-        Index: 27
+        Index: 25
+    Castle Entrance Revisited, Fake Room With Teleporter A:
+        Index: 26
     Castle Entrance Revisited, Fake Room With Teleporter D:
+        Index: 27
+    Castle Entrance Revisited, Fake Room With Teleporter B:
         Index: 28
     Castle Entrance Revisited, Gargoyle Room:
         Index: 13
@@ -189,9 +189,9 @@ Rooms:
         Index: 9
     Clock Tower, Exit to Courtyard:
         Index: 8
-    Clock Tower, Fake Room With Teleporter A:
+    Clock Tower, Fake Room With Teleporter ID 009:
         Index: 15
-    Clock Tower, Fake Room With Teleporter B:
+    Clock Tower, Fake Room With Teleporter ID 010:
         Index: 16
     Clock Tower, Fire of Bat Room:
         Index: 12
@@ -227,9 +227,9 @@ Rooms:
         Index: 10
     Colosseum, Bottom of Elevator Shaft:
         Index: 11
-    Colosseum, Fake Room With Teleporter A:
+    Colosseum, Fake Room With Teleporter ID 052:
         Index: 18
-    Colosseum, Fake Room With Teleporter B:
+    Colosseum, Fake Room With Teleporter ID 053:
         Index: 19
     Colosseum, Fountain Room:
         Index: 9
@@ -267,7 +267,7 @@ Rooms:
         Index: 12
     Long Library, Faerie Card Room:
         Index: 7
-    Long Library, Fake Room With Teleporter A:
+    Long Library, Fake Room With Teleporter ID 006:
         Index: 15
     Long Library, Flea Man Room:
         Index: 6
@@ -311,17 +311,17 @@ Rooms:
         Index: 11
     Marble Gallery, Entrance:
         Index: 6
-    Marble Gallery, Fake Room With Teleporter A:
+    Marble Gallery, Fake Room With Teleporter ID 001:
         Index: 33
-    Marble Gallery, Fake Room With Teleporter B:
+    Marble Gallery, Fake Room With Teleporter ID 002:
         Index: 34
-    Marble Gallery, Fake Room With Teleporter C:
+    Marble Gallery, Fake Room With Teleporter ID 000:
         Index: 35
-    Marble Gallery, Fake Room With Teleporter D:
+    Marble Gallery, Fake Room With Teleporter ID 004:
         Index: 36
-    Marble Gallery, Fake Room With Teleporter E:
+    Marble Gallery, Fake Room With Teleporter ID 005:
         Index: 37
-    Marble Gallery, Fake Room With Teleporter F:
+    Marble Gallery, Fake Room With Teleporter ID 003:
         Index: 38
     Marble Gallery, Gravity Boots Room:
         Index: 20
@@ -379,13 +379,13 @@ Rooms:
         Index: 9
     Olrox's Quarters, Empty Room:
         Index: 5
-    Olrox's Quarters, Fake Room With Teleporter A:
+    Olrox's Quarters, Fake Room With Teleporter ID 025:
         Index: 21
-    Olrox's Quarters, Fake Room With Teleporter B:
+    Olrox's Quarters, Fake Room With Teleporter ID 027:
         Index: 22
-    Olrox's Quarters, Fake Room With Teleporter C:
+    Olrox's Quarters, Fake Room With Teleporter ID 026:
         Index: 23
-    Olrox's Quarters, Fake Room With Teleporter D:
+    Olrox's Quarters, Fake Room With Teleporter ID 024:
         Index: 24
     Olrox's Quarters, Garnet Room:
         Index: 10
@@ -429,13 +429,13 @@ Rooms:
         Index: 2
     Outer Wall, Exit to Marble Gallery:
         Index: 7
-    Outer Wall, Fake Room With Teleporter A:
+    Outer Wall, Fake Room With Teleporter ID 043:
         Index: 19
-    Outer Wall, Fake Room With Teleporter B:
+    Outer Wall, Fake Room With Teleporter ID 042:
         Index: 20
-    Outer Wall, Fake Room With Teleporter C:
+    Outer Wall, Fake Room With Teleporter ID 041:
         Index: 21
-    Outer Wall, Fake Room With Teleporter D:
+    Outer Wall, Fake Room With Teleporter ID 040:
         Index: 22
     Outer Wall, Garlic Room:
         Index: 10
@@ -465,15 +465,15 @@ Rooms:
         Index: 3
     Outer Wall, Top of Outer Wall:
         Index: 1
-    Warp Rooms, Fake Room With Teleporter A:
+    Warp Rooms, Fake Room With Teleporter ID 028:
         Index: 10
-    Warp Rooms, Fake Room With Teleporter B:
+    Warp Rooms, Fake Room With Teleporter ID 029:
         Index: 11
-    Warp Rooms, Fake Room With Teleporter C:
+    Warp Rooms, Fake Room With Teleporter ID 030:
         Index: 12
-    Warp Rooms, Fake Room With Teleporter D:
+    Warp Rooms, Fake Room With Teleporter ID 031:
         Index: 13
-    Warp Rooms, Fake Room With Teleporter E:
+    Warp Rooms, Fake Room With Teleporter ID 032:
         Index: 14
     Warp Rooms, Loading Room A:
         Index: 5
@@ -499,11 +499,11 @@ Rooms:
         Index: 4
     Castle Keep, Dual Platforms:
         Index: 7
-    Castle Keep, Fake Room With Teleporter A:
+    Castle Keep, Fake Room With Teleporter ID 045:
         Index: 13
-    Castle Keep, Fake Room With Teleporter B:
+    Castle Keep, Fake Room With Teleporter ID 047:
         Index: 14
-    Castle Keep, Fake Room With Teleporter C:
+    Castle Keep, Fake Room With Teleporter ID 046:
         Index: 15
     Castle Keep, Falchion Room:
         Index: 5
@@ -533,13 +533,13 @@ Rooms:
         Index: 7
     Royal Chapel, Empty Room:
         Index: 10
-    Royal Chapel, Fake Room With Teleporter A:
+    Royal Chapel, Fake Room With Teleporter ID 036:
         Index: 22
-    Royal Chapel, Fake Room With Teleporter B:
+    Royal Chapel, Fake Room With Teleporter ID 033:
         Index: 23
-    Royal Chapel, Fake Room With Teleporter C:
+    Royal Chapel, Fake Room With Teleporter ID 034:
         Index: 24
-    Royal Chapel, Fake Room With Teleporter D:
+    Royal Chapel, Fake Room With Teleporter ID 035:
         Index: 25
     Royal Chapel, Goggles Room:
         Index: 8
@@ -655,13 +655,13 @@ Rooms:
         Index: 36
     Underground Caverns, False Save Room:
         Index: 37
-    Underground Caverns, Fake Room With Teleporter A:
+    Underground Caverns, Fake Room With Teleporter ID 049:
         Index: 38
-    Underground Caverns, Fake Room With Teleporter B:
+    Underground Caverns, Fake Room With Teleporter ID 051:
         Index: 39
-    Underground Caverns, Fake Room With Teleporter C:
+    Underground Caverns, Fake Room With Teleporter ID 050:
         Index: 40
-    Underground Caverns, Fake Room With Teleporter D:
+    Underground Caverns, Fake Room With Teleporter ID 048:
         Index: 41
     Abandoned Mine, Wolf's Head Column:
         Index: 0
@@ -695,23 +695,61 @@ Rooms:
         Index: 14
     Abandoned Mine, Save Room A:
         Index: 15
-    Abandoned Mine, Fake Room With Teleporter A:
+    Abandoned Mine, Fake Room With Teleporter ID 019:
         Index: 16
-    Abandoned Mine, Fake Room With Teleporter B:
+    Abandoned Mine, Fake Room With Teleporter ID 020:
         Index: 17
-    Abandoned Mine, Fake Room With Teleporter C:
+    Abandoned Mine, Fake Room With Teleporter ID 018:
         Index: 18
+    Boss - Akmodan II, Olrox's Room:
+        Index: 0
+    Boss - Akmodan II, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Akmodan II, Fake Room With Teleporter B:
+        Index: 2
+    Boss - Beelzebub, Slogra and Gaibon Room:
+        Index: 0
+    Boss - Beelzebub, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Beelzebub, Fake Room With Teleporter B:
+        Index: 2
+    Boss - Beelzebub, Fake Room With Teleporter C:
+        Index: 3
     Boss - Cerberus, Cerberus Room:
         Index: 0
     Boss - Cerberus, Fake Room With Teleporter A:
         Index: 1
     Boss - Cerberus, Fake Room With Teleporter B:
         Index: 2
+    Boss - Creature, Doppelganger Room:
+        Index: 0
+    Boss - Creature, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Creature, Fake Room With Teleporter B:
+        Index: 2
+    Boss - Death, Cerberus Room:
+        Index: 0
+    Boss - Death, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Death, Fake Room With Teleporter B:
+        Index: 2
     Boss - Doppelganger 10, Doppelganger Room:
         Index: 0
     Boss - Doppelganger 10, Fake Room With Teleporter A:
         Index: 1
     Boss - Doppelganger 10, Fake Room With Teleporter B:
+        Index: 2
+    Boss - Doppelganger 40, Scylla Wyrm Room:
+        Index: 0
+    Boss - Doppelganger 40, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Doppelganger 40, Fake Room With Teleporter B:
+        Index: 2
+    Boss - Galamoth, Granfaloon's Lair:
+        Index: 0
+    Boss - Galamoth, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Galamoth, Fake Room With Teleporter B:
         Index: 2
     Boss - Granfaloon, Granfaloon's Lair:
         Index: 0
@@ -725,6 +763,12 @@ Rooms:
         Index: 1
     Boss - Hippogryph, Fake Room With Teleporter B:
         Index: 2
+    Boss - Medusa, Hippogryph Room:
+        Index: 0
+    Boss - Medusa, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Medusa, Fake Room With Teleporter B:
+        Index: 2
     Boss - Minotaur and Werewolf, Arena:
         Index: 0
     Boss - Minotaur and Werewolf, Fake Room With Teleporter A:
@@ -737,6 +781,8 @@ Rooms:
         Index: 1
     Boss - Olrox, Fake Room With Teleporter B:
         Index: 2
+    Boss - Richter, Throne Room:
+        Index: 0
     Boss - Scylla, Crystal Cloak Room:
         Index: 3
     Boss - Scylla, Rising Water Room:
@@ -747,17 +793,21 @@ Rooms:
         Index: 1
     Boss - Scylla, Fake Room With Teleporter A:
         Index: 4
-    Boss - Richter, Throne Room:
+    Boss - Trio, Arena:
         Index: 0
+    Boss - Trio, Fake Room With Teleporter A:
+        Index: 1
+    Boss - Trio, Fake Room With Teleporter B:
+        Index: 2
     Castle Center, Elevator Shaft:
         Index: 0
     Castle Center, Center Cube:
         Index: 1
-    Castle Center, Fake Room With Teleporter A:
+    Castle Center, Fake Room With Teleporter ID 007:
         Index: 3
     Castle Center, Unknown Room ID 02:
         Index: 2
-    Castle Center, Unknown Room ID 04:
+    Castle Center, Fake Room With Teleporter ID 008:
         Index: 4
     Catacombs, Room ID 00:
         Index: 0
@@ -817,5 +867,725 @@ Rooms:
         Index: 27
     Catacombs, Loading Room A:
         Index: 28
-    Catacombs, Fake Room With Teleporter A:
+    Catacombs, Fake Room With Teleporter ID 016:
+        Index: 29
+    Cutscene - Meeting Maria in Clock Room, Clock Room:
+        Index: 0
+    Cutscene - Meeting Maria in Clock Room, Fake Room With Teleporter A:
+        Index: 1
+    Cutscene - Meeting Maria in Clock Room, Fake Room With Teleporter B:
+        Index: 2
+    Necromancy Laboratory, Bat Card Room:
+        Index: 0
+    Necromancy Laboratory, Bloody Zombie Hallway:
+        Index: 3
+    Necromancy Laboratory, Blue Door Hallway:
+        Index: 2
+    Necromancy Laboratory, Box Puzzle Room:
+        Index: 17
+    Necromancy Laboratory, Cannon Room:
+        Index: 4
+    Necromancy Laboratory, Cloth Cape Room:
+        Index: 5
+    Necromancy Laboratory, Corridor to Elevator:
+        Index: 21
+    Necromancy Laboratory, Elevator Shaft:
+        Index: 22
+    Necromancy Laboratory, Empty Zig Zag Room:
+        Index: 12
+    Necromancy Laboratory, Entryway:
+        Index: 10
+    Necromancy Laboratory, Exit to Marble Gallery:
+        Index: 20
+    Necromancy Laboratory, Exit to Royal Chapel:
+        Index: 1
+    Necromancy Laboratory, Fake Room With Teleporter ID 021:
+        Index: 29
+    Necromancy Laboratory, Fake Room With Teleporter ID 023:
+        Index: 30
+    Necromancy Laboratory, Fake Room With Teleporter ID 022:
+        Index: 31
+    Necromancy Laboratory, Glass Vats:
+        Index: 7
+    Necromancy Laboratory, Heart Max-Up Room:
+        Index: 9
+    Necromancy Laboratory, Loading Room A:
+        Index: 26
+    Necromancy Laboratory, Loading Room B:
+        Index: 27
+    Necromancy Laboratory, Loading Room C:
+        Index: 28
+    Necromancy Laboratory, Red Skeleton Lift Room:
+        Index: 18
+    Necromancy Laboratory, Save Room A:
+        Index: 23
+    Necromancy Laboratory, Save Room B:
+        Index: 24
+    Necromancy Laboratory, Save Room C:
+        Index: 25
+    Necromancy Laboratory, Secret Life Max-Up Room:
+        Index: 15
+    Necromancy Laboratory, Short Zig Zag Room:
+        Index: 13
+    Necromancy Laboratory, Skill of Wolf Room:
+        Index: 8
+    Necromancy Laboratory, Slogra and Gaibon Room:
+        Index: 16
+    Necromancy Laboratory, Sunglasses Room:
+        Index: 6
+    Necromancy Laboratory, Tall Spittlebone Room:
+        Index: 11
+    Necromancy Laboratory, Tall Zig Zag Room:
+        Index: 14
+    Necromancy Laboratory, Tetromino Room:
+        Index: 19
+    Reverse Entrance, After Drawbridge:
+        Index: 0
+    Reverse Entrance, Attic Entrance:
+        Index: 6
+    Reverse Entrance, Attic Hallway:
+        Index: 5
+    Reverse Entrance, Attic Staircase:
+        Index: 4
+    Reverse Entrance, Cube of Zoe Room:
+        Index: 15
+    Reverse Entrance, Drop Under Portcullis:
+        Index: 1
+    Reverse Entrance, Fake Room With Teleporter B:
+        Index: 28
+    Reverse Entrance, Fake Room With Teleporter D:
+        Index: 29
+    Reverse Entrance, Fake Room With Teleporter A:
+        Index: 30
+    Reverse Entrance, Fake Room With Teleporter C:
+        Index: 31
+    Reverse Entrance, Forest Cutscene:
+        Index: 18
+    Reverse Entrance, Gargoyle Room:
+        Index: 13
+    Reverse Entrance, Heart Max-Up Room:
+        Index: 14
+    Reverse Entrance, Holy Mail Room:
+        Index: 3
+    Reverse Entrance, Jewel Sword Room:
+        Index: 8
+    Reverse Entrance, Life Max-Up Room:
+        Index: 17
+    Reverse Entrance, Loading Room A:
+        Index: 21
+    Reverse Entrance, Loading Room B:
+        Index: 22
+    Reverse Entrance, Loading Room C:
+        Index: 23
+    Reverse Entrance, Loading Room D:
+        Index: 24
+    Reverse Entrance, Meeting Room With Death:
+        Index: 11
+    Reverse Entrance, Merman Room:
+        Index: 7
+    Reverse Entrance, Save Room A:
+        Index: 25
+    Reverse Entrance, Save Room B:
+        Index: 26
+    Reverse Entrance, Save Room C:
+        Index: 27
+    Reverse Entrance, Shortcut to Underground Caverns:
+        Index: 10
+    Reverse Entrance, Shortcut to Warp:
+        Index: 16
+    Reverse Entrance, Stairwell After Death:
+        Index: 12
+    Reverse Entrance, Unknown Room 19:
+        Index: 19
+    Reverse Entrance, Unknown Room 20:
+        Index: 20
+    Reverse Entrance, Warg Hallway:
+        Index: 9
+    Reverse Entrance, Zombie Hallway:
+        Index: 2
+    Reverse Clock Tower, Belfry:
+        Index: 9
+    Reverse Clock Tower, Exit to Courtyard:
+        Index: 8
+    Reverse Clock Tower, Fake Room With Teleporter ID 010:
+        Index: 15
+    Reverse Clock Tower, Fake Room With Teleporter ID 009:
+        Index: 16
+    Reverse Clock Tower, Fire of Bat Room:
+        Index: 12
+    Reverse Clock Tower, Healing Mail Room:
+        Index: 2
+    Reverse Clock Tower, Hidden Armory:
+        Index: 5
+    Reverse Clock Tower, Karasuman's Room:
+        Index: 0
+    Reverse Clock Tower, Left Gear Room:
+        Index: 6
+    Reverse Clock Tower, Loading Room A:
+        Index: 13
+    Reverse Clock Tower, Loading Room B:
+        Index: 14
+    Reverse Clock Tower, Open Courtyard:
+        Index: 10
+    Reverse Clock Tower, Path to Karasuman:
+        Index: 1
+    Reverse Clock Tower, Pendulum Room:
+        Index: 3
+    Reverse Clock Tower, Right Gear Room:
+        Index: 7
+    Reverse Clock Tower, Spire:
+        Index: 4
+    Reverse Clock Tower, Stairwell to Outer Wall:
+        Index: 11
+    Reverse Colosseum, Arena:
+        Index: 5
+    Reverse Colosseum, Blade Master Room:
+        Index: 2
+    Reverse Colosseum, Blood Cloak Room:
+        Index: 10
+    Reverse Colosseum, Bottom of Elevator Shaft:
+        Index: 11
+    Reverse Colosseum, Fake Room With Teleporter ID 053:
+        Index: 18
+    Reverse Colosseum, Fake Room With Teleporter ID 052:
+        Index: 19
+    Reverse Colosseum, Fountain Room:
+        Index: 9
+    Reverse Colosseum, Holy Sword Room:
+        Index: 0
+    Reverse Colosseum, Left-Side Armory:
+        Index: 12
+    Reverse Colosseum, Loading Room A:
+        Index: 14
+    Reverse Colosseum, Loading Room B:
+        Index: 15
+    Reverse Colosseum, Passageway Between Arena and Royal Chapel:
+        Index: 4
+    Reverse Colosseum, Right-Side Armory:
+        Index: 13
+    Reverse Colosseum, Save Room A:
+        Index: 16
+    Reverse Colosseum, Save Room B:
+        Index: 17
+    Reverse Colosseum, Spiral Staircases:
+        Index: 7
+    Reverse Colosseum, Top of Elevator Shaft:
+        Index: 6
+    Reverse Colosseum, Top of Left Spiral Staircase:
+        Index: 1
+    Reverse Colosseum, Top of Right Spiral Staircase:
+        Index: 3
+    Reverse Colosseum, Valhalla Knight Room:
+        Index: 8
+    Forbidden Library, Dhuron and Flea Armor Room:
+        Index: 3
+    Forbidden Library, Dhuron and Flea Man Room:
+        Index: 10
+    Forbidden Library, Exit to Outer Wall:
+        Index: 12
+    Forbidden Library, Faerie Card Room:
+        Index: 7
+    Forbidden Library, Fake Room With Teleporter ID 006:
+        Index: 15
+    Forbidden Library, Flea Man Room:
+        Index: 6
+    Forbidden Library, Foot of Staircase:
+        Index: 11
+    Forbidden Library, Holy Rod Room:
+        Index: 2
+    Forbidden Library, Lesser Demon Area:
+        Index: 0
+    Forbidden Library, Loading Room A:
+        Index: 13
+    Forbidden Library, Outside Shop:
+        Index: 5
+    Forbidden Library, Save Room A:
+        Index: 14
+    Forbidden Library, Secret Bookcase Room:
+        Index: 1
+    Forbidden Library, Shop:
+        Index: 4
+    Forbidden Library, Spellbook Area:
+        Index: 9
+    Forbidden Library, Three Layer Room:
+        Index: 8
+    Black Marble Gallery, Alucart Room:
+        Index: 25
+    Black Marble Gallery, Beneath Dropoff:
+        Index: 4
+    Black Marble Gallery, Beneath Left Trapdoor:
+        Index: 23
+    Black Marble Gallery, Beneath Right Trapdoor:
+        Index: 24
+    Black Marble Gallery, Blue Door Room:
+        Index: 12
+    Black Marble Gallery, Clock Room:
+        Index: 9
+    Black Marble Gallery, Dropoff:
+        Index: 5
+    Black Marble Gallery, Elevator Room:
+        Index: 21
+    Black Marble Gallery, Empty Room:
+        Index: 11
+    Black Marble Gallery, Entrance:
+        Index: 6
+    Black Marble Gallery, Fake Room With Teleporter ID 003:
+        Index: 33
+    Black Marble Gallery, Fake Room With Teleporter ID 005:
+        Index: 34
+    Black Marble Gallery, Fake Room With Teleporter ID 004:
+        Index: 35
+    Black Marble Gallery, Fake Room With Teleporter ID 000:
+        Index: 36
+    Black Marble Gallery, Fake Room With Teleporter ID 002:
+        Index: 37
+    Black Marble Gallery, Fake Room With Teleporter ID 001:
+        Index: 38
+    Black Marble Gallery, Gravity Boots Room:
+        Index: 20
+    Black Marble Gallery, Left of Clock Room:
+        Index: 10
+    Black Marble Gallery, Loading Room A:
+        Index: 26
+    Black Marble Gallery, Loading Room B:
+        Index: 27
+    Black Marble Gallery, Loading Room C:
+        Index: 28
+    Black Marble Gallery, Loading Room D:
+        Index: 29
+    Black Marble Gallery, Loading Room E:
+        Index: 30
+    Black Marble Gallery, Long Hallway:
+        Index: 8
+    Black Marble Gallery, Ouija Table Stairway:
+        Index: 15
+    Black Marble Gallery, Pathway After Left Statue:
+        Index: 13
+    Black Marble Gallery, Pathway After Right Statue:
+        Index: 14
+    Black Marble Gallery, Power-Up Room:
+        Index: 22
+    Black Marble Gallery, Right of Clock Room:
+        Index: 19
+    Black Marble Gallery, S-Shaped Hallways:
+        Index: 0
+    Black Marble Gallery, Save Room A:
+        Index: 31
+    Black Marble Gallery, Save Room B:
+        Index: 32
+    Black Marble Gallery, Slinger Staircase:
+        Index: 18
+    Black Marble Gallery, Spirit Orb Room:
+        Index: 2
+    Black Marble Gallery, Stained Glass Corner:
+        Index: 3
+    Black Marble Gallery, Stairwell to Underground Caverns:
+        Index: 17
+    Black Marble Gallery, Stopwatch Room:
+        Index: 7
+    Black Marble Gallery, Tall Stained Glass Windows:
+        Index: 1
+    Black Marble Gallery, Three Paths:
+        Index: 16
+    Death Wing's Lair, Bottom of Stairwell:
+        Index: 1
+    Death Wing's Lair, Catwalk Crypt:
+        Index: 15
+    Death Wing's Lair, Echo of Bat Room:
+        Index: 13
+    Death Wing's Lair, Empty Cells:
+        Index: 9
+    Death Wing's Lair, Empty Room:
+        Index: 5
+    Death Wing's Lair, Fake Room With Teleporter ID 024:
+        Index: 21
+    Death Wing's Lair, Fake Room With Teleporter ID 026:
+        Index: 22
+    Death Wing's Lair, Fake Room With Teleporter ID 027:
+        Index: 23
+    Death Wing's Lair, Fake Room With Teleporter ID 025:
+        Index: 24
+    Death Wing's Lair, Garnet Room:
+        Index: 10
+    Death Wing's Lair, Grand Staircase:
+        Index: 2
+    Death Wing's Lair, Hammer and Blade Room:
+        Index: 4
+    Death Wing's Lair, Loading Room A:
+        Index: 17
+    Death Wing's Lair, Loading Room B:
+        Index: 18
+    Death Wing's Lair, Loading Room C:
+        Index: 19
+    Death Wing's Lair, Loading Room D:
+        Index: 20
+    Death Wing's Lair, Narrow Hallway to Olrox:
+        Index: 11
+    Death Wing's Lair, Olrox's Room:
+        Index: 12
+    Death Wing's Lair, Open Courtyard:
+        Index: 8
+    Death Wing's Lair, Prison:
+        Index: 7
+    Death Wing's Lair, Save Room A:
+        Index: 16
+    Death Wing's Lair, Secret Onyx Room:
+        Index: 3
+    Death Wing's Lair, Skelerang Room:
+        Index: 0
+    Death Wing's Lair, Sword Card Room:
+        Index: 14
+    Death Wing's Lair, Tall Shaft:
+        Index: 6
+    Reverse Outer Wall, Blue Axe Knight Room:
+        Index: 9
+    Reverse Outer Wall, Doppelganger Room:
+        Index: 11
+    Reverse Outer Wall, Elevator Shaft Room:
+        Index: 13
+    Reverse Outer Wall, Exit to Clock Tower:
+        Index: 2
+    Reverse Outer Wall, Exit to Marble Gallery:
+        Index: 7
+    Reverse Outer Wall, Fake Room With Teleporter ID 040:
+        Index: 19
+    Reverse Outer Wall, Fake Room With Teleporter ID 041:
+        Index: 20
+    Reverse Outer Wall, Fake Room With Teleporter ID 042:
+        Index: 21
+    Reverse Outer Wall, Fake Room With Teleporter ID 043:
+        Index: 22
+    Reverse Outer Wall, Garlic Room:
+        Index: 10
+    Reverse Outer Wall, Garnet Vase Room:
+        Index: 8
+    Reverse Outer Wall, Gladius Room:
+        Index: 12
+    Reverse Outer Wall, Jewel Knuckles Room:
+        Index: 5
+    Reverse Outer Wall, Loading Room A:
+        Index: 0
+    Reverse Outer Wall, Loading Room B:
+        Index: 15
+    Reverse Outer Wall, Loading Room C:
+        Index: 16
+    Reverse Outer Wall, Loading Room D:
+        Index: 18
+    Reverse Outer Wall, Lower Medusa Room:
+        Index: 4
+    Reverse Outer Wall, Save Room A:
+        Index: 14
+    Reverse Outer Wall, Save Room B:
+        Index: 17
+    Reverse Outer Wall, Secret Platform Room:
+        Index: 6
+    Reverse Outer Wall, Telescope Room:
+        Index: 3
+    Reverse Outer Wall, Top of Outer Wall:
+        Index: 1
+    Reverse Warp Rooms, Fake Room With Teleporter ID 032:
+        Index: 10
+    Reverse Warp Rooms, Fake Room With Teleporter ID 031:
+        Index: 11
+    Reverse Warp Rooms, Fake Room With Teleporter ID 030:
+        Index: 12
+    Reverse Warp Rooms, Fake Room With Teleporter ID 029:
+        Index: 13
+    Reverse Warp Rooms, Fake Room With Teleporter ID 028:
+        Index: 14
+    Reverse Warp Rooms, Loading Room A:
+        Index: 5
+    Reverse Warp Rooms, Loading Room B:
+        Index: 6
+    Reverse Warp Rooms, Loading Room C:
+        Index: 7
+    Reverse Warp Rooms, Loading Room D:
+        Index: 8
+    Reverse Warp Rooms, Loading Room E:
+        Index: 9
+    Reverse Warp Rooms, Warp Room A:
+        Index: 0
+    Reverse Warp Rooms, Warp Room B:
+        Index: 1
+    Reverse Warp Rooms, Warp Room C:
+        Index: 2
+    Reverse Warp Rooms, Warp Room D:
+        Index: 3
+    Reverse Warp Rooms, Warp Room E:
+        Index: 4
+    Reverse Keep, Bend:
+        Index: 4
+    Reverse Keep, Dual Platforms:
+        Index: 7
+    Reverse Keep, Fake Room With Teleporter ID 046:
+        Index: 13
+    Reverse Keep, Fake Room With Teleporter ID 047:
+        Index: 14
+    Reverse Keep, Fake Room With Teleporter ID 045:
+        Index: 15
+    Reverse Keep, Falchion Room:
+        Index: 5
+    Reverse Keep, Ghost Card Room:
+        Index: 3
+    Reverse Keep, Keep Area:
+        Index: 2
+    Reverse Keep, Lion Torch Platform:
+        Index: 6
+    Reverse Keep, Loading Room A:
+        Index: 10
+    Reverse Keep, Loading Room B:
+        Index: 11
+    Reverse Keep, Loading Room C:
+        Index: 12
+    Reverse Keep, Lower Attic:
+        Index: 1
+    Reverse Keep, Save Room A:
+        Index: 9
+    Reverse Keep, Tyrfing Room:
+        Index: 8
+    Reverse Keep, Upper Attic:
+        Index: 0
+    Anti-Chapel, Chapel Staircase:
+        Index: 11
+    Anti-Chapel, Confessional Booth:
+        Index: 7
+    Anti-Chapel, Empty Room:
+        Index: 10
+    Anti-Chapel, Fake Room With Teleporter ID 036:
+        Index: 25
+    Anti-Chapel, Fake Room With Teleporter ID 033:
+        Index: 24
+    Anti-Chapel, Fake Room With Teleporter ID 034:
+        Index: 23
+    Anti-Chapel, Fake Room With Teleporter ID 035:
+        Index: 22
+    Anti-Chapel, Goggles Room:
+        Index: 8
+    Anti-Chapel, Hippogryph Room:
+        Index: 4
+    Anti-Chapel, Left Tower:
+        Index: 13
+    Anti-Chapel, Loading Room A:
+        Index: 15
+    Anti-Chapel, Loading Room B:
+        Index: 19
+    Anti-Chapel, Loading Room C:
+        Index: 20
+    Anti-Chapel, Loading Room D:
+        Index: 21
+    Anti-Chapel, Middle Tower:
+        Index: 14
+    Anti-Chapel, Nave:
+        Index: 9
+    Anti-Chapel, Pushing Statue Shortcut:
+        Index: 6
+    Anti-Chapel, Right Tower:
+        Index: 17
+    Anti-Chapel, Save Room A:
+        Index: 18
+    Anti-Chapel, Save Room B:
+        Index: 16
+    Anti-Chapel, Silver Ring Room:
+        Index: 0
+    Anti-Chapel, Spike Hallway:
+        Index: 1
+    Anti-Chapel, Statue Ledge:
+        Index: 12
+    Anti-Chapel, Walkway Between Towers:
+        Index: 2
+    Anti-Chapel, Walkway Left of Hippogryph:
+        Index: 3
+    Anti-Chapel, Walkway Right of Hippogryph:
+        Index: 5
+    Reverse Caverns, Long Drop:
+        Index: 0
+    Reverse Caverns, Hidden Crystal Entrance:
+        Index: 1
+    Reverse Caverns, Crystal Bend:
+        Index: 2
+    Reverse Caverns, Tall Stairwell:
+        Index: 3
+    Reverse Caverns, Plaque Room With Life Max-Up:
+        Index: 4
+    Reverse Caverns, Small Stairwell:
+        Index: 5
+    Reverse Caverns, Claymore Stairwell:
+        Index: 6
+    Reverse Caverns, Meal Tickets and Moonstone Room:
+        Index: 7
+    Reverse Caverns, Plaque Room With Breakable Wall:
+        Index: 8
+    Reverse Caverns, Room ID 09:
+        Index: 9
+    Reverse Caverns, Room ID 10:
+        Index: 10
+    Reverse Caverns, Room ID 11:
+        Index: 11
+    Reverse Caverns, Room ID 12:
+        Index: 12
+    Reverse Caverns, Holy Symbol Room:
+        Index: 13
+    Reverse Caverns, Pentagram Room:
+        Index: 14
+    Reverse Caverns, DK Bridge:
+        Index: 15
+    Reverse Caverns, Exit to Abandoned Mine:
+        Index: 16
+    Reverse Caverns, DK Button:
+        Index: 17
+    Reverse Caverns, Room ID 18:
+        Index: 18
+    Reverse Caverns, Room ID 19:
+        Index: 19
+    Reverse Caverns, Exit to Castle Entrance:
+        Index: 20
+    Reverse Caverns, Merman Statue Room:
+        Index: 21
+    Reverse Caverns, Ice Floe Room:
+        Index: 22
+    Reverse Caverns, Right Ferryman Route:
+        Index: 23
+    Reverse Caverns, Crystal Cloak Room:
+        Index: 24
+    Reverse Caverns, Left Ferryman Route:
+        Index: 25
+    Reverse Caverns, Waterfall:
+        Index: 26
+    Reverse Caverns, Scylla Room:
+        Index: 27
+    Reverse Caverns, Scylla Wyrm Room:
+        Index: 28
+    Reverse Caverns, Rising Water Room:
+        Index: 29
+    Reverse Caverns, Bandanna Room:
+        Index: 30
+    Reverse Caverns, Loading Room A:
+        Index: 31
+    Reverse Caverns, Loading Room B:
+        Index: 32
+    Reverse Caverns, Loading Room C:
+        Index: 33
+    Reverse Caverns, Save Room A:
+        Index: 34
+    Reverse Caverns, Save Room B:
+        Index: 35
+    Reverse Caverns, Save Room C:
+        Index: 36
+    Reverse Caverns, False Save Room:
+        Index: 37
+    Reverse Caverns, Fake Room With Teleporter ID 048:
+        Index: 38
+    Reverse Caverns, Fake Room With Teleporter ID 050:
+        Index: 39
+    Reverse Caverns, Fake Room With Teleporter ID 051:
+        Index: 40
+    Reverse Caverns, Fake Room With Teleporter ID 049:
+        Index: 41
+    Cave, Wolf's Head Column:
+        Index: 0
+    Cave, Well-Lit Skull Room:
+        Index: 1
+    Cave, Cerberus Room:
+        Index: 2
+    Cave, Crumbling Stairwells With Demon Switch:
+        Index: 3
+    Cave, Venus Weed Room:
+        Index: 4
+    Cave, Snake Column:
+        Index: 5
+    Cave, Peanuts Room:
+        Index: 6
+    Cave, Four-Way Intersection:
+        Index: 7
+    Cave, Crumbling Stairwells With Mushrooms:
+        Index: 8
+    Cave, Karma Coin Room:
+        Index: 9
+    Cave, Bend:
+        Index: 10
+    Cave, Demon Card Room:
+        Index: 11
+    Cave, Loading Room A:
+        Index: 12
+    Cave, Loading Room B:
+        Index: 13
+    Cave, Loading Room C:
+        Index: 14
+    Cave, Save Room A:
+        Index: 15
+    Cave, Fake Room With Teleporter ID 018:
+        Index: 16
+    Cave, Fake Room With Teleporter ID 020:
+        Index: 17
+    Cave, Fake Room With Teleporter ID 019:
+        Index: 18
+    Reverse Castle Center, Elevator Shaft:
+        Index: 0
+    Reverse Castle Center, Center Cube:
+        Index: 1
+    Reverse Castle Center, Fake Room With Teleporter ID 008:
+        Index: 3
+    Reverse Castle Center, Unknown Room ID 02:
+        Index: 2
+    Reverse Castle Center, Fake Room With Teleporter ID 007:
+        Index: 4
+    Floating Catacombs, Room ID 00:
+        Index: 0
+    Floating Catacombs, Mormegil Room:
+        Index: 1
+    Floating Catacombs, Room ID 02:
+        Index: 2
+    Floating Catacombs, Granfaloon's Lair:
+        Index: 3
+    Floating Catacombs, Room ID 04:
+        Index: 4
+    Floating Catacombs, Room ID 05:
+        Index: 5
+    Floating Catacombs, Small Gremlin Room:
+        Index: 6
+    Floating Catacombs, Save Room A:
+        Index: 7
+    Floating Catacombs, Walk Armor Room:
+        Index: 8
+    Floating Catacombs, Icebrand Room:
+        Index: 9
+    Floating Catacombs, Left Lava Path:
+        Index: 10
+    Floating Catacombs, Ballroom Mask Room:
+        Index: 11
+    Floating Catacombs, Right Lava Path:
+        Index: 12
+    Floating Catacombs, Cat-Eye Circlet Room:
+        Index: 13
+    Floating Catacombs, Room ID 14:
+        Index: 14
+    Floating Catacombs, Save Room B:
+        Index: 15
+    Floating Catacombs, Hellfire Beast Room:
+        Index: 16
+    Floating Catacombs, Exit to Abandoned Mine:
+        Index: 17
+    Floating Catacombs, Bone Ark Room:
+        Index: 18
+    Floating Catacombs, Room ID 19:
+        Index: 19
+    Floating Catacombs, Room ID 20:
+        Index: 20
+    Floating Catacombs, Room ID 21:
+        Index: 21
+    Floating Catacombs, Room ID 22:
+        Index: 22
+    Floating Catacombs, Room ID 23:
+        Index: 23
+    Floating Catacombs, Pitch Black Spike Maze:
+        Index: 24
+    Floating Catacombs, Room ID 25:
+        Index: 25
+    Floating Catacombs, Room ID 26:
+        Index: 26
+    Floating Catacombs, Spike Breaker Room:
+        Index: 27
+    Floating Catacombs, Loading Room A:
+        Index: 28
+    Floating Catacombs, Fake Room With Teleporter ID 016:
         Index: 29

@@ -208,7 +208,7 @@ if __name__ == '__main__':
                     'Size': 160988,
                 },
             },
-            'Boss - Beezlebub': {
+            'Boss - Beelzebub': {
                 'Stage': {
                     'Start': 0x05870000,
                     'Size': 139104,
@@ -232,7 +232,7 @@ if __name__ == '__main__':
                     'Size': 154660,
                 },
             },
-            'Boss - Doppleganger 40': {
+            'Boss - Doppelganger 40': {
                 'Stage': {
                     'Start': 0x05AE3800,
                     'Size': 345096,
@@ -242,6 +242,12 @@ if __name__ == '__main__':
                 'Stage': {
                     'Start': 0x05B93800,
                     'Size': 213060,
+                },
+            },
+            'Boss - Succubus': {
+                'Stage': {
+                    'Start': 0x04F31000,
+                    'Size': 147456,
                 },
             },
             'Boss - Akmodan II': {
@@ -484,64 +490,176 @@ if __name__ == '__main__':
                     # Object list
                     object_layout_offset = cursors[direction + ' Indirect'].u32(4 * object_layout_id) - OFFSET
                     cursors[direction] = cursors['Stage'].clone(object_layout_offset)
-                    objects = []
+                    objects = {
+                        'Metadata': {
+                            'Start': cursors[direction].cursor.address,
+                            'Size': 0x0A,
+                            'Count': 0,
+                            'Fields': {
+                                'X': {
+                                    'Offset': 0x00,
+                                    'Type': 's16',
+                                },
+                                'Y': {
+                                    'Offset': 0x02,
+                                    'Type': 's16',
+                                },
+                                'Entity Type ID': {
+                                    'Offset': 0x04,
+                                    'Type': 'u16',
+                                },
+                                'Entity Room Index': {
+                                    'Offset': 0x06,
+                                    'Type': 'u16',
+                                },
+                                'Params': {
+                                    'Offset': 0x08,
+                                    'Type': 'u16',
+                                },
+                            },
+                        },
+                        'Data': [],
+                    }
                     offset = 0
                     while True:
-                        x = cursors[direction].s16(offset + 0x0, True)
-                        y = cursors[direction].s16(offset + 0x2, True)
-                        entity_type_id = cursors[direction].u16(offset + 0x4, True)
-                        entity_room_index = cursors[direction].u16(offset + 0x6, True)
-                        params = cursors[direction].u16(offset + 0x8, True)
+                        x = cursors[direction].s16(offset + 0x0)
+                        y = cursors[direction].s16(offset + 0x2)
+                        entity_type_id = cursors[direction].u16(offset + 0x4)
+                        entity_room_index = cursors[direction].u16(offset + 0x6)
+                        params = cursors[direction].u16(offset + 0x8)
                         offset += 10
-                        if x['Value'] == -2:
+                        if x == -2:
                             continue
-                        elif x['Value'] == -1:
+                        elif x == -1:
                             break
-                        _object = {
+                        data = {
                             'X': x,
                             'Y': y,
                             'Entity Type ID': entity_type_id,
                             'Entity Room Index': entity_room_index,
                             'Params': params,
                         }
-                        objects.append(_object)
+                        objects['Data'].append(data)
+                    objects['Metadata']['Count'] = len(objects['Data'])
                     stages[stage_name]['Rooms'][room_id]['Object Layout - ' + direction] = objects
         # Extract teleporter data
-        teleporters = {}
         cursor = BIN(binary_file, 0x00097C5C)
+        teleporters = {
+            'Metadata': {
+                'Start': cursor.cursor.address,
+                'Size': 0x0A,
+                'Count': 131,
+                'Fields': {
+                    'Player X': {
+                        'Offset': 0x00,
+                        'Type': 'u16',
+                    },
+                    'Player Y': {
+                        'Offset': 0x02,
+                        'Type': 'u16',
+                    },
+                    'Room Offset': {
+                        'Offset': 0x04,
+                        'Type': 'u16',
+                    },
+                    'Source Stage ID': {
+                        'Offset': 0x06,
+                        'Type': 'u16',
+                    },
+                    'Target Stage ID': {
+                        'Offset': 0x08,
+                        'Type': 'u16',
+                    },
+                },
+            },
+            'Data': [],
+        }
         for teleporter_id in range(131):
             data = {
-                'Player X': cursor.u16(10 * teleporter_id + 0x00, True),
-                'Player Y':  cursor.u16(10 * teleporter_id + 0x02, True),
-                'Room Offset': cursor.u16(10 * teleporter_id + 0x04, True),
-                'Source Stage ID':  cursor.u16(10 * teleporter_id + 0x06, True),
-                'Target Stage ID':  cursor.u16(10 * teleporter_id + 0x08, True),
+                'Player X': cursor.u16(0x0A * teleporter_id + 0x00),
+                'Player Y': cursor.u16(0x0A * teleporter_id + 0x02),
+                'Room Offset': cursor.u16(0x0A * teleporter_id + 0x04),
+                'Source Stage ID': cursor.u16(0x0A * teleporter_id + 0x06),
+                'Target Stage ID': cursor.u16(0x0A * teleporter_id + 0x08),
             }
-            teleporters[teleporter_id] = data
+            teleporters['Data'].append(data)
         # Extract boss teleporter data
-        boss_teleporters = {}
         cursor = BIN(binary_file, 0x0009817C)
+        boss_teleporters = {
+            'Metadata': {
+                'Start': cursor.cursor.address,
+                'Size': 0x14,
+                'Count': 28,
+                'Fields': {
+                    'Room X': {
+                        'Offset': 0x00,
+                        'Type': 'u8',
+                    },
+                    'Room Y': {
+                        'Offset': 0x04,
+                        'Type': 'u8',
+                    },
+                    'Stage ID': {
+                        'Offset': 0x08,
+                        'Type': 'u32',
+                    },
+                    'Event ID': {
+                        'Offset': 0x0C,
+                        'Type': 's8',
+                    },
+                    'Teleporter Index': {
+                        'Offset': 0x10,
+                        'Type': 's32',
+                    },
+                },
+            },
+            'Data': [],
+        }
         for boss_teleporter_id in range(28):
             data = {
-                'Room X': cursor.u8(0x14 * boss_teleporter_id + 0x00, True),
-                'Room Y':  cursor.u8(0x14 * boss_teleporter_id + 0x04, True),
-                'Stage ID': cursor.u32(0x14 * boss_teleporter_id + 0x08, True),
-                'Event ID':  cursor.s8(0x14 * boss_teleporter_id + 0x0C, True),
-                'Teleporter Index':  cursor.s32(0x14 * boss_teleporter_id + 0x10, True),
+                'Room X': cursor.u8(0x14 * boss_teleporter_id + 0x00),
+                'Room Y': cursor.u8(0x14 * boss_teleporter_id + 0x04),
+                'Stage ID': cursor.u32(0x14 * boss_teleporter_id + 0x08),
+                'Event ID': cursor.s8(0x14 * boss_teleporter_id + 0x0C),
+                'Teleporter Index': cursor.s32(0x14 * boss_teleporter_id + 0x10),
             }
-            boss_teleporters[boss_teleporter_id] = data
+            boss_teleporters['Data'].append(data)
         # Extract constant data
         constants = {}
         cursor = BIN(binary_file, 0x049BF79C)
         for drop_index in range(2, 4):
             data = cursor.u16(2 * drop_index, True)
             constants[f'Relic Container Drop ID {str(drop_index)}'] = data
+        cursor = BIN(binary_file, 0x000FFCE4) # 0x2442E0C0 --> subiu v0, $1F40
+        constants[f'Castle Teleporter, X Offset'] = cursor.s16(0, True)
+        cursor = BIN(binary_file, 0x000FFD18) # 0x2442F7B1 --> subiu v0, $084F
+        constants[f'Castle Teleporter, Y Offset'] = cursor.s16(0, True)
+        # Extract castle map data
+        cursor = BIN(binary_file, 0x001AF800)
+        castle_map = {
+            'Metadata': {
+                'Start': cursor.cursor.address,
+                'Rows': 256,
+                'Columns': 128,
+                'Type': 'indexed-bitmap',
+            },
+            'Data': [],
+        }
+        for row in range(castle_map['Metadata']['Rows']):
+            row_cursor = cursor.clone(row * castle_map['Metadata']['Columns'])
+            row_data = ''
+            for col in range(castle_map['Metadata']['Columns']):
+                data = row_cursor.u8(col)
+                row_data += ''.join(reversed('{:02X}'.format(data)))
+            castle_map['Data'].append(row_data)
+        # TODO(sestren): Extract Warp Room coordinates list
         # Store extracted data
         extraction = {
             'Constants': constants,
             'Stages': stages,
             'Teleporters': teleporters,
             'Boss Teleporters': boss_teleporters,
+            'Castle Map': castle_map,
         }
         with open(args.json_filepath, 'w') as extraction_json:
             json.dump(extraction, extraction_json, indent='  ', sort_keys=True)

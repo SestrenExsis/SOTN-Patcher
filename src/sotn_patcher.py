@@ -112,11 +112,12 @@ def get_changes_template_file(extract):
         'Constants': {},
         'Stages': {},
         'Teleporters': {},
+        'Castle Map': [],
     }
-    for boss_teleporter_index in extract['Boss Teleporters']:
+    for boss_teleporter_index in range(len(extract['Boss Teleporters']['Data'])):
         result['Boss Teleporters'][boss_teleporter_index] = {
-            'Room X': extract['Boss Teleporters'][boss_teleporter_index]['Room X']['Value'],
-            'Room Y': extract['Boss Teleporters'][boss_teleporter_index]['Room Y']['Value'],
+            'Room X': extract['Boss Teleporters']['Data'][boss_teleporter_index]['Room X'],
+            'Room Y': extract['Boss Teleporters']['Data'][boss_teleporter_index]['Room Y'],
         }
     for constant_name in extract['Constants']:
         result['Constants'][constant_name] = extract['Constants'][constant_name]['Value']
@@ -129,23 +130,23 @@ def get_changes_template_file(extract):
             object_layout_v = None
             if room_data['Tileset ID']['Value'] != -1:
                 object_layout_h = {}
-                for (index, object_layout_data) in enumerate(room_data['Object Layout - Horizontal']):
-                    entity_type_id = object_layout_data['Entity Type ID']['Value']
+                for (index, object_layout_data) in enumerate(room_data['Object Layout - Horizontal']['Data']):
+                    entity_type_id = object_layout_data['Entity Type ID']
                     if entity_type_id == 11:
                         relic_found_ind = True
                         object_h = {
                             'Entity Type ID': entity_type_id,
-                            'Params': object_layout_data['Params']['Value'],
+                            'Params': object_layout_data['Params'],
                         }
                         object_layout_h[index] = object_h
                 object_layout_v = {}
-                for (index, object_layout_data) in enumerate(room_data['Object Layout - Vertical']):
-                    entity_type_id = object_layout_data['Entity Type ID']['Value']
+                for (index, object_layout_data) in enumerate(room_data['Object Layout - Vertical']['Data']):
+                    entity_type_id = object_layout_data['Entity Type ID']
                     if entity_type_id == 11:
                         relic_found_ind = True
                         object_h = {
                             'Entity Type ID': entity_type_id,
-                            'Params': object_layout_data['Params']['Value'],
+                            'Params': object_layout_data['Params'],
                         }
                         object_layout_v[index] = object_h
             result['Stages'][stage_id]['Rooms'][room_id] = {
@@ -156,16 +157,25 @@ def get_changes_template_file(extract):
                 room = result['Stages'][stage_id]['Rooms'][room_id]
                 room['Object Layout - Horizontal'] = object_layout_h
                 room['Object Layout - Vertical'] = object_layout_v
-    for teleporter_index in extract['Teleporters']:
+    for teleporter_index in range(len(extract['Teleporters']['Data'])):
         result['Teleporters'][teleporter_index] = {
-            'Player X': extract['Teleporters'][teleporter_index]['Player X']['Value'],
-            'Player Y': extract['Teleporters'][teleporter_index]['Player Y']['Value'],
-            'Room Offset': extract['Teleporters'][teleporter_index]['Room Offset']['Value'],
-            'Target Stage ID': extract['Teleporters'][teleporter_index]['Target Stage ID']['Value'],
+            'Player X': extract['Teleporters']['Data'][teleporter_index]['Player X'],
+            'Player Y': extract['Teleporters']['Data'][teleporter_index]['Player Y'],
+            'Room Offset': extract['Teleporters']['Data'][teleporter_index]['Room Offset'],
+            'Target Stage ID': extract['Teleporters']['Data'][teleporter_index]['Target Stage ID'],
         }
+    for row in range(len(extract['Castle Map']['Data'])):
+        row_data = extract['Castle Map']['Data'][row]
+        result['Castle Map'].append(row_data)
     return result
 
 def validate_changes(changes):
+    if 'Boss Teleporters' in changes:
+        # TODO(sestren): Validate boss teleporters
+        pass
+    if 'Constants' in changes:
+        # TODO(sestren): Validate constants
+        pass
     if 'Stages' in changes:
         for (stage_id, stage_data) in changes['Stages'].items():
             if 'Rooms' in stage_data:
@@ -178,12 +188,6 @@ def validate_changes(changes):
                     if 'Object Layout - Horizontal' in room_data:
                         # TODO(sestren): Validate changes to object layouts
                         pass
-    if 'Constants' in changes:
-        for (constant_name, constant_data) in changes['Constants'].items():
-            assert 0 <= constant_data <= 255
-    if 'Boss Teleporters' in changes:
-        # TODO(sestren): Validate boss teleporters
-        pass
     if 'Teleporters' in changes:
         # TODO(sestren): Validate teleporters
         pass
@@ -192,28 +196,29 @@ def get_ppf(extract, changes):
     result = PPF('Just messing around')
     # Patch boss teleporters
     if 'Boss Teleporters' in changes:
+        extract_metadata = extract['Boss Teleporters']['Metadata']
         for boss_teleporter_index in sorted(changes['Boss Teleporters']):
             boss_teleporter_data = changes['Boss Teleporters'][boss_teleporter_index]
-            boss_teleporter_extract = extract['Boss Teleporters'][boss_teleporter_index]
+            extract_data = extract['Boss Teleporters']['Data'][int(boss_teleporter_index)]
             # Boss Teleporter: Patch room X
-            room_x = boss_teleporter_extract['Room X']['Value']
+            room_x = extract_data['Room X']
             if 'Room X' in boss_teleporter_data:
                 if boss_teleporter_data['Room X'] != room_x:
                     room_x = boss_teleporter_data['Room X']
                     result.patch_value(
                         room_x,
-                        boss_teleporter_extract['Room X']['Type'],
-                        sotn_address.Address(boss_teleporter_extract['Room X']['Start']),
+                        extract_metadata['Fields']['Room X']['Type'],
+                        sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_index) * extract_metadata['Size'] + extract_metadata['Fields']['Room X']['Offset']),
                     )
             # Boss Teleporter: Patch room Y
-            room_y = boss_teleporter_extract['Room Y']['Value']
+            room_y = extract_data['Room Y']
             if 'Room Y' in boss_teleporter_data:
-                if boss_teleporter_data['Room Y'] != room_x:
+                if boss_teleporter_data['Room Y'] != room_y:
                     room_y = boss_teleporter_data['Room Y']
                     result.patch_value(
                         room_y,
-                        boss_teleporter_extract['Room Y']['Type'],
-                        sotn_address.Address(boss_teleporter_extract['Room Y']['Start']),
+                        extract_metadata['Fields']['Room Y']['Type'],
+                        sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_index) * extract_metadata['Size'] + extract_metadata['Fields']['Room Y']['Offset']),
                     )
     # Patch constants
     if 'Constants' in changes:
@@ -229,13 +234,13 @@ def get_ppf(extract, changes):
     # Patch stage data
     if 'Stages' in changes:
         for stage_id in sorted(changes['Stages']):
-            print(stage_id)
+            # print(stage_id)
             stage_data = changes['Stages'][stage_id]
             stage_extract = extract['Stages'][stage_id]
             # Stage: Patch room data
             if 'Rooms' in stage_data:
                 for room_id in sorted(stage_data['Rooms']):
-                    print('', room_id)
+                    # print('', room_id)
                     room_data = stage_data['Rooms'][room_id]
                     room_extract = stage_extract['Rooms'][room_id]
                     left = room_extract['Left']['Value']
@@ -298,13 +303,13 @@ def get_ppf(extract, changes):
                         for object_id in sorted(object_layout_data):
                             object_index = int(object_id)
                             object_data = object_layout_data[object_id]
-                            object_extract = object_layout_extract[object_index]
+                            object_extract = object_layout_extract['Data'][object_index]
                             if 'Params' in object_data:
-                                if object_data['Params'] != object_extract['Params']['Value']:
+                                if object_data['Params'] != object_extract['Params']:
                                     result.patch_value(
                                         object_data['Params'],
-                                        object_extract['Params']['Type'],
-                                        sotn_address.Address(object_extract['Params']['Start']),
+                                        object_layout_extract['Metadata']['Fields']['Params']['Type'],
+                                        sotn_address.Address(object_layout_extract['Metadata']['Start']),
                                     )
                     # Room: Patch object layout vertical
                     if 'Object Layout - Vertical' in room_data:
@@ -313,59 +318,69 @@ def get_ppf(extract, changes):
                         for object_id in sorted(object_layout_data):
                             object_index = int(object_id)
                             object_data = object_layout_data[object_id]
-                            object_extract = object_layout_extract[object_index]
+                            object_extract = object_layout_extract['Data'][object_index]
                             if 'Params' in object_data:
-                                if object_data['Params'] != object_extract['Params']['Value']:
+                                if object_data['Params'] != object_extract['Params']:
                                     result.patch_value(
                                         object_data['Params'],
-                                        object_extract['Params']['Type'],
-                                        sotn_address.Address(object_extract['Params']['Start']),
+                                        object_layout_extract['Metadata']['Fields']['Params']['Type'],
+                                        sotn_address.Address(object_layout_extract['Metadata']['Start']),
                                     )
     # Patch teleporters
     if 'Teleporters' in changes:
+        extract_metadata = extract['Teleporters']['Metadata']
         for teleporter_index in sorted(changes['Teleporters']):
             teleporter_data = changes['Teleporters'][teleporter_index]
-            teleporter_extract = extract['Teleporters'][teleporter_index]
+            extract_data = extract['Teleporters']['Data'][int(teleporter_index)]
             # Teleporter: Patch player X
-            player_x = teleporter_extract['Player X']['Value']
+            player_x = extract_data['Player X']
             if 'Player X' in teleporter_data:
                 if teleporter_data['Player X'] != player_x:
                     player_x = teleporter_data['Player X']
-                    result.patch_value(
-                        player_x,
-                        teleporter_extract['Player X']['Type'],
-                        sotn_address.Address(teleporter_extract['Player X']['Start']),
+                    result.patch_value(player_x,
+                        extract_metadata['Fields']['Player X']['Type'],
+                        sotn_address.Address(extract_metadata['Start'] + int(teleporter_index) * extract_metadata['Size'] + extract_metadata['Fields']['Player X']['Offset']),
                     )
             # Teleporter: Patch player Y
-            player_y = teleporter_extract['Player Y']['Value']
+            player_y = extract_data['Player Y']
             if 'Player Y' in teleporter_data:
                 if teleporter_data['Player Y'] != player_y:
                     player_y = teleporter_data['Player Y']
-                    result.patch_value(
-                        player_y,
-                        teleporter_extract['Player Y']['Type'],
-                        sotn_address.Address(teleporter_extract['Player Y']['Start']),
+                    result.patch_value(player_y,
+                        extract_metadata['Fields']['Player Y']['Type'],
+                        sotn_address.Address(extract_metadata['Start'] + int(teleporter_index) * extract_metadata['Size'] + extract_metadata['Fields']['Player Y']['Offset']),
                     )
             # Teleporter: Patch room offset
-            room_offset = teleporter_extract['Room Offset']['Value']
+            room_offset = extract_data['Room Offset']
             if 'Room Offset' in teleporter_data:
                 if teleporter_data['Room Offset'] != room_offset:
                     room_offset = teleporter_data['Room Offset']
-                    result.patch_value(
-                        room_offset,
-                        teleporter_extract['Room Offset']['Type'],
-                        sotn_address.Address(teleporter_extract['Room Offset']['Start']),
+                    result.patch_value(room_offset,
+                        extract_metadata['Fields']['Room Offset']['Type'],
+                        sotn_address.Address(extract_metadata['Start'] + int(teleporter_index) * extract_metadata['Size'] + extract_metadata['Fields']['Room Offset']['Offset']),
                     )
             # Teleporter: Patch target stage ID
-            target_stage_id = teleporter_extract['Room Offset']['Value']
+            target_stage_id = extract_data['Target Stage ID']
             if 'Target Stage ID' in teleporter_data:
                 if teleporter_data['Target Stage ID'] != target_stage_id:
                     target_stage_id = teleporter_data['Target Stage ID']
-                    result.patch_value(
-                        target_stage_id,
-                        teleporter_extract['Target Stage ID']['Type'],
-                        sotn_address.Address(teleporter_extract['Target Stage ID']['Start']),
+                    result.patch_value(target_stage_id,
+                        extract_metadata['Fields']['Target Stage ID']['Type'],
+                        sotn_address.Address(extract_metadata['Start'] + int(teleporter_index) * extract_metadata['Size'] + extract_metadata['Fields']['Target Stage ID']['Offset']),
                     )
+    if 'Castle Map' in changes:
+        extract_metadata = extract['Castle Map']['Metadata']
+        for row in range(extract_metadata['Rows']):
+            row_data = changes['Castle Map'][row]
+            for col in range(0, 2 * extract_metadata['Columns'], 2):
+                (left, right) = (col, col + 1)
+                (little, big) = (int(row_data[left], base=16), int(row_data[right], base=16))
+                pixel_pair_value = 0x10 * big + little
+                col_span = col // 2
+                result.patch_value(pixel_pair_value,
+                    'u8',
+                    sotn_address.Address(extract_metadata['Start'] + row * extract_metadata['Columns'] + col_span),
+                )
     return result
 
 if __name__ == '__main__':
@@ -398,9 +413,9 @@ if __name__ == '__main__':
                     aliases = yaml.safe_load(aliases_file)
                 for (stage_name, stage_changes) in changes['Stages'].items():
                     aliases_found = {}
-                    print(stage_name)
+                    # print(stage_name)
                     for room_name in stage_changes['Rooms']:
-                        print('', room_name)
+                        # print('', room_name)
                         if room_name in aliases['Rooms']:
                             room_index = aliases['Rooms'][room_name]['Index']
                             aliases_found[room_name] = str(room_index)
