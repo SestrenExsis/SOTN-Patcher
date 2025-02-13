@@ -30,6 +30,19 @@ class BIN:
         result = int.from_bytes(bytes, byteorder=endianness, signed=sign)
         return result
     
+    def indirect(self, data_type: str='u8', include_meta: bool=False):
+        assert data_type in ('u8', 's8', 'u16', 's16', 'u32', 's32')
+        dispatch = {
+            'u8': self.u8,
+            's8': self.s8,
+            'u16': self.u16,
+            's16': self.s16,
+            'u32': self.u32,
+            's32': self.s32,
+        }
+        result = dispatch[data_type](0, include_meta)
+        return result
+    
     def u8(self, offset: int=0, include_meta: bool=False):
         result = None
         size = 1
@@ -630,10 +643,15 @@ if __name__ == '__main__':
         for drop_index in range(2, 4):
             data = cursor.u16(2 * drop_index, True)
             constants[f'Relic Container Drop ID {str(drop_index)}'] = data
-        cursor = BIN(binary_file, 0x000FFCE4) # 0x2442E0C0 --> subiu v0, $1F40
-        constants[f'Castle Teleporter, X Offset'] = cursor.s16(0, True)
-        cursor = BIN(binary_file, 0x000FFD18) # 0x2442F7B1 --> subiu v0, $084F
-        constants[f'Castle Teleporter, Y Offset'] = cursor.s16(0, True)
+        for (constant_address, constant_name, constant_data_type) in (
+            # Found in the GetTeleportToOtherCastle function of the decomp
+            (0x000FFCE4, 'Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40
+            (0x000FFD18, 'Castle Keep Teleporter, Y Offset', 's16'), # 0x2442F7B1 --> subiu v0, $084F
+            (0x000FFD68, 'Reverse Keep Teleporter, X Offset', 's16'), # 0x2463DF40 --> subiu v1, $20C0
+            (0x000FFD9C, 'Reverse Keep Teleporter, Y Offset', 's16'), # 0x2442C7B9 --> subiu v0, $3847
+        ):
+            cursor = BIN(binary_file, constant_address)
+            constants[constant_name] = cursor.indirect(constant_data_type, True)
         # Extract castle map data
         cursor = BIN(binary_file, 0x001AF800)
         castle_map = {
