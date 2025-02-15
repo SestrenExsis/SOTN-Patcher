@@ -679,11 +679,11 @@ if __name__ == '__main__':
                 'Size': 0x30,
                 'Count': 49,
                 'Fields': {
-                    'Next Element': {
+                    'Unknown 00': {
                         'Offset': 0x00,
                         'Type': 'u32',
                     },
-                    'Timer': {
+                    'Unknown 04': {
                         'Offset': 0x04,
                         'Type': 'u32',
                     },
