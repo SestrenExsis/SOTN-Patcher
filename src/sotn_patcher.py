@@ -389,6 +389,17 @@ def get_ppf(extract, changes):
                 )
     # Patch familiar events
     if 'Familiar Events' in changes:
+        # NOTE(sestren): Familiar events exist as a complete copy in 7 different locations, one for each familiar in the code
+        # TODO(sestren): Replace this hacky way of doing it with a better approach
+        copy_offsets = [
+            0x0392A760, # Possibly for Bat Familiar
+            0x0394BDB0, # Possibly for Ghost Familiar
+            0x0396FD2C, # Possibly for Faerie Familiar
+            0x03990890, # Possibly for Demon Familiar
+            0x039AF9E4, # Possibly for Sword Familiar
+            0x039D1D38, # Possibly for Yousei Familiar
+            0x039F2664, # Possibly for Nose Demon Familiar
+        ]
         extract_metadata = extract['Familiar Events']['Metadata']
         for familiar_event_id in sorted(changes['Familiar Events']):
             familiar_event_data = changes['Familiar Events'][familiar_event_id]
@@ -398,19 +409,25 @@ def get_ppf(extract, changes):
             if 'Room X' in familiar_event_data:
                 if familiar_event_data['Room X'] != room_x:
                     room_x = familiar_event_data['Room X']
-                    result.patch_value(room_x,
-                        extract_metadata['Fields']['Room X']['Type'],
-                        sotn_address.Address(extract_metadata['Start'] + int(familiar_event_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room X']['Offset']),
-                    )
+                    base_offset = extract_metadata['Start'] + int(familiar_event_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room X']['Offset'] - copy_offsets[0]
+                    for copy_offset in copy_offsets:
+                        offset = base_offset + copy_offset
+                        result.patch_value(room_x,
+                            extract_metadata['Fields']['Room X']['Type'],
+                            sotn_address.Address(offset),
+                        )
             # Familiar event: Patch room Y
             room_y = extract_data['Room Y']
             if 'Room Y' in familiar_event_data:
                 if familiar_event_data['Room Y'] != room_y:
                     room_y = familiar_event_data['Room Y']
-                    result.patch_value(room_y,
-                        extract_metadata['Fields']['Room Y']['Type'],
-                        sotn_address.Address(extract_metadata['Start'] + int(familiar_event_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room Y']['Offset']),
-                    )
+                    base_offset = extract_metadata['Start'] + int(familiar_event_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room Y']['Offset'] - copy_offsets[0]
+                    for copy_offset in copy_offsets:
+                        offset = base_offset + copy_offset
+                        result.patch_value(room_y,
+                            extract_metadata['Fields']['Room Y']['Type'],
+                            sotn_address.Address(offset),
+                        )
     return result
 
 if __name__ == '__main__':
