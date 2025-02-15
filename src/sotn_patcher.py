@@ -395,7 +395,7 @@ def get_ppf(extract, changes):
             extract_data = extract['Familiar Events']['Data'][int(familiar_event_id)]
             # Familiar event: Patch room X
             room_x = extract_data['Room X']
-            if 'Player X' in familiar_event_data:
+            if 'Room X' in familiar_event_data:
                 if familiar_event_data['Room X'] != room_x:
                     room_x = familiar_event_data['Room X']
                     result.patch_value(room_x,
@@ -404,7 +404,7 @@ def get_ppf(extract, changes):
                     )
             # Familiar event: Patch room Y
             room_y = extract_data['Room Y']
-            if 'Player Y' in familiar_event_data:
+            if 'Room Y' in familiar_event_data:
                 if familiar_event_data['Room Y'] != room_y:
                     room_y = familiar_event_data['Room Y']
                     result.patch_value(room_y,
