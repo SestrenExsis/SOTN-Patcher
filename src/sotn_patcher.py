@@ -387,6 +387,30 @@ def get_ppf(extract, changes):
                     'u8',
                     sotn_address.Address(extract_metadata['Start'] + row * extract_metadata['Columns'] + col_span),
                 )
+    # Patch familiar events
+    if 'Familiar Events' in changes:
+        extract_metadata = extract['Familiar Events']['Metadata']
+        for familiar_event_id in sorted(changes['Familiar Events']):
+            familiar_event_data = changes['Familiar Events'][familiar_event_id]
+            extract_data = extract['Familiar Events']['Data'][int(familiar_event_id)]
+            # Familiar event: Patch room X
+            room_x = extract_data['Room X']
+            if 'Player X' in familiar_event_data:
+                if familiar_event_data['Room X'] != room_x:
+                    room_x = familiar_event_data['Room X']
+                    result.patch_value(room_x,
+                        extract_metadata['Fields']['Room X']['Type'],
+                        sotn_address.Address(extract_metadata['Start'] + int(familiar_event_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room X']['Offset']),
+                    )
+            # Familiar event: Patch room Y
+            room_y = extract_data['Room Y']
+            if 'Player Y' in familiar_event_data:
+                if familiar_event_data['Room Y'] != room_y:
+                    room_y = familiar_event_data['Room Y']
+                    result.patch_value(room_y,
+                        extract_metadata['Fields']['Room Y']['Type'],
+                        sotn_address.Address(extract_metadata['Start'] + int(familiar_event_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room Y']['Offset']),
+                    )
     return result
 
 if __name__ == '__main__':
