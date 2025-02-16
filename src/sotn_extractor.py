@@ -30,7 +30,7 @@ class BIN:
         result = int.from_bytes(bytes, byteorder=endianness, signed=sign)
         return result
     
-    def indirect(self, data_type: str='u8', include_meta: bool=False):
+    def indirect(self, offset: int, data_type: str='u8', include_meta: bool=False):
         assert data_type in ('u8', 's8', 'u16', 's16', 'u32', 's32')
         dispatch = {
             'u8': self.u8,
@@ -40,7 +40,7 @@ class BIN:
             'u32': self.u32,
             's32': self.s32,
         }
-        result = dispatch[data_type](0, include_meta)
+        result = dispatch[data_type](offset, include_meta)
         return result
     
     def u8(self, offset: int=0, include_meta: bool=False):
@@ -651,7 +651,7 @@ if __name__ == '__main__':
             (0x000FFD9C, 'Reverse Keep Teleporter, Y Offset', 's16'), # 0x2442C7B9 --> subiu v0, $3847
         ):
             cursor = BIN(binary_file, constant_address)
-            constants[constant_name] = cursor.indirect(constant_data_type, True)
+            constants[constant_name] = cursor.indirect(0, constant_data_type, True)
         # Extract castle map data
         cursor = BIN(binary_file, 0x001AF800)
         castle_map = {
@@ -671,13 +671,80 @@ if __name__ == '__main__':
                 row_data += ''.join(reversed('{:02X}'.format(data)))
             castle_map['Data'].append(row_data)
         # TODO(sestren): Extract Warp Room coordinates list
+        # Extract familiar events
+        cursor = BIN(binary_file, 0x0392A760)
+        familiar_events = {
+            'Metadata': {
+                'Start': cursor.cursor.address,
+                'Size': 0x30,
+                'Count': 49,
+                'Fields': {
+                    'Unknown 00': {
+                        'Offset': 0x00,
+                        'Type': 'u32',
+                    },
+                    'Unknown 04': {
+                        'Offset': 0x04,
+                        'Type': 'u32',
+                    },
+                    'Servant ID': {
+                        'Offset': 0x08,
+                        'Type': 's32',
+                    },
+                    'Room X': {
+                        'Offset': 0x0C,
+                        'Type': 's32',
+                    },
+                    'Room Y': {
+                        'Offset': 0x10,
+                        'Type': 's32',
+                    },
+                    'Camera X': {
+                        'Offset': 0x14,
+                        'Type': 's32',
+                    },
+                    'Camera Y': {
+                        'Offset': 0x18,
+                        'Type': 's32',
+                    },
+                    'Condition': {
+                        'Offset': 0x1C,
+                        'Type': 's32',
+                    },
+                    'Delay': {
+                        'Offset': 0x20,
+                        'Type': 's32',
+                    },
+                    'Entity ID': {
+                        'Offset': 0x24,
+                        'Type': 's32',
+                    },
+                    'Params': {
+                        'Offset': 0x28,
+                        'Type': 's32',
+                    },
+                    'Unknown 2C': {
+                        'Offset': 0x2C,
+                        'Type': 'u32',
+                    },
+                },
+            },
+            'Data': [],
+        }
+        for familiar_event_id in range(familiar_events['Metadata']['Count']):
+            data = {}
+            for (field_name, field) in familiar_events['Metadata']['Fields'].items():
+                offset = familiar_event_id * familiar_events['Metadata']['Size'] + field['Offset']
+                data[field_name] = cursor.indirect(offset, field['Type'])
+            familiar_events['Data'].append(data)
         # Store extracted data
         extraction = {
-            'Constants': constants,
-            'Stages': stages,
-            'Teleporters': teleporters,
             'Boss Teleporters': boss_teleporters,
             'Castle Map': castle_map,
+            'Constants': constants,
+            'Familiar Events': familiar_events,
+            'Stages': stages,
+            'Teleporters': teleporters,
         }
         with open(args.json_filepath, 'w') as extraction_json:
             json.dump(extraction, extraction_json, indent='  ', sort_keys=True)
