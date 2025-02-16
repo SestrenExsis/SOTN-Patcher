@@ -438,6 +438,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('extract_file', help='Input a filepath to the extract JSON file', type=str)
     parser.add_argument('--changes', help='Input an optional filepath to the changes JSON file', type=str)
+    parser.add_argument('--aliases', help='Input an optional filepath to the aliases YAML file', type=str)
     parser.add_argument('--ppf', help='Input an optional filepath to the output PPF file', type=str)
     args = parser.parse_args()
     with open(args.extract_file) as extract_file:
@@ -451,13 +452,13 @@ if __name__ == '__main__':
         else:
             with (
                 open(args.changes) as changes_file,
+                open(args.aliases) as aliases_file,
                 open(args.ppf, 'wb') as ppf_file,
             ):
                 changes = json.load(changes_file)
                 if 'Changes' in changes:
                     changes = changes['Changes']
-                with open(os.path.join('data', 'aliases.yaml')) as aliases_file:
-                    aliases = yaml.safe_load(aliases_file)
+                aliases = yaml.safe_load(aliases_file)
                 for (stage_name, stage_changes) in changes['Stages'].items():
                     aliases_found = {}
                     # print(stage_name)
