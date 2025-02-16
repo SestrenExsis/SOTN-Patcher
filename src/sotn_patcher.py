@@ -113,6 +113,7 @@ def get_changes_template_file(extract):
         'Constants': {},
         'Familiar Events': {},
         'Stages': {},
+        'Strings': [],
         'Teleporters': {},
     }
     for boss_teleporter_id in range(len(extract['Boss Teleporters']['Data'])):
@@ -173,6 +174,9 @@ def get_changes_template_file(extract):
             'Room X': extract['Familiar Events']['Data'][familiar_event_id]['Room X'],
             'Room Y': extract['Familiar Events']['Data'][familiar_event_id]['Room Y'],
         }
+    for string_id in range(len(extract['Strings']['Data'])):
+        string = extract['Strings']['Data'][string_id]
+        result['Strings'].append(string)
     return result
 
 def validate_changes(changes):
@@ -428,6 +432,52 @@ def get_ppf(extract, changes):
                             extract_metadata['Fields']['Room Y']['Type'],
                             sotn_address.Address(offset),
                         )
+    # Patch strings
+    # NOTE(sestren): There are no guards in place requiring that the resulting array of strings
+    # NOTE(sestren): fits into place or uses up the same amount of bytes. It is the
+    # NOTE(sestren): responsibility of the user to ensure that custom string arrays will not
+    # NOTE(sestren): cause issues.
+    NULL_CHAR = 0x00
+    SPACE_CHAR = 0x20
+    PERIOD_CHAR = 0x44
+    QUESTION_MARK_CHAR = 0x48
+    APOSTROPHE_CHAR = 0x66
+    QUOTE_CHAR = 0x68
+    DOUBLE_BYTE_CHAR = 0x81
+    if 'Strings' in changes:
+        extract_metadata = extract['Strings']['Metadata']
+        offset = 0
+        for string in changes['Strings']:
+            # old_string = extract['Strings']['Data'][int(string_id)]
+            for char in string:
+                if char in '".?\'':
+                    result.patch_value(DOUBLE_BYTE_CHAR, 'u8',
+                        sotn_address.Address(extract_metadata['Start'] + offset),
+                    )
+                    offset += 1
+                char_code = SPACE_CHAR
+                if char == '"':
+                    char_code = QUOTE_CHAR
+                elif char == ".":
+                    char_code = PERIOD_CHAR
+                elif char == "?":
+                    char_code = QUESTION_MARK_CHAR
+                elif char == "'":
+                    char_code = APOSTROPHE_CHAR
+                elif char in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789':
+                    char_code = ord(char)
+                else:
+                    char_code = SPACE_CHAR
+                result.patch_value(char_code, 'u8',
+                    sotn_address.Address(extract_metadata['Start'] + offset),
+                )
+                offset += 1
+            padding = 4 - (offset % 4)
+            for _ in range(padding):
+                result.patch_value(NULL_CHAR, 'u8',
+                    sotn_address.Address(extract_metadata['Start'] + offset),
+                )
+                offset += 1
     return result
 
 if __name__ == '__main__':

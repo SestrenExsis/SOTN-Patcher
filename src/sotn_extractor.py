@@ -657,7 +657,7 @@ if __name__ == '__main__':
         strings = {
             'Metadata': {
                 'Start': cursor.cursor.address,
-                'Count': 16,
+                'Count': 27,
                 'Type': 'string',
                 'Note': 'Strings in SOTN are null-terminated, Shift JIS-encoded character arrays',
             },
