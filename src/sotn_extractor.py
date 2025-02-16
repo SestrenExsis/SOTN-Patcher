@@ -652,6 +652,49 @@ if __name__ == '__main__':
         ):
             cursor = BIN(binary_file, constant_address)
             constants[constant_name] = cursor.indirect(0, constant_data_type, True)
+        # Extract string data
+        cursor = BIN(binary_file, 0x03ACEFD4)
+        strings = {
+            'Metadata': {
+                'Start': cursor.cursor.address,
+                'Count': 16,
+                'Type': 'string',
+                'Note': 'Strings in SOTN are null-terminated, Shift JIS-encoded character arrays',
+            },
+            'Data': [],
+        }
+        offset = 0
+        UNKNOWN_CHAR = '*'
+        for _ in range(strings['Metadata']['Count']):
+            # Strings are assumed to be 4-byte aligned
+            assert (offset % 4) == 0
+            string = ''
+            while True:
+                char_code = cursor.u8(offset)
+                if char_code == 0x00:
+                    # Strings must end in a Null character
+                    offset += 4 - (offset % 4)
+                    break
+                elif char_code == 0x81:
+                    # Shift JIS has some 2-byte characters that start with 0x81
+                    offset += 1
+                    char_code = cursor.u8(offset)
+                    if char_code == 0x44:
+                        string += '.'
+                    elif char_code == 0x48:
+                        string += '?'
+                    elif char_code == 0x66:
+                        string += "'"
+                    elif char_code == 0x68:
+                        string += '"'
+                    else:
+                        string += UNKNOWN_CHAR
+                elif chr(char_code) in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789':
+                    string += chr(char_code)
+                else:
+                    string += UNKNOWN_CHAR
+                offset += 1
+            strings['Data'].append(string)
         # Extract castle map data
         cursor = BIN(binary_file, 0x001AF800)
         castle_map = {
@@ -744,6 +787,7 @@ if __name__ == '__main__':
             'Constants': constants,
             'Familiar Events': familiar_events,
             'Stages': stages,
+            'Strings': strings,
             'Teleporters': teleporters,
         }
         with open(args.json_filepath, 'w') as extraction_json:
