@@ -689,7 +689,17 @@ if __name__ == '__main__':
                         string += '"'
                     else:
                         string += UNKNOWN_CHAR
-                elif chr(char_code) in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789':
+                elif char_code == 0x82:
+                    # Shift JIS has some 2-byte characters that start with 0x82
+                    offset += 1
+                    char_code = cursor.u8(offset)
+                    if 0x4F <= char_code <= 0x58:
+                        string += chr(ord('0') + (char_code - 0x4F))
+                    else:
+                        string += UNKNOWN_CHAR
+                elif chr(char_code) in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+                    string += chr(char_code)
+                elif chr(char_code) in '0123456789':
                     string += chr(char_code)
                 else:
                     string += UNKNOWN_CHAR

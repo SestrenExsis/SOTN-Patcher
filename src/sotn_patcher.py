@@ -448,7 +448,7 @@ def get_ppf(extract, changes):
         extract_metadata = extract['Strings']['Metadata']
         offset = 0
         # NOTE(sestren): Going through all the strings on the extract side is necessary because strings take up a variable amount of bytes
-        for (string_id, extracted_string) in enumerate(extract['Strings']['Data']):
+        for (string_id, extracted_string) in extract['Strings']['Data'].items():
             string = extracted_string
             if string_id in changes['Strings']:
                 string = changes['Strings'][string_id]
@@ -469,8 +469,14 @@ def get_ppf(extract, changes):
                     char_code = QUESTION_MARK_CHAR
                 elif char == "'":
                     char_code = APOSTROPHE_CHAR
-                elif char in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789':
+                elif char in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ':
                     char_code = ord(char)
+                elif char in '0123456789':
+                    result.patch_value(0x82, 'u8',
+                        sotn_address.Address(extract_metadata['Start'] + offset),
+                    )
+                    offset += 1
+                    char_code = 0x4f + (ord(char) - ord('0'))
                 else:
                     char_code = SPACE_CHAR
                 result.patch_value(char_code, 'u8',
