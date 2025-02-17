@@ -113,7 +113,7 @@ def get_changes_template_file(extract):
         'Constants': {},
         'Familiar Events': {},
         'Stages': {},
-        'Strings': [],
+        'Strings': {},
         'Teleporters': {},
     }
     for boss_teleporter_id in range(len(extract['Boss Teleporters']['Data'])):
@@ -174,9 +174,9 @@ def get_changes_template_file(extract):
             'Room X': extract['Familiar Events']['Data'][familiar_event_id]['Room X'],
             'Room Y': extract['Familiar Events']['Data'][familiar_event_id]['Room Y'],
         }
-    for string_id in range(len(extract['Strings']['Data'])):
+    for string_id in extract['Strings']['Data']:
         string = extract['Strings']['Data'][string_id]
-        result['Strings'].append(string)
+        result['Strings'][string_id] = string
     return result
 
 def validate_changes(changes):
@@ -447,8 +447,13 @@ def get_ppf(extract, changes):
     if 'Strings' in changes:
         extract_metadata = extract['Strings']['Metadata']
         offset = 0
-        for string in changes['Strings']:
-            # old_string = extract['Strings']['Data'][int(string_id)]
+        # NOTE(sestren): Going through all the strings on the extract side is necessary because strings take up a variable amount of bytes
+        for (string_id, extracted_string) in extract['Strings']['Data'].items():
+            string = extracted_string
+            if string_id in changes['Strings']:
+                string = changes['Strings'][string_id]
+            if str(string_id) in changes['Strings']:
+                string = changes['Strings'][str(string_id)]
             for char in string:
                 if char in '".?\'':
                     result.patch_value(DOUBLE_BYTE_CHAR, 'u8',
@@ -464,8 +469,14 @@ def get_ppf(extract, changes):
                     char_code = QUESTION_MARK_CHAR
                 elif char == "'":
                     char_code = APOSTROPHE_CHAR
-                elif char in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789':
+                elif char in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ':
                     char_code = ord(char)
+                elif char in '0123456789':
+                    result.patch_value(0x82, 'u8',
+                        sotn_address.Address(extract_metadata['Start'] + offset),
+                    )
+                    offset += 1
+                    char_code = 0x4f + (ord(char) - ord('0'))
                 else:
                     char_code = SPACE_CHAR
                 result.patch_value(char_code, 'u8',

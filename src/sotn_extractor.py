@@ -661,11 +661,11 @@ if __name__ == '__main__':
                 'Type': 'string',
                 'Note': 'Strings in SOTN are null-terminated, Shift JIS-encoded character arrays',
             },
-            'Data': [],
+            'Data': {},
         }
         offset = 0
         UNKNOWN_CHAR = '*'
-        for _ in range(strings['Metadata']['Count']):
+        for string_id in range(strings['Metadata']['Count']):
             # Strings are assumed to be 4-byte aligned
             assert (offset % 4) == 0
             string = ''
@@ -689,12 +689,22 @@ if __name__ == '__main__':
                         string += '"'
                     else:
                         string += UNKNOWN_CHAR
-                elif chr(char_code) in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789':
+                elif char_code == 0x82:
+                    # Shift JIS has some 2-byte characters that start with 0x82
+                    offset += 1
+                    char_code = cursor.u8(offset)
+                    if 0x4F <= char_code <= 0x58:
+                        string += chr(ord('0') + (char_code - 0x4F))
+                    else:
+                        string += UNKNOWN_CHAR
+                elif chr(char_code) in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+                    string += chr(char_code)
+                elif chr(char_code) in '0123456789':
                     string += chr(char_code)
                 else:
                     string += UNKNOWN_CHAR
                 offset += 1
-            strings['Data'].append(string)
+            strings['Data'][string_id] = string
         # Extract castle map data
         cursor = BIN(binary_file, 0x001AF800)
         castle_map = {
