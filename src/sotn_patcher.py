@@ -138,6 +138,7 @@ def get_changes_template_file(extract):
                         relic_found_ind = True
                         object_h = {
                             'Entity Type ID': entity_type_id,
+                            'Entity Room Index': object_layout_data['Entity Room Index'],
                             'Params': object_layout_data['Params'],
                         }
                         object_layout_h[index] = object_h
@@ -148,6 +149,7 @@ def get_changes_template_file(extract):
                         relic_found_ind = True
                         object_h = {
                             'Entity Type ID': entity_type_id,
+                            'Entity Room Index': object_layout_data['Entity Room Index'],
                             'Params': object_layout_data['Params'],
                         }
                         object_layout_v[index] = object_h
@@ -244,13 +246,11 @@ def get_ppf(extract, changes):
     # Patch stage data
     if 'Stages' in changes:
         for stage_id in sorted(changes['Stages']):
-            # print(stage_id)
             stage_data = changes['Stages'][stage_id]
             stage_extract = extract['Stages'][stage_id]
             # Stage: Patch room data
             if 'Rooms' in stage_data:
                 for room_id in sorted(stage_data['Rooms']):
-                    # print('', room_id)
                     room_data = stage_data['Rooms'][room_id]
                     room_extract = stage_extract['Rooms'][room_id]
                     left = room_extract['Left']['Value']
@@ -306,36 +306,34 @@ def get_ppf(extract, changes):
                                 tile_layout_extract['Layout Rect']['Type'],
                                 sotn_address.Address(tile_layout_extract['Layout Rect']['Start']),
                             )
-                    # Room: Patch object layout horizontal
-                    if 'Object Layout - Horizontal' in room_data:
-                        object_layout_data = room_data['Object Layout - Horizontal']
-                        object_layout_extract = room_extract['Object Layout - Horizontal']
-                        for object_id in sorted(object_layout_data):
-                            object_index = int(object_id)
-                            object_data = object_layout_data[object_id]
-                            object_extract = object_layout_extract['Data'][object_index]
-                            if 'Params' in object_data:
-                                if object_data['Params'] != object_extract['Params']:
-                                    result.patch_value(
-                                        object_data['Params'],
-                                        object_layout_extract['Metadata']['Fields']['Params']['Type'],
-                                        sotn_address.Address(object_layout_extract['Metadata']['Start']),
-                                    )
-                    # Room: Patch object layout vertical
-                    if 'Object Layout - Vertical' in room_data:
-                        object_layout_data = room_data['Object Layout - Vertical']
-                        object_layout_extract = room_extract['Object Layout - Vertical']
-                        for object_id in sorted(object_layout_data):
-                            object_index = int(object_id)
-                            object_data = object_layout_data[object_id]
-                            object_extract = object_layout_extract['Data'][object_index]
-                            if 'Params' in object_data:
-                                if object_data['Params'] != object_extract['Params']:
-                                    result.patch_value(
-                                        object_data['Params'],
-                                        object_layout_extract['Metadata']['Fields']['Params']['Type'],
-                                        sotn_address.Address(object_layout_extract['Metadata']['Start']),
-                                    )
+                    # Room: Patch object layouts
+                    for room_property in (
+                        'Object Layout - Horizontal',
+                        'Object Layout - Vertical',
+                    ):
+                        if room_property not in room_data:
+                            continue
+                        object_changes = room_data[room_property]
+                        object_extract = room_extract[room_property]
+                        for element_id in sorted(object_changes):
+                            element_index = int(element_id)
+                            for field_name in (
+                                'Entity Room Index',
+                                'Entity Type ID',
+                                'Params',
+                            ):
+                                if not (
+                                    field_name in object_changes[element_id] and
+                                    object_changes[element_id][field_name] != object_extract['Data'][element_index][field_name]
+                                ):
+                                    continue
+                                result.patch_value(
+                                    object_changes[element_id][field_name],
+                                    object_extract['Metadata']['Fields'][field_name]['Type'],
+                                    sotn_address.Address(
+                                        object_extract['Metadata']['Start'] + element_index * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset']
+                                    ),
+                                )
     # Patch teleporters
     if 'Teleporters' in changes:
         extract_metadata = extract['Teleporters']['Metadata']

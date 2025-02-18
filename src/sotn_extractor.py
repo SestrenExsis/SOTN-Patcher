@@ -541,10 +541,6 @@ if __name__ == '__main__':
                         entity_room_index = cursors[direction].u16(offset + 0x6)
                         params = cursors[direction].u16(offset + 0x8)
                         offset += 10
-                        if x == -2:
-                            continue
-                        elif x == -1:
-                            break
                         data = {
                             'X': x,
                             'Y': y,
@@ -553,6 +549,8 @@ if __name__ == '__main__':
                             'Params': params,
                         }
                         objects['Data'].append(data)
+                        if x == -1:
+                            break
                     objects['Metadata']['Count'] = len(objects['Data'])
                     stages[stage_name]['Rooms'][room_id]['Object Layout - ' + direction] = objects
         # Extract teleporter data
