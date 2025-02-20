@@ -647,6 +647,9 @@ if __name__ == '__main__':
             (0x000FFD18, 'Castle Keep Teleporter, Y Offset', 's16'), # 0x2442F7B1 --> subiu v0, $084F
             (0x000FFD68, 'Reverse Keep Teleporter, X Offset', 's16'), # 0x2463DF40 --> subiu v1, $20C0
             (0x000FFD9C, 'Reverse Keep Teleporter, Y Offset', 's16'), # 0x2442C7B9 --> subiu v0, $3847
+            # Must be updated so that False Save Room still sends you to Nightmare (Solved by @MottZilla)
+            (0x000E7DC8, 'False Save Room, Room X', 'u16'), # 0x2D00 --> 45
+            (0x000E7DD0, 'False Save Room, Room Y', 'u16'), # 0x2100 --> 33
         ):
             cursor = BIN(binary_file, constant_address)
             constants[constant_name] = cursor.indirect(0, constant_data_type, True)
