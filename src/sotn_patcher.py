@@ -115,6 +115,7 @@ def get_changes_template_file(extract):
         'Stages': {},
         'Strings': {},
         'Teleporters': {},
+        'Warp Room Coordinates': {},
     }
     for boss_teleporter_id in range(len(extract['Boss Teleporters']['Data'])):
         result['Boss Teleporters'][boss_teleporter_id] = {
@@ -175,6 +176,11 @@ def get_changes_template_file(extract):
         result['Familiar Events'][familiar_event_id] = {
             'Room X': extract['Familiar Events']['Data'][familiar_event_id]['Room X'],
             'Room Y': extract['Familiar Events']['Data'][familiar_event_id]['Room Y'],
+        }
+    for warp_room_coordinate_id in range(len(extract['Warp Room Coordinates']['Data'])):
+        result['Warp Room Coordinates'][warp_room_coordinate_id] = {
+            'Room X': extract['Warp Room Coordinates']['Data'][warp_room_coordinate_id]['Room X'],
+            'Room Y': extract['Warp Room Coordinates']['Data'][warp_room_coordinate_id]['Room Y'],
         }
     for string_id in extract['Strings']['Data']:
         string = extract['Strings']['Data'][string_id]
@@ -423,6 +429,27 @@ def get_ppf(extract, changes):
                         extract_metadata['Fields']['Room Y']['Type'],
                         sotn_address.Address(offset),
                     )
+    # Patch warp room coordinates
+    object_extract = extract.get('Warp Room Coordinates', {})
+    object_changes = changes.get('Warp Room Coordinates', {})
+    for element_id in sorted(object_changes):
+        element_index = int(element_id)
+        for field_name in (
+            'Room X',
+            'Room Y',
+        ):
+            if not (
+                field_name in object_changes.get(element_id, {}) and
+                object_changes[element_id][field_name] != object_extract['Data'][element_index][field_name]
+            ):
+                continue
+            result.patch_value(
+                object_changes[element_id][field_name],
+                object_extract['Metadata']['Fields'][field_name]['Type'],
+                sotn_address.Address(
+                    object_extract['Metadata']['Start'] + element_index * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset']
+                ),
+            )
     # Patch strings
     # NOTE(sestren): There are no guards in place requiring that the resulting array of strings
     # NOTE(sestren): fits into place or uses up the same amount of bytes. It is the
@@ -512,7 +539,7 @@ if __name__ == '__main__':
                 if 'Changes' in changes:
                     changes = changes['Changes']
                 aliases = yaml.safe_load(aliases_file)
-                for (stage_name, stage_changes) in changes['Stages'].items():
+                for (stage_name, stage_changes) in changes.get('Stages', {}).items():
                     aliases_found = {}
                     # print(stage_name)
                     for room_name in stage_changes['Rooms']:

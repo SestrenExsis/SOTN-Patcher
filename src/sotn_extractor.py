@@ -721,7 +721,32 @@ if __name__ == '__main__':
                 data = row_cursor.u8(col)
                 row_data += ''.join(reversed('{:02X}'.format(data)))
             castle_map['Data'].append(row_data)
-        # TODO(sestren): Extract Warp Room coordinates list
+        # Extract Warp Room coordinates list
+        cursor = BIN(binary_file, 0x04D12E5C)
+        warp_room_coordinates = {
+            'Metadata': {
+                'Start': cursor.cursor.address,
+                'Size': 0x04,
+                'Count': 5,
+                'Fields': {
+                    'Room X': {
+                        'Offset': 0x00,
+                        'Type': 'u16',
+                    },
+                    'Room Y': {
+                        'Offset': 0x02,
+                        'Type': 'u16',
+                    },
+                },
+            },
+            'Data': [],
+        }
+        for warp_room_coordinate_id in range(warp_room_coordinates['Metadata']['Count']):
+            data = {
+                'Room X': cursor.u16(0x04 * warp_room_coordinate_id + 0x00),
+                'Room Y': cursor.u16(0x04 * warp_room_coordinate_id + 0x02),
+            }
+            warp_room_coordinates['Data'].append(data)
         # Extract familiar events
         cursor = BIN(binary_file, 0x0392A760)
         familiar_events = {
@@ -797,6 +822,7 @@ if __name__ == '__main__':
             'Stages': stages,
             'Strings': strings,
             'Teleporters': teleporters,
+            'Warp Room Coordinates': warp_room_coordinates,
         }
         with open(args.json_filepath, 'w') as extraction_json:
             json.dump(extraction, extraction_json, indent='  ', sort_keys=True)
