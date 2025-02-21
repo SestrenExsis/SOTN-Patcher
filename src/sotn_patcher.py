@@ -379,6 +379,8 @@ def get_ppf(extract, changes):
                 )
     extract_metadata = extract['Castle Map']['Metadata']
     for row in range(extract_metadata.get('Rows', {})):
+        if 'Castle Map' not in changes:
+            continue
         row_data = changes['Castle Map'][row]
         for col in range(0, 2 * extract_metadata['Columns'], 2):
             (left, right) = (col, col + 1)

@@ -650,6 +650,11 @@ if __name__ == '__main__':
             # Must be updated so that False Save Room still sends you to Nightmare (Solved by @MottZilla)
             (0x000E7DC8, 'False Save Room, Room X', 'u16'), # 0x2D00 --> 45
             (0x000E7DD0, 'False Save Room, Room Y', 'u16'), # 0x2100 --> 33
+            # TODO(sestren): Add constants for False Save Room in Inverted Castle
+            # 0x000E7DA4 = 0x1200 --> 18
+            # 0x000E7DAC = 0x1E00 --> 30
+            # To have noclip mode always on; set to "nop" or 0x00000000
+            (0x00100540, 'NOCLIP', 'u32'), # 3C02800A --> lw v0, $80098850
         ):
             cursor = BIN(binary_file, constant_address)
             constants[constant_name] = cursor.indirect(0, constant_data_type, True)
