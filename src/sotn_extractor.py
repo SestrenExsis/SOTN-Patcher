@@ -650,6 +650,14 @@ if __name__ == '__main__':
             # Must be updated so that False Save Room still sends you to Nightmare (Solved by @MottZilla)
             (0x000E7DC8, 'False Save Room, Room X', 'u16'), # 0x2D00 --> 45
             (0x000E7DD0, 'False Save Room, Room Y', 'u16'), # 0x2100 --> 33
+            # TODO(sestren): Add constants for False Save Room in Inverted Castle
+            # 0x000E7DA4 = 0x1200 --> 18
+            # 0x000E7DAC = 0x1E00 --> 30
+            # To enable NOCLIP mode; set to 0xAC258850 --> sw a1, -$77B0(at)
+            (0x000D9364, 'Set initial NOCLIP value', 'u32'), # 0xAC208850 --> sw 0, -$77B0(at)
+            # Buy Castle Map, set to NOP to draw every tile within the boundaries
+            (0X000E7B1C, 'Should reveal map tile', 'u32'), # 0x10400020 --> beq v0,0,$800F23A0
+            # (0x0009840C, 'Castle map reveal boundary', 'u32') # 0x06082600 --> {0, 26, 8, 6} # Change to 0x40400000???
         ):
             cursor = BIN(binary_file, constant_address)
             constants[constant_name] = cursor.indirect(0, constant_data_type, True)
