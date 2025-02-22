@@ -653,8 +653,8 @@ if __name__ == '__main__':
             # TODO(sestren): Add constants for False Save Room in Inverted Castle
             # 0x000E7DA4 = 0x1200 --> 18
             # 0x000E7DAC = 0x1E00 --> 30
-            # To have noclip mode always on; set to "nop" or 0x00000000
-            (0x00100540, 'NOCLIP', 'u32'), # 3C02800A --> lw v0, $80098850
+            # To enable NOCLIP mode; set to 0xAC258850 --> sw a1, -$77B0(at)
+            (0x000D9364, 'Set initial NOCLIP value', 'u32'), # 0xAC208850 --> sw 0, -$77B0(at)
         ):
             cursor = BIN(binary_file, constant_address)
             constants[constant_name] = cursor.indirect(0, constant_data_type, True)
