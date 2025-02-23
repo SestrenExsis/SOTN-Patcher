@@ -110,6 +110,7 @@ def get_changes_template_file(extract):
     result = {
         'Boss Teleporters': {},
         'Castle Map': [],
+        'Castle Map Reveals': [],
         'Constants': {},
         'Familiar Events': {},
         'Stages': {},
@@ -172,6 +173,15 @@ def get_changes_template_file(extract):
     for row in range(len(extract['Castle Map']['Data'])):
         row_data = extract['Castle Map']['Data'][row]
         result['Castle Map'].append(row_data)
+    for castle_map_reveal_id in range(len(extract['Castle Map Reveals'])):
+        castle_map_reveal = {
+            'Bytes Per Row': extract['Castle Map Reveals'][castle_map_reveal_id]['Bytes Per Row']['Value'],
+            'Left': extract['Castle Map Reveals'][castle_map_reveal_id]['Left']['Value'],
+            'Rows': extract['Castle Map Reveals'][castle_map_reveal_id]['Rows']['Value'],
+            'Top': extract['Castle Map Reveals'][castle_map_reveal_id]['Top']['Value'],
+            'Grid': extract['Castle Map Reveals'][castle_map_reveal_id]['Grid']['Data'],
+        }
+        result['Castle Map Reveals'].append(castle_map_reveal)
     for familiar_event_id in range(len(extract['Familiar Events']['Data'])):
         result['Familiar Events'][familiar_event_id] = {
             'Room X': extract['Familiar Events']['Data'][familiar_event_id]['Room X'],
@@ -382,6 +392,20 @@ def get_ppf(extract, changes):
         if 'Castle Map' not in changes:
             continue
         row_data = changes['Castle Map'][row]
+        for col in range(0, 2 * extract_metadata['Columns'], 2):
+            (left, right) = (col, col + 1)
+            (little, big) = (int(row_data[left], base=16), int(row_data[right], base=16))
+            pixel_pair_value = 0x10 * big + little
+            col_span = col // 2
+            result.patch_value(pixel_pair_value,
+                'u8',
+                sotn_address.Address(extract_metadata['Start'] + row * extract_metadata['Columns'] + col_span),
+            )
+    extract_metadata = extract['Castle Map Reveals']['Metadata']
+    for row in range(extract_metadata.get('Rows', {})):
+        if 'Castle Map Reveals' not in changes:
+            continue
+        row_data = changes['Castle Map Reveals'][row]
         for col in range(0, 2 * extract_metadata['Columns'], 2):
             (left, right) = (col, col + 1)
             (little, big) = (int(row_data[left], base=16), int(row_data[right], base=16))
