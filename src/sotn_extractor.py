@@ -732,6 +732,38 @@ if __name__ == '__main__':
                 data = row_cursor.u8(col)
                 row_data += ''.join(reversed('{:02X}'.format(data)))
             castle_map['Data'].append(row_data)
+        # Extract Castle Map reveal data (when purchased in the Shop)
+        cursor = BIN(binary_file, 0x0009840C)
+        castle_map_reveals = []
+        while True:
+            castle_map_reveal = {
+                'Left': cursor.u8(0x00, True),
+                'Top': cursor.u8(0x01, True),
+                'Bytes Per Row': cursor.u8(0x02, True),
+                'Rows': cursor.u8(0x03, True),
+            }
+            grid_cursor = cursor.clone(0x04)
+            grid = {
+                'Metadata': {
+                    'Start': grid_cursor.cursor.address,
+                    'Columns': 8 * castle_map_reveal['Bytes Per Row']['Value'],
+                    'Rows': castle_map_reveal['Rows']['Value'],
+                    'Type': 'binary-string-array',
+                },
+                'Data': [],
+            }
+            for row in range(grid['Metadata']['Rows']):
+                grid_row_cursor = grid_cursor.clone(row * castle_map_reveal['Bytes Per Row']['Value'])
+                row_data = ''
+                for col in range(castle_map_reveal['Bytes Per Row']['Value']):
+                    data = grid_row_cursor.u8(col)
+                    row_data += ''.join(reversed('{:08b}'.format(data)))
+                grid['Data'].append(row_data)
+            castle_map_reveal['Grid'] = grid
+            castle_map_reveals.append(castle_map_reveal)
+            grid_cursor = grid_cursor.clone(castle_map_reveal['Rows']['Value'] * castle_map_reveal['Bytes Per Row']['Value'])
+            if grid_cursor.u8(0) == 0xFF:
+                break
         # Extract Warp Room coordinates list
         cursor = BIN(binary_file, 0x04D12E5C)
         warp_room_coordinates = {
@@ -828,6 +860,7 @@ if __name__ == '__main__':
         extraction = {
             'Boss Teleporters': boss_teleporters,
             'Castle Map': castle_map,
+            'Castle Map Reveals': castle_map_reveals,
             'Constants': constants,
             'Familiar Events': familiar_events,
             'Stages': stages,
