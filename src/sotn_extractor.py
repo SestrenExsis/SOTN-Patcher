@@ -734,34 +734,33 @@ if __name__ == '__main__':
             castle_map['Data'].append(row_data)
         # Extract Castle Map reveal data (when purchased in the Shop)
         cursor = BIN(binary_file, 0x0009840C)
-        castle_map_reveals = []
+        castle_map_reveals = {
+            'Metadata': {
+                'Start': cursor.cursor.address,
+                'Count': 0,
+                'Type': 'binary-string-array',
+            },
+            'Data': [],
+        }
         while True:
             castle_map_reveal = {
-                'Left': cursor.u8(0x00, True),
-                'Top': cursor.u8(0x01, True),
-                'Bytes Per Row': cursor.u8(0x02, True),
-                'Rows': cursor.u8(0x03, True),
+                'Left': cursor.u8(0x00),
+                'Top': cursor.u8(0x01),
+                'Bytes Per Row': cursor.u8(0x02),
+                'Rows': cursor.u8(0x03),
+                'Grid': [],
             }
             grid_cursor = cursor.clone(0x04)
-            grid = {
-                'Metadata': {
-                    'Start': grid_cursor.cursor.address,
-                    'Columns': 8 * castle_map_reveal['Bytes Per Row']['Value'],
-                    'Rows': castle_map_reveal['Rows']['Value'],
-                    'Type': 'binary-string-array',
-                },
-                'Data': [],
-            }
-            for row in range(grid['Metadata']['Rows']):
-                grid_row_cursor = grid_cursor.clone(row * castle_map_reveal['Bytes Per Row']['Value'])
+            for row in range(castle_map_reveal['Rows']):
+                grid_row_cursor = grid_cursor.clone(row * castle_map_reveal['Bytes Per Row'])
                 row_data = ''
-                for col in range(castle_map_reveal['Bytes Per Row']['Value']):
+                for col in range(castle_map_reveal['Bytes Per Row']):
                     data = grid_row_cursor.u8(col)
-                    row_data += ''.join(reversed('{:08b}'.format(data)))
-                grid['Data'].append(row_data)
-            castle_map_reveal['Grid'] = grid
-            castle_map_reveals.append(castle_map_reveal)
-            grid_cursor = grid_cursor.clone(castle_map_reveal['Rows']['Value'] * castle_map_reveal['Bytes Per Row']['Value'])
+                    byte_data = ''.join(reversed('{:08b}'.format(data)))
+                    row_data += byte_data.replace('0', ' ').replace('1', '#')
+                castle_map_reveal['Grid'].append(row_data)
+            castle_map_reveals['Data'].append(castle_map_reveal)
+            grid_cursor = grid_cursor.clone(castle_map_reveal['Rows'] * castle_map_reveal['Bytes Per Row'])
             if grid_cursor.u8(0) == 0xFF:
                 break
         # Extract Warp Room coordinates list
