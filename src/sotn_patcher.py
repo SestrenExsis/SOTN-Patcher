@@ -401,8 +401,37 @@ def get_ppf(extract, changes):
                 'u8',
                 sotn_address.Address(extract_metadata['Start'] + row * extract_metadata['Columns'] + col_span),
             )
-    for castle_map_reveal_id in changes.get('Castle Map Reveals', []):
-        pass
+    if 'Castle Map Reveals' in changes:
+        changes_data = changes['Castle Map Reveals']
+        extract_data = extract['Castle Map Reveals']['Data']
+        extract_metadata = extract['Castle Map Reveals']['Metadata']
+        offset = 0
+        for (castle_map_reveal_id, castle_map_reveal) in enumerate(changes_data):
+            assert 'Bytes Per Row' in castle_map_reveal
+            assert 'Grid' in castle_map_reveal
+            assert 'Left' in castle_map_reveal
+            assert 'Rows' in castle_map_reveal
+            assert 'Top' in castle_map_reveal
+            for property_id in ('Left', 'Top', 'Bytes Per Row', 'Rows'):
+                result.patch_value(castle_map_reveal[property_id], 'u8',
+                    sotn_address.Address(extract_metadata['Start'] + offset),
+                )
+                offset += 1
+            for row in range(castle_map_reveal['Rows']):
+                for byte_id in range(castle_map_reveal['Bytes Per Row']):
+                    byte_value = 0
+                    for bit_id in range(8):
+                        col = 8 * byte_id + bit_id
+                        if castle_map_reveal['Grid'][row][col] != ' ':
+                            byte_value += 2 ** bit_id
+                    result.patch_value(byte_value, 'u8',
+                        sotn_address.Address(extract_metadata['Start'] + offset),
+                    )
+                    offset += 1
+        result.patch_value(0xFF, 'u8',
+            sotn_address.Address(extract_metadata['Start'] + offset),
+        )
+        assert offset <= extract_metadata['Footprint']
     # Patch familiar events
     # NOTE(sestren): Familiar events exist as a complete copy in 7 different locations, one for each familiar in the code
     # TODO(sestren): Replace this hacky way of doing it with a better approach

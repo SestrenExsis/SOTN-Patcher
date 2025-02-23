@@ -766,7 +766,6 @@ if __name__ == '__main__':
             castle_map_reveals['Metadata']['Count'] += 1
             grid_cursor = grid_cursor.clone(castle_map_reveal['Rows'] * castle_map_reveal['Bytes Per Row'])
             if grid_cursor.u8(0) == 0xFF:
-                castle_map_reveals['Metadata']['Footprint'] += 1
                 castle_map_reveals['Metadata']['Footprint'] += 4 - (castle_map_reveals['Metadata']['Footprint'] % 4)
                 break
         # Extract Warp Room coordinates list
