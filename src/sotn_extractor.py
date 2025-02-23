@@ -739,6 +739,7 @@ if __name__ == '__main__':
                 'Start': cursor.cursor.address,
                 'Count': 0,
                 'Type': 'binary-string-array',
+                'Footprint': 0,
             },
             'Data': [],
         }
@@ -750,18 +751,23 @@ if __name__ == '__main__':
                 'Rows': cursor.u8(0x03),
                 'Grid': [],
             }
+            castle_map_reveals['Metadata']['Footprint'] += 4
             grid_cursor = cursor.clone(0x04)
             for row in range(castle_map_reveal['Rows']):
                 grid_row_cursor = grid_cursor.clone(row * castle_map_reveal['Bytes Per Row'])
                 row_data = ''
                 for col in range(castle_map_reveal['Bytes Per Row']):
                     data = grid_row_cursor.u8(col)
+                    castle_map_reveals['Metadata']['Footprint'] += 1
                     byte_data = ''.join(reversed('{:08b}'.format(data)))
                     row_data += byte_data.replace('0', ' ').replace('1', '#')
                 castle_map_reveal['Grid'].append(row_data)
             castle_map_reveals['Data'].append(castle_map_reveal)
+            castle_map_reveals['Metadata']['Count'] += 1
             grid_cursor = grid_cursor.clone(castle_map_reveal['Rows'] * castle_map_reveal['Bytes Per Row'])
             if grid_cursor.u8(0) == 0xFF:
+                castle_map_reveals['Metadata']['Footprint'] += 1
+                castle_map_reveals['Metadata']['Footprint'] += 4 - (castle_map_reveals['Metadata']['Footprint'] % 4)
                 break
         # Extract Warp Room coordinates list
         cursor = BIN(binary_file, 0x04D12E5C)
