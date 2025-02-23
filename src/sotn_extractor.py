@@ -794,6 +794,32 @@ if __name__ == '__main__':
                 'Room Y': cursor.u16(0x04 * warp_room_coordinate_id + 0x02),
             }
             warp_room_coordinates['Data'].append(data)
+        # Extract Reverse Warp Room coordinates list
+        cursor = BIN(binary_file, 0x04EBE65C)
+        reverse_warp_room_coordinates = {
+            'Metadata': {
+                'Start': cursor.cursor.address,
+                'Size': 0x04,
+                'Count': 5,
+                'Fields': {
+                    'Room X': {
+                        'Offset': 0x00,
+                        'Type': 'u16',
+                    },
+                    'Room Y': {
+                        'Offset': 0x02,
+                        'Type': 'u16',
+                    },
+                },
+            },
+            'Data': [],
+        }
+        for reverse_warp_room_coordinate_id in range(reverse_warp_room_coordinates['Metadata']['Count']):
+            data = {
+                'Room X': cursor.u16(0x04 * reverse_warp_room_coordinate_id + 0x00),
+                'Room Y': cursor.u16(0x04 * reverse_warp_room_coordinate_id + 0x02),
+            }
+            reverse_warp_room_coordinates['Data'].append(data)
         # Extract familiar events
         cursor = BIN(binary_file, 0x0392A760)
         familiar_events = {
@@ -867,6 +893,7 @@ if __name__ == '__main__':
             'Castle Map Reveals': castle_map_reveals,
             'Constants': constants,
             'Familiar Events': familiar_events,
+            'Reverse Warp Room Coordinates': reverse_warp_room_coordinates,
             'Stages': stages,
             'Strings': strings,
             'Teleporters': teleporters,

@@ -113,6 +113,7 @@ def get_changes_template_file(extract):
         'Castle Map Reveals': [],
         'Constants': {},
         'Familiar Events': {},
+        'Reverse Warp Room Coordinates': {},
         'Stages': {},
         'Strings': {},
         'Teleporters': {},
@@ -195,6 +196,11 @@ def get_changes_template_file(extract):
     for string_id in extract['Strings']['Data']:
         string = extract['Strings']['Data'][string_id]
         result['Strings'][string_id] = string
+    for reverse_warp_room_coordinate_id in range(len(extract['Reverse Warp Room Coordinates']['Data'])):
+        result['Reverse Warp Room Coordinates'][reverse_warp_room_coordinate_id] = {
+            'Room X': extract['Reverse Warp Room Coordinates']['Data'][reverse_warp_room_coordinate_id]['Room X'],
+            'Room Y': extract['Reverse Warp Room Coordinates']['Data'][reverse_warp_room_coordinate_id]['Room Y'],
+        }
     return result
 
 def validate_changes(changes):
@@ -479,6 +485,27 @@ def get_ppf(extract, changes):
     # Patch warp room coordinates
     object_extract = extract.get('Warp Room Coordinates', {})
     object_changes = changes.get('Warp Room Coordinates', {})
+    for element_id in sorted(object_changes):
+        element_index = int(element_id)
+        for field_name in (
+            'Room X',
+            'Room Y',
+        ):
+            if not (
+                field_name in object_changes.get(element_id, {}) and
+                object_changes[element_id][field_name] != object_extract['Data'][element_index][field_name]
+            ):
+                continue
+            result.patch_value(
+                object_changes[element_id][field_name],
+                object_extract['Metadata']['Fields'][field_name]['Type'],
+                sotn_address.Address(
+                    object_extract['Metadata']['Start'] + element_index * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset']
+                ),
+            )
+    # Patch reverse warp room coordinates
+    object_extract = extract.get('Reverse Warp Room Coordinates', {})
+    object_changes = changes.get('Reverse Warp Room Coordinates', {})
     for element_id in sorted(object_changes):
         element_index = int(element_id)
         for field_name in (
