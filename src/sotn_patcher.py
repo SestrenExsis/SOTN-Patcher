@@ -407,22 +407,24 @@ def get_ppf(extract, changes):
         extract_metadata = extract['Castle Map Reveals']['Metadata']
         offset = 0
         for (castle_map_reveal_id, castle_map_reveal) in enumerate(changes_data):
-            assert 'Bytes Per Row' in castle_map_reveal
-            assert 'Grid' in castle_map_reveal
-            assert 'Left' in castle_map_reveal
-            assert 'Rows' in castle_map_reveal
-            assert 'Top' in castle_map_reveal
-            for property_id in ('Left', 'Top', 'Bytes Per Row', 'Rows'):
-                result.patch_value(castle_map_reveal[property_id], 'u8',
+            # If the original extraction has fewer reveals than are in changes, default to the last ID in the extraction
+            id = min(len(extract_data) - 1, castle_map_reveal_id)
+            bytes_per_row = castle_map_reveal.get('Bytes Per Row', extract_data[id]['Bytes Per Row'])
+            grid = castle_map_reveal.get('Grid', extract_data[id]['Grid'])
+            left = castle_map_reveal.get('Left', extract_data[id]['Left'])
+            rows = castle_map_reveal.get('Rows', extract_data[id]['Rows'])
+            top = castle_map_reveal.get('Top', extract_data[id]['Top'])
+            for value in (left, top, bytes_per_row, rows):
+                result.patch_value(value, 'u8',
                     sotn_address.Address(extract_metadata['Start'] + offset),
                 )
                 offset += 1
-            for row in range(castle_map_reveal['Rows']):
-                for byte_id in range(castle_map_reveal['Bytes Per Row']):
+            for row in range(rows):
+                for byte_id in range(bytes_per_row):
                     byte_value = 0
                     for bit_id in range(8):
                         col = 8 * byte_id + bit_id
-                        if castle_map_reveal['Grid'][row][col] != ' ':
+                        if grid[row][col] != ' ':
                             byte_value += 2 ** bit_id
                     result.patch_value(byte_value, 'u8',
                         sotn_address.Address(extract_metadata['Start'] + offset),
