@@ -409,10 +409,10 @@ def get_ppf(extract, changes):
         for (castle_map_reveal_id, castle_map_reveal) in enumerate(changes_data):
             # If the original extraction has fewer reveals than are in changes, default to the last ID in the extraction
             id = min(len(extract_data) - 1, castle_map_reveal_id)
-            bytes_per_row = castle_map_reveal.get('Bytes Per Row', extract_data[id]['Bytes Per Row'])
             grid = castle_map_reveal.get('Grid', extract_data[id]['Grid'])
+            rows = len(grid)
+            bytes_per_row = (len(grid[0])) // 8
             left = castle_map_reveal.get('Left', extract_data[id]['Left'])
-            rows = castle_map_reveal.get('Rows', extract_data[id]['Rows'])
             top = castle_map_reveal.get('Top', extract_data[id]['Top'])
             for value in (left, top, bytes_per_row, rows):
                 result.patch_value(value, 'u8',
@@ -420,6 +420,8 @@ def get_ppf(extract, changes):
                 )
                 offset += 1
             for row in range(rows):
+                assert 0 < len(grid[row]) <= 64
+                assert (len(grid[row]) % 8) == 0
                 for byte_id in range(bytes_per_row):
                     byte_value = 0
                     for bit_id in range(8):
