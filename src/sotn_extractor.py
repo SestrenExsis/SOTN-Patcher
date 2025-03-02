@@ -650,7 +650,6 @@ if __name__ == '__main__':
             # Must be updated so that False Save Room still sends you to Nightmare (Solved by @MottZilla)
             (0x000E7DC8, 'False Save Room, Room X', 'u16'), # 0x2D00 --> 45
             (0x000E7DD0, 'False Save Room, Room Y', 'u16'), # 0x2100 --> 33
-            # TODO(sestren): Add constants for False Save Room in Inverted Castle
             (0x000E7DA4, 'Reverse False Save Room, Room X', 'u16'), # 0x1200 --> 18
             (0x000E7DAC, 'Reverse False Save Room, Room Y', 'u16'), # 0x1E00 --> 30
             # To enable NOCLIP mode; set to 0xAC258850 --> sw a1, -$77B0(at)
