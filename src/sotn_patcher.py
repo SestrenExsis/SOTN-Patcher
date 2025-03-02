@@ -110,8 +110,10 @@ def get_changes_template_file(extract):
     result = {
         'Boss Teleporters': {},
         'Castle Map': [],
+        'Castle Map Reveals': [],
         'Constants': {},
         'Familiar Events': {},
+        'Reverse Warp Room Coordinates': {},
         'Stages': {},
         'Strings': {},
         'Teleporters': {},
@@ -172,6 +174,15 @@ def get_changes_template_file(extract):
     for row in range(len(extract['Castle Map']['Data'])):
         row_data = extract['Castle Map']['Data'][row]
         result['Castle Map'].append(row_data)
+    for castle_map_reveal_id in range(len(extract['Castle Map Reveals']['Data'])):
+        castle_map_reveal = {
+            'Bytes Per Row': extract['Castle Map Reveals']['Data'][castle_map_reveal_id]['Bytes Per Row'],
+            'Left': extract['Castle Map Reveals']['Data'][castle_map_reveal_id]['Left'],
+            'Rows': extract['Castle Map Reveals']['Data'][castle_map_reveal_id]['Rows'],
+            'Top': extract['Castle Map Reveals']['Data'][castle_map_reveal_id]['Top'],
+            'Grid': extract['Castle Map Reveals']['Data'][castle_map_reveal_id]['Grid'],
+        }
+        result['Castle Map Reveals'].append(castle_map_reveal)
     for familiar_event_id in range(len(extract['Familiar Events']['Data'])):
         result['Familiar Events'][familiar_event_id] = {
             'Room X': extract['Familiar Events']['Data'][familiar_event_id]['Room X'],
@@ -185,6 +196,11 @@ def get_changes_template_file(extract):
     for string_id in extract['Strings']['Data']:
         string = extract['Strings']['Data'][string_id]
         result['Strings'][string_id] = string
+    for reverse_warp_room_coordinate_id in range(len(extract['Reverse Warp Room Coordinates']['Data'])):
+        result['Reverse Warp Room Coordinates'][reverse_warp_room_coordinate_id] = {
+            'Room X': extract['Reverse Warp Room Coordinates']['Data'][reverse_warp_room_coordinate_id]['Room X'],
+            'Room Y': extract['Reverse Warp Room Coordinates']['Data'][reverse_warp_room_coordinate_id]['Room Y'],
+        }
     return result
 
 def validate_changes(changes):
@@ -391,6 +407,41 @@ def get_ppf(extract, changes):
                 'u8',
                 sotn_address.Address(extract_metadata['Start'] + row * extract_metadata['Columns'] + col_span),
             )
+    if 'Castle Map Reveals' in changes:
+        changes_data = changes['Castle Map Reveals']
+        extract_data = extract['Castle Map Reveals']['Data']
+        extract_metadata = extract['Castle Map Reveals']['Metadata']
+        offset = 0
+        for (castle_map_reveal_id, castle_map_reveal) in enumerate(changes_data):
+            # If the original extraction has fewer reveals than are in changes, default to the last ID in the extraction
+            id = min(len(extract_data) - 1, castle_map_reveal_id)
+            grid = castle_map_reveal.get('Grid', extract_data[id]['Grid'])
+            rows = len(grid)
+            bytes_per_row = (len(grid[0])) // 8
+            left = castle_map_reveal.get('Left', extract_data[id]['Left'])
+            top = castle_map_reveal.get('Top', extract_data[id]['Top'])
+            for value in (left, top, bytes_per_row, rows):
+                result.patch_value(value, 'u8',
+                    sotn_address.Address(extract_metadata['Start'] + offset),
+                )
+                offset += 1
+            for row in range(rows):
+                assert 0 < len(grid[row]) <= 64
+                assert (len(grid[row]) % 8) == 0
+                for byte_id in range(bytes_per_row):
+                    byte_value = 0
+                    for bit_id in range(8):
+                        col = 8 * byte_id + bit_id
+                        if grid[row][col] != ' ':
+                            byte_value += 2 ** bit_id
+                    result.patch_value(byte_value, 'u8',
+                        sotn_address.Address(extract_metadata['Start'] + offset),
+                    )
+                    offset += 1
+        result.patch_value(0xFF, 'u8',
+            sotn_address.Address(extract_metadata['Start'] + offset),
+        )
+        assert offset <= extract_metadata['Footprint']
     # Patch familiar events
     # NOTE(sestren): Familiar events exist as a complete copy in 7 different locations, one for each familiar in the code
     # TODO(sestren): Replace this hacky way of doing it with a better approach
@@ -434,6 +485,27 @@ def get_ppf(extract, changes):
     # Patch warp room coordinates
     object_extract = extract.get('Warp Room Coordinates', {})
     object_changes = changes.get('Warp Room Coordinates', {})
+    for element_id in sorted(object_changes):
+        element_index = int(element_id)
+        for field_name in (
+            'Room X',
+            'Room Y',
+        ):
+            if not (
+                field_name in object_changes.get(element_id, {}) and
+                object_changes[element_id][field_name] != object_extract['Data'][element_index][field_name]
+            ):
+                continue
+            result.patch_value(
+                object_changes[element_id][field_name],
+                object_extract['Metadata']['Fields'][field_name]['Type'],
+                sotn_address.Address(
+                    object_extract['Metadata']['Start'] + element_index * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset']
+                ),
+            )
+    # Patch reverse warp room coordinates
+    object_extract = extract.get('Reverse Warp Room Coordinates', {})
+    object_changes = changes.get('Reverse Warp Room Coordinates', {})
     for element_id in sorted(object_changes):
         element_index = int(element_id)
         for field_name in (

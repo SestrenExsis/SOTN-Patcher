@@ -650,9 +650,8 @@ if __name__ == '__main__':
             # Must be updated so that False Save Room still sends you to Nightmare (Solved by @MottZilla)
             (0x000E7DC8, 'False Save Room, Room X', 'u16'), # 0x2D00 --> 45
             (0x000E7DD0, 'False Save Room, Room Y', 'u16'), # 0x2100 --> 33
-            # TODO(sestren): Add constants for False Save Room in Inverted Castle
-            # 0x000E7DA4 = 0x1200 --> 18
-            # 0x000E7DAC = 0x1E00 --> 30
+            (0x000E7DA4, 'Reverse False Save Room, Room X', 'u16'), # 0x1200 --> 18
+            (0x000E7DAC, 'Reverse False Save Room, Room Y', 'u16'), # 0x1E00 --> 30
             # To enable NOCLIP mode; set to 0xAC258850 --> sw a1, -$77B0(at)
             (0x000D9364, 'Set initial NOCLIP value', 'u32'), # 0xAC208850 --> sw 0, -$77B0(at)
             # Buy Castle Map, set to NOP to draw every tile within the boundaries
@@ -732,6 +731,42 @@ if __name__ == '__main__':
                 data = row_cursor.u8(col)
                 row_data += ''.join(reversed('{:02X}'.format(data)))
             castle_map['Data'].append(row_data)
+        # Extract Castle Map reveal data (when purchased in the Shop)
+        cursor = BIN(binary_file, 0x0009840C)
+        castle_map_reveals = {
+            'Metadata': {
+                'Start': cursor.cursor.address,
+                'Count': 0,
+                'Type': 'binary-string-array',
+                'Footprint': 0,
+            },
+            'Data': [],
+        }
+        while True:
+            castle_map_reveal = {
+                'Left': cursor.u8(0x00),
+                'Top': cursor.u8(0x01),
+                'Bytes Per Row': cursor.u8(0x02),
+                'Rows': cursor.u8(0x03),
+                'Grid': [],
+            }
+            castle_map_reveals['Metadata']['Footprint'] += 4
+            grid_cursor = cursor.clone(0x04)
+            for row in range(castle_map_reveal['Rows']):
+                grid_row_cursor = grid_cursor.clone(row * castle_map_reveal['Bytes Per Row'])
+                row_data = ''
+                for col in range(castle_map_reveal['Bytes Per Row']):
+                    data = grid_row_cursor.u8(col)
+                    castle_map_reveals['Metadata']['Footprint'] += 1
+                    byte_data = ''.join(reversed('{:08b}'.format(data)))
+                    row_data += byte_data.replace('0', ' ').replace('1', '#')
+                castle_map_reveal['Grid'].append(row_data)
+            castle_map_reveals['Data'].append(castle_map_reveal)
+            castle_map_reveals['Metadata']['Count'] += 1
+            grid_cursor = grid_cursor.clone(castle_map_reveal['Rows'] * castle_map_reveal['Bytes Per Row'])
+            if grid_cursor.u8(0) == 0xFF:
+                castle_map_reveals['Metadata']['Footprint'] += 4 - (castle_map_reveals['Metadata']['Footprint'] % 4)
+                break
         # Extract Warp Room coordinates list
         cursor = BIN(binary_file, 0x04D12E5C)
         warp_room_coordinates = {
@@ -758,6 +793,32 @@ if __name__ == '__main__':
                 'Room Y': cursor.u16(0x04 * warp_room_coordinate_id + 0x02),
             }
             warp_room_coordinates['Data'].append(data)
+        # Extract Reverse Warp Room coordinates list
+        cursor = BIN(binary_file, 0x04EBE65C)
+        reverse_warp_room_coordinates = {
+            'Metadata': {
+                'Start': cursor.cursor.address,
+                'Size': 0x04,
+                'Count': 5,
+                'Fields': {
+                    'Room X': {
+                        'Offset': 0x00,
+                        'Type': 'u16',
+                    },
+                    'Room Y': {
+                        'Offset': 0x02,
+                        'Type': 'u16',
+                    },
+                },
+            },
+            'Data': [],
+        }
+        for reverse_warp_room_coordinate_id in range(reverse_warp_room_coordinates['Metadata']['Count']):
+            data = {
+                'Room X': cursor.u16(0x04 * reverse_warp_room_coordinate_id + 0x00),
+                'Room Y': cursor.u16(0x04 * reverse_warp_room_coordinate_id + 0x02),
+            }
+            reverse_warp_room_coordinates['Data'].append(data)
         # Extract familiar events
         cursor = BIN(binary_file, 0x0392A760)
         familiar_events = {
@@ -828,8 +889,10 @@ if __name__ == '__main__':
         extraction = {
             'Boss Teleporters': boss_teleporters,
             'Castle Map': castle_map,
+            'Castle Map Reveals': castle_map_reveals,
             'Constants': constants,
             'Familiar Events': familiar_events,
+            'Reverse Warp Room Coordinates': reverse_warp_room_coordinates,
             'Stages': stages,
             'Strings': strings,
             'Teleporters': teleporters,
