@@ -687,19 +687,19 @@ Rooms:
         Index: 10
     Abandoned Mine, Demon Card Room:
         Index: 11
-    Abandoned Mine, Loading Room A:
+    Abandoned Mine, Loading Room to Catacombs:
         Index: 12
-    Abandoned Mine, Loading Room B:
+    Abandoned Mine, Loading Room to Warp Rooms:
         Index: 13
-    Abandoned Mine, Loading Room C:
+    Abandoned Mine, Loading Room to Underground Caverns:
         Index: 14
     Abandoned Mine, Save Room A:
         Index: 15
-    Abandoned Mine, Fake Room With Teleporter ID 019:
+    Abandoned Mine, Fake Room with Teleporter to Underground Caverns:
         Index: 16
-    Abandoned Mine, Fake Room With Teleporter ID 020:
+    Abandoned Mine, Fake Room with Teleporter to Warp Rooms:
         Index: 17
-    Abandoned Mine, Fake Room With Teleporter ID 018:
+    Abandoned Mine, Fake Room with Teleporter to Catacombs:
         Index: 18
     Boss - Akmodan II, Olrox's Room:
         Index: 0
@@ -1505,19 +1505,19 @@ Rooms:
         Index: 10
     Cave, Demon Card Room:
         Index: 11
-    Cave, Loading Room A:
+    Cave, Loading Room to Catacombs:
         Index: 12
-    Cave, Loading Room B:
+    Cave, Loading Room to Warp Rooms:
         Index: 13
-    Cave, Loading Room C:
+    Cave, Loading Room to Underground Caverns:
         Index: 14
     Cave, Save Room A:
         Index: 15
-    Cave, Fake Room With Teleporter ID 018:
+    Cave, Fake Room with Teleporter to Underground Caverns:
         Index: 16
-    Cave, Fake Room With Teleporter ID 020:
+    Cave, Fake Room with Teleporter to Warp Rooms:
         Index: 17
-    Cave, Fake Room With Teleporter ID 019:
+    Cave, Fake Room with Teleporter to Catacombs:
         Index: 18
     Reverse Castle Center, Elevator Shaft:
         Index: 0
