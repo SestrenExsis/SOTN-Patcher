@@ -379,7 +379,7 @@ def get_ppf(extract, changes):
         room_offset = extract_data['Room']
         if 'Room' in teleporter_data:
             if teleporter_data['Room'] != room_offset:
-                room_offset = teleporter_data['Room']
+                room_offset = 8 * teleporter_data['Room']
                 result.patch_value(room_offset,
                     extract_metadata['Fields']['Room']['Type'],
                     sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room']['Offset']),
@@ -631,17 +631,15 @@ if __name__ == '__main__':
                         stage_changes['Rooms'][value] = room_data
                 # Substitute any aliases found in Teleporters
                 for teleporter_id in changes.get('Teleporters', {}):
-                    teleporter = changes['Teleporters'][teleporter_id]
-                    stage_key = teleporter['Stage']
-                    new_stage_key = aliases['Stages'].get(stage_key, {}).get('Index', stage_key)
-                    if new_stage_key != stage_key:
-                        print(stage_key, '->', new_stage_key)
-                        changes['Teleporters'][teleporter_id]['Stage'] = new_stage_key
-                    room_key = teleporter['Room']
-                    new_room_key = aliases['Rooms'].get(room_key, {}).get('Index', room_key)
-                    if new_room_key != room_key:
-                        print(room_key, '->', new_room_key)
-                        changes['Teleporters'][teleporter_id]['Room'] = new_room_key
+                    print('', 'teleporter_id:', teleporter_id)
+                    stage_value = changes['Teleporters'][teleporter_id]['Stage']
+                    if type(stage_value) == str:
+                        print('  ', 'stage_value:', stage_value, aliases['Stages'][stage_value]['Index'])
+                        changes['Teleporters'][teleporter_id]['Stage'] = aliases['Stages'][stage_value]['Index']
+                    room_value = changes['Teleporters'][teleporter_id]['Room']
+                    if type(room_value) == str:
+                        print('  ', 'room_value:', room_value, aliases['Rooms'][room_value]['Index'])
+                        changes['Teleporters'][teleporter_id]['Room'] = 8 * aliases['Rooms'][room_value]['Index']
                 validate_changes(changes)
                 patch = get_ppf(extract, changes)
                 ppf_file.write(patch.bytes)
