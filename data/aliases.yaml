@@ -1589,3 +1589,36 @@ Rooms:
     Index: 3
   Warp Rooms, Warp Room to Abandoned Mine:
     Index: 4
+Stages:
+  Abandoned Mine:
+    Index: 5
+  Alchemy Laboratory:
+    Index: 12
+  Castle Center:
+    Index: 8
+  Castle Entrance:
+    Index: 65
+  Castle Entrance Revisited:
+    Index: 7
+  Castle Keep:
+    Index: 11
+  Catacombs:
+    Index: 3
+  Clock Tower:
+    Index: 13
+  Colosseum:
+    Index: 10
+  Long Library:
+    Index: 2
+  Marble Gallery:
+    Index: 0
+  Olrox's Quarters:
+    Index: 4
+  Outer Wall:
+    Index: 1
+  Royal Chapel:
+    Index: 6
+  Underground Caverns:
+    Index: 9
+  Warp Rooms:
+    Index: 14

@@ -569,7 +569,7 @@ if __name__ == '__main__':
                         'Offset': 0x02,
                         'Type': 'u16',
                     },
-                    'Room Offset': {
+                    'Room': {
                         'Offset': 0x04,
                         'Type': 'u16',
                     },
@@ -589,7 +589,7 @@ if __name__ == '__main__':
             data = {
                 'Player X': cursor.u16(0x0A * teleporter_id + 0x00),
                 'Player Y': cursor.u16(0x0A * teleporter_id + 0x02),
-                'Room Offset': cursor.u16(0x0A * teleporter_id + 0x04),
+                'Room': cursor.u16(0x0A * teleporter_id + 0x04),
                 'Source Stage ID': cursor.u16(0x0A * teleporter_id + 0x06),
                 'Target Stage ID': cursor.u16(0x0A * teleporter_id + 0x08),
             }

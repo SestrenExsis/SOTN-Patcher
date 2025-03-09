@@ -168,8 +168,8 @@ def get_changes_template_file(extract):
         result['Teleporters'][teleporter_id] = {
             'Player X': extract['Teleporters']['Data'][teleporter_id]['Player X'],
             'Player Y': extract['Teleporters']['Data'][teleporter_id]['Player Y'],
-            'Room Offset': extract['Teleporters']['Data'][teleporter_id]['Room Offset'],
-            'Target Stage ID': extract['Teleporters']['Data'][teleporter_id]['Target Stage ID'],
+            'Room': extract['Teleporters']['Data'][teleporter_id]['Room'],
+            'Stage': extract['Teleporters']['Data'][teleporter_id]['Target Stage ID'],
         }
     for row in range(len(extract['Castle Map']['Data'])):
         row_data = extract['Castle Map']['Data'][row]
@@ -376,21 +376,21 @@ def get_ppf(extract, changes):
                     sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Player Y']['Offset']),
                 )
         # Teleporter: Patch room offset
-        room_offset = extract_data['Room Offset']
-        if 'Room Offset' in teleporter_data:
-            if teleporter_data['Room Offset'] != room_offset:
-                room_offset = teleporter_data['Room Offset']
+        room_offset = extract_data['Room']
+        if 'Room' in teleporter_data:
+            if teleporter_data['Room'] != room_offset:
+                room_offset = teleporter_data['Room']
                 result.patch_value(room_offset,
-                    extract_metadata['Fields']['Room Offset']['Type'],
-                    sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room Offset']['Offset']),
+                    extract_metadata['Fields']['Room']['Type'],
+                    sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room']['Offset']),
                 )
         # Teleporter: Patch target stage ID
         target_stage_id = extract_data['Target Stage ID']
         if 'Target Stage ID' in teleporter_data:
-            if teleporter_data['Target Stage ID'] != target_stage_id:
-                target_stage_id = teleporter_data['Target Stage ID']
+            if teleporter_data['Stage'] != target_stage_id:
+                target_stage_id = teleporter_data['Stage']
                 result.patch_value(target_stage_id,
-                    extract_metadata['Fields']['Target Stage ID']['Type'],
+                    extract_metadata['Fields']['Stage']['Type'],
                     sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Target Stage ID']['Offset']),
                 )
     extract_metadata = extract['Castle Map']['Metadata']
@@ -612,6 +612,7 @@ if __name__ == '__main__':
                 changes = json.load(changes_file)
                 if 'Changes' in changes:
                     changes = changes['Changes']
+                # Substitute any aliases found in Stages
                 aliases = yaml.safe_load(aliases_file)
                 for (stage_name, stage_changes) in changes.get('Stages', {}).items():
                     aliases_found = {}
@@ -628,6 +629,19 @@ if __name__ == '__main__':
                     for (key, value) in aliases_found.items():
                         room_data = stage_changes['Rooms'].pop(key)
                         stage_changes['Rooms'][value] = room_data
+                # Substitute any aliases found in Teleporters
+                for teleporter_id in changes.get('Teleporters', {}):
+                    teleporter = changes['Teleporters'][teleporter_id]
+                    stage_key = teleporter['Stage']
+                    new_stage_key = aliases['Stages'].get(stage_key, {}).get('Index', stage_key)
+                    if new_stage_key != stage_key:
+                        print(stage_key, '->', new_stage_key)
+                        changes['Teleporters'][teleporter_id]['Stage'] = new_stage_key
+                    room_key = teleporter['Room']
+                    new_room_key = aliases['Rooms'].get(room_key, {}).get('Index', room_key)
+                    if new_room_key != room_key:
+                        print(room_key, '->', new_room_key)
+                        changes['Teleporters'][teleporter_id]['Room'] = new_room_key
                 validate_changes(changes)
                 patch = get_ppf(extract, changes)
                 ppf_file.write(patch.bytes)
