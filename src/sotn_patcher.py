@@ -168,7 +168,7 @@ def get_changes_template_file(extract):
         result['Teleporters'][teleporter_id] = {
             'Player X': extract['Teleporters']['Data'][teleporter_id]['Player X'],
             'Player Y': extract['Teleporters']['Data'][teleporter_id]['Player Y'],
-            'Room': extract['Teleporters']['Data'][teleporter_id]['Room'],
+            'Room': extract['Teleporters']['Data'][teleporter_id]['Room'] // 8, # NOTE(sestren): Divide by 8 to translate to room index
             'Stage': extract['Teleporters']['Data'][teleporter_id]['Target Stage ID'],
         }
     for row in range(len(extract['Castle Map']['Data'])):
@@ -379,18 +379,18 @@ def get_ppf(extract, changes):
         room_offset = extract_data['Room']
         if 'Room' in teleporter_data:
             if teleporter_data['Room'] != room_offset:
-                room_offset = 8 * teleporter_data['Room']
+                room_offset = 8 * teleporter_data['Room'] # NOTE(sestren): Multiply by 8 to translate to room offset
                 result.patch_value(room_offset,
                     extract_metadata['Fields']['Room']['Type'],
                     sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room']['Offset']),
                 )
         # Teleporter: Patch target stage ID
         target_stage_id = extract_data['Target Stage ID']
-        if 'Target Stage ID' in teleporter_data:
+        if 'Stage' in teleporter_data:
             if teleporter_data['Stage'] != target_stage_id:
                 target_stage_id = teleporter_data['Stage']
                 result.patch_value(target_stage_id,
-                    extract_metadata['Fields']['Stage']['Type'],
+                    extract_metadata['Fields']['Target Stage ID']['Type'],
                     sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Target Stage ID']['Offset']),
                 )
     extract_metadata = extract['Castle Map']['Metadata']
@@ -639,7 +639,7 @@ if __name__ == '__main__':
                     room_value = changes['Teleporters'][teleporter_id]['Room']
                     if type(room_value) == str:
                         print('  ', 'room_value:', room_value, aliases['Rooms'][room_value]['Index'])
-                        changes['Teleporters'][teleporter_id]['Room'] = 8 * aliases['Rooms'][room_value]['Index']
+                        changes['Teleporters'][teleporter_id]['Room'] = aliases['Rooms'][room_value]['Index']
                 validate_changes(changes)
                 patch = get_ppf(extract, changes)
                 ppf_file.write(patch.bytes)
