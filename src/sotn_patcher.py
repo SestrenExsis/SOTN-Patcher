@@ -631,14 +631,11 @@ if __name__ == '__main__':
                         stage_changes['Rooms'][value] = room_data
                 # Substitute any aliases found in Teleporters
                 for teleporter_id in changes.get('Teleporters', {}):
-                    print('', 'teleporter_id:', teleporter_id)
                     stage_value = changes['Teleporters'][teleporter_id]['Stage']
                     if type(stage_value) == str:
-                        print('  ', 'stage_value:', stage_value, aliases['Stages'][stage_value]['Index'])
                         changes['Teleporters'][teleporter_id]['Stage'] = aliases['Stages'][stage_value]['Index']
                     room_value = changes['Teleporters'][teleporter_id]['Room']
                     if type(room_value) == str:
-                        print('  ', 'room_value:', room_value, aliases['Rooms'][room_value]['Index'])
                         changes['Teleporters'][teleporter_id]['Room'] = aliases['Rooms'][room_value]['Index']
                 validate_changes(changes)
                 patch = get_ppf(extract, changes)
