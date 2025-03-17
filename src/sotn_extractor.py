@@ -655,8 +655,10 @@ if __name__ == '__main__':
             # To enable NOCLIP mode; set to 0xAC258850 --> sw a1, -$77B0(at)
             (0x000D9364, 'Set initial NOCLIP value', 'u32'), # 0xAC208850 --> sw 0, -$77B0(at)
             # Buy Castle Map, set to NOP to draw every tile within the boundaries
-            (0X000E7B1C, 'Should reveal map tile', 'u32'), # 0x10400020 --> beq v0,0,$800F23A0
+            (0x000E7B1C, 'Should reveal map tile', 'u32'), # 0x10400020 --> beq v0,0,$800F23A0
             # (0x0009840C, 'Castle map reveal boundary', 'u32') # 0x06082600 --> {0, 26, 8, 6} # Change to 0x40400000???
+            # (0x049F761C, 'Stun player when meeting Maria in Alchemy Lab', 'u32'), # 0x34100001 --> ori s0,0,$1 # Change to 0x36100000 --> ori s0,$0
+            (0x049F66EC, 'Should skip Maria Alchemy Laboratory', 'u32'), # 0x144002DA --> bne v0,0,$801B8A58 # Change to 0x0806E296 --> j $801B8A58
         ):
             cursor = BIN(binary_file, constant_address)
             constants[constant_name] = cursor.indirect(0, constant_data_type, True)
