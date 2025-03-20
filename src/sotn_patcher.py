@@ -203,6 +203,33 @@ def get_changes_template_file(extract):
         }
     return result
 
+def apply_familiar_changes(changes, familiar_events):
+    # print('apply_familiar_changes')
+    changes['Familiar Events'] = {}
+    for familiar_event_name in familiar_events:
+        familiar_event = familiar_events[familiar_event_name]
+        stage_name = familiar_event['Stage']
+        room_name = familiar_event['Room']
+        # if (
+        #     'Stages' in changes and
+        #     stage_name in changes['Stages']
+        # ):
+        #     print(changes['Stages'][stage_name])
+        if (
+            'Stages' not in changes or
+            stage_name not in changes['Stages'] or
+            'Rooms' not in changes['Stages'][stage_name] or
+            room_name not in changes['Stages'][stage_name]['Rooms']
+        ):
+            continue
+        source_room = changes['Stages'][stage_name]['Rooms'][room_name]
+        sign = -1 if familiar_event['Inverted'] else 1
+        for familiar_event_id in familiar_event['Familiar Event IDs']:
+            changes['Familiar Events'][familiar_event_id] = {
+                'Room Y': source_room['Top'],
+                'Room X': sign * source_room['Left'],
+            }
+
 def validate_changes(changes):
     if 'Boss Teleporters' in changes:
         # TODO(sestren): Validate boss teleporters
@@ -226,13 +253,27 @@ def validate_changes(changes):
         # TODO(sestren): Validate teleporters
         pass
 
-def get_ppf(extract, changes):
-    result = PPF('Just messing around')
+def ID(aliases: dict, path: tuple):
+    result = path[-1]
+    scope = aliases
+    for token in path:
+        if token not in scope:
+            break
+        scope = scope[token]
+    else:
+        result = scope
+    if type(result) == str:
+        result = int(result)
+    return result
+
+def get_ppf(extract, changes, aliases):
+    result = PPF('Works with SOTN Shuffler Alpha Build 73')
     # Patch boss teleporters
     extract_metadata = extract['Boss Teleporters']['Metadata']
     for boss_teleporter_id in sorted(changes.get('Boss Teleporters', {})):
         boss_teleporter_data = changes['Boss Teleporters'][boss_teleporter_id]
-        extract_data = extract['Boss Teleporters']['Data'][int(boss_teleporter_id)]
+        extract_id = ID(aliases, ('Boss Teleporters', boss_teleporter_id))
+        extract_data = extract['Boss Teleporters']['Data'][extract_id]
         # Boss Teleporter: Patch room X
         room_x = extract_data['Room X']
         if 'Room X' in boss_teleporter_data:
@@ -270,7 +311,9 @@ def get_ppf(extract, changes):
         # Stage: Patch room data
         for room_id in sorted(stage_data.get('Rooms', {})):
             room_data = stage_data['Rooms'][room_id]
-            room_extract = stage_extract['Rooms'][room_id]
+            extract_id = ID(aliases, ('Rooms', room_id))
+            print(room_id, extract_id)
+            room_extract = stage_extract['Rooms'][str(extract_id)]
             left = room_extract['Left']['Value']
             right = room_extract['Right']['Value']
             # Room: Patch left and right
@@ -356,7 +399,8 @@ def get_ppf(extract, changes):
     extract_metadata = extract['Teleporters']['Metadata']
     for teleporter_id in sorted(changes.get('Teleporters', {})):
         teleporter_data = changes['Teleporters'][teleporter_id]
-        extract_data = extract['Teleporters']['Data'][int(teleporter_id)]
+        extract_id = ID(aliases, ('Teleporters', teleporter_id))
+        extract_data = extract['Teleporters']['Data'][extract_id]
         # Teleporter: Patch player X
         player_x = extract_data['Player X']
         if 'Player X' in teleporter_data:
@@ -378,8 +422,10 @@ def get_ppf(extract, changes):
         # Teleporter: Patch room offset
         room_offset = extract_data['Room']
         if 'Room' in teleporter_data:
-            if teleporter_data['Room'] != room_offset:
-                room_offset = 8 * teleporter_data['Room'] # NOTE(sestren): Multiply by 8 to translate to room offset
+            # NOTE(sestren): Multiply by 8 to translate room ID to room offset
+            extract_room_offset = 8 * ID(aliases, ('Rooms', teleporter_data['Room']))
+            if extract_room_offset != room_offset:
+                room_offset = extract_room_offset
                 result.patch_value(room_offset,
                     extract_metadata['Fields']['Room']['Type'],
                     sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room']['Offset']),
@@ -387,8 +433,9 @@ def get_ppf(extract, changes):
         # Teleporter: Patch target stage ID
         target_stage_id = extract_data['Target Stage ID']
         if 'Stage' in teleporter_data:
-            if teleporter_data['Stage'] != target_stage_id:
-                target_stage_id = teleporter_data['Stage']
+            extract_stage_id = ID(aliases, ('Stages', teleporter_data['Stage']))
+            if extract_stage_id != target_stage_id:
+                target_stage_id = extract_stage_id
                 result.patch_value(target_stage_id,
                     extract_metadata['Fields']['Target Stage ID']['Type'],
                     sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Target Stage ID']['Offset']),
@@ -539,6 +586,7 @@ def get_ppf(extract, changes):
     extract_metadata = extract['Strings']['Metadata']
     offset = 0
     # NOTE(sestren): Going through all the strings on the extract side is necessary because strings take up a variable amount of bytes
+    # TODO(sestren): Fix string-related bugs because I did them wrong
     for (string_id, extracted_string) in extract['Strings']['Data'].items():
         if 'Strings' not in changes:
             continue
@@ -605,38 +653,17 @@ if __name__ == '__main__':
                 json.dump(changes, changes_file, indent='    ', sort_keys=True)
         else:
             with (
+                open(os.path.join('data', 'familiar_events.yaml')) as familiar_events_file,
                 open(args.changes) as changes_file,
                 open(args.aliases) as aliases_file,
                 open(args.ppf, 'wb') as ppf_file,
             ):
                 changes = json.load(changes_file)
+                aliases = yaml.safe_load(aliases_file)
                 if 'Changes' in changes:
                     changes = changes['Changes']
-                # Substitute any aliases found in Stages
-                aliases = yaml.safe_load(aliases_file)
-                for (stage_name, stage_changes) in changes.get('Stages', {}).items():
-                    aliases_found = {}
-                    # print(stage_name)
-                    for room_name in stage_changes['Rooms']:
-                        # print('', room_name)
-                        if room_name in aliases['Rooms']:
-                            room_id = aliases['Rooms'][room_name]['Index']
-                            aliases_found[room_name] = str(room_id)
-                        else:
-                            pass
-                            # print('Cannot find alias', (stage_name, room_name))
-                            # raise Exception('Cannot find alias')
-                    for (key, value) in aliases_found.items():
-                        room_data = stage_changes['Rooms'].pop(key)
-                        stage_changes['Rooms'][value] = room_data
-                # Substitute any aliases found in Teleporters
-                for teleporter_id in changes.get('Teleporters', {}):
-                    stage_value = changes['Teleporters'][teleporter_id]['Stage']
-                    if type(stage_value) == str:
-                        changes['Teleporters'][teleporter_id]['Stage'] = aliases['Stages'][stage_value]['Index']
-                    room_value = changes['Teleporters'][teleporter_id]['Room']
-                    if type(room_value) == str:
-                        changes['Teleporters'][teleporter_id]['Room'] = aliases['Rooms'][room_value]['Index']
+                # familiar_events = yaml.safe_load(familiar_events_file)
+                # apply_familiar_changes(changes, familiar_events)
                 validate_changes(changes)
-                patch = get_ppf(extract, changes)
+                patch = get_ppf(extract, changes, aliases)
                 ppf_file.write(patch.bytes)
