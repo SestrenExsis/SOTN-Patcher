@@ -203,33 +203,6 @@ def get_changes_template_file(extract):
         }
     return result
 
-def apply_familiar_changes(changes, familiar_events):
-    # print('apply_familiar_changes')
-    changes['Familiar Events'] = {}
-    for familiar_event_name in familiar_events:
-        familiar_event = familiar_events[familiar_event_name]
-        stage_name = familiar_event['Stage']
-        room_name = familiar_event['Room']
-        # if (
-        #     'Stages' in changes and
-        #     stage_name in changes['Stages']
-        # ):
-        #     print(changes['Stages'][stage_name])
-        if (
-            'Stages' not in changes or
-            stage_name not in changes['Stages'] or
-            'Rooms' not in changes['Stages'][stage_name] or
-            room_name not in changes['Stages'][stage_name]['Rooms']
-        ):
-            continue
-        source_room = changes['Stages'][stage_name]['Rooms'][room_name]
-        sign = -1 if familiar_event['Inverted'] else 1
-        for familiar_event_id in familiar_event['Familiar Event IDs']:
-            changes['Familiar Events'][familiar_event_id] = {
-                'Room Y': source_room['Top'],
-                'Room X': sign * source_room['Left'],
-            }
-
 def validate_changes(changes):
     if 'Boss Teleporters' in changes:
         # TODO(sestren): Validate boss teleporters
@@ -266,7 +239,30 @@ def ID(aliases: dict, path: tuple):
         result = int(result)
     return result
 
-def get_ppf(extract, changes, aliases):
+def get_familiar_changes(changes, familiar_events):
+    familiar_changes = {}
+    if 'Stages' in changes:
+        for familiar_event_name in familiar_events:
+            familiar_event = familiar_events[familiar_event_name]
+            stage_name = familiar_event['Stage']
+            if stage_name not in changes['Stages']:
+                continue
+            room_name = familiar_event['Room']
+            if room_name not in changes['Stages'][stage_name]['Rooms']:
+                continue
+            source_room = changes['Stages'][stage_name]['Rooms'][room_name]
+            sign = -1 if familiar_event['Inverted'] else 1
+            for familiar_event_id in familiar_event['Familiar Event IDs']:
+                familiar_changes[familiar_event_id] = {
+                    'Room Y': source_room['Top'],
+                    'Room X': sign * source_room['Left'],
+                }
+    return familiar_changes
+
+def get_ppf(dependencies):
+    extract = dependencies['Extract']
+    changes = dependencies['Changes']
+    aliases = dependencies['Aliases']
     result = PPF('Works with SOTN Shuffler Alpha Build 73')
     # Patch boss teleporters
     extract_metadata = extract['Boss Teleporters']['Metadata']
@@ -312,7 +308,6 @@ def get_ppf(extract, changes, aliases):
         for room_id in sorted(stage_data.get('Rooms', {})):
             room_data = stage_data['Rooms'][room_id]
             extract_id = ID(aliases, ('Rooms', room_id))
-            print(room_id, extract_id)
             room_extract = stage_extract['Rooms'][str(extract_id)]
             left = room_extract['Left']['Value']
             right = room_extract['Right']['Value']
@@ -501,14 +496,17 @@ def get_ppf(extract, changes, aliases):
         0x039D1D38, # Possibly for Yousei Familiar
         0x039F2664, # Possibly for Nose Demon Familiar
     ]
+    familiar_changes = get_familiar_changes(changes, dependencies['Familiar Events'])
+    print(familiar_changes)
     extract_metadata = extract['Familiar Events']['Metadata']
-    for familiar_event_id in sorted(changes.get('Familiar Events', {})):
-        familiar_event_data = changes['Familiar Events'][familiar_event_id]
-        extract_data = extract['Familiar Events']['Data'][int(familiar_event_id)]
+    for familiar_event_id in sorted(familiar_changes):
+        familiar_event_data = familiar_changes[familiar_event_id]
+        extract_data = extract['Familiar Events']['Data'][familiar_event_id]
         # Familiar event: Patch room X
         room_x = extract_data['Room X']
         if 'Room X' in familiar_event_data:
             if familiar_event_data['Room X'] != room_x:
+                print()
                 room_x = familiar_event_data['Room X']
                 base_offset = extract_metadata['Start'] + int(familiar_event_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room X']['Offset'] - copy_offsets[0]
                 for copy_offset in copy_offsets:
@@ -662,8 +660,13 @@ if __name__ == '__main__':
                 aliases = yaml.safe_load(aliases_file)
                 if 'Changes' in changes:
                     changes = changes['Changes']
-                # familiar_events = yaml.safe_load(familiar_events_file)
-                # apply_familiar_changes(changes, familiar_events)
+                familiar_events = yaml.safe_load(familiar_events_file)
                 validate_changes(changes)
-                patch = get_ppf(extract, changes, aliases)
+                dependencies = {
+                    'Extract': extract,
+                    'Changes': changes,
+                    'Aliases': aliases,
+                    'Familiar Events': familiar_events,
+                }
+                patch = get_ppf(dependencies)
                 ppf_file.write(patch.bytes)
