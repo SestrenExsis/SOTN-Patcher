@@ -112,7 +112,6 @@ def get_changes_template_file(extract):
         'Castle Map': [],
         'Castle Map Reveals': [],
         'Constants': {},
-        'Familiar Events': {},
         'Reverse Warp Room Coordinates': {},
         'Stages': {},
         'Strings': {},
@@ -183,11 +182,6 @@ def get_changes_template_file(extract):
             'Grid': extract['Castle Map Reveals']['Data'][castle_map_reveal_id]['Grid'],
         }
         result['Castle Map Reveals'].append(castle_map_reveal)
-    for familiar_event_id in range(len(extract['Familiar Events']['Data'])):
-        result['Familiar Events'][familiar_event_id] = {
-            'Room X': extract['Familiar Events']['Data'][familiar_event_id]['Room X'],
-            'Room Y': extract['Familiar Events']['Data'][familiar_event_id]['Room Y'],
-        }
     for warp_room_coordinate_id in range(len(extract['Warp Room Coordinates']['Data'])):
         result['Warp Room Coordinates'][warp_room_coordinate_id] = {
             'Room X': extract['Warp Room Coordinates']['Data'][warp_room_coordinate_id]['Room X'],
@@ -259,10 +253,8 @@ def get_familiar_changes(changes, familiar_events):
                 }
     return familiar_changes
 
-def get_ppf(dependencies):
-    extract = dependencies['Extract']
-    changes = dependencies['Changes']
-    aliases = dependencies['Aliases']
+def get_ppf(extract, changes, data):
+    aliases = data['Aliases']
     result = PPF('Works with SOTN Shuffler Alpha Build 73')
     # Patch boss teleporters
     extract_metadata = extract['Boss Teleporters']['Metadata']
@@ -496,8 +488,7 @@ def get_ppf(dependencies):
         0x039D1D38, # Possibly for Yousei Familiar
         0x039F2664, # Possibly for Nose Demon Familiar
     ]
-    familiar_changes = get_familiar_changes(changes, dependencies['Familiar Events'])
-    print(familiar_changes)
+    familiar_changes = get_familiar_changes(changes, data['Familiar Events'])
     extract_metadata = extract['Familiar Events']['Metadata']
     for familiar_event_id in sorted(familiar_changes):
         familiar_event_data = familiar_changes[familiar_event_id]
@@ -506,7 +497,6 @@ def get_ppf(dependencies):
         room_x = extract_data['Room X']
         if 'Room X' in familiar_event_data:
             if familiar_event_data['Room X'] != room_x:
-                print()
                 room_x = familiar_event_data['Room X']
                 base_offset = extract_metadata['Start'] + int(familiar_event_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room X']['Offset'] - copy_offsets[0]
                 for copy_offset in copy_offsets:
@@ -633,12 +623,12 @@ def get_ppf(dependencies):
 if __name__ == '__main__':
     '''
     Usage
-    python sotn_patcher.py CORE_DATA_JSON --changes CHANGES_JSON --ppf OUTPUT_PPF
+    python sotn_patcher.py EXTRACTION_JSON --changes CHANGES_JSON --ppf OUTPUT_PPF
     '''
     parser = argparse.ArgumentParser()
     parser.add_argument('extract_file', help='Input a filepath to the extract JSON file', type=str)
-    parser.add_argument('--changes', help='Input an optional filepath to the changes JSON file', type=str)
-    parser.add_argument('--aliases', help='Input an optional filepath to the aliases YAML file', type=str)
+    parser.add_argument('--data', help='Input an optional (required if changes argument is given) filepath to a folder containing various data dependency files', type=str)
+    parser.add_argument('--changes', help='Input an optional (required if data argument is given) filepath to the changes JSON file', type=str)
     parser.add_argument('--ppf', help='Input an optional filepath to the output PPF file', type=str)
     args = parser.parse_args()
     with open(args.extract_file) as extract_file:
@@ -651,22 +641,20 @@ if __name__ == '__main__':
                 json.dump(changes, changes_file, indent='    ', sort_keys=True)
         else:
             with (
-                open(os.path.join('data', 'familiar_events.yaml')) as familiar_events_file,
+                open(os.path.join(os.path.normpath(args.data), 'aliases.yaml')) as aliases_file,
+                open(os.path.join(os.path.normpath(args.data), 'familiar_events.yaml')) as familiar_events_file,
                 open(args.changes) as changes_file,
-                open(args.aliases) as aliases_file,
                 open(args.ppf, 'wb') as ppf_file,
             ):
-                changes = json.load(changes_file)
                 aliases = yaml.safe_load(aliases_file)
-                if 'Changes' in changes:
-                    changes = changes['Changes']
                 familiar_events = yaml.safe_load(familiar_events_file)
-                validate_changes(changes)
-                dependencies = {
-                    'Extract': extract,
-                    'Changes': changes,
+                data = {
                     'Aliases': aliases,
                     'Familiar Events': familiar_events,
                 }
-                patch = get_ppf(dependencies)
+                changes = json.load(changes_file)
+                if 'Changes' in changes:
+                    changes = changes['Changes']
+                validate_changes(changes)
+                patch = get_ppf(extract, changes, data)
                 ppf_file.write(patch.bytes)
