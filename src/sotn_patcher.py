@@ -292,6 +292,26 @@ def get_ppf(extract, changes, data):
                 constant_extract['Type'],
                 sotn_address.Address(constant_extract['Start']),
             )
+    # Insert boss stages into stage data prior to stage patching
+    if 'Stages' in changes:
+        for element in data['Boss Stages'].values():
+            source_stage_name = element['Source Stage']
+            if source_stage_name not in changes['Stages']:
+                continue
+            source_room_name = element['Source Room']
+            if source_room_name not in changes['Stages'][source_stage_name]['Rooms']:
+                continue
+            target_stage_name = element['Target Stage']
+            if target_stage_name not in changes['Stages']:
+                changes['Stages'][target_stage_name] = {
+                    'Rooms': {},
+                }
+            for (target_room_name, target_room) in element['Target Rooms'].items():
+                source_room = changes['Stages'][source_stage_name]['Rooms'][source_room_name]
+                changes['Stages'][target_stage_name]['Rooms'][target_room_name] = {
+                    'Top': source_room['Top'] + target_room['Top'],
+                    'Left': source_room['Left'] + target_room['Left'],
+                }
     # Patch stage data
     for stage_id in sorted(changes.get('Stages', {})):
         stage_data = changes['Stages'][stage_id]
@@ -643,14 +663,14 @@ if __name__ == '__main__':
             with (
                 open(os.path.join(os.path.normpath(args.data), 'aliases.yaml')) as aliases_file,
                 open(os.path.join(os.path.normpath(args.data), 'familiar_events.yaml')) as familiar_events_file,
+                open(os.path.join(os.path.normpath(args.data), 'boss_stages.yaml')) as boss_stages_file,
                 open(args.changes) as changes_file,
                 open(args.ppf, 'wb') as ppf_file,
             ):
-                aliases = yaml.safe_load(aliases_file)
-                familiar_events = yaml.safe_load(familiar_events_file)
                 data = {
-                    'Aliases': aliases,
-                    'Familiar Events': familiar_events,
+                    'Aliases': yaml.safe_load(aliases_file),
+                    'Boss Stages': yaml.safe_load(boss_stages_file),
+                    'Familiar Events': yaml.safe_load(familiar_events_file),
                 }
                 changes = json.load(changes_file)
                 if 'Changes' in changes:

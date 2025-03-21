@@ -1,4 +1,7 @@
 
+@REM To recompute hashes, run the following:
+@REM sha1sum build/ppf/* > tests/checksums.sha1
+
 python src/sotn_extractor.py "build/Castlevania - Symphony of the Night (Track 1).bin" "build/extraction.json" || goto :error
 python src/sotn_patcher.py "build/extraction.json" || goto :error
 python src/sotn_patcher.py "build/extraction.json" --data="data/" --changes="tests/softlock-in-alchemy-lab-maria-cutscene.json" --ppf="build/ppf/softlock-in-alchemy-lab-maria-cutscene.ppf" || goto :error
