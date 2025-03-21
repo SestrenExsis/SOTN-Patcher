@@ -112,11 +112,9 @@ def get_changes_template_file(extract):
         'Castle Map': [],
         'Castle Map Reveals': [],
         'Constants': {},
-        'Reverse Warp Room Coordinates': {},
         'Stages': {},
         'Strings': {},
         'Teleporters': {},
-        'Warp Room Coordinates': {},
     }
     for boss_teleporter_id in range(len(extract['Boss Teleporters']['Data'])):
         result['Boss Teleporters'][boss_teleporter_id] = {
@@ -182,19 +180,9 @@ def get_changes_template_file(extract):
             'Grid': extract['Castle Map Reveals']['Data'][castle_map_reveal_id]['Grid'],
         }
         result['Castle Map Reveals'].append(castle_map_reveal)
-    for warp_room_coordinate_id in range(len(extract['Warp Room Coordinates']['Data'])):
-        result['Warp Room Coordinates'][warp_room_coordinate_id] = {
-            'Room X': extract['Warp Room Coordinates']['Data'][warp_room_coordinate_id]['Room X'],
-            'Room Y': extract['Warp Room Coordinates']['Data'][warp_room_coordinate_id]['Room Y'],
-        }
     for string_id in extract['Strings']['Data']:
         string = extract['Strings']['Data'][string_id]
         result['Strings'][string_id] = string
-    for reverse_warp_room_coordinate_id in range(len(extract['Reverse Warp Room Coordinates']['Data'])):
-        result['Reverse Warp Room Coordinates'][reverse_warp_room_coordinate_id] = {
-            'Room X': extract['Reverse Warp Room Coordinates']['Data'][reverse_warp_room_coordinate_id]['Room X'],
-            'Room Y': extract['Reverse Warp Room Coordinates']['Data'][reverse_warp_room_coordinate_id]['Room Y'],
-        }
     return result
 
 def validate_changes(changes):
@@ -538,47 +526,30 @@ def get_ppf(extract, changes, data):
                         sotn_address.Address(offset),
                     )
     # Patch warp room coordinates
-    object_extract = extract.get('Warp Room Coordinates', {})
-    object_changes = changes.get('Warp Room Coordinates', {})
-    for element_id in sorted(object_changes):
-        element_index = int(element_id)
-        for field_name in (
-            'Room X',
-            'Room Y',
-        ):
-            if not (
-                field_name in object_changes.get(element_id, {}) and
-                object_changes[element_id][field_name] != object_extract['Data'][element_index][field_name]
-            ):
-                continue
-            result.patch_value(
-                object_changes[element_id][field_name],
-                object_extract['Metadata']['Fields'][field_name]['Type'],
-                sotn_address.Address(
-                    object_extract['Metadata']['Start'] + element_index * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset']
-                ),
-            )
-    # Patch reverse warp room coordinates
-    object_extract = extract.get('Reverse Warp Room Coordinates', {})
-    object_changes = changes.get('Reverse Warp Room Coordinates', {})
-    for element_id in sorted(object_changes):
-        element_index = int(element_id)
-        for field_name in (
-            'Room X',
-            'Room Y',
-        ):
-            if not (
-                field_name in object_changes.get(element_id, {}) and
-                object_changes[element_id][field_name] != object_extract['Data'][element_index][field_name]
-            ):
-                continue
-            result.patch_value(
-                object_changes[element_id][field_name],
-                object_extract['Metadata']['Fields'][field_name]['Type'],
-                sotn_address.Address(
-                    object_extract['Metadata']['Start'] + element_index * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset']
-                ),
-            )
+    if 'Stages' in changes:
+        for (element_name, element_group) in data['Warp Coordinates'].items():
+            object_extract = extract[element_name]
+            for element in element_group.values():
+                source_stage_name = element['Source Stage']
+                if source_stage_name not in changes['Stages']:
+                    continue
+                source_room_name = element['Source Room']
+                if source_room_name not in changes['Stages'][source_stage_name]['Rooms']:
+                    continue
+                source_room = changes['Stages'][source_stage_name]['Rooms'][source_room_name]
+                for (source_field_name, target_field_name) in (
+                    ('Left', 'Room X'),
+                    ('Top', 'Room Y'),
+                ):
+                    if source_field_name not in source_room:
+                        continue
+                    result.patch_value(
+                        source_room[source_field_name],
+                        object_extract['Metadata']['Fields'][target_field_name]['Type'],
+                        sotn_address.Address(
+                            object_extract['Metadata']['Start'] + element['Index'] * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][target_field_name]['Offset']
+                        ),
+                    )
     # Patch strings
     # NOTE(sestren): There are no guards in place requiring that the resulting array of strings
     # NOTE(sestren): fits into place or uses up the same amount of bytes. It is the
@@ -664,6 +635,7 @@ if __name__ == '__main__':
                 open(os.path.join(os.path.normpath(args.data), 'aliases.yaml')) as aliases_file,
                 open(os.path.join(os.path.normpath(args.data), 'familiar_events.yaml')) as familiar_events_file,
                 open(os.path.join(os.path.normpath(args.data), 'boss_stages.yaml')) as boss_stages_file,
+                open(os.path.join(os.path.normpath(args.data), 'warp_coordinates.yaml')) as warp_coordinates_file,
                 open(args.changes) as changes_file,
                 open(args.ppf, 'wb') as ppf_file,
             ):
@@ -671,6 +643,7 @@ if __name__ == '__main__':
                     'Aliases': yaml.safe_load(aliases_file),
                     'Boss Stages': yaml.safe_load(boss_stages_file),
                     'Familiar Events': yaml.safe_load(familiar_events_file),
+                    'Warp Coordinates': yaml.safe_load(warp_coordinates_file),
                 }
                 changes = json.load(changes_file)
                 if 'Changes' in changes:

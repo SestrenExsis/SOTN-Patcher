@@ -423,28 +423,6 @@
         "Set initial NOCLIP value": 2888140880,
         "Should skip Maria Alchemy Laboratory": 134668950
     },
-    "Reverse Warp Room Coordinates": {
-        "0": {
-            "Room X": 49,
-            "Room Y": 44
-        },
-        "1": {
-            "Room X": 13,
-            "Room Y": 25
-        },
-        "2": {
-            "Room X": 8,
-            "Room Y": 37
-        },
-        "3": {
-            "Room X": 24,
-            "Room Y": 32
-        },
-        "4": {
-            "Room X": 15,
-            "Room Y": 21
-        }
-    },
     "Stages": {
         "Abandoned Mine": {
             "Rooms": {
@@ -3855,28 +3833,6 @@
             "Player Y": 388,
             "Room": "Castle Keep, Dual Platforms",
             "Stage": "Castle Keep"
-        }
-    },
-    "Warp Room Coordinates": {
-        "0": {
-            "Room X": 14,
-            "Room Y": 19
-        },
-        "1": {
-            "Room X": 50,
-            "Room Y": 38
-        },
-        "2": {
-            "Room X": 55,
-            "Room Y": 26
-        },
-        "3": {
-            "Room X": 39,
-            "Room Y": 31
-        },
-        "4": {
-            "Room X": 48,
-            "Room Y": 42
         }
     }
 }
