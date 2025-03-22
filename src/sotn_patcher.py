@@ -609,6 +609,40 @@ def get_ppf(extract, changes, data):
                 sotn_address.Address(extract_metadata['Start'] + offset),
             )
             offset += 1
+    # Adjust the target points for the Castle Teleporter and False Save Room locations
+    for (constant_id, source_stage, source_room_name, offset_type, offset_amount) in (
+        # Adjust the target point for the Castle Teleporter locations (in both DRA and RIC)
+        ('DRA - Castle Keep Teleporter, Y Offset', 'Castle Keep', 'Castle Keep, Keep Area', 'Top', 847),
+        ('DRA - Castle Keep Teleporter, X Offset', 'Castle Keep', 'Castle Keep, Keep Area', 'Left', 320),
+        ('DRA - Reverse Keep Teleporter, Y Offset', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Top', 1351),
+        ('DRA - Reverse Keep Teleporter, X Offset', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Left', 1728),
+        ('RIC - Castle Keep Teleporter, Y Offset', 'Castle Keep', 'Castle Keep, Keep Area', 'Top', 847),
+        ('RIC - Castle Keep Teleporter, X Offset', 'Castle Keep', 'Castle Keep, Keep Area', 'Left', 320),
+        ('RIC - Reverse Keep Teleporter, Y Offset', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Top', 1351),
+        ('RIC - Reverse Keep Teleporter, X Offset', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Left', 1728),
+        # Adjust the False Save Room trigger, discovered by @MottZilla
+        # See https://github.com/Xeeynamo/sotn-decomp/blob/ffce97b0022ab5d4118ad35c93dea86bb18b25cc/src/dra/5087C.c#L1012
+        ('False Save Room, Room Y', 'Underground Caverns', 'Underground Caverns, False Save Room', 'Top', None),
+        ('False Save Room, Room X', 'Underground Caverns', 'Underground Caverns, False Save Room', 'Left', None),
+        ('Reverse False Save Room, Room Y', 'Reverse Caverns', 'Reverse Caverns, False Save Room', 'Top', None),
+        ('Reverse False Save Room, Room X', 'Reverse Caverns', 'Reverse Caverns, False Save Room', 'Left', None),
+    ):
+        source_room = changes.get('Stages', {}).get(source_stage, {}).get('Rooms', {}).get(source_room_name, None)
+        if source_room is None:
+            continue
+        constant_extract = extract['Constants'][constant_id]
+        # NOTE(sestren): For the castle teleporter, use world coordinates and negate the value
+        # NOTE(sestren): For the False Save Room, just use the room location
+        # TODO(sestren): Consider a less hacky way to handle both cases
+        change_value = source_room[offset_type]
+        if offset_amount is not None:
+            change_value = -1 * (256 * source_room[offset_type] + offset_amount)
+        if change_value != constant_extract['Value']:
+            result.patch_value(
+                change_value,
+                constant_extract['Type'],
+                sotn_address.Address(constant_extract['Start']),
+            )
     return result
 
 if __name__ == '__main__':

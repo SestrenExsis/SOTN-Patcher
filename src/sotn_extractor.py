@@ -643,10 +643,15 @@ if __name__ == '__main__':
             constants[f'Relic Container Drop ID {str(drop_index)}'] = data
         for (constant_address, constant_name, constant_data_type) in (
             # Found in the GetTeleportToOtherCastle function of the decomp
-            (0x000FFCE4, 'Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40
-            (0x000FFD18, 'Castle Keep Teleporter, Y Offset', 's16'), # 0x2442F7B1 --> subiu v0, $084F
-            (0x000FFD68, 'Reverse Keep Teleporter, X Offset', 's16'), # 0x2463DF40 --> subiu v1, $20C0
-            (0x000FFD9C, 'Reverse Keep Teleporter, Y Offset', 's16'), # 0x2442C7B9 --> subiu v0, $3847
+            (0x000FFCE4, 'DRA - Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40
+            (0x000FFD18, 'DRA - Castle Keep Teleporter, Y Offset', 's16'), # 0x2442F7B1 --> subiu v0, $084F
+            (0x000FFD68, 'DRA - Reverse Keep Teleporter, X Offset', 's16'), # 0x2463DF40 --> subiu v1, $20C0
+            (0x000FFD9C, 'DRA - Reverse Keep Teleporter, Y Offset', 's16'), # 0x2442C7B9 --> subiu v0, $3847
+            # NOTE(sestren): An extra copy of the above locations exists in the RIC overlay with a relative offset of approximately 0x03186028
+            (0x03285D0C, 'RIC - Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40
+            (0x03285D40, 'RIC - Castle Keep Teleporter, Y Offset', 's16'), # 0x2442F7B1 --> subiu v0, $084F
+            (0x03285D90, 'RIC - Reverse Keep Teleporter, X Offset', 's16'), # 0x2463DF40 --> subiu v1, $20C0
+            (0X03285DD0, 'RIC - Reverse Keep Teleporter, Y Offset', 's16'), # 0x2442C7B9 --> subiu v0, $3847
             # Must be updated so that False Save Room still sends you to Nightmare (Solved by @MottZilla)
             (0x000E7DC8, 'False Save Room, Room X', 'u16'), # 0x2D00 --> 45
             (0x000E7DD0, 'False Save Room, Room Y', 'u16'), # 0x2100 --> 33

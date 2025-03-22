@@ -412,14 +412,6 @@
         }
     ],
     "Constants": {
-        "Castle Keep Teleporter, X Offset": -7744,
-        "Castle Keep Teleporter, Y Offset": -7503,
-        "False Save Room, Room X": 9,
-        "False Save Room, Room Y": 18,
-        "Reverse False Save Room, Room X": 54,
-        "Reverse False Save Room, Room Y": 45,
-        "Reverse Keep Teleporter, X Offset": -8640,
-        "Reverse Keep Teleporter, Y Offset": -9031,
         "Set initial NOCLIP value": 2888140880,
         "Should skip Maria Alchemy Laboratory": 134668950
     },
