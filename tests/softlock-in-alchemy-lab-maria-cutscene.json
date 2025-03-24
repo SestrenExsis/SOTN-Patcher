@@ -1,7 +1,7 @@
 {
-    "Settings": {
-        "Enable Debug Mode": true,
-        "Skip Maria Cutscene in Alchemy Laboratory": true
+    "Options": {
+        "Enable debug mode": true,
+        "Skip Maria cutscene in Alchemy Laboratory": true
     },
     "Teleporters": {
         "11": {

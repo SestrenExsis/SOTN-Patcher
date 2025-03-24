@@ -37,8 +37,8 @@
             "Top": 25
         }
     ],
-    "Settings": {
-        "Enable Debug Mode": true
+    "Options": {
+        "Enable debug mode": true
     },
     "Teleporters": {
         "11": {

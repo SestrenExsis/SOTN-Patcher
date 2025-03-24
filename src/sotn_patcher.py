@@ -111,10 +111,10 @@ def get_changes_template_file(extract):
         'Boss Teleporters': {},
         'Castle Map': [],
         'Castle Map Reveals': [],
-        'Settings': {
-            'Assign Power of Wolf Relic a Unique ID': False,
-            'Enable Debug Mode': False,
-            'Skip Maria Cutscene in Alchemy Laboratory': False,
+        'Options': {
+            'Assign Power of Wolf relic a unique ID': False,
+            'Enable debug mode': False,
+            'Skip Maria cutscene in Alchemy Laboratory': False,
         },
         'Stages': {},
         'Strings': {},
@@ -269,8 +269,8 @@ def get_ppf(extract, changes, data):
                     extract_metadata['Fields']['Room Y']['Type'],
                     sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room Y']['Offset']),
                 )
-    # Setting - Assign Power of Wolf Relic a Unique ID
-    if changes.get('Settings', {}).get('Assign Power of Wolf Relic a Unique ID', False):
+    # Setting - Assign Power of Wolf relic a unique ID
+    if changes.get('Options', {}).get('Assign Power of Wolf relic a unique ID', False):
         # See https://github.com/SestrenExsis/SOTN-Shuffler/issues/36
         room = changes['Stages']['Castle Entrance Revisited']['Rooms']['Castle Entrance Revisited, After Drawbridge']
         room['Object Layout - Horizontal'] = {
@@ -294,16 +294,16 @@ def get_ppf(extract, changes, data):
                 'Entity Room Index': 18,
             },
         }
-    # Setting - Enable Debug Mode
-    if changes.get('Settings', {}).get('Enable Debug Mode', False):
+    # Setting - Enable debug mode
+    if changes.get('Options', {}).get('Enable debug mode', False):
         constant_extract = extract['Constants']['Set initial NOCLIP value']
         result.patch_value(
             0xAC258850,
             constant_extract['Type'],
             sotn_address.Address(constant_extract['Start']),
         )
-    # Setting - Skip Maria Cutscene in Alchemy Laboratory
-    if changes.get('Settings', {}).get('Skip Maria Cutscene in Alchemy Laboratory', False):
+    # Setting - Skip Maria cutscene in Alchemy Laboratory
+    if changes.get('Options', {}).get('Skip Maria cutscene in Alchemy Laboratory', False):
         constant_extract = extract['Constants']['Should skip Maria Alchemy Laboratory']
         result.patch_value(
             0x0806E296,
