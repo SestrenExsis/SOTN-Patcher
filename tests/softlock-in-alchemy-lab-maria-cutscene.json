@@ -1,7 +1,7 @@
 {
-    "Constants": {
-        "Set initial NOCLIP value": 2888140880,
-        "Should skip Maria Alchemy Laboratory": 134668950
+    "Settings": {
+        "Enable Debug Mode": true,
+        "Skip Maria Cutscene in Alchemy Laboratory": true
     },
     "Teleporters": {
         "11": {

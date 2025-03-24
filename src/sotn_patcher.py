@@ -111,7 +111,11 @@ def get_changes_template_file(extract):
         'Boss Teleporters': {},
         'Castle Map': [],
         'Castle Map Reveals': [],
-        'Constants': {},
+        'Settings': {
+            'Assign Power of Wolf Relic a Unique ID': False,
+            'Enable Debug Mode': False,
+            'Skip Maria Cutscene in Alchemy Laboratory': False,
+        },
         'Stages': {},
         'Strings': {},
         'Teleporters': {},
@@ -121,8 +125,6 @@ def get_changes_template_file(extract):
             'Room X': extract['Boss Teleporters']['Data'][boss_teleporter_id]['Room X'],
             'Room Y': extract['Boss Teleporters']['Data'][boss_teleporter_id]['Room Y'],
         }
-    for constant_name in extract['Constants']:
-        result['Constants'][constant_name] = extract['Constants'][constant_name]['Value']
     for (stage_id, stage_data) in extract['Stages'].items():
         result['Stages'][stage_id] = {}
         result['Stages'][stage_id]['Rooms'] = {}
@@ -188,9 +190,6 @@ def get_changes_template_file(extract):
 def validate_changes(changes):
     if 'Boss Teleporters' in changes:
         # TODO(sestren): Validate boss teleporters
-        pass
-    if 'Constants' in changes:
-        # TODO(sestren): Validate constants
         pass
     if 'Stages' in changes:
         for (stage_id, stage_data) in changes['Stages'].items():
@@ -270,16 +269,47 @@ def get_ppf(extract, changes, data):
                     extract_metadata['Fields']['Room Y']['Type'],
                     sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room Y']['Offset']),
                 )
-    # Patch constants
-    for constant_id in sorted(changes.get('Constants', {})):
-        constant_data = changes['Constants'][constant_id]
-        constant_extract = extract['Constants'][constant_id]
-        if constant_data != constant_extract['Value']:
-            result.patch_value(
-                constant_data,
-                constant_extract['Type'],
-                sotn_address.Address(constant_extract['Start']),
-            )
+    # Setting - Assign Power of Wolf Relic a Unique ID
+    if changes.get('Settings', {}).get('Assign Power of Wolf Relic a Unique ID', False):
+        # See https://github.com/SestrenExsis/SOTN-Shuffler/issues/36
+        room = changes['Stages']['Castle Entrance Revisited']['Rooms']['Castle Entrance Revisited, After Drawbridge']
+        room['Object Layout - Horizontal'] = {
+            '12': {
+                'Entity Room Index': 18,
+            },
+        }
+        room['Object Layout - Vertical'] = {
+            '1': {
+                'Entity Room Index': 18,
+            },
+        }
+        room = changes['Stages']['Castle Entrance']['Rooms']['Castle Entrance, After Drawbridge']
+        room['Object Layout - Horizontal'] = {
+            '10': {
+                'Entity Room Index': 18,
+            },
+        }
+        room['Object Layout - Vertical'] = {
+            '1': {
+                'Entity Room Index': 18,
+            },
+        }
+    # Setting - Enable Debug Mode
+    if changes.get('Settings', {}).get('Enable Debug Mode', False):
+        constant_extract = extract['Constants']['Set initial NOCLIP value']
+        result.patch_value(
+            0xAC258850,
+            constant_extract['Type'],
+            sotn_address.Address(constant_extract['Start']),
+        )
+    # Setting - Skip Maria Cutscene in Alchemy Laboratory
+    if changes.get('Settings', {}).get('Skip Maria Cutscene in Alchemy Laboratory', False):
+        constant_extract = extract['Constants']['Should skip Maria Alchemy Laboratory']
+        result.patch_value(
+            0x0806E296,
+            constant_extract['Type'],
+            sotn_address.Address(constant_extract['Start']),
+        )
     # Insert boss stages into stage data prior to stage patching
     if 'Stages' in changes:
         for element in data['Boss Stages'].values():

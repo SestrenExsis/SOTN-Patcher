@@ -37,8 +37,8 @@
             "Top": 25
         }
     ],
-    "Constants": {
-        "Set initial NOCLIP value": 2888140880
+    "Settings": {
+        "Enable Debug Mode": true
     },
     "Teleporters": {
         "11": {
