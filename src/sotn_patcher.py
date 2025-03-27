@@ -207,7 +207,7 @@ def validate_changes(changes):
         # TODO(sestren): Validate teleporters
         pass
 
-def ID(aliases: dict, path: tuple):
+def getID(aliases: dict, path: tuple):
     result = path[-1]
     scope = aliases
     for token in path:
@@ -247,7 +247,7 @@ def get_ppf(extract, changes, data):
     extract_metadata = extract['Boss Teleporters']['Metadata']
     for boss_teleporter_id in sorted(changes.get('Boss Teleporters', {})):
         boss_teleporter_data = changes['Boss Teleporters'][boss_teleporter_id]
-        extract_id = ID(aliases, ('Boss Teleporters', boss_teleporter_id))
+        extract_id = getID(aliases, ('Boss Teleporters', boss_teleporter_id))
         extract_data = extract['Boss Teleporters']['Data'][extract_id]
         # Boss Teleporter: Patch room X
         room_x = extract_data['Room X']
@@ -269,7 +269,7 @@ def get_ppf(extract, changes, data):
                     extract_metadata['Fields']['Room Y']['Type'],
                     sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room Y']['Offset']),
                 )
-    # Setting - Assign Power of Wolf relic a unique ID
+    # Option - Assign Power of Wolf relic a unique ID
     if changes.get('Options', {}).get('Assign Power of Wolf relic a unique ID', False):
         # See https://github.com/SestrenExsis/SOTN-Shuffler/issues/36
         room = changes['Stages']['Castle Entrance Revisited']['Rooms']['Castle Entrance Revisited, After Drawbridge']
@@ -294,7 +294,7 @@ def get_ppf(extract, changes, data):
                 'Entity Room Index': 18,
             },
         }
-    # Setting - Enable debug mode
+    # Option - Enable debug mode
     if changes.get('Options', {}).get('Enable debug mode', False):
         constant_extract = extract['Constants']['Set initial NOCLIP value']
         result.patch_value(
@@ -302,7 +302,7 @@ def get_ppf(extract, changes, data):
             constant_extract['Type'],
             sotn_address.Address(constant_extract['Start']),
         )
-    # Setting - Skip Maria cutscene in Alchemy Laboratory
+    # Option - Skip Maria cutscene in Alchemy Laboratory
     if changes.get('Options', {}).get('Skip Maria cutscene in Alchemy Laboratory', False):
         constant_extract = extract['Constants']['Should skip Maria Alchemy Laboratory']
         result.patch_value(
@@ -310,6 +310,26 @@ def get_ppf(extract, changes, data):
             constant_extract['Type'],
             sotn_address.Address(constant_extract['Start']),
         )
+    # Option - Clock hands show minutes and seconds instead of hours and minutes
+    if changes.get('Options', {}).get('Clock hands show minutes and seconds instead of hours and minutes', False):
+        for (base, type) in (
+            (0x03FD7C2C, 'A'), # Marble Gallery
+            (0x0457E5D4, 'A'), # Black Marble Gallery
+            (0x05811C94, 'B'), # Maria Clock Room Cutscene
+        ):
+            for (offset, a_value, b_value) in (
+                (0x00, 0x8CA302D4, 0x8E6302D4), # lw v1,$2D4(X)
+                (0x18, 0x00000000, 0x00000000), # nop
+                (0x20, 0x00000000, 0x00000000), # nop
+                (0x24, 0x00000000, 0x00000000), # nop
+                (0x28, 0x00051900, 0x00041900), # sll v1,X,$4
+                (0x2C, 0x00651823, 0x00641823), # subu v1,X
+                (0x34, 0x00000000, 0x00000000), # nop
+                (0x38, 0x00000000, 0x00000000), # nop
+                (0x3C, 0x00000000, 0x00000000), # nop
+            ):
+                value = a_value if type == 'A' else b_value
+                result.patch_value(value, 'u32', sotn_address.Address(base + offset))
     # Insert boss stages into stage data prior to stage patching
     if 'Stages' in changes:
         for element in data['Boss Stages'].values():
@@ -337,7 +357,7 @@ def get_ppf(extract, changes, data):
         # Stage: Patch room data
         for room_id in sorted(stage_data.get('Rooms', {})):
             room_data = stage_data['Rooms'][room_id]
-            extract_id = ID(aliases, ('Rooms', room_id))
+            extract_id = getID(aliases, ('Rooms', room_id))
             room_extract = stage_extract['Rooms'][str(extract_id)]
             left = room_extract['Left']['Value']
             right = room_extract['Right']['Value']
@@ -424,7 +444,7 @@ def get_ppf(extract, changes, data):
     extract_metadata = extract['Teleporters']['Metadata']
     for teleporter_id in sorted(changes.get('Teleporters', {})):
         teleporter_data = changes['Teleporters'][teleporter_id]
-        extract_id = ID(aliases, ('Teleporters', teleporter_id))
+        extract_id = getID(aliases, ('Teleporters', teleporter_id))
         extract_data = extract['Teleporters']['Data'][extract_id]
         # Teleporter: Patch player X
         player_x = extract_data['Player X']
@@ -448,7 +468,7 @@ def get_ppf(extract, changes, data):
         room_offset = extract_data['Room']
         if 'Room' in teleporter_data:
             # NOTE(sestren): Multiply by 8 to translate room ID to room offset
-            extract_room_offset = 8 * ID(aliases, ('Rooms', teleporter_data['Room']))
+            extract_room_offset = 8 * getID(aliases, ('Rooms', teleporter_data['Room']))
             if extract_room_offset != room_offset:
                 room_offset = extract_room_offset
                 result.patch_value(room_offset,
@@ -458,7 +478,7 @@ def get_ppf(extract, changes, data):
         # Teleporter: Patch target stage ID
         target_stage_id = extract_data['Target Stage ID']
         if 'Stage' in teleporter_data:
-            extract_stage_id = ID(aliases, ('Stages', teleporter_data['Stage']))
+            extract_stage_id = getID(aliases, ('Stages', teleporter_data['Stage']))
             if extract_stage_id != target_stage_id:
                 target_stage_id = extract_stage_id
                 result.patch_value(target_stage_id,
