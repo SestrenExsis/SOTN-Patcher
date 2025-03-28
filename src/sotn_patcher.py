@@ -427,6 +427,8 @@ def get_ppf(extract, changes, data):
                         'Entity Room Index',
                         'Entity Type ID',
                         'Params',
+                        'X',
+                        'Y',
                     ):
                         if not (
                             field_name in object_changes[element_id] and
