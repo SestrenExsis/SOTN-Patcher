@@ -1,6 +1,71 @@
 ---
 Boss Teleporters:
   Cutscene - Meeting Maria in Clock Room: 0
+Entity Types:
+  Candle:
+    Global: 40961
+  Enemy - Gremlin:
+    Abandoned Mine: 30
+    Catacombs: 71
+    Necromancy Laboratory: 52
+  Enemy - Nova Skeleton:
+    Black Marble Gallery: 46
+    Reverse Caverns: 86
+    Reverse Entrance: 39
+    Reverse Outer Wall: 33
+  Enemy - Salem Witch:
+    Abandoned Mine: 33
+    Necromancy Laboratory: 55
+  Enemy - Thornweed:
+    Abandoned Mine: 38
+    Black Marble Gallery: 39
+    Cave: 34
+    Long Library: 58
+  Enemy - Venus Weed:
+    Abandoned Mine: 41
+  Foreground:
+    Global: 8
+  Stage Name:
+    Global: 9
+  Red Door:
+    Global: 5
+  Relic:
+    Global: 11
+  Unique Item:
+    Global: 12
+Items:
+  Holy Mail: 5
+Relics:
+  Soul of Bat: 0
+  Fire of Bat: 1
+  Echo of Bat: 2
+  Force of Echo: 3
+  Soul of Wolf: 4
+  Power of Wolf: 5
+  Skill of Wolf: 6
+  Form of Mist: 7
+  Power of Mist: 8
+  Gas Cloud: 9
+  Cube of Zoe: 10
+  Spirit Orb: 11
+  Gravity Boots: 12
+  Leap Stone: 13
+  Holy Symbol: 14
+  Faerie Scroll: 15
+  Jewel of Open: 16
+  Merman Statue: 17
+  Bat Card: 18
+  Ghost Card: 19
+  Faerie Card: 20
+  Demon Card: 21
+  Sword Card: 22
+  Sprite Card: 23
+  Nosedevil Card: 24
+  Heart of Vlad: 25
+  Tooth of Vlad: 26
+  Rib of Vlad: 27
+  Ring of Vlad: 28
+  Eye of Vlad: 29
 Rooms:
   Abandoned Mine, Bend: 10
   Abandoned Mine, Cerberus Room: 2

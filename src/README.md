@@ -1,3 +1,9 @@
+# Other notes
+
+Entity Room Index is comprised of:
+- entity room index
+- entity slot
+
 # Notes for Clock Hand mod
 
 ### Clock Hands in Marble Gallery and Black Marble Gallery
