@@ -449,17 +449,17 @@ if __name__ == '__main__':
             stage_offset = stages[stage_name]['Stage']['Start']
             cursors['Stage'] = BIN(binary_file, stage_offset)
             for (address, cursor_name) in (
-                # (0x00, '???'), # 801C187C for Castle Entrance
-                # (0x04, '???'), # 801C1C80 for Castle Entrance
-                # (0x08, '???'), # 801C3E10 for Castle Entrance
+                # (0x00, 'Functions 1??'), # 801C187C for Castle Entrance
+                # (0x04, 'Functions 2??'), # 801C1C80 for Castle Entrance
+                # (0x08, 'Functions 3??'), # 801C3E10 for Castle Entrance
                 (0x0C, 'Entities'), # 801C3C98 for Castle Entrance
                 (0x10, 'Rooms'), # 80183CC4 for Castle Entrance
-                # (0x14, '???'), # 8018002C for Castle Entrance
-                # (0x18, '???'), # 801801C0 for Castle Entrance
-                # (0x1C, '???'), # 8018077C for Castle Entrance
-                (0x20, 'Layouts'), # 801804C4 for Castle Entrance
-                # (0x24, '???'), # 8018072C for Castle Entrance
-                # (0x28, '???'), # 801C1B78 for Castle Entrance
+                # (0x14, 'Sprites??'), # 8018002C for Castle Entrance
+                # (0x18, 'CLUTs??'), # 801801C0 for Castle Entrance
+                # (0x1C, 'Layouts??'), # 8018077C for Castle Entrance
+                (0x20, 'Layouts'), # or maybe Layers??? 801804C4 for Castle Entrance
+                # (0x24, 'Graphics??'), # 8018072C for Castle Entrance
+                # (0x28, 'Functions 4??'), # 801C1B78 for Castle Entrance
             ):
                 stage_offset = cursors['Stage'].u32(address) - OFFSET
                 cursors[cursor_name] = cursors['Stage'].clone(stage_offset)
