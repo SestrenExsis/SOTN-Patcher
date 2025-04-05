@@ -205,9 +205,6 @@ Entities:
   Relic - Eye of Vlad:
     Entity Type ID: 11
     Params: 29
-  Item - Silver Ring:
-    Entity Type ID: 12
-    Params: 2
 Rooms:
   Abandoned Mine, Bend: 10
   Abandoned Mine, Cerberus Room: 2

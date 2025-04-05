@@ -9,6 +9,7 @@ python src/sotn_patcher.py "build/extraction.json" --data="data/" --changes="tes
 python src/sotn_patcher.py "build/extraction.json" --data="data/" --changes="tests/softlock-in-alchemy-lab-maria-cutscene.json" --ppf="build/ppf/softlock-in-alchemy-lab-maria-cutscene.ppf" || goto :error
 python src/sotn_patcher.py "build/extraction.json" --data="data/" --changes="tests/customized-castle-map-reveals.json" --ppf="build/ppf/customized-castle-map-reveals.ppf" || goto :error
 python src/sotn_patcher.py "build/extraction.json" --data="data/" --changes="tests/sample-randomized-map.json" --ppf="build/ppf/sample-randomized-map.ppf" || goto :error
+python src/sotn_patcher.py "build/extraction.json" --data="data/" --changes="tests/randomized-relics.json" --ppf="build/ppf/randomized-relics.ppf" || goto :error
 
 sha1sum -c tests/checksums.sha1
 
