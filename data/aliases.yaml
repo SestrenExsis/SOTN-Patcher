@@ -35,37 +35,179 @@ Entity Types:
     Global: 12
 Items:
   Holy Mail: 5
-Relics:
-  Soul of Bat: 0
-  Fire of Bat: 1
-  Echo of Bat: 2
-  Force of Echo: 3
-  Soul of Wolf: 4
-  Power of Wolf: 5
-  Skill of Wolf: 6
-  Form of Mist: 7
-  Power of Mist: 8
-  Gas Cloud: 9
-  Cube of Zoe: 10
-  Spirit Orb: 11
-  Gravity Boots: 12
-  Leap Stone: 13
-  Holy Symbol: 14
-  Faerie Scroll: 15
-  Jewel of Open: 16
-  Merman Statue: 17
-  Bat Card: 18
-  Ghost Card: 19
-  Faerie Card: 20
-  Demon Card: 21
-  Sword Card: 22
-  Sprite Card: 23
-  Nosedevil Card: 24
-  Heart of Vlad: 25
-  Tooth of Vlad: 26
-  Rib of Vlad: 27
-  Ring of Vlad: 28
-  Eye of Vlad: 29
+Object Layouts:
+  Location - Cube of Zoe:
+    - Stage: Castle Entrance
+      Room: Castle Entrance, Cube of Zoe Room
+      Object Layout ID: 5
+    - Stage: Castle Entrance Revisited
+      Room: Castle Entrance Revisited, Cube of Zoe Room
+      Object Layout ID: 4
+  Location - Demon Card:
+    - Stage: Abandoned Mine
+      Room: Abandoned Mine, Demon Card Room
+      Object Layout ID: 0
+  Location - Form of Mist:
+    - Stage: Colosseum
+      Room: Colosseum, Top of Elevator Shaft
+      Object Layout ID: 6
+  Location - Power of Mist:
+    - Stage: Castle Keep
+      Room: Castle Keep, Keep Area
+      Object Layout ID: 11
+  Location - Ghost Card:
+    - Stage: Castle Keep
+      Room: Castle Keep, Ghost Card Room
+      Object Layout ID: 5
+  Location - Gravity Boots:
+    - Stage: Marble Gallery
+      Room: Marble Gallery, Gravity Boots Room
+      Object Layout ID: 3
+  Location - Leap Stone:
+    - Stage: Castle Keep
+      Room: Castle Keep, Keep Area
+      Object Layout ID: 12
+  Location - Fire of Bat:
+    - Stage: Clock Tower
+      Room: Clock Tower, Fire of Bat Room
+      Object Layout ID: 1
+  Location - Power of Wolf:
+    - Stage: Castle Entrance
+      Room: Castle Entrance, After Drawbridge
+      Object Layout ID: 9
+    - Stage: Castle Entrance Revisited
+      Room: Castle Entrance Revisited, After Drawbridge
+      Object Layout ID: 11
+  Location - Soul of Bat:
+    - Stage: Long Library
+      Room: Long Library, Lesser Demon Area
+      Object Layout ID: 30
+  Location - Faerie Card:
+    - Stage: Long Library
+      Room: Long Library, Faerie Card Room
+      Object Layout ID: 0
+  Location - Faerie Scroll:
+    - Stage: Long Library
+      Room: Long Library, Spellbook Area
+      Object Layout ID: 38
+  Location - Soul of Wolf:
+    - Stage: Outer Wall
+      Room: Outer Wall, Elevator Shaft Room
+      Object Layout ID: 55
+  Location - Spirit Orb:
+    - Stage: Marble Gallery
+      Room: Marble Gallery, Spirit Orb Room
+      Object Layout ID: 8
+  Location - Echo of Bat:
+    - Stage: Olrox's Quarters
+      Room: Olrox's Quarters, Echo of Bat Room
+      Object Layout ID: 2
+  Location - Sword Card:
+    - Stage: Olrox's Quarters
+      Room: Olrox's Quarters, Sword Card Room
+      Object Layout ID: 0
+  Location - Holy Symbol:
+    - Stage: Underground Caverns
+      Room: Underground Caverns, Holy Symbol Room
+      Object Layout ID: 2
+  Location - Merman Statue:
+    - Stage: Underground Caverns
+      Room: Underground Caverns, Merman Statue Room
+      Object Layout ID: 0
+Entities:
+  Relic - Soul of Bat:
+    Entity Type ID: 11
+    Params: 0
+  Relic - Fire of Bat:
+    Entity Type ID: 11
+    Params: 1
+  Relic - Echo of Bat:
+    Entity Type ID: 11
+    Params: 2
+  Relic - Force of Echo:
+    Entity Type ID: 11
+    Params: 3
+  Relic - Soul of Wolf:
+    Entity Type ID: 11
+    Params: 4
+  Relic - Power of Wolf:
+    Entity Type ID: 11
+    Params: 5
+  Relic - Skill of Wolf:
+    Entity Type ID: 11
+    Params: 6
+  Relic - Form of Mist:
+    Entity Type ID: 11
+    Params: 7
+  Relic - Power of Mist:
+    Entity Type ID: 11
+    Params: 8
+  Relic - Gas Cloud:
+    Entity Type ID: 11
+    Params: 9
+  Relic - Cube of Zoe:
+    Entity Type ID: 11
+    Params: 10
+  Relic - Spirit Orb:
+    Entity Type ID: 11
+    Params: 11
+  Relic - Gravity Boots:
+    Entity Type ID: 11
+    Params: 12
+  Relic - Leap Stone:
+    Entity Type ID: 11
+    Params: 13
+  Relic - Holy Symbol:
+    Entity Type ID: 11
+    Params: 14
+  Relic - Faerie Scroll:
+    Entity Type ID: 11
+    Params: 15
+  Relic - Jewel of Open:
+    Entity Type ID: 11
+    Params: 16
+  Relic - Merman Statue:
+    Entity Type ID: 11
+    Params: 17
+  Relic - Bat Card:
+    Entity Type ID: 11
+    Params: 18
+  Relic - Ghost Card:
+    Entity Type ID: 11
+    Params: 19
+  Relic - Faerie Card:
+    Entity Type ID: 11
+    Params: 20
+  Relic - Demon Card:
+    Entity Type ID: 11
+    Params: 21
+  Relic - Sword Card:
+    Entity Type ID: 11
+    Params: 22
+  Relic - Sprite Card:
+    Entity Type ID: 11
+    Params: 23
+  Relic - Nosedevil Card:
+    Entity Type ID: 11
+    Params: 24
+  Relic - Heart of Vlad:
+    Entity Type ID: 11
+    Params: 25
+  Relic - Tooth of Vlad:
+    Entity Type ID: 11
+    Params: 26
+  Relic - Rib of Vlad:
+    Entity Type ID: 11
+    Params: 27
+  Relic - Ring of Vlad:
+    Entity Type ID: 11
+    Params: 28
+  Relic - Eye of Vlad:
+    Entity Type ID: 11
+    Params: 29
+  Item - Silver Ring:
+    Entity Type ID: 12
+    Params: 2
 Rooms:
   Abandoned Mine, Bend: 10
   Abandoned Mine, Cerberus Room: 2

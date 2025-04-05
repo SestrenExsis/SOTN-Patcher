@@ -1,5 +1,6 @@
 # External libraries
 import argparse
+import copy
 import json
 import os
 import yaml
@@ -412,36 +413,6 @@ def get_ppf(extract, changes, data):
                         tile_layout_extract['Layout Rect']['Type'],
                         sotn_address.Address(tile_layout_extract['Layout Rect']['Start']),
                     )
-            # Room: Patch object layouts
-            for room_property in (
-                'Object Layout - Horizontal',
-                'Object Layout - Vertical',
-            ):
-                if room_property not in room_data:
-                    continue
-                object_changes = room_data[room_property]
-                object_extract = room_extract[room_property]
-                for element_id in sorted(object_changes):
-                    element_index = int(element_id)
-                    for field_name in (
-                        'Entity Room Index',
-                        'Entity Type ID',
-                        'Params',
-                        'X',
-                        'Y',
-                    ):
-                        if not (
-                            field_name in object_changes[element_id] and
-                            object_changes[element_id][field_name] != object_extract['Data'][element_index][field_name]
-                        ):
-                            continue
-                        result.patch_value(
-                            object_changes[element_id][field_name],
-                            object_extract['Metadata']['Fields'][field_name]['Type'],
-                            sotn_address.Address(
-                                object_extract['Metadata']['Start'] + element_index * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset']
-                            ),
-                        )
     # Patch teleporters
     extract_metadata = extract['Teleporters']['Metadata']
     for teleporter_id in sorted(changes.get('Teleporters', {})):
@@ -602,6 +573,63 @@ def get_ppf(extract, changes, data):
                             object_extract['Metadata']['Start'] + element['Index'] * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][target_field_name]['Offset']
                         ),
                     )
+    # Object layouts - Apply changes
+    object_layouts = {}
+    for location_name in sorted(changes.get('Object Layouts', {})):
+        entity_name = changes['Object Layouts'][location_name]
+        location_aliases = aliases['Object Layouts'].get(location_name, [])
+        for location_alias in location_aliases:
+            stage_name = location_alias['Stage']
+            room_name = location_alias['Room']
+            if (stage_name, room_name) not in object_layouts:
+                room_id = str(aliases['Rooms'].get(room_name, None))
+                room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
+                object_extract = room_extract['Object Layout - Horizontal']['Data'][1:-1]
+                object_layouts[(stage_name, room_name)] = copy.deepcopy(object_extract)
+            object_layout_id = location_alias['Object Layout ID']
+            for (property_key, property_value) in aliases['Entities'].get(entity_name, {}).items():
+                object_layouts[(stage_name, room_name)][object_layout_id][property_key] = property_value
+    # Object layouts - Apply patches from changes
+    for ((stage_name, room_name), object_layout) in object_layouts.items():
+        print('', (stage_name, room_name))
+        horizontal_object_layout = list(sorted(object_layout,
+            key=lambda x: (x['X'], x['Y'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
+        ))
+        vertical_object_layout = list(sorted(object_layout,
+            key=lambda x: (x['Y'], x['X'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
+        ))
+        assert len(horizontal_object_layout) == len(vertical_object_layout)
+        for (sort_method, sorted_object_layout) in (
+            ('Horizontal', horizontal_object_layout),
+            ('Vertical', vertical_object_layout),
+        ):
+            room_id = str(aliases['Rooms'].get(room_name, None))
+            room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
+            object_extract = room_extract['Object Layout - ' + sort_method]
+            for object_layout_id in range(len(sorted_object_layout)):
+                print('  ', object_layout_id)
+                sorted_object_layout[object_layout_id]
+                # NOTE(sestren): Add +1 to the object layout ID to get the extract ID
+                # NOTE(sestren): This accounts for the sentinel entity at the start of every entity list
+                extract_id = object_layout_id + 1
+                # print(object_extract['Data'][extract_id])
+                for field_name in (
+                    'Entity Room Index',
+                    'Entity Type ID',
+                    'Params',
+                    'X',
+                    'Y',
+                ):
+                    if sorted_object_layout[object_layout_id][field_name] == object_extract['Data'][extract_id][field_name]:
+                        continue
+                    print('    ', field_name, sorted_object_layout[object_layout_id][field_name])
+                    result.patch_value(
+                        sorted_object_layout[object_layout_id][field_name],
+                        object_extract['Metadata']['Fields'][field_name]['Type'],
+                        sotn_address.Address(
+                            object_extract['Metadata']['Start'] + extract_id * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset']
+                        ),
+                    )
     # Patch strings
     # NOTE(sestren): There are no guards in place requiring that the resulting array of strings
     # NOTE(sestren): fits into place or uses up the same amount of bytes. It is the
@@ -700,7 +728,7 @@ def get_ppf(extract, changes, data):
 if __name__ == '__main__':
     '''
     Usage
-    python sotn_patcher.py EXTRACTION_JSON --changes CHANGES_JSON --ppf OUTPUT_PPF
+    python sotn_patcher.py EXTRACTION_JSON --data= --changes=CHANGES_JSON --ppf=OUTPUT_PPF
     '''
     parser = argparse.ArgumentParser()
     parser.add_argument('extract_file', help='Input a filepath to the extract JSON file', type=str)
