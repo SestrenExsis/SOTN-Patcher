@@ -591,7 +591,6 @@ def get_ppf(extract, changes, data):
                 object_layouts[(stage_name, room_name)][object_layout_id][property_key] = property_value
     # Object layouts - Apply patches from changes
     for ((stage_name, room_name), object_layout) in object_layouts.items():
-        print('', (stage_name, room_name))
         horizontal_object_layout = list(sorted(object_layout,
             key=lambda x: (x['X'], x['Y'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
         ))
@@ -607,7 +606,6 @@ def get_ppf(extract, changes, data):
             room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
             object_extract = room_extract['Object Layout - ' + sort_method]
             for object_layout_id in range(len(sorted_object_layout)):
-                print('  ', object_layout_id)
                 sorted_object_layout[object_layout_id]
                 # NOTE(sestren): Add +1 to the object layout ID to get the extract ID
                 # NOTE(sestren): This accounts for the sentinel entity at the start of every entity list
@@ -622,7 +620,6 @@ def get_ppf(extract, changes, data):
                 ):
                     if sorted_object_layout[object_layout_id][field_name] == object_extract['Data'][extract_id][field_name]:
                         continue
-                    print('    ', field_name, sorted_object_layout[object_layout_id][field_name])
                     result.patch_value(
                         sorted_object_layout[object_layout_id][field_name],
                         object_extract['Metadata']['Fields'][field_name]['Type'],
