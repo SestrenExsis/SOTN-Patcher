@@ -1,5 +1,6 @@
 # External libraries
 import argparse
+import copy
 import json
 import os
 import yaml
@@ -111,21 +112,20 @@ def get_changes_template_file(extract):
         'Boss Teleporters': {},
         'Castle Map': [],
         'Castle Map Reveals': [],
-        'Constants': {},
-        'Familiar Events': {},
-        'Reverse Warp Room Coordinates': {},
+        'Options': {
+            'Assign Power of Wolf relic a unique ID': False,
+            'Enable debug mode': False,
+            'Skip Maria cutscene in Alchemy Laboratory': False,
+        },
         'Stages': {},
         'Strings': {},
         'Teleporters': {},
-        'Warp Room Coordinates': {},
     }
     for boss_teleporter_id in range(len(extract['Boss Teleporters']['Data'])):
         result['Boss Teleporters'][boss_teleporter_id] = {
             'Room X': extract['Boss Teleporters']['Data'][boss_teleporter_id]['Room X'],
             'Room Y': extract['Boss Teleporters']['Data'][boss_teleporter_id]['Room Y'],
         }
-    for constant_name in extract['Constants']:
-        result['Constants'][constant_name] = extract['Constants'][constant_name]['Value']
     for (stage_id, stage_data) in extract['Stages'].items():
         result['Stages'][stage_id] = {}
         result['Stages'][stage_id]['Rooms'] = {}
@@ -168,8 +168,8 @@ def get_changes_template_file(extract):
         result['Teleporters'][teleporter_id] = {
             'Player X': extract['Teleporters']['Data'][teleporter_id]['Player X'],
             'Player Y': extract['Teleporters']['Data'][teleporter_id]['Player Y'],
-            'Room Offset': extract['Teleporters']['Data'][teleporter_id]['Room Offset'],
-            'Target Stage ID': extract['Teleporters']['Data'][teleporter_id]['Target Stage ID'],
+            'Room': extract['Teleporters']['Data'][teleporter_id]['Room'] // 8, # NOTE(sestren): Divide by 8 to translate to room index
+            'Stage': extract['Teleporters']['Data'][teleporter_id]['Target Stage ID'],
         }
     for row in range(len(extract['Castle Map']['Data'])):
         row_data = extract['Castle Map']['Data'][row]
@@ -183,32 +183,14 @@ def get_changes_template_file(extract):
             'Grid': extract['Castle Map Reveals']['Data'][castle_map_reveal_id]['Grid'],
         }
         result['Castle Map Reveals'].append(castle_map_reveal)
-    for familiar_event_id in range(len(extract['Familiar Events']['Data'])):
-        result['Familiar Events'][familiar_event_id] = {
-            'Room X': extract['Familiar Events']['Data'][familiar_event_id]['Room X'],
-            'Room Y': extract['Familiar Events']['Data'][familiar_event_id]['Room Y'],
-        }
-    for warp_room_coordinate_id in range(len(extract['Warp Room Coordinates']['Data'])):
-        result['Warp Room Coordinates'][warp_room_coordinate_id] = {
-            'Room X': extract['Warp Room Coordinates']['Data'][warp_room_coordinate_id]['Room X'],
-            'Room Y': extract['Warp Room Coordinates']['Data'][warp_room_coordinate_id]['Room Y'],
-        }
     for string_id in extract['Strings']['Data']:
         string = extract['Strings']['Data'][string_id]
         result['Strings'][string_id] = string
-    for reverse_warp_room_coordinate_id in range(len(extract['Reverse Warp Room Coordinates']['Data'])):
-        result['Reverse Warp Room Coordinates'][reverse_warp_room_coordinate_id] = {
-            'Room X': extract['Reverse Warp Room Coordinates']['Data'][reverse_warp_room_coordinate_id]['Room X'],
-            'Room Y': extract['Reverse Warp Room Coordinates']['Data'][reverse_warp_room_coordinate_id]['Room Y'],
-        }
     return result
 
 def validate_changes(changes):
     if 'Boss Teleporters' in changes:
         # TODO(sestren): Validate boss teleporters
-        pass
-    if 'Constants' in changes:
-        # TODO(sestren): Validate constants
         pass
     if 'Stages' in changes:
         for (stage_id, stage_data) in changes['Stages'].items():
@@ -226,13 +208,48 @@ def validate_changes(changes):
         # TODO(sestren): Validate teleporters
         pass
 
-def get_ppf(extract, changes):
-    result = PPF('Just messing around')
+def getID(aliases: dict, path: tuple):
+    result = path[-1]
+    scope = aliases
+    for token in path:
+        if token not in scope:
+            break
+        scope = scope[token]
+    else:
+        result = scope
+    if type(result) == str:
+        result = int(result)
+    return result
+
+def get_familiar_changes(changes, familiar_events):
+    familiar_changes = {}
+    if 'Stages' in changes:
+        for familiar_event_name in familiar_events:
+            familiar_event = familiar_events[familiar_event_name]
+            stage_name = familiar_event['Stage']
+            if stage_name not in changes['Stages']:
+                continue
+            room_name = familiar_event['Room']
+            if room_name not in changes['Stages'][stage_name]['Rooms']:
+                continue
+            source_room = changes['Stages'][stage_name]['Rooms'][room_name]
+            sign = -1 if familiar_event['Inverted'] else 1
+            for familiar_event_id in familiar_event['Familiar Event IDs']:
+                familiar_changes[familiar_event_id] = {
+                    'Room Y': source_room['Top'],
+                    'Room X': sign * source_room['Left'],
+                }
+    return familiar_changes
+
+def get_ppf(extract, changes, data):
+    aliases = data['Aliases']
+    result = PPF('Works with SOTN Shuffler Alpha Build 73')
     # Patch boss teleporters
     extract_metadata = extract['Boss Teleporters']['Metadata']
     for boss_teleporter_id in sorted(changes.get('Boss Teleporters', {})):
         boss_teleporter_data = changes['Boss Teleporters'][boss_teleporter_id]
-        extract_data = extract['Boss Teleporters']['Data'][int(boss_teleporter_id)]
+        extract_id = getID(aliases, ('Boss Teleporters', boss_teleporter_id))
+        extract_data = extract['Boss Teleporters']['Data'][extract_id]
         # Boss Teleporter: Patch room X
         room_x = extract_data['Room X']
         if 'Room X' in boss_teleporter_data:
@@ -253,16 +270,87 @@ def get_ppf(extract, changes):
                     extract_metadata['Fields']['Room Y']['Type'],
                     sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room Y']['Offset']),
                 )
-    # Patch constants
-    for constant_id in sorted(changes.get('Constants', {})):
-        constant_data = changes['Constants'][constant_id]
-        constant_extract = extract['Constants'][constant_id]
-        if constant_data != constant_extract['Value']:
-            result.patch_value(
-                constant_data,
-                constant_extract['Type'],
-                sotn_address.Address(constant_extract['Start']),
-            )
+    # Option - Assign Power of Wolf relic a unique ID
+    if changes.get('Options', {}).get('Assign Power of Wolf relic a unique ID', False):
+        # See https://github.com/SestrenExsis/SOTN-Shuffler/issues/36
+        room = changes['Stages']['Castle Entrance Revisited']['Rooms']['Castle Entrance Revisited, After Drawbridge']
+        room['Object Layout - Horizontal'] = {
+            '12': {
+                'Entity Room Index': 18,
+            },
+        }
+        room['Object Layout - Vertical'] = {
+            '1': {
+                'Entity Room Index': 18,
+            },
+        }
+        room = changes['Stages']['Castle Entrance']['Rooms']['Castle Entrance, After Drawbridge']
+        room['Object Layout - Horizontal'] = {
+            '10': {
+                'Entity Room Index': 18,
+            },
+        }
+        room['Object Layout - Vertical'] = {
+            '1': {
+                'Entity Room Index': 18,
+            },
+        }
+    # Option - Enable debug mode
+    if changes.get('Options', {}).get('Enable debug mode', False):
+        constant_extract = extract['Constants']['Set initial NOCLIP value']
+        result.patch_value(
+            0xAC258850,
+            constant_extract['Type'],
+            sotn_address.Address(constant_extract['Start']),
+        )
+    # Option - Skip Maria cutscene in Alchemy Laboratory
+    if changes.get('Options', {}).get('Skip Maria cutscene in Alchemy Laboratory', False):
+        constant_extract = extract['Constants']['Should skip Maria Alchemy Laboratory']
+        result.patch_value(
+            0x0806E296,
+            constant_extract['Type'],
+            sotn_address.Address(constant_extract['Start']),
+        )
+    # Option - Clock hands show minutes and seconds instead of hours and minutes
+    if changes.get('Options', {}).get('Clock hands show minutes and seconds instead of hours and minutes', False):
+        for (base, type) in (
+            (0x03FD7C2C, 'A'), # Marble Gallery
+            (0x0457E5D4, 'A'), # Black Marble Gallery
+            (0x05811C94, 'B'), # Maria Clock Room Cutscene
+        ):
+            for (offset, a_value, b_value) in (
+                (0x00, 0x8CA302D4, 0x8E6302D4), # lw v1,$2D4(X)
+                (0x18, 0x00000000, 0x00000000), # nop
+                (0x20, 0x00000000, 0x00000000), # nop
+                (0x24, 0x00000000, 0x00000000), # nop
+                (0x28, 0x00051900, 0x00041900), # sll v1,X,$4
+                (0x2C, 0x00651823, 0x00641823), # subu v1,X
+                (0x34, 0x00000000, 0x00000000), # nop
+                (0x38, 0x00000000, 0x00000000), # nop
+                (0x3C, 0x00000000, 0x00000000), # nop
+            ):
+                value = a_value if type == 'A' else b_value
+                result.patch_value(value, 'u32', sotn_address.Address(base + offset))
+    # Insert boss stages into stage data prior to stage patching
+    if 'Stages' in changes:
+        for element in data['Boss Stages'].values():
+            source_stage_name = element['Source Stage']
+            if source_stage_name not in changes['Stages']:
+                continue
+            source_room_name = element['Source Room']
+            if source_room_name not in changes['Stages'][source_stage_name]['Rooms']:
+                continue
+            target_stage_name = element['Target Stage']
+            if target_stage_name not in changes['Stages']:
+                changes['Stages'][target_stage_name] = {
+                    'Rooms': {},
+                }
+            for (target_room_name, target_room) in element['Target Rooms'].items():
+                source_room = changes['Stages'][source_stage_name]['Rooms'][source_room_name]
+                changes['Stages'][target_stage_name]['Rooms'][target_room_name] = {
+                    'Top': source_room['Top'] + target_room['Top'],
+                    'Left': source_room['Left'] + target_room['Left'],
+                }
     # Patch stage data
     for stage_id in sorted(changes.get('Stages', {})):
         stage_data = changes['Stages'][stage_id]
@@ -270,7 +358,8 @@ def get_ppf(extract, changes):
         # Stage: Patch room data
         for room_id in sorted(stage_data.get('Rooms', {})):
             room_data = stage_data['Rooms'][room_id]
-            room_extract = stage_extract['Rooms'][room_id]
+            extract_id = getID(aliases, ('Rooms', room_id))
+            room_extract = stage_extract['Rooms'][str(extract_id)]
             left = room_extract['Left']['Value']
             right = room_extract['Right']['Value']
             # Room: Patch left and right
@@ -324,39 +413,12 @@ def get_ppf(extract, changes):
                         tile_layout_extract['Layout Rect']['Type'],
                         sotn_address.Address(tile_layout_extract['Layout Rect']['Start']),
                     )
-            # Room: Patch object layouts
-            for room_property in (
-                'Object Layout - Horizontal',
-                'Object Layout - Vertical',
-            ):
-                if room_property not in room_data:
-                    continue
-                object_changes = room_data[room_property]
-                object_extract = room_extract[room_property]
-                for element_id in sorted(object_changes):
-                    element_index = int(element_id)
-                    for field_name in (
-                        'Entity Room Index',
-                        'Entity Type ID',
-                        'Params',
-                    ):
-                        if not (
-                            field_name in object_changes[element_id] and
-                            object_changes[element_id][field_name] != object_extract['Data'][element_index][field_name]
-                        ):
-                            continue
-                        result.patch_value(
-                            object_changes[element_id][field_name],
-                            object_extract['Metadata']['Fields'][field_name]['Type'],
-                            sotn_address.Address(
-                                object_extract['Metadata']['Start'] + element_index * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset']
-                            ),
-                        )
     # Patch teleporters
     extract_metadata = extract['Teleporters']['Metadata']
     for teleporter_id in sorted(changes.get('Teleporters', {})):
         teleporter_data = changes['Teleporters'][teleporter_id]
-        extract_data = extract['Teleporters']['Data'][int(teleporter_id)]
+        extract_id = getID(aliases, ('Teleporters', teleporter_id))
+        extract_data = extract['Teleporters']['Data'][extract_id]
         # Teleporter: Patch player X
         player_x = extract_data['Player X']
         if 'Player X' in teleporter_data:
@@ -376,19 +438,22 @@ def get_ppf(extract, changes):
                     sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Player Y']['Offset']),
                 )
         # Teleporter: Patch room offset
-        room_offset = extract_data['Room Offset']
-        if 'Room Offset' in teleporter_data:
-            if teleporter_data['Room Offset'] != room_offset:
-                room_offset = teleporter_data['Room Offset']
+        room_offset = extract_data['Room']
+        if 'Room' in teleporter_data:
+            # NOTE(sestren): Multiply by 8 to translate room ID to room offset
+            extract_room_offset = 8 * getID(aliases, ('Rooms', teleporter_data['Room']))
+            if extract_room_offset != room_offset:
+                room_offset = extract_room_offset
                 result.patch_value(room_offset,
-                    extract_metadata['Fields']['Room Offset']['Type'],
-                    sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room Offset']['Offset']),
+                    extract_metadata['Fields']['Room']['Type'],
+                    sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room']['Offset']),
                 )
         # Teleporter: Patch target stage ID
         target_stage_id = extract_data['Target Stage ID']
-        if 'Target Stage ID' in teleporter_data:
-            if teleporter_data['Target Stage ID'] != target_stage_id:
-                target_stage_id = teleporter_data['Target Stage ID']
+        if 'Stage' in teleporter_data:
+            extract_stage_id = getID(aliases, ('Stages', teleporter_data['Stage']))
+            if extract_stage_id != target_stage_id:
+                target_stage_id = extract_stage_id
                 result.patch_value(target_stage_id,
                     extract_metadata['Fields']['Target Stage ID']['Type'],
                     sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Target Stage ID']['Offset']),
@@ -454,10 +519,11 @@ def get_ppf(extract, changes):
         0x039D1D38, # Possibly for Yousei Familiar
         0x039F2664, # Possibly for Nose Demon Familiar
     ]
+    familiar_changes = get_familiar_changes(changes, data['Familiar Events'])
     extract_metadata = extract['Familiar Events']['Metadata']
-    for familiar_event_id in sorted(changes.get('Familiar Events', {})):
-        familiar_event_data = changes['Familiar Events'][familiar_event_id]
-        extract_data = extract['Familiar Events']['Data'][int(familiar_event_id)]
+    for familiar_event_id in sorted(familiar_changes):
+        familiar_event_data = familiar_changes[familiar_event_id]
+        extract_data = extract['Familiar Events']['Data'][familiar_event_id]
         # Familiar event: Patch room X
         room_x = extract_data['Room X']
         if 'Room X' in familiar_event_data:
@@ -483,47 +549,84 @@ def get_ppf(extract, changes):
                         sotn_address.Address(offset),
                     )
     # Patch warp room coordinates
-    object_extract = extract.get('Warp Room Coordinates', {})
-    object_changes = changes.get('Warp Room Coordinates', {})
-    for element_id in sorted(object_changes):
-        element_index = int(element_id)
-        for field_name in (
-            'Room X',
-            'Room Y',
+    if 'Stages' in changes:
+        for (element_name, element_group) in data['Warp Coordinates'].items():
+            object_extract = extract[element_name]
+            for element in element_group.values():
+                source_stage_name = element['Source Stage']
+                if source_stage_name not in changes['Stages']:
+                    continue
+                source_room_name = element['Source Room']
+                if source_room_name not in changes['Stages'][source_stage_name]['Rooms']:
+                    continue
+                source_room = changes['Stages'][source_stage_name]['Rooms'][source_room_name]
+                for (source_field_name, target_field_name) in (
+                    ('Left', 'Room X'),
+                    ('Top', 'Room Y'),
+                ):
+                    if source_field_name not in source_room:
+                        continue
+                    result.patch_value(
+                        source_room[source_field_name],
+                        object_extract['Metadata']['Fields'][target_field_name]['Type'],
+                        sotn_address.Address(
+                            object_extract['Metadata']['Start'] + element['Index'] * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][target_field_name]['Offset']
+                        ),
+                    )
+    # Object layouts - Apply changes
+    object_layouts = {}
+    for location_name in sorted(changes.get('Object Layouts', {})):
+        entity_name = changes['Object Layouts'][location_name]
+        location_aliases = aliases['Object Layouts'].get(location_name, [])
+        for location_alias in location_aliases:
+            stage_name = location_alias['Stage']
+            room_name = location_alias['Room']
+            if (stage_name, room_name) not in object_layouts:
+                room_id = str(aliases['Rooms'].get(room_name, None))
+                room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
+                object_extract = room_extract['Object Layout - Horizontal']['Data'][1:-1]
+                object_layouts[(stage_name, room_name)] = copy.deepcopy(object_extract)
+            object_layout_id = location_alias['Object Layout ID']
+            for (property_key, property_value) in aliases['Entities'].get(entity_name, {}).items():
+                object_layouts[(stage_name, room_name)][object_layout_id][property_key] = property_value
+    # Object layouts - Apply patches from changes
+    for ((stage_name, room_name), object_layout) in object_layouts.items():
+        horizontal_object_layout = list(sorted(object_layout,
+            key=lambda x: (x['X'], x['Y'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
+        ))
+        vertical_object_layout = list(sorted(object_layout,
+            key=lambda x: (x['Y'], x['X'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
+        ))
+        assert len(horizontal_object_layout) == len(vertical_object_layout)
+        for (sort_method, sorted_object_layout) in (
+            ('Horizontal', horizontal_object_layout),
+            ('Vertical', vertical_object_layout),
         ):
-            if not (
-                field_name in object_changes.get(element_id, {}) and
-                object_changes[element_id][field_name] != object_extract['Data'][element_index][field_name]
-            ):
-                continue
-            result.patch_value(
-                object_changes[element_id][field_name],
-                object_extract['Metadata']['Fields'][field_name]['Type'],
-                sotn_address.Address(
-                    object_extract['Metadata']['Start'] + element_index * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset']
-                ),
-            )
-    # Patch reverse warp room coordinates
-    object_extract = extract.get('Reverse Warp Room Coordinates', {})
-    object_changes = changes.get('Reverse Warp Room Coordinates', {})
-    for element_id in sorted(object_changes):
-        element_index = int(element_id)
-        for field_name in (
-            'Room X',
-            'Room Y',
-        ):
-            if not (
-                field_name in object_changes.get(element_id, {}) and
-                object_changes[element_id][field_name] != object_extract['Data'][element_index][field_name]
-            ):
-                continue
-            result.patch_value(
-                object_changes[element_id][field_name],
-                object_extract['Metadata']['Fields'][field_name]['Type'],
-                sotn_address.Address(
-                    object_extract['Metadata']['Start'] + element_index * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset']
-                ),
-            )
+            room_id = str(aliases['Rooms'].get(room_name, None))
+            room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
+            object_extract = room_extract['Object Layout - ' + sort_method]
+            for object_layout_id in range(len(sorted_object_layout)):
+                sorted_object_layout[object_layout_id]
+                # NOTE(sestren): Add +1 to the object layout ID to get the extract ID
+                # NOTE(sestren): This accounts for the sentinel entity at the start of every entity list
+                extract_id = object_layout_id + 1
+                # print(object_extract['Data'][extract_id])
+                for field_name in (
+                    'Entity Room Index',
+                    'Entity Type ID',
+                    'Params',
+                    'X',
+                    'Y',
+                ):
+                    if sorted_object_layout[object_layout_id][field_name] == object_extract['Data'][extract_id][field_name]:
+                        continue
+                    result.patch_value(
+                        sorted_object_layout[object_layout_id][field_name],
+                        object_extract['Metadata']['Fields'][field_name]['Type'],
+                        sotn_address.Address(
+                            object_extract['Metadata']['Start'] + extract_id * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset']
+                        ),
+                    )
     # Patch strings
     # NOTE(sestren): There are no guards in place requiring that the resulting array of strings
     # NOTE(sestren): fits into place or uses up the same amount of bytes. It is the
@@ -539,6 +642,7 @@ def get_ppf(extract, changes):
     extract_metadata = extract['Strings']['Metadata']
     offset = 0
     # NOTE(sestren): Going through all the strings on the extract side is necessary because strings take up a variable amount of bytes
+    # TODO(sestren): Fix string-related bugs because I did them wrong
     for (string_id, extracted_string) in extract['Strings']['Data'].items():
         if 'Strings' not in changes:
             continue
@@ -582,17 +686,51 @@ def get_ppf(extract, changes):
                 sotn_address.Address(extract_metadata['Start'] + offset),
             )
             offset += 1
+    # Adjust the target points for the Castle Teleporter and False Save Room locations
+    for (constant_id, source_stage, source_room_name, offset_type, offset_amount) in (
+        # Adjust the target point for the Castle Teleporter locations (in both DRA and RIC)
+        ('DRA - Castle Keep Teleporter, Y Offset', 'Castle Keep', 'Castle Keep, Keep Area', 'Top', 847),
+        ('DRA - Castle Keep Teleporter, X Offset', 'Castle Keep', 'Castle Keep, Keep Area', 'Left', 320),
+        ('DRA - Reverse Keep Teleporter, Y Offset', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Top', 1351),
+        ('DRA - Reverse Keep Teleporter, X Offset', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Left', 1728),
+        ('RIC - Castle Keep Teleporter, Y Offset', 'Castle Keep', 'Castle Keep, Keep Area', 'Top', 847),
+        ('RIC - Castle Keep Teleporter, X Offset', 'Castle Keep', 'Castle Keep, Keep Area', 'Left', 320),
+        ('RIC - Reverse Keep Teleporter, Y Offset', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Top', 1351),
+        ('RIC - Reverse Keep Teleporter, X Offset', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Left', 1728),
+        # Adjust the False Save Room trigger, discovered by @MottZilla
+        # See https://github.com/Xeeynamo/sotn-decomp/blob/ffce97b0022ab5d4118ad35c93dea86bb18b25cc/src/dra/5087C.c#L1012
+        ('False Save Room, Room Y', 'Underground Caverns', 'Underground Caverns, False Save Room', 'Top', None),
+        ('False Save Room, Room X', 'Underground Caverns', 'Underground Caverns, False Save Room', 'Left', None),
+        ('Reverse False Save Room, Room Y', 'Reverse Caverns', 'Reverse Caverns, False Save Room', 'Top', None),
+        ('Reverse False Save Room, Room X', 'Reverse Caverns', 'Reverse Caverns, False Save Room', 'Left', None),
+    ):
+        source_room = changes.get('Stages', {}).get(source_stage, {}).get('Rooms', {}).get(source_room_name, None)
+        if source_room is None:
+            continue
+        constant_extract = extract['Constants'][constant_id]
+        # NOTE(sestren): For the castle teleporter, use world coordinates and negate the value
+        # NOTE(sestren): For the False Save Room, just use the room location
+        # TODO(sestren): Consider a less hacky way to handle both cases
+        change_value = source_room[offset_type]
+        if offset_amount is not None:
+            change_value = -1 * (256 * source_room[offset_type] + offset_amount)
+        if change_value != constant_extract['Value']:
+            result.patch_value(
+                change_value,
+                constant_extract['Type'],
+                sotn_address.Address(constant_extract['Start']),
+            )
     return result
 
 if __name__ == '__main__':
     '''
     Usage
-    python sotn_patcher.py CORE_DATA_JSON --changes CHANGES_JSON --ppf OUTPUT_PPF
+    python sotn_patcher.py EXTRACTION_JSON --data= --changes=CHANGES_JSON --ppf=OUTPUT_PPF
     '''
     parser = argparse.ArgumentParser()
     parser.add_argument('extract_file', help='Input a filepath to the extract JSON file', type=str)
-    parser.add_argument('--changes', help='Input an optional filepath to the changes JSON file', type=str)
-    parser.add_argument('--aliases', help='Input an optional filepath to the aliases YAML file', type=str)
+    parser.add_argument('--data', help='Input an optional (required if changes argument is given) filepath to a folder containing various data dependency files', type=str)
+    parser.add_argument('--changes', help='Input an optional (required if data argument is given) filepath to the changes JSON file', type=str)
     parser.add_argument('--ppf', help='Input an optional filepath to the output PPF file', type=str)
     args = parser.parse_args()
     with open(args.extract_file) as extract_file:
@@ -605,29 +743,22 @@ if __name__ == '__main__':
                 json.dump(changes, changes_file, indent='    ', sort_keys=True)
         else:
             with (
+                open(os.path.join(os.path.normpath(args.data), 'aliases.yaml')) as aliases_file,
+                open(os.path.join(os.path.normpath(args.data), 'familiar_events.yaml')) as familiar_events_file,
+                open(os.path.join(os.path.normpath(args.data), 'boss_stages.yaml')) as boss_stages_file,
+                open(os.path.join(os.path.normpath(args.data), 'warp_coordinates.yaml')) as warp_coordinates_file,
                 open(args.changes) as changes_file,
-                open(args.aliases) as aliases_file,
                 open(args.ppf, 'wb') as ppf_file,
             ):
+                data = {
+                    'Aliases': yaml.safe_load(aliases_file),
+                    'Boss Stages': yaml.safe_load(boss_stages_file),
+                    'Familiar Events': yaml.safe_load(familiar_events_file),
+                    'Warp Coordinates': yaml.safe_load(warp_coordinates_file),
+                }
                 changes = json.load(changes_file)
                 if 'Changes' in changes:
                     changes = changes['Changes']
-                aliases = yaml.safe_load(aliases_file)
-                for (stage_name, stage_changes) in changes.get('Stages', {}).items():
-                    aliases_found = {}
-                    # print(stage_name)
-                    for room_name in stage_changes['Rooms']:
-                        # print('', room_name)
-                        if room_name in aliases['Rooms']:
-                            room_id = aliases['Rooms'][room_name]['Index']
-                            aliases_found[room_name] = str(room_id)
-                        else:
-                            pass
-                            # print('Cannot find alias', (stage_name, room_name))
-                            # raise Exception('Cannot find alias')
-                    for (key, value) in aliases_found.items():
-                        room_data = stage_changes['Rooms'].pop(key)
-                        stage_changes['Rooms'][value] = room_data
                 validate_changes(changes)
-                patch = get_ppf(extract, changes)
+                patch = get_ppf(extract, changes, data)
                 ppf_file.write(patch.bytes)

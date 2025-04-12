@@ -1,0 +1,14 @@
+{
+    "Options": {
+        "Enable debug mode": true,
+        "Skip Maria cutscene in Alchemy Laboratory": true
+    },
+    "Teleporters": {
+        "11": {
+            "Player X": 16,
+            "Player Y": 132,
+            "Room": "Alchemy Laboratory, Exit to Royal Chapel",
+            "Stage": "Alchemy Laboratory"
+        }
+    }
+}

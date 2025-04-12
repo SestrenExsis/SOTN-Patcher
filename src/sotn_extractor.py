@@ -449,17 +449,17 @@ if __name__ == '__main__':
             stage_offset = stages[stage_name]['Stage']['Start']
             cursors['Stage'] = BIN(binary_file, stage_offset)
             for (address, cursor_name) in (
-                # (0x00, '???'), # 801C187C for Castle Entrance
-                # (0x04, '???'), # 801C1C80 for Castle Entrance
-                # (0x08, '???'), # 801C3E10 for Castle Entrance
+                # (0x00, 'Functions 1??'), # 801C187C for Castle Entrance
+                # (0x04, 'Functions 2??'), # 801C1C80 for Castle Entrance
+                # (0x08, 'Functions 3??'), # 801C3E10 for Castle Entrance
                 (0x0C, 'Entities'), # 801C3C98 for Castle Entrance
                 (0x10, 'Rooms'), # 80183CC4 for Castle Entrance
-                # (0x14, '???'), # 8018002C for Castle Entrance
-                # (0x18, '???'), # 801801C0 for Castle Entrance
-                # (0x1C, '???'), # 8018077C for Castle Entrance
-                (0x20, 'Layouts'), # 801804C4 for Castle Entrance
-                # (0x24, '???'), # 8018072C for Castle Entrance
-                # (0x28, '???'), # 801C1B78 for Castle Entrance
+                # (0x14, 'Sprites??'), # 8018002C for Castle Entrance
+                # (0x18, 'CLUTs??'), # 801801C0 for Castle Entrance
+                # (0x1C, 'Layouts??'), # 8018077C for Castle Entrance
+                (0x20, 'Layouts'), # or maybe Layers??? 801804C4 for Castle Entrance
+                # (0x24, 'Graphics??'), # 8018072C for Castle Entrance
+                # (0x28, 'Functions 4??'), # 801C1B78 for Castle Entrance
             ):
                 stage_offset = cursors['Stage'].u32(address) - OFFSET
                 cursors[cursor_name] = cursors['Stage'].clone(stage_offset)
@@ -569,7 +569,7 @@ if __name__ == '__main__':
                         'Offset': 0x02,
                         'Type': 'u16',
                     },
-                    'Room Offset': {
+                    'Room': {
                         'Offset': 0x04,
                         'Type': 'u16',
                     },
@@ -589,7 +589,7 @@ if __name__ == '__main__':
             data = {
                 'Player X': cursor.u16(0x0A * teleporter_id + 0x00),
                 'Player Y': cursor.u16(0x0A * teleporter_id + 0x02),
-                'Room Offset': cursor.u16(0x0A * teleporter_id + 0x04),
+                'Room': cursor.u16(0x0A * teleporter_id + 0x04),
                 'Source Stage ID': cursor.u16(0x0A * teleporter_id + 0x06),
                 'Target Stage ID': cursor.u16(0x0A * teleporter_id + 0x08),
             }
@@ -643,10 +643,15 @@ if __name__ == '__main__':
             constants[f'Relic Container Drop ID {str(drop_index)}'] = data
         for (constant_address, constant_name, constant_data_type) in (
             # Found in the GetTeleportToOtherCastle function of the decomp
-            (0x000FFCE4, 'Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40
-            (0x000FFD18, 'Castle Keep Teleporter, Y Offset', 's16'), # 0x2442F7B1 --> subiu v0, $084F
-            (0x000FFD68, 'Reverse Keep Teleporter, X Offset', 's16'), # 0x2463DF40 --> subiu v1, $20C0
-            (0x000FFD9C, 'Reverse Keep Teleporter, Y Offset', 's16'), # 0x2442C7B9 --> subiu v0, $3847
+            (0x000FFCE4, 'DRA - Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40
+            (0x000FFD18, 'DRA - Castle Keep Teleporter, Y Offset', 's16'), # 0x2442F7B1 --> subiu v0, $084F
+            (0x000FFD68, 'DRA - Reverse Keep Teleporter, X Offset', 's16'), # 0x2463DF40 --> subiu v1, $20C0
+            (0x000FFD9C, 'DRA - Reverse Keep Teleporter, Y Offset', 's16'), # 0x2442C7B9 --> subiu v0, $3847
+            # NOTE(sestren): An extra copy of the above locations exists in the RIC overlay with a relative offset of approximately 0x03186028
+            (0x03285D0C, 'RIC - Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40
+            (0x03285D40, 'RIC - Castle Keep Teleporter, Y Offset', 's16'), # 0x2442F7B1 --> subiu v0, $084F
+            (0x03285D90, 'RIC - Reverse Keep Teleporter, X Offset', 's16'), # 0x2463DF40 --> subiu v1, $20C0
+            (0X03285DD0, 'RIC - Reverse Keep Teleporter, Y Offset', 's16'), # 0x2442C7B9 --> subiu v0, $3847
             # Must be updated so that False Save Room still sends you to Nightmare (Solved by @MottZilla)
             (0x000E7DC8, 'False Save Room, Room X', 'u16'), # 0x2D00 --> 45
             (0x000E7DD0, 'False Save Room, Room Y', 'u16'), # 0x2100 --> 33
@@ -655,8 +660,10 @@ if __name__ == '__main__':
             # To enable NOCLIP mode; set to 0xAC258850 --> sw a1, -$77B0(at)
             (0x000D9364, 'Set initial NOCLIP value', 'u32'), # 0xAC208850 --> sw 0, -$77B0(at)
             # Buy Castle Map, set to NOP to draw every tile within the boundaries
-            (0X000E7B1C, 'Should reveal map tile', 'u32'), # 0x10400020 --> beq v0,0,$800F23A0
+            (0x000E7B1C, 'Should reveal map tile', 'u32'), # 0x10400020 --> beq v0,0,$800F23A0
             # (0x0009840C, 'Castle map reveal boundary', 'u32') # 0x06082600 --> {0, 26, 8, 6} # Change to 0x40400000???
+            # (0x049F761C, 'Stun player when meeting Maria in Alchemy Lab', 'u32'), # 0x34100001 --> ori s0,0,$1 # Change to 0x36100000 --> ori s0,$0
+            (0x049F66EC, 'Should skip Maria Alchemy Laboratory', 'u32'), # 0x144002DA --> bne v0,0,$801B8A58 # Change to 0x0806E296 --> j $801B8A58
         ):
             cursor = BIN(binary_file, constant_address)
             constants[constant_name] = cursor.indirect(0, constant_data_type, True)

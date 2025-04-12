@@ -1,0 +1,9 @@
+{
+    "Options": {
+        "Clock hands show minutes and seconds instead of hours and minutes": true
+    },
+    "Strings": {
+        "10": "Clock hands                 ",
+        "11": "Alpha Build 73      "
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "Options": {
+        "Enable debug mode": true
+    },
+    "Object Layouts": {
+        "Location - Demon Card": "Relic - Spirit Orb",
+        "Location - Cube of Zoe": "Relic - Leap Stone",
+        "Location - Power of Wolf": "Relic - Demon Card",
+        "Location - Leap Stone": "Relic - Soul of Wolf",
+        "Location - Form of Mist": "Relic - Power of Wolf",
+        "Location - Soul of Bat": "Relic - Gravity Boots",
+        "Location - Gravity Boots": "Relic - Soul of Bat",
+        "Location - Spirit Orb": "Relic - Cube of Zoe",
+        "Location - Soul of Wolf": "Relic - Form of Mist"
+    },
+    "Strings": {
+        "10": "Randomized relics           ",
+        "11": "Alpha Build 74      "
+    }
+}
