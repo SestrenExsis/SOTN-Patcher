@@ -449,17 +449,17 @@ if __name__ == '__main__':
             stage_offset = stages[stage_name]['Stage']['Start']
             cursors['Stage'] = BIN(binary_file, stage_offset)
             for (address, cursor_name) in (
-                # (0x00, 'Functions 1??'), # 801C187C for Castle Entrance
-                # (0x04, 'Functions 2??'), # 801C1C80 for Castle Entrance
-                # (0x08, 'Functions 3??'), # 801C3E10 for Castle Entrance
-                (0x0C, 'Entities'), # 801C3C98 for Castle Entrance
-                (0x10, 'Rooms'), # 80183CC4 for Castle Entrance
-                # (0x14, 'Sprites??'), # 8018002C for Castle Entrance
-                # (0x18, 'CLUTs??'), # 801801C0 for Castle Entrance
-                # (0x1C, 'Layouts??'), # 8018077C for Castle Entrance
-                (0x20, 'Layouts'), # or maybe Layers??? 801804C4 for Castle Entrance
-                # (0x24, 'Graphics??'), # 8018072C for Castle Entrance
-                # (0x28, 'Functions 4??'), # 801C1B78 for Castle Entrance
+                # (0x00, 'Function Updates??'), # 801C37B8 for Marble Gallery
+                # (0x04, 'Function Hit Detection??'), # 801C3BBC for Marble Gallery
+                # (0x08, 'Function Update Room Pos??'), # 801C5D4C for Marble Gallery
+                (0x0C, 'Entities'), # 801C5BD4 for Marble Gallery
+                (0x10, 'Rooms'), # 801827E0 for Marble Gallery
+                # (0x14, 'Sprites??'), # 8018002C for Marble Gallery
+                # (0x18, 'CLUTs??'), # 8018014C for Marble Gallery
+                # (0x1C, 'Layouts??'), # 80180778 for Marble Gallery
+                (0x20, 'Layouts'), # or maybe Layers??? 801804B0 for Marble Gallery
+                # (0x24, 'Graphics??'), # 8018074C for Marble Gallery
+                # (0x28, 'Functions 4??'), # 801C3AB4 for Marble Gallery
             ):
                 stage_offset = cursors['Stage'].u32(address) - OFFSET
                 cursors[cursor_name] = cursors['Stage'].clone(stage_offset)
@@ -470,7 +470,7 @@ if __name__ == '__main__':
                 cursors['Current Room'] = cursors['Rooms'].clone(0x08 * room_id)
                 if cursors['Current Room'].u8() == 0x40:
                     break
-                stages[stage_name]['Rooms'][room_id] = {
+                room_data = {
                     'Left': cursors['Current Room'].u8(0x00, True),
                     'Top': cursors['Current Room'].u8(0x01, True),
                     'Right': cursors['Current Room'].u8(0x02, True),
@@ -480,19 +480,39 @@ if __name__ == '__main__':
                     'Object Graphics ID': cursors['Current Room'].u8(0x06, True),
                     'Object Layout ID': cursors['Current Room'].u8(0x07, True),
                 }
+                stages[stage_name]['Rooms'][room_id] = room_data
                 # Tile layout for the current room
                 if stages[stage_name]['Rooms'][room_id]['Tileset ID']['Value'] == -1:
                     continue
                 tile_layout_id = stages[stage_name]['Rooms'][room_id]['Tile Layout ID']['Value']
                 tile_layout_offset = cursors['Layouts'].u32(0x08 * tile_layout_id) - OFFSET
                 cursors['Current Tile Layout'] = cursors['Stage'].clone(tile_layout_offset)
-                stages[stage_name]['Rooms'][room_id]['Tile Layout'] = {
+                tile_layout = {
                     'Tiles': cursors['Current Tile Layout'].u32(0x0, True),
                     'Defs': cursors['Current Tile Layout'].u32(0x4, True),
                     'Layout Rect': cursors['Current Tile Layout'].u32(0x8, True),
                     'Z Priority': cursors['Current Tile Layout'].u16(0xC, True),
                     'Flags': cursors['Current Tile Layout'].u16(0xE, True),
                 }
+                stages[stage_name]['Rooms'][room_id]['Tile Layout'] = tile_layout
+                # Tile map for the current room
+                stage_offset = tile_layout['Tiles']['Value'] - OFFSET
+                cursors['Tilemap'] = cursors['Stage'].clone(stage_offset)
+                rows = 16 * (1 + room_data['Bottom']['Value'] - room_data['Top']['Value'])
+                cols = 16 * (1 + room_data['Right']['Value'] - room_data['Left']['Value'])
+                for (plane_id, plane) in enumerate((
+                    'Foreground',
+                    'Background',
+                )):
+                    tilemap = []
+                    for row in range(rows):
+                        row_data = []
+                        for col in range(cols):
+                            offset = 2 * ((plane_id * rows * cols) + (row * cols) + col)
+                            value = cursors['Tilemap'].u16(offset)
+                            row_data.append(sotn_address._hex(value, 4))
+                        tilemap.append(' '.join(row_data))
+                    stages[stage_name]['Rooms'][room_id]['Tilemap ' + plane] = tilemap
                 # Object layouts for the current room
                 object_layout_id = stages[stage_name]['Rooms'][room_id]['Object Layout ID']['Value']
                 for (direction, indirect_offset) in (
