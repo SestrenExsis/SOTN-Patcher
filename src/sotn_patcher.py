@@ -311,6 +311,24 @@ def get_ppf(extract, changes, data):
             constant_extract['Type'],
             sotn_address.Address(constant_extract['Start']),
         )
+    # Option - Disable clipping on screen edge of Demon Switch Wall
+    if changes.get('Options', {}).get('Disable clipping on screen edge of Demon Switch Wall', False):
+        for constant_name in (
+            'Demon Switch Wall A Tile ID 08',
+            'Demon Switch Wall A Tile ID 09',
+            'Demon Switch Wall A Tile ID 10',
+            'Demon Switch Wall A Tile ID 11',
+            'Demon Switch Wall B Tile ID 08',
+            'Demon Switch Wall B Tile ID 09',
+            'Demon Switch Wall B Tile ID 10',
+            'Demon Switch Wall B Tile ID 11',
+        ):
+            constant_extract = extract['Constants'][constant_name]
+            result.patch_value(
+                0x01BF,
+                constant_extract['Type'],
+                sotn_address.Address(constant_extract['Start'])
+            )
     # Option - Clock hands show minutes and seconds instead of hours and minutes
     if changes.get('Options', {}).get('Clock hands show minutes and seconds instead of hours and minutes', False):
         for (base, type) in (

@@ -661,6 +661,16 @@ if __name__ == '__main__':
         for drop_index in range(2, 4):
             data = cursor.u16(2 * drop_index, True)
             constants[f'Relic Container Drop ID {str(drop_index)}'] = data
+        # TODO(sestren): Extract as an array instead?
+        # [ 0x039D, 0x03A0, ... ]
+        cursor = BIN(binary_file, 0x03CE009C)
+        for index in range(24):
+            data = cursor.u16(2 * index, True)
+            constants[f'Demon Switch Wall A Tile ID {index:02d}'] = data
+        cursor = BIN(binary_file, 0x0439BFEC)
+        for index in range(24):
+            data = cursor.u16(2 * index, True)
+            constants[f'Demon Switch Wall B Tile ID {index:02d}'] = data
         for (constant_address, constant_name, constant_data_type) in (
             # Found in the GetTeleportToOtherCastle function of the decomp
             (0x000FFCE4, 'DRA - Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40
