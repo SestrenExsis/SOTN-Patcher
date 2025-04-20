@@ -504,15 +504,24 @@ if __name__ == '__main__':
                     'Foreground',
                     'Background',
                 )):
-                    tilemap = []
+                    plane_cursor = cursors['Tilemap'].clone(2 * (plane_id * rows * cols))
+                    tilemap_data = []
                     for row in range(rows):
                         row_data = []
                         for col in range(cols):
                             offset = 2 * ((plane_id * rows * cols) + (row * cols) + col)
                             value = cursors['Tilemap'].u16(offset)
                             row_data.append(sotn_address._hex(value, 4))
-                        tilemap.append(' '.join(row_data))
-                    stages[stage_name]['Rooms'][room_id]['Tilemap ' + plane] = tilemap
+                        tilemap_data.append(' '.join(row_data))
+                    stages[stage_name]['Rooms'][room_id]['Tilemap ' + plane] = {
+                        'Metadata': {
+                            'Start': plane_cursor.cursor.address,
+                            'Rows': rows,
+                            'Columns': cols,
+                            'Type': 'tile-array',
+                        },
+                        'Data': tilemap_data,
+                    }
                 # Object layouts for the current room
                 object_layout_id = stages[stage_name]['Rooms'][room_id]['Object Layout ID']['Value']
                 for (direction, indirect_offset) in (

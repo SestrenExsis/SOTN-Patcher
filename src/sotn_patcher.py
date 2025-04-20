@@ -435,21 +435,24 @@ def get_ppf(extract, changes, data):
                 if 'Tiles' in tile_layout_extract and 'Tilemap Foreground' in room_data and 'Tilemap Background' in room_data:
                     # tiles_extract = tile_layout_extract['Tiles']
                     # TODO(sestren): Allow patching of tile data for rooms other than Pitch Black Spike Maze
-                    start = 0x03BB3000 + 0x00022EF8 # This is the hard-coded address for Pitch Black Spike Maze
+                    # start = 0x03BB3000 + 0x00022EF8 # This is the hard-coded address for Pitch Black Spike Maze
+                    extract = room_data['Tilemap Foreground']
+                    extract_metadata = room_data['Tilemap Foreground']['Metadata']
                     offset = 0
-                    for row_data in room_data['Tilemap Foreground']:
+                    for row_data in extract['Data']:
                         tiles = row_data.split(' ')
                         for tile in tiles:
                             value = int(tile, 16)
-                            print(start + offset, value)
-                            result.patch_value(value, 'u16', sotn_address.Address(start + offset))
+                            result.patch_value(value, 'u16', sotn_address.Address(extract_metadata['Start'] + offset))
                             offset += 2
-                    for row_data in room_data['Tilemap Background']:
+                    extract = room_data['Tilemap Background']
+                    extract_metadata = room_data['Tilemap Background']['Metadata']
+                    offset = 0
+                    for row_data in extract['Data']:
                         tiles = row_data.split(' ')
                         for tile in tiles:
                             value = int(tile, 16)
-                            print(start + offset, value)
-                            result.patch_value(value, 'u16', sotn_address.Address(start + offset))
+                            result.patch_value(value, 'u16', sotn_address.Address(extract_metadata['Start'] + offset))
                             offset += 2
     # Patch teleporters
     extract_metadata = extract['Teleporters']['Metadata']
