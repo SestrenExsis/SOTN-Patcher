@@ -431,6 +431,26 @@ def get_ppf(extract, changes, data):
                         tile_layout_extract['Layout Rect']['Type'],
                         sotn_address.Address(tile_layout_extract['Layout Rect']['Start']),
                     )
+                # Room: Patch tilemap foreground and background
+                if 'Tiles' in tile_layout_extract and 'Tilemap Foreground' in room_data and 'Tilemap Background' in room_data:
+                    # tiles_extract = tile_layout_extract['Tiles']
+                    # TODO(sestren): Allow patching of tile data for rooms other than Pitch Black Spike Maze
+                    start = 0x03BB3000 + 0x00022EF8 # This is the hard-coded address for Pitch Black Spike Maze
+                    offset = 0
+                    for row_data in room_data['Tilemap Foreground']:
+                        tiles = row_data.split(' ')
+                        for tile in tiles:
+                            value = int(tile, 16)
+                            print(start + offset, value)
+                            result.patch_value(value, 'u16', sotn_address.Address(start + offset))
+                            offset += 2
+                    for row_data in room_data['Tilemap Background']:
+                        tiles = row_data.split(' ')
+                        for tile in tiles:
+                            value = int(tile, 16)
+                            print(start + offset, value)
+                            result.patch_value(value, 'u16', sotn_address.Address(start + offset))
+                            offset += 2
     # Patch teleporters
     extract_metadata = extract['Teleporters']['Metadata']
     for teleporter_id in sorted(changes.get('Teleporters', {})):
