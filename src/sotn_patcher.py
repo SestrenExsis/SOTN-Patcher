@@ -508,25 +508,6 @@ def get_ppf(extract, changes, data):
                                                         value = tilemaps['Source ' + layer][source_top + row][source_left + col]
                                                         tilemaps['Target ' + layer][target_top + row][target_left + col] = value
                                             break
-                    # Debug info
-                    for layer in (
-                        'Target Foreground',
-                        'Target Background',
-                    ):
-                        rows = len(tilemaps[layer])
-                        cols = len(tilemaps[layer][0])
-                        print(layer, (rows, cols))
-                        for row in range(rows):
-                            row_data = []
-                            for col in range(cols):
-                                cell = '#'
-                                if tilemaps[layer][row][col] is None:
-                                    cell = '.'
-                                elif tilemaps[layer][row][col] == -1:
-                                    cell = '?'
-                                row_data.append(cell)
-                            print(''.join(row_data))
-                    # ...
                     extract_metadata = room_extract['Tilemap Foreground']['Metadata']
                     offset = 0
                     for tiles in tilemaps['Target Foreground']:
