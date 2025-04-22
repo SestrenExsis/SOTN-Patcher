@@ -508,18 +508,29 @@ def get_ppf(extract, changes, data):
                                                         value = tilemaps['Source ' + layer][source_top + row][source_left + col]
                                                         tilemaps['Target ' + layer][target_top + row][target_left + col] = value
                                             break
-                    extract_metadata = room_extract['Tilemap Foreground']['Metadata']
-                    offset = 0
-                    for tiles in tilemaps['Target Foreground']:
-                        for tile in tiles:
-                            result.patch_value(tile, 'u16', sotn_address.Address(extract_metadata['Start'] + offset))
-                            offset += 2
-                    extract_metadata = room_extract['Tilemap Background']['Metadata']
-                    offset = 0
-                    for tiles in tilemaps['Target Background']:
-                        for tile in tiles:
-                            result.patch_value(tile, 'u16', sotn_address.Address(extract_metadata['Start'] + offset))
-                            offset += 2
+                    # Debug info
+                    # for layer in edit['Layer'].split(' and '):
+                    #     rows = len(tilemaps['Target ' + layer])
+                    #     cols = len(tilemaps['Target ' + layer][0])
+                    #     print('Target ' + layer, (rows, cols))
+                    #     for row in range(rows):
+                    #         row_data = []
+                    #         for col in range(cols):
+                    #             cell = '#'
+                    #             if tilemaps['Target ' + layer][row][col] is None:
+                    #                 cell = '.'
+                    #             elif tilemaps['Target ' + layer][row][col] == -1:
+                    #                 cell = '?'
+                    #             row_data.append(cell)
+                    #         print(''.join(row_data))
+                    # ...
+                    for layer in edit['Layer'].split(' and '):
+                        extract_metadata = room_extract['Tilemap ' + layer]['Metadata']
+                        offset = 0
+                        for tiles in tilemaps['Target Foreground']:
+                            for tile in tiles:
+                                result.patch_value(tile, 'u16', sotn_address.Address(extract_metadata['Start'] + offset))
+                                offset += 2
     # Patch teleporters
     extract_metadata = extract['Teleporters']['Metadata']
     for teleporter_id in sorted(changes.get('Teleporters', {})):
