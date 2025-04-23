@@ -454,12 +454,10 @@ def get_ppf(extract, changes, data):
                         target_cols = len(target[0])
                         # Copy source data to target directly if a space in the target is specified
                         # If target already has source data copied to it, preserve that data
-                        for row in range(target_rows):
-                            for col in range(target_cols):
-                                if target[row][col] == ' ':
-                                    for layer in layers:
-                                        if tilemaps['Target ' + layer][row][col] is not None:
-                                            continue
+                        for layer in layers:
+                            for row in range(target_rows):
+                                for col in range(target_cols):
+                                    if target[row][col] == ' ' and tilemaps['Target ' + layer][row][col] is None:
                                         tilemaps['Target ' + layer][row][col] = tilemaps['Source ' + layer][row][col]
                         for (stamp_height, stamp_width) in (
                             (5, 5), (5, 4), (4, 5), (4, 4), (5, 3), (3, 5),
@@ -468,69 +466,72 @@ def get_ppf(extract, changes, data):
                             (3, 1), (1, 3), (2, 1), (1, 2), (1, 1),
                         ):
                             # Find valid target locations for the stamp
-                            for target_top in range(target_rows - (stamp_height - 1)):
-                                for target_left in range(target_cols - (stamp_width - 1)):
-                                    # Confirm target location has empty space for the stamp
-                                    valid_ind = True
-                                    for row in range(stamp_height):
-                                        if not valid_ind:
-                                            break
-                                        for col in range(stamp_width):
-                                            if tilemaps['Target Foreground'][target_top + row][target_left + col] is not None:
-                                                valid_ind = False
+                            for layer in layers:
+                                for target_top in range(target_rows - (stamp_height - 1)):
+                                    for target_left in range(target_cols - (stamp_width - 1)):
+                                        # Confirm target location has empty space for the stamp
+                                        valid_target_ind = True
+                                        for row in range(stamp_height):
+                                            if not valid_target_ind:
                                                 break
-                                    if not valid_ind:
-                                        continue
-                                    # Stamp if a valid source location can be found
-                                    valid_ind = False
-                                    for source_top in range(target_rows - (stamp_height - 1)):
-                                        if valid_ind:
-                                            break
-                                        for source_left in range(target_cols - (stamp_width - 1)):
-                                            # Find first source location that matches the target location for the stamp
-                                            valid_ind = True
-                                            for row in range(stamp_height):
-                                                if not valid_ind:
+                                            for col in range(stamp_width):
+                                                if not valid_target_ind:
                                                     break
-                                                for col in range(stamp_width):
-                                                    source_value = source[source_top + row][source_left + col]
-                                                    target_value = target[target_top + row][target_left + col]
-                                                    if source_value != target_value:
-                                                        valid_ind = False
+                                                if tilemaps['Target ' + layer][target_top + row][target_left + col] is not None:
+                                                    valid_target_ind = False
+                                                    break
+                                        if not valid_target_ind:
+                                            continue
+                                        # Stamp if a valid source location can be found
+                                        valid_source_ind = False
+                                        for source_top in range(target_rows - (stamp_height - 1)):
+                                            if valid_source_ind:
+                                                break
+                                            for source_left in range(target_cols - (stamp_width - 1)):
+                                                # Find first source location that matches the target location for the stamp
+                                                valid_source_ind = True
+                                                for row in range(stamp_height):
+                                                    if not valid_source_ind:
                                                         break
-                                            # Apply the stamp
-                                            if not valid_ind:
-                                                continue
-                                            for row in range(stamp_height):
-                                                for col in range(stamp_width):
-                                                    for layer in layers:
+                                                    for col in range(stamp_width):
+                                                        source_value = source[source_top + row][source_left + col]
+                                                        target_value = target[target_top + row][target_left + col]
+                                                        if source_value != target_value:
+                                                            valid_source_ind = False
+                                                            break
+                                                if not valid_source_ind:
+                                                    continue
+                                                # Apply the stamp
+                                                for row in range(stamp_height):
+                                                    for col in range(stamp_width):
                                                         assert tilemaps['Target ' + layer][target_top + row][target_left + col] is None
                                                         value = tilemaps['Source ' + layer][source_top + row][source_left + col]
                                                         tilemaps['Target ' + layer][target_top + row][target_left + col] = value
-                                            break
-                    # Debug info
-                    # for layer in edit['Layer'].split(' and '):
-                    #     rows = len(tilemaps['Target ' + layer])
-                    #     cols = len(tilemaps['Target ' + layer][0])
-                    #     print('Target ' + layer, (rows, cols))
-                    #     for row in range(rows):
-                    #         row_data = []
-                    #         for col in range(cols):
-                    #             cell = '#'
-                    #             if tilemaps['Target ' + layer][row][col] is None:
-                    #                 cell = '.'
-                    #             elif tilemaps['Target ' + layer][row][col] == -1:
-                    #                 cell = '?'
-                    #             row_data.append(cell)
-                    #         print(''.join(row_data))
-                    # ...
-                    for layer in edit['Layer'].split(' and '):
-                        extract_metadata = room_extract['Tilemap ' + layer]['Metadata']
-                        offset = 0
-                        for tiles in tilemaps['Target Foreground']:
-                            for tile in tiles:
-                                result.patch_value(tile, 'u16', sotn_address.Address(extract_metadata['Start'] + offset))
-                                offset += 2
+                                                break
+                        # Debug info
+                        # for layer in edit['Layer'].split(' and '):
+                        #     rows = len(tilemaps['Target ' + layer])
+                        #     cols = len(tilemaps['Target ' + layer][0])
+                        #     print('Target ' + layer, (rows, cols))
+                        #     for row in range(rows):
+                        #         row_data = []
+                        #         for col in range(cols):
+                        #             cell = '#'
+                        #             if tilemaps['Target ' + layer][row][col] is None:
+                        #                 cell = '.'
+                        #             elif tilemaps['Target ' + layer][row][col] == -1:
+                        #                 cell = '?'
+                        #             row_data.append(cell)
+                        #         print(''.join(row_data))
+                        # ...
+                        for layer in edit['Layer'].split(' and '):
+                            print(room_id, layer)
+                            extract_metadata = room_extract['Tilemap ' + layer]['Metadata']
+                            offset = 0
+                            for tiles in tilemaps['Target ' + layer]:
+                                for tile in tiles:
+                                    result.patch_value(tile, 'u16', sotn_address.Address(extract_metadata['Start'] + offset))
+                                    offset += 2
     # Patch teleporters
     extract_metadata = extract['Teleporters']['Metadata']
     for teleporter_id in sorted(changes.get('Teleporters', {})):
