@@ -233,6 +233,8 @@ def get_familiar_changes(changes, familiar_events):
             if room_name not in changes['Stages'][stage_name]['Rooms']:
                 continue
             source_room = changes['Stages'][stage_name]['Rooms'][room_name]
+            if 'Left' not in source_room or 'Top' not in source_room:
+                continue
             sign = -1 if familiar_event['Inverted'] else 1
             for familiar_event_id in familiar_event['Familiar Event IDs']:
                 familiar_changes[familiar_event_id] = {
@@ -525,11 +527,16 @@ def get_ppf(extract, changes, data):
                         #         print(''.join(row_data))
                         # ...
                         for layer in edit['Layer'].split(' and '):
-                            print(room_id, layer)
+                            extract_data = room_extract['Tilemap ' + layer]['Data']
                             extract_metadata = room_extract['Tilemap ' + layer]['Metadata']
                             offset = 0
-                            for tiles in tilemaps['Target ' + layer]:
-                                for tile in tiles:
+                            for (tile_row, tiles) in enumerate(tilemaps['Target ' + layer]):
+                                extract_row_data = list(map(lambda x: int(x, 16), extract_data[tile_row].split(' ')))
+                                for (tile_col, tile) in enumerate(tiles):
+                                    extract_value = extract_row_data[tile_col]
+                                    if tile == extract_value:
+                                        offset += 2
+                                        continue
                                     result.patch_value(tile, 'u16', sotn_address.Address(extract_metadata['Start'] + offset))
                                     offset += 2
     # Patch teleporters
