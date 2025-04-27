@@ -351,6 +351,15 @@ def get_ppf(extract, changes, data):
             ):
                 value = a_value if type == 'A' else b_value
                 result.patch_value(value, 'u32', sotn_address.Address(base + offset))
+    # Room shuffler - Normalize room connections
+    if changes.get('Room shuffler', {}).get('Normalize room connections', False):
+        for (offset, value) in (
+            # Shift the breakable floor in Underground Caverns to the right 3 tiles
+            # https://github.com/SestrenExsis/SOTN-Shuffler/issues/82
+            (0x0429FF64, 0x340802D6), # ori t0,zero,$2D6
+            (0x042A006C, 0x340802D6), # ori t0,zero,$2D6
+        ):
+            result.patch_value(value, 'u32', sotn_address.Address(base + offset))
     # Insert boss stages into stage data prior to stage patching
     if 'Stages' in changes:
         for element in data['Boss Stages'].values():
