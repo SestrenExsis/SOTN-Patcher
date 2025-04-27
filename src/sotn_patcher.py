@@ -272,31 +272,6 @@ def get_ppf(extract, changes, data):
                     extract_metadata['Fields']['Room Y']['Type'],
                     sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room Y']['Offset']),
                 )
-    # Option - Assign Power of Wolf relic a unique ID
-    if changes.get('Options', {}).get('Assign Power of Wolf relic a unique ID', False):
-        # See https://github.com/SestrenExsis/SOTN-Shuffler/issues/36
-        room = changes['Stages']['Castle Entrance Revisited']['Rooms']['Castle Entrance Revisited, After Drawbridge']
-        room['Object Layout - Horizontal'] = {
-            '12': {
-                'Entity Room Index': 18,
-            },
-        }
-        room['Object Layout - Vertical'] = {
-            '1': {
-                'Entity Room Index': 18,
-            },
-        }
-        room = changes['Stages']['Castle Entrance']['Rooms']['Castle Entrance, After Drawbridge']
-        room['Object Layout - Horizontal'] = {
-            '10': {
-                'Entity Room Index': 18,
-            },
-        }
-        room['Object Layout - Vertical'] = {
-            '1': {
-                'Entity Room Index': 18,
-            },
-        }
     # Option - Enable debug mode
     if changes.get('Options', {}).get('Enable debug mode', False):
         constant_extract = extract['Constants']['Set initial NOCLIP value']
@@ -708,8 +683,15 @@ def get_ppf(extract, changes, data):
                             object_extract['Metadata']['Start'] + element['Index'] * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][target_field_name]['Offset']
                         ),
                     )
-    # Object layouts - Apply changes
     object_layouts = {}
+    # Option - Assign Power of Wolf relic a unique ID
+    power_of_wolf_patch = changes.get('Options', {}).get('Assign Power of Wolf relic a unique ID', False)
+    if power_of_wolf_patch:
+        if 'Object Layouts' not in changes:
+            changes['Object Layouts'] = {}
+        if 'Location - Power of Wolf' not in changes['Object Layouts']:
+            changes['Object Layouts']['Location - Power of Wolf'] = 'Relic - Power of Wolf'
+    # Object layouts - Apply changes
     for location_name in sorted(changes.get('Object Layouts', {})):
         entity_name = changes['Object Layouts'][location_name]
         location_aliases = aliases['Object Layouts'].get(location_name, [])
@@ -724,6 +706,8 @@ def get_ppf(extract, changes, data):
             object_layout_id = location_alias['Object Layout ID']
             for (property_key, property_value) in aliases['Entities'].get(entity_name, {}).items():
                 object_layouts[(stage_name, room_name)][object_layout_id][property_key] = property_value
+            if power_of_wolf_patch and location_name == 'Location - Power of Wolf':
+                object_layouts[(stage_name, room_name)][object_layout_id]['Entity Room Index'] = 18
     # Object layouts - Apply patches from changes
     for ((stage_name, room_name), object_layout) in object_layouts.items():
         horizontal_object_layout = list(sorted(object_layout,
