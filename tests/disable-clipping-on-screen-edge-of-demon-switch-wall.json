@@ -1,0 +1,26 @@
+{
+    "Options": {
+        "Enable debug mode": true,
+        "Disable clipping on screen edge of Demon Switch Wall": true
+    },
+    "Teleporters": {
+        "13": {
+            "Player X": 752,
+            "Player Y": 132,
+            "Room": "Abandoned Mine, Four-Way Intersection",
+            "Stage": "Abandoned Mine"
+        },
+        "20": {
+            "Player X": 16,
+            "Player Y": 1924,
+            "Room": "Castle Keep, Keep Area",
+            "Stage": "Castle Keep"
+        },
+        "47": {
+            "Player X": 752,
+            "Player Y": 132,
+            "Room": "Abandoned Mine, Four-Way Intersection",
+            "Stage": "Abandoned Mine"
+        }
+    }
+}

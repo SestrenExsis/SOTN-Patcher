@@ -233,6 +233,8 @@ def get_familiar_changes(changes, familiar_events):
             if room_name not in changes['Stages'][stage_name]['Rooms']:
                 continue
             source_room = changes['Stages'][stage_name]['Rooms'][room_name]
+            if 'Left' not in source_room or 'Top' not in source_room:
+                continue
             sign = -1 if familiar_event['Inverted'] else 1
             for familiar_event_id in familiar_event['Familiar Event IDs']:
                 familiar_changes[familiar_event_id] = {
@@ -243,7 +245,7 @@ def get_familiar_changes(changes, familiar_events):
 
 def get_ppf(extract, changes, data):
     aliases = data['Aliases']
-    result = PPF('Works with SOTN Shuffler Alpha Build 73')
+    result = PPF('Works with SOTN Shuffler Alpha Build 74')
     # Patch boss teleporters
     extract_metadata = extract['Boss Teleporters']['Metadata']
     for boss_teleporter_id in sorted(changes.get('Boss Teleporters', {})):
@@ -270,31 +272,6 @@ def get_ppf(extract, changes, data):
                     extract_metadata['Fields']['Room Y']['Type'],
                     sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room Y']['Offset']),
                 )
-    # Option - Assign Power of Wolf relic a unique ID
-    if changes.get('Options', {}).get('Assign Power of Wolf relic a unique ID', False):
-        # See https://github.com/SestrenExsis/SOTN-Shuffler/issues/36
-        room = changes['Stages']['Castle Entrance Revisited']['Rooms']['Castle Entrance Revisited, After Drawbridge']
-        room['Object Layout - Horizontal'] = {
-            '12': {
-                'Entity Room Index': 18,
-            },
-        }
-        room['Object Layout - Vertical'] = {
-            '1': {
-                'Entity Room Index': 18,
-            },
-        }
-        room = changes['Stages']['Castle Entrance']['Rooms']['Castle Entrance, After Drawbridge']
-        room['Object Layout - Horizontal'] = {
-            '10': {
-                'Entity Room Index': 18,
-            },
-        }
-        room['Object Layout - Vertical'] = {
-            '1': {
-                'Entity Room Index': 18,
-            },
-        }
     # Option - Enable debug mode
     if changes.get('Options', {}).get('Enable debug mode', False):
         constant_extract = extract['Constants']['Set initial NOCLIP value']
@@ -311,6 +288,24 @@ def get_ppf(extract, changes, data):
             constant_extract['Type'],
             sotn_address.Address(constant_extract['Start']),
         )
+    # Option - Disable clipping on screen edge of Demon Switch Wall
+    if changes.get('Options', {}).get('Disable clipping on screen edge of Demon Switch Wall', False):
+        for constant_name in (
+            'Demon Switch Wall A Tile ID 08',
+            'Demon Switch Wall A Tile ID 09',
+            'Demon Switch Wall A Tile ID 10',
+            'Demon Switch Wall A Tile ID 11',
+            'Demon Switch Wall B Tile ID 08',
+            'Demon Switch Wall B Tile ID 09',
+            'Demon Switch Wall B Tile ID 10',
+            'Demon Switch Wall B Tile ID 11',
+        ):
+            constant_extract = extract['Constants'][constant_name]
+            result.patch_value(
+                0x01BF,
+                constant_extract['Type'],
+                sotn_address.Address(constant_extract['Start'])
+            )
     # Option - Clock hands show minutes and seconds instead of hours and minutes
     if changes.get('Options', {}).get('Clock hands show minutes and seconds instead of hours and minutes', False):
         for (base, type) in (
@@ -331,6 +326,15 @@ def get_ppf(extract, changes, data):
             ):
                 value = a_value if type == 'A' else b_value
                 result.patch_value(value, 'u32', sotn_address.Address(base + offset))
+    # Room shuffler - Normalize room connections
+    if changes.get('Room shuffler', {}).get('Normalize room connections', False):
+        for (offset, value) in (
+            # Shift the breakable floor in Underground Caverns to the right 3 tiles
+            # https://github.com/SestrenExsis/SOTN-Shuffler/issues/82
+            (0x0429FF64, 0x340802D6), # ori t0,zero,$2D6
+            (0x042A006C, 0x340802D6), # ori t0,zero,$2D6
+        ):
+            result.patch_value(value, 'u32', sotn_address.Address(base + offset))
     # Insert boss stages into stage data prior to stage patching
     if 'Stages' in changes:
         for element in data['Boss Stages'].values():
@@ -413,6 +417,112 @@ def get_ppf(extract, changes, data):
                         tile_layout_extract['Layout Rect']['Type'],
                         sotn_address.Address(tile_layout_extract['Layout Rect']['Start']),
                     )
+                # Room: Patch tilemap foreground and background
+                if 'Tiles' in tile_layout_extract and 'Tilemap' in room_data:
+                    # Fetch the source tilemap data and start with empty target tilemaps
+                    tilemaps = {
+                        'Source Background': [],
+                        'Source Foreground': [],
+                        'Target Background': [],
+                        'Target Foreground': [],
+                    }
+                    for row_data in room_extract['Tilemap Foreground']['Data']:
+                        tilemaps['Source Foreground'].append(list(map(lambda x: int(x, 16), row_data.split(' '))))
+                        tilemaps['Target Foreground'].append([None] * len(tilemaps['Source Foreground'][-1]))
+                    for row_data in room_extract['Tilemap Background']['Data']:
+                        tilemaps['Source Background'].append(list(map(lambda x: int(x, 16), row_data.split(' '))))
+                        tilemaps['Target Background'].append([None] * len(tilemaps['Source Background'][-1]))
+                    for edit in room_data['Tilemap']:
+                        layers = edit['Layer'].split(' and ')
+                        source = edit['Source']
+                        target = edit['Target']
+                        target_rows = len(target)
+                        target_cols = len(target[0])
+                        # Copy source data to target directly if a space in the target is specified
+                        # If target already has source data copied to it, preserve that data
+                        for layer in layers:
+                            for row in range(target_rows):
+                                for col in range(target_cols):
+                                    if target[row][col] == ' ' and tilemaps['Target ' + layer][row][col] is None:
+                                        tilemaps['Target ' + layer][row][col] = tilemaps['Source ' + layer][row][col]
+                        for (stamp_height, stamp_width) in (
+                            (5, 5), (5, 4), (4, 5), (4, 4), (5, 3), (3, 5),
+                            (4, 3), (3, 4), (5, 2), (2, 5), (3, 3), (4, 2),
+                            (2, 4), (3, 2), (2, 3), (5, 1), (1, 5), (2, 2),
+                            (3, 1), (1, 3), (2, 1), (1, 2), (1, 1),
+                        ):
+                            # Find valid target locations for the stamp
+                            for layer in layers:
+                                for target_top in range(target_rows - (stamp_height - 1)):
+                                    for target_left in range(target_cols - (stamp_width - 1)):
+                                        # Confirm target location has empty space for the stamp
+                                        valid_target_ind = True
+                                        for row in range(stamp_height):
+                                            if not valid_target_ind:
+                                                break
+                                            for col in range(stamp_width):
+                                                if not valid_target_ind:
+                                                    break
+                                                if tilemaps['Target ' + layer][target_top + row][target_left + col] is not None:
+                                                    valid_target_ind = False
+                                                    break
+                                        if not valid_target_ind:
+                                            continue
+                                        # Stamp if a valid source location can be found
+                                        valid_source_ind = False
+                                        for source_top in range(target_rows - (stamp_height - 1)):
+                                            if valid_source_ind:
+                                                break
+                                            for source_left in range(target_cols - (stamp_width - 1)):
+                                                # Find first source location that matches the target location for the stamp
+                                                valid_source_ind = True
+                                                for row in range(stamp_height):
+                                                    if not valid_source_ind:
+                                                        break
+                                                    for col in range(stamp_width):
+                                                        source_value = source[source_top + row][source_left + col]
+                                                        target_value = target[target_top + row][target_left + col]
+                                                        if source_value != target_value:
+                                                            valid_source_ind = False
+                                                            break
+                                                if not valid_source_ind:
+                                                    continue
+                                                # Apply the stamp
+                                                for row in range(stamp_height):
+                                                    for col in range(stamp_width):
+                                                        assert tilemaps['Target ' + layer][target_top + row][target_left + col] is None
+                                                        value = tilemaps['Source ' + layer][source_top + row][source_left + col]
+                                                        tilemaps['Target ' + layer][target_top + row][target_left + col] = value
+                                                break
+                        # Debug info
+                        # for layer in edit['Layer'].split(' and '):
+                        #     rows = len(tilemaps['Target ' + layer])
+                        #     cols = len(tilemaps['Target ' + layer][0])
+                        #     print('Target ' + layer, (rows, cols))
+                        #     for row in range(rows):
+                        #         row_data = []
+                        #         for col in range(cols):
+                        #             cell = '#'
+                        #             if tilemaps['Target ' + layer][row][col] is None:
+                        #                 cell = '.'
+                        #             elif tilemaps['Target ' + layer][row][col] == -1:
+                        #                 cell = '?'
+                        #             row_data.append(cell)
+                        #         print(''.join(row_data))
+                        # ...
+                        for layer in edit['Layer'].split(' and '):
+                            extract_data = room_extract['Tilemap ' + layer]['Data']
+                            extract_metadata = room_extract['Tilemap ' + layer]['Metadata']
+                            offset = 0
+                            for (tile_row, tiles) in enumerate(tilemaps['Target ' + layer]):
+                                extract_row_data = list(map(lambda x: int(x, 16), extract_data[tile_row].split(' ')))
+                                for (tile_col, tile) in enumerate(tiles):
+                                    extract_value = extract_row_data[tile_col]
+                                    if tile == extract_value:
+                                        offset += 2
+                                        continue
+                                    result.patch_value(tile, 'u16', sotn_address.Address(extract_metadata['Start'] + offset))
+                                    offset += 2
     # Patch teleporters
     extract_metadata = extract['Teleporters']['Metadata']
     for teleporter_id in sorted(changes.get('Teleporters', {})):
@@ -573,8 +683,15 @@ def get_ppf(extract, changes, data):
                             object_extract['Metadata']['Start'] + element['Index'] * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][target_field_name]['Offset']
                         ),
                     )
-    # Object layouts - Apply changes
     object_layouts = {}
+    # Option - Assign Power of Wolf relic a unique ID
+    power_of_wolf_patch = changes.get('Options', {}).get('Assign Power of Wolf relic a unique ID', False)
+    if power_of_wolf_patch:
+        if 'Object Layouts' not in changes:
+            changes['Object Layouts'] = {}
+        if 'Location - Power of Wolf' not in changes['Object Layouts']:
+            changes['Object Layouts']['Location - Power of Wolf'] = 'Relic - Power of Wolf'
+    # Object layouts - Apply changes
     for location_name in sorted(changes.get('Object Layouts', {})):
         entity_name = changes['Object Layouts'][location_name]
         location_aliases = aliases['Object Layouts'].get(location_name, [])
@@ -589,6 +706,8 @@ def get_ppf(extract, changes, data):
             object_layout_id = location_alias['Object Layout ID']
             for (property_key, property_value) in aliases['Entities'].get(entity_name, {}).items():
                 object_layouts[(stage_name, room_name)][object_layout_id][property_key] = property_value
+            if power_of_wolf_patch and location_name == 'Location - Power of Wolf':
+                object_layouts[(stage_name, room_name)][object_layout_id]['Entity Room Index'] = 18
     # Object layouts - Apply patches from changes
     for ((stage_name, room_name), object_layout) in object_layouts.items():
         horizontal_object_layout = list(sorted(object_layout,
