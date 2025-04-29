@@ -334,7 +334,7 @@ def get_ppf(extract, changes, data):
             (0x0429FF64, 0x340802D6), # ori t0,zero,$2D6
             (0x042A006C, 0x340802D6), # ori t0,zero,$2D6
         ):
-            result.patch_value(value, 'u32', sotn_address.Address(base + offset))
+            result.patch_value(value, 'u32', sotn_address.Address(offset))
     # Insert boss stages into stage data prior to stage patching
     if 'Stages' in changes:
         for element in data['Boss Stages'].values():
