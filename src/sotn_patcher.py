@@ -306,6 +306,24 @@ def get_ppf(extract, changes, data):
                 constant_extract['Type'],
                 sotn_address.Address(constant_extract['Start'])
             )
+    # Option - Disable clipping on screen edge of Snake Column Wall
+    if changes.get('Options', {}).get('Disable clipping on screen edge of Snake Column Wall', False):
+        for constant_name in (
+            'Snake Column Wall A Tile ID 00',
+            'Snake Column Wall A Tile ID 01',
+            'Snake Column Wall A Tile ID 02',
+            'Snake Column Wall A Tile ID 03',
+            'Snake Column Wall B Tile ID 00',
+            'Snake Column Wall B Tile ID 01',
+            'Snake Column Wall B Tile ID 02',
+            'Snake Column Wall B Tile ID 03',
+        ):
+            constant_extract = extract['Constants'][constant_name]
+            result.patch_value(
+                0x0000,
+                constant_extract['Type'],
+                sotn_address.Address(constant_extract['Start'])
+            )
     # Option - Clock hands show minutes and seconds instead of hours and minutes
     if changes.get('Options', {}).get('Clock hands show minutes and seconds instead of hours and minutes', False):
         for (base, type) in (
@@ -327,14 +345,14 @@ def get_ppf(extract, changes, data):
                 value = a_value if type == 'A' else b_value
                 result.patch_value(value, 'u32', sotn_address.Address(base + offset))
     # Room shuffler - Normalize room connections
-    if changes.get('Room shuffler', {}).get('Normalize room connections', False):
-        for (offset, value) in (
-            # Shift the breakable floor in Underground Caverns to the right 3 tiles
-            # https://github.com/SestrenExsis/SOTN-Shuffler/issues/82
-            (0x0429FF64, 0x340802D6), # ori t0,zero,$2D6
-            (0x042A006C, 0x340802D6), # ori t0,zero,$2D6
-        ):
-            result.patch_value(value, 'u32', sotn_address.Address(base + offset))
+    # if changes.get('Options', {}).get('Normalize room connections', False):
+    #     for (offset, value) in (
+    #         # Shift the breakable floor in Underground Caverns to the right 3 tiles
+    #         # https://github.com/SestrenExsis/SOTN-Shuffler/issues/82
+    #         (0x0429FF64, 0x340802D6), # ori t0,zero,$2D6
+    #         (0x042A006C, 0x340802D6), # ori t0,zero,$2D6
+    #     ):
+    #         result.patch_value(value, 'u32', sotn_address.Address(offset))
     # Insert boss stages into stage data prior to stage patching
     if 'Stages' in changes:
         for element in data['Boss Stages'].values():

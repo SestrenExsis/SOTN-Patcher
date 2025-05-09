@@ -1,7 +1,8 @@
 {
     "Options": {
         "Enable debug mode": true,
-        "Disable clipping on screen edge of Demon Switch Wall": true
+        "Disable clipping on screen edge of Demon Switch Wall": true,
+        "Disable clipping on screen edge of Snake Column Wall": true
     },
     "Teleporters": {
         "13": {
