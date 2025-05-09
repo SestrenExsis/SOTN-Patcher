@@ -306,6 +306,24 @@ def get_ppf(extract, changes, data):
                 constant_extract['Type'],
                 sotn_address.Address(constant_extract['Start'])
             )
+    # Option - Disable clipping on screen edge of Snake Column Wall
+    if changes.get('Options', {}).get('Disable clipping on screen edge of Snake Column Wall', False):
+        for constant_name in (
+            'Snake Column Wall A Tile ID 00',
+            'Snake Column Wall A Tile ID 01',
+            'Snake Column Wall A Tile ID 02',
+            'Snake Column Wall A Tile ID 03',
+            'Snake Column Wall B Tile ID 00',
+            'Snake Column Wall B Tile ID 01',
+            'Snake Column Wall B Tile ID 02',
+            'Snake Column Wall B Tile ID 03',
+        ):
+            constant_extract = extract['Constants'][constant_name]
+            result.patch_value(
+                0x0000,
+                constant_extract['Type'],
+                sotn_address.Address(constant_extract['Start'])
+            )
     # Option - Clock hands show minutes and seconds instead of hours and minutes
     if changes.get('Options', {}).get('Clock hands show minutes and seconds instead of hours and minutes', False):
         for (base, type) in (

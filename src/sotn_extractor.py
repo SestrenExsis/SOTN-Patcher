@@ -680,6 +680,15 @@ if __name__ == '__main__':
         for index in range(24):
             data = cursor.u16(2 * index, True)
             constants[f'Demon Switch Wall B Tile ID {index:02d}'] = data
+        cursor = BIN(binary_file, 0x03CE00CC)
+        for index in range(24):
+            data = cursor.u16(2 * index, True)
+            constants[f'Snake Column Wall A Tile ID {index:02d}'] = data
+        cursor = BIN(binary_file, 0x0439C01C)
+        for index in range(24):
+            data = cursor.u16(2 * index, True)
+            constants[f'Snake Column Wall B Tile ID {index:02d}'] = data
+        # NOTE(sestren); Snake Column Wall C Tile ID was found at 0x0596D620, maybe that's for Boss - Death?
         for (constant_address, constant_name, constant_data_type) in (
             # Found in the GetTeleportToOtherCastle function of the decomp
             (0x000FFCE4, 'DRA - Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40
