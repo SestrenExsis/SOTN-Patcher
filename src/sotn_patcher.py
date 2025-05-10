@@ -324,6 +324,40 @@ def get_ppf(extract, changes, data):
                 constant_extract['Type'],
                 sotn_address.Address(constant_extract['Start'])
             )
+    # Option - Disable clipping on screen edge of Tall Zig Zag Room Wall
+    if changes.get('Options', {}).get('Disable clipping on screen edge of Tall Zig Zag Room Wall', False):
+        for (constant_name, value) in (
+            ('Tall Zig Zag Room Wall A Tile ID 00', 0x05C6),
+            ('Tall Zig Zag Room Wall A Tile ID 02', 0x05CE),
+            ('Tall Zig Zag Room Wall A Tile ID 04', 0x05D6),
+            ('Tall Zig Zag Room Wall A Tile ID 06', 0x05DE),
+            ('Tall Zig Zag Room Wall A Tile ID 08', 0x05C6),
+            ('Tall Zig Zag Room Wall A Tile ID 10', 0x05CE),
+            ('Tall Zig Zag Room Wall A Tile ID 12', 0x05D6),
+            ('Tall Zig Zag Room Wall A Tile ID 14', 0x05DE),
+            ('Tall Zig Zag Room Wall A Tile ID 16', 0x05C6),
+            ('Tall Zig Zag Room Wall A Tile ID 18', 0x05CE),
+            ('Tall Zig Zag Room Wall A Tile ID 20', 0x05D6),
+            ('Tall Zig Zag Room Wall A Tile ID 22', 0x05DE),
+            ('Tall Zig Zag Room Wall B Tile ID 00', 0x05C6),
+            ('Tall Zig Zag Room Wall B Tile ID 02', 0x05CE),
+            ('Tall Zig Zag Room Wall B Tile ID 04', 0x05D6),
+            ('Tall Zig Zag Room Wall B Tile ID 06', 0x05DE),
+            ('Tall Zig Zag Room Wall B Tile ID 08', 0x05C6),
+            ('Tall Zig Zag Room Wall B Tile ID 10', 0x05CE),
+            ('Tall Zig Zag Room Wall B Tile ID 12', 0x05D6),
+            ('Tall Zig Zag Room Wall B Tile ID 14', 0x05DE),
+            ('Tall Zig Zag Room Wall B Tile ID 16', 0x05C6),
+            ('Tall Zig Zag Room Wall B Tile ID 18', 0x05CE),
+            ('Tall Zig Zag Room Wall B Tile ID 20', 0x05D6),
+            ('Tall Zig Zag Room Wall B Tile ID 22', 0x05DE),
+        ):
+            constant_extract = extract['Constants'][constant_name]
+            result.patch_value(
+                value,
+                constant_extract['Type'],
+                sotn_address.Address(constant_extract['Start'])
+            )
     # Option - Clock hands show minutes and seconds instead of hours and minutes
     if changes.get('Options', {}).get('Clock hands show minutes and seconds instead of hours and minutes', False):
         for (base, type) in (
