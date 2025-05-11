@@ -358,6 +358,64 @@ def get_ppf(extract, changes, data):
                 constant_extract['Type'],
                 sotn_address.Address(constant_extract['Start'])
             )
+    # Option - Disable clipping on screen edge of Plaque Room With Breakable Wall
+    if changes.get('Options', {}).get('Disable clipping on screen edge of Plaque Room With Breakable Wall', False):
+        for (constant_name, value) in (
+            ('Plaque Room With Breakable Wall A Tile ID 00', 0x030F),
+            ('Plaque Room With Breakable Wall A Tile ID 01', 0x030E),
+            ('Plaque Room With Breakable Wall A Tile ID 02', 0x0334),
+            ('Plaque Room With Breakable Wall A Tile ID 03', 0x0766),
+            ('Plaque Room With Breakable Wall A Tile ID 04', 0x0327),
+            ('Plaque Room With Breakable Wall A Tile ID 05', 0x076B),
+            ('Plaque Room With Breakable Wall A Tile ID 06', 0x0351),
+            ('Plaque Room With Breakable Wall A Tile ID 07', 0x0323),
+            ('Plaque Room With Breakable Wall A Tile ID 08', 0x030F),
+            ('Plaque Room With Breakable Wall A Tile ID 09', 0x076D),
+            ('Plaque Room With Breakable Wall A Tile ID 10', 0x0334),
+            ('Plaque Room With Breakable Wall A Tile ID 11', 0x076E),
+            ('Plaque Room With Breakable Wall A Tile ID 12', 0x0327),
+            ('Plaque Room With Breakable Wall A Tile ID 13', 0x076F),
+            ('Plaque Room With Breakable Wall A Tile ID 14', 0x0351),
+            ('Plaque Room With Breakable Wall A Tile ID 15', 0x0770),
+            ('Plaque Room With Breakable Wall A Tile ID 16', 0x030F),
+            ('Plaque Room With Breakable Wall A Tile ID 17', 0x0771),
+            ('Plaque Room With Breakable Wall A Tile ID 18', 0x0334),
+            ('Plaque Room With Breakable Wall A Tile ID 19', 0x0772),
+            ('Plaque Room With Breakable Wall A Tile ID 20', 0x0327),
+            ('Plaque Room With Breakable Wall A Tile ID 21', 0x0773),
+            ('Plaque Room With Breakable Wall A Tile ID 22', 0x0351),
+            ('Plaque Room With Breakable Wall A Tile ID 23', 0x0774),
+            ('Plaque Room With Breakable Wall B Tile ID 00', 0x030F),
+            ('Plaque Room With Breakable Wall B Tile ID 01', 0x030E),
+            ('Plaque Room With Breakable Wall B Tile ID 02', 0x0334),
+            ('Plaque Room With Breakable Wall B Tile ID 03', 0x0766),
+            ('Plaque Room With Breakable Wall B Tile ID 04', 0x0327),
+            ('Plaque Room With Breakable Wall B Tile ID 05', 0x076B),
+            ('Plaque Room With Breakable Wall B Tile ID 06', 0x0351),
+            ('Plaque Room With Breakable Wall B Tile ID 07', 0x0323),
+            ('Plaque Room With Breakable Wall B Tile ID 08', 0x030F),
+            ('Plaque Room With Breakable Wall B Tile ID 09', 0x076D),
+            ('Plaque Room With Breakable Wall B Tile ID 10', 0x0334),
+            ('Plaque Room With Breakable Wall B Tile ID 11', 0x076E),
+            ('Plaque Room With Breakable Wall B Tile ID 12', 0x0327),
+            ('Plaque Room With Breakable Wall B Tile ID 13', 0x076F),
+            ('Plaque Room With Breakable Wall B Tile ID 14', 0x0351),
+            ('Plaque Room With Breakable Wall B Tile ID 15', 0x0770),
+            ('Plaque Room With Breakable Wall B Tile ID 16', 0x030F),
+            ('Plaque Room With Breakable Wall B Tile ID 17', 0x0771),
+            ('Plaque Room With Breakable Wall B Tile ID 18', 0x0334),
+            ('Plaque Room With Breakable Wall B Tile ID 19', 0x0772),
+            ('Plaque Room With Breakable Wall B Tile ID 20', 0x0327),
+            ('Plaque Room With Breakable Wall B Tile ID 21', 0x0773),
+            ('Plaque Room With Breakable Wall B Tile ID 22', 0x0351),
+            ('Plaque Room With Breakable Wall B Tile ID 23', 0x0774),
+        ):
+            constant_extract = extract['Constants'][constant_name]
+            result.patch_value(
+                value,
+                constant_extract['Type'],
+                sotn_address.Address(constant_extract['Start'])
+            )
     # Option - Clock hands show minutes and seconds instead of hours and minutes
     if changes.get('Options', {}).get('Clock hands show minutes and seconds instead of hours and minutes', False):
         for (base, type) in (
