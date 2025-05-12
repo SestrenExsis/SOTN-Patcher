@@ -358,8 +358,8 @@ def get_ppf(extract, changes, data):
                 constant_extract['Type'],
                 sotn_address.Address(constant_extract['Start'])
             )
-    # Option - Disable clipping on screen edge of Plaque Room With Breakable Wall
-    if changes.get('Options', {}).get('Disable clipping on screen edge of Plaque Room With Breakable Wall', False):
+    # Option - Shift wall in Plaque Room With Breakable Wall away from screen edge
+    if changes.get('Options', {}).get('Shift wall in Plaque Room With Breakable Wall away from screen edge', False):
         for (constant_name, value) in (
             ('Plaque Room With Breakable Wall A Tile ID 00', 0x030F),
             ('Plaque Room With Breakable Wall A Tile ID 01', 0x030E),
