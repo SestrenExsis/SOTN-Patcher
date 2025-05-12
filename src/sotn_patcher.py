@@ -385,30 +385,6 @@ def get_ppf(extract, changes, data):
             ('Plaque Room With Breakable Wall A Tile ID 21', 0x0773),
             ('Plaque Room With Breakable Wall A Tile ID 22', 0x0351),
             ('Plaque Room With Breakable Wall A Tile ID 23', 0x0774),
-            ('Plaque Room With Breakable Wall B Tile ID 00', 0x030F),
-            ('Plaque Room With Breakable Wall B Tile ID 01', 0x030E),
-            ('Plaque Room With Breakable Wall B Tile ID 02', 0x0334),
-            ('Plaque Room With Breakable Wall B Tile ID 03', 0x0766),
-            ('Plaque Room With Breakable Wall B Tile ID 04', 0x0327),
-            ('Plaque Room With Breakable Wall B Tile ID 05', 0x076B),
-            ('Plaque Room With Breakable Wall B Tile ID 06', 0x0351),
-            ('Plaque Room With Breakable Wall B Tile ID 07', 0x0323),
-            ('Plaque Room With Breakable Wall B Tile ID 08', 0x030F),
-            ('Plaque Room With Breakable Wall B Tile ID 09', 0x076D),
-            ('Plaque Room With Breakable Wall B Tile ID 10', 0x0334),
-            ('Plaque Room With Breakable Wall B Tile ID 11', 0x076E),
-            ('Plaque Room With Breakable Wall B Tile ID 12', 0x0327),
-            ('Plaque Room With Breakable Wall B Tile ID 13', 0x076F),
-            ('Plaque Room With Breakable Wall B Tile ID 14', 0x0351),
-            ('Plaque Room With Breakable Wall B Tile ID 15', 0x0770),
-            ('Plaque Room With Breakable Wall B Tile ID 16', 0x030F),
-            ('Plaque Room With Breakable Wall B Tile ID 17', 0x0771),
-            ('Plaque Room With Breakable Wall B Tile ID 18', 0x0334),
-            ('Plaque Room With Breakable Wall B Tile ID 19', 0x0772),
-            ('Plaque Room With Breakable Wall B Tile ID 20', 0x0327),
-            ('Plaque Room With Breakable Wall B Tile ID 21', 0x0773),
-            ('Plaque Room With Breakable Wall B Tile ID 22', 0x0351),
-            ('Plaque Room With Breakable Wall B Tile ID 23', 0x0774),
         ):
             constant_extract = extract['Constants'][constant_name]
             result.patch_value(
@@ -416,6 +392,23 @@ def get_ppf(extract, changes, data):
                 constant_extract['Type'],
                 sotn_address.Address(constant_extract['Start'])
             )
+        # NOTE(sestren): The entity responsible for the breakable wall works differently
+        # https://github.com/SestrenExsis/SOTN-Shuffler/issues/92
+        # Shift the starting point left 1 tile
+        for (offset, value) in (
+            (0x0480D210, 0x3406009E), # ori a2,zero,$9E
+            (0x0480D2B0, 0x3406009E), # ori a2,zero,$9E
+        ):
+            result.patch_value(value, 'u32', sotn_address.Address(offset))
+        # Rewrite the original location directly on the tilemap
+        # TODO(sestren): Edit this like any other tilemap instead of directly overwriting
+        for (offset, value) in (
+            (0x047DB702, 0x0351),
+            (0x047DB722, 0x0327),
+            (0x047DB742, 0x0334),
+            (0x047DB762, 0x030F),
+        ):
+            result.patch_value(value, 'u16', sotn_address.Address(offset))
     # Option - Clock hands show minutes and seconds instead of hours and minutes
     if changes.get('Options', {}).get('Clock hands show minutes and seconds instead of hours and minutes', False):
         for (base, type) in (

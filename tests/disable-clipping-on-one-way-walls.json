@@ -2,6 +2,7 @@
     "Options": {
         "Enable debug mode": true,
         "Disable clipping on screen edge of Demon Switch Wall": true,
+        "Disable clipping on screen edge of Plaque Room With Breakable Wall": true,
         "Disable clipping on screen edge of Snake Column Wall": true,
         "Disable clipping on screen edge of Tall Zig Zag Room Wall": true
     },
