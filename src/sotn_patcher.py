@@ -409,6 +409,57 @@ def get_ppf(extract, changes, data):
             (0x047DB762, 0x030F),
         ):
             result.patch_value(value, 'u16', sotn_address.Address(offset))
+    # Option - Disable clipping on screen edge of Left Gear Room Wall
+    if changes.get('Options', {}).get('Disable clipping on screen edge of Left Gear Room Wall', False):
+        for (constant_name, value) in (
+            ('Left Gear Room Wall A Tile ID 01', 0x0565),
+            ('Left Gear Room Wall A Tile ID 03', 0x056D),
+            ('Left Gear Room Wall A Tile ID 05', 0x0575),
+            ('Left Gear Room Wall A Tile ID 07', 0x057D),
+            ('Left Gear Room Wall A Tile ID 09', 0x0565),
+            ('Left Gear Room Wall A Tile ID 11', 0x056D),
+            ('Left Gear Room Wall A Tile ID 13', 0x0575),
+            ('Left Gear Room Wall A Tile ID 15', 0x057D),
+            ('Left Gear Room Wall A Tile ID 17', 0x0565),
+            ('Left Gear Room Wall A Tile ID 19', 0x056D),
+            ('Left Gear Room Wall A Tile ID 21', 0x0575),
+            ('Left Gear Room Wall A Tile ID 23', 0x057D),
+            ('Left Gear Room Wall B Tile ID 01', 0x0565),
+            ('Left Gear Room Wall B Tile ID 03', 0x056D),
+            ('Left Gear Room Wall B Tile ID 05', 0x0575),
+            ('Left Gear Room Wall B Tile ID 07', 0x057D),
+            ('Left Gear Room Wall B Tile ID 09', 0x0565),
+            ('Left Gear Room Wall B Tile ID 11', 0x056D),
+            ('Left Gear Room Wall B Tile ID 13', 0x0575),
+            ('Left Gear Room Wall B Tile ID 15', 0x057D),
+            ('Left Gear Room Wall B Tile ID 17', 0x0565),
+            ('Left Gear Room Wall B Tile ID 19', 0x056D),
+            ('Left Gear Room Wall B Tile ID 21', 0x0575),
+            ('Left Gear Room Wall B Tile ID 23', 0x057D),
+        ):
+            constant_extract = extract['Constants'][constant_name]
+            result.patch_value(
+                value,
+                constant_extract['Type'],
+                sotn_address.Address(constant_extract['Start'])
+            )
+        # NOTE(sestren): The entity responsible for the breakable wall works differently
+        # https://github.com/SestrenExsis/SOTN-Shuffler/issues/92
+        # Shift the starting point left 1 tile
+        for (offset, value) in (
+            (0x0480D210, 0x3406009E), # ori a2,zero,$9E
+            (0x0480D2B0, 0x3406009E), # ori a2,zero,$9E
+        ):
+            result.patch_value(value, 'u32', sotn_address.Address(offset))
+        # Rewrite the original location directly on the tilemap
+        # TODO(sestren): Edit this like any other tilemap instead of directly overwriting
+        for (offset, value) in (
+            (0x047DB702, 0x0351),
+            (0x047DB722, 0x0327),
+            (0x047DB742, 0x0334),
+            (0x047DB762, 0x030F),
+        ):
+            result.patch_value(value, 'u16', sotn_address.Address(offset))
     # Option - Clock hands show minutes and seconds instead of hours and minutes
     if changes.get('Options', {}).get('Clock hands show minutes and seconds instead of hours and minutes', False):
         for (base, type) in (
