@@ -358,6 +358,40 @@ def get_ppf(extract, changes, data):
                 constant_extract['Type'],
                 sotn_address.Address(constant_extract['Start'])
             )
+    # Option - Disable clipping on screen edge of Pendulum Room Wall
+    if changes.get('Options', {}).get('Disable clipping on screen edge of Pendulum Room Wall', False):
+        for (constant_name, value) in (
+            ('Pendulum Room Wall A Tile ID 00', 0x0561),
+            ('Pendulum Room Wall A Tile ID 02', 0x0000),
+            ('Pendulum Room Wall A Tile ID 04', 0x0000),
+            ('Pendulum Room Wall A Tile ID 06', 0x0563),
+            ('Pendulum Room Wall A Tile ID 08', 0x0561),
+            ('Pendulum Room Wall A Tile ID 10', 0x0000),
+            ('Pendulum Room Wall A Tile ID 12', 0x0000),
+            ('Pendulum Room Wall A Tile ID 14', 0x0563),
+            ('Pendulum Room Wall A Tile ID 16', 0x0561),
+            ('Pendulum Room Wall A Tile ID 18', 0x0000),
+            ('Pendulum Room Wall A Tile ID 20', 0x0000),
+            ('Pendulum Room Wall A Tile ID 22', 0x0563),
+            ('Pendulum Room Wall B Tile ID 00', 0x0561),
+            ('Pendulum Room Wall B Tile ID 02', 0x0000),
+            ('Pendulum Room Wall B Tile ID 04', 0x0000),
+            ('Pendulum Room Wall B Tile ID 06', 0x0563),
+            ('Pendulum Room Wall B Tile ID 08', 0x0561),
+            ('Pendulum Room Wall B Tile ID 10', 0x0000),
+            ('Pendulum Room Wall B Tile ID 12', 0x0000),
+            ('Pendulum Room Wall B Tile ID 14', 0x0563),
+            ('Pendulum Room Wall B Tile ID 16', 0x0561),
+            ('Pendulum Room Wall B Tile ID 18', 0x0000),
+            ('Pendulum Room Wall B Tile ID 20', 0x0000),
+            ('Pendulum Room Wall B Tile ID 22', 0x0563),
+        ):
+            constant_extract = extract['Constants'][constant_name]
+            result.patch_value(
+                value,
+                constant_extract['Type'],
+                sotn_address.Address(constant_extract['Start'])
+            )
     # Option - Shift wall in Plaque Room With Breakable Wall away from screen edge
     if changes.get('Options', {}).get('Shift wall in Plaque Room With Breakable Wall away from screen edge', False):
         for (constant_name, value) in (

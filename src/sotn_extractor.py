@@ -713,6 +713,14 @@ if __name__ == '__main__':
         for index in range(32):
             data = cursor.u16(2 * index, True)
             constants[f'Left Gear Room Wall B Tile ID {index:02d}'] = data
+        cursor = BIN(binary_file, 0x04A67FF8)
+        for index in range(32):
+            data = cursor.u16(2 * index, True)
+            constants[f'Pendulum Room Wall A Tile ID {index:02d}'] = data
+        cursor = BIN(binary_file, 0x04E22F88)
+        for index in range(32):
+            data = cursor.u16(2 * index, True)
+            constants[f'Pendulum Room Wall B Tile ID {index:02d}'] = data
         for (constant_address, constant_name, constant_data_type) in (
             # Found in the GetTeleportToOtherCastle function of the decomp
             (0x000FFCE4, 'DRA - Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40
