@@ -670,28 +670,36 @@ if __name__ == '__main__':
         for drop_index in range(2, 4):
             data = cursor.u16(2 * drop_index, True)
             constants[f'Relic Container Drop ID {str(drop_index)}'] = data
-        # TODO(sestren): Extract as an array instead?
-        # [ 0x039D, 0x03A0, ... ]
         for (starting_address, data_type, array_size, array_name) in (
-            (0x03CE009C, 'u16', 24, 'Demon Switch Wall A Tile ID'), # 'Demon Switch Wall Tiles (Abandoned Mine)'),
-            (0x0439BFEC, 'u16', 24, 'Demon Switch Wall B Tile ID'), # 'Demon Switch Wall Tiles (Cave)'),
-            (0x03CE00CC, 'u16', 24, 'Snake Column Wall A Tile ID'), # 'Snake Column Wall Tiles (Abandoned Mine)'),
-            (0x0439C01C, 'u16', 24, 'Snake Column Wall B Tile ID'), # 'Snake Column Wall Tiles (Cave)'),
+            (0x03CE009C, 'u16', 24, 'Demon Switch Wall Tiles (Abandoned Mine)'),
+            (0x0439BFEC, 'u16', 24, 'Demon Switch Wall Tiles (Cave)'),
+            (0x03CE00CC, 'u16', 24, 'Snake Column Wall Tiles (Abandoned Mine)'),
+            (0x0439C01C, 'u16', 24, 'Snake Column Wall Tiles (Cave)'),
             # NOTE(sestren); Snake Column Wall C Tile ID was found at 0x0596D620, maybe that's for Boss - Death?
-            (0x049BF654, 'u16', 32, 'Tall Zig Zag Room Wall A Tile ID'), # 'Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)'),
-            (0x04D81C68, 'u16', 32, 'Tall Zig Zag Room Wall B Tile ID'), # 'Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)'),
-            (0x042590B0, 'u16', 32, 'Plaque Room With Breakable Wall A Tile ID'), # 'Plaque Room With Breakable Wall Tiles (Underground Caverns)'),
-            (0x047C4EEC, 'u16', 32, 'Plaque Room With Breakable Wall B Tile ID'), # 'Plaque Room With Breakable Wall Tiles (Reverse Caverns)'),
-            (0x04A68038, 'u16', 32, 'Left Gear Room Wall A Tile ID'), # 'Left Gear Room Wall Tiles (Clock Tower)'),
-            (0x04E22FC8, 'u16', 32, 'Left Gear Room Wall B Tile ID'), # 'Left Gear Room Wall Tiles (Reverse Clock Tower)'),
-            (0x04A67FF8, 'u16', 32, 'Pendulum Room Wall A Tile ID'), # 'Pendulum Room Wall Tiles (Clock Tower)'),
-            (0x04E22F88, 'u16', 32, 'Pendulum Room Wall B Tile ID'), # 'Pendulum Room Wall Tiles (Reverse Clock Tower)'),
+            (0x049BF654, 'u16', 32, 'Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)'),
+            (0x04D81C68, 'u16', 32, 'Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)'),
+            (0x042590B0, 'u16', 32, 'Plaque Room With Breakable Wall Tiles (Underground Caverns)'),
+            (0x047C4EEC, 'u16', 32, 'Plaque Room With Breakable Wall Tiles (Reverse Caverns)'),
+            (0x04A68038, 'u16', 32, 'Left Gear Room Wall Tiles (Clock Tower)'),
+            (0x04E22FC8, 'u16', 32, 'Left Gear Room Wall Tiles (Reverse Clock Tower)'),
+            (0x04A67FF8, 'u16', 32, 'Pendulum Room Wall Tiles (Clock Tower)'),
+            (0x04E22F88, 'u16', 32, 'Pendulum Room Wall Tiles (Reverse Clock Tower)'),
         ):
+            assert data_type == 'u16' # NOTE(sestren): Only handling u16s for now
             cursor = BIN(binary_file, starting_address)
+            data = []
             for index in range(array_size):
-                assert data_type == 'u16'
-                data = cursor.u16(2 * index, True)
-                constants[f'{array_name} {index:02d}'] = data
+                value = cursor.u16(2 * index)
+                data.append(value)
+            constants[array_name] = {
+                'Metadata': {
+                    'Start': cursor.cursor.address,
+                    'Count': array_size,
+                    'Size': 0x02,
+                    'Type': 'u16',
+                },
+                'Data': data,
+            }
         for (constant_address, constant_name, constant_data_type) in (
             # Found in the GetTeleportToOtherCastle function of the decomp
             (0x000FFCE4, 'DRA - Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40

@@ -290,143 +290,143 @@ def get_ppf(extract, changes, data):
         )
     # Option - Disable clipping on screen edge of Demon Switch Wall
     if changes.get('Options', {}).get('Disable clipping on screen edge of Demon Switch Wall', False):
-        for constant_name in (
-            'Demon Switch Wall A Tile ID 08',
-            'Demon Switch Wall A Tile ID 09',
-            'Demon Switch Wall A Tile ID 10',
-            'Demon Switch Wall A Tile ID 11',
-            'Demon Switch Wall B Tile ID 08',
-            'Demon Switch Wall B Tile ID 09',
-            'Demon Switch Wall B Tile ID 10',
-            'Demon Switch Wall B Tile ID 11',
+        for (constant_name, index, value) in (
+            ('Demon Switch Wall Tiles (Abandoned Mine)', 8, 0x01BF),
+            ('Demon Switch Wall Tiles (Abandoned Mine)', 9, 0x01BF),
+            ('Demon Switch Wall Tiles (Abandoned Mine)', 10, 0x01BF),
+            ('Demon Switch Wall Tiles (Abandoned Mine)', 11, 0x01BF),
+            ('Demon Switch Wall Tiles (Cave)', 8, 0x01BF),
+            ('Demon Switch Wall Tiles (Cave)', 9, 0x01BF),
+            ('Demon Switch Wall Tiles (Cave)', 10, 0x01BF),
+            ('Demon Switch Wall Tiles (Cave)', 11, 0x01BF),
         ):
-            constant_extract = extract['Constants'][constant_name]
+            metadata = extract['Constants'][constant_name]['Metadata']
             result.patch_value(
-                0x01BF,
-                constant_extract['Type'],
-                sotn_address.Address(constant_extract['Start'])
+                value,
+                metadata['Type'],
+                sotn_address.Address(metadata['Start'] + index * metadata['Size'])
             )
     # Option - Disable clipping on screen edge of Snake Column Wall
     if changes.get('Options', {}).get('Disable clipping on screen edge of Snake Column Wall', False):
-        for constant_name in (
-            'Snake Column Wall A Tile ID 00',
-            'Snake Column Wall A Tile ID 01',
-            'Snake Column Wall A Tile ID 02',
-            'Snake Column Wall A Tile ID 03',
-            'Snake Column Wall B Tile ID 00',
-            'Snake Column Wall B Tile ID 01',
-            'Snake Column Wall B Tile ID 02',
-            'Snake Column Wall B Tile ID 03',
+        for (constant_name, index, value) in (
+            ('Snake Column Wall Tiles (Abandoned Mine)', 0, 0x0000),
+            ('Snake Column Wall Tiles (Abandoned Mine)', 1, 0x0000),
+            ('Snake Column Wall Tiles (Abandoned Mine)', 2, 0x0000),
+            ('Snake Column Wall Tiles (Abandoned Mine)', 3, 0x0000),
+            ('Snake Column Wall Tiles (Cave)', 0, 0x0000),
+            ('Snake Column Wall Tiles (Cave)', 1, 0x0000),
+            ('Snake Column Wall Tiles (Cave)', 2, 0x0000),
+            ('Snake Column Wall Tiles (Cave)', 3, 0x0000),
         ):
-            constant_extract = extract['Constants'][constant_name]
+            metadata = extract['Constants'][constant_name]['Metadata']
             result.patch_value(
-                0x0000,
-                constant_extract['Type'],
-                sotn_address.Address(constant_extract['Start'])
+                value,
+                metadata['Type'],
+                sotn_address.Address(metadata['Start'] + index * metadata['Size'])
             )
     # Option - Disable clipping on screen edge of Tall Zig Zag Room Wall
     if changes.get('Options', {}).get('Disable clipping on screen edge of Tall Zig Zag Room Wall', False):
-        for (constant_name, value) in (
-            ('Tall Zig Zag Room Wall A Tile ID 00', 0x05C6),
-            ('Tall Zig Zag Room Wall A Tile ID 02', 0x05CE),
-            ('Tall Zig Zag Room Wall A Tile ID 04', 0x05D6),
-            ('Tall Zig Zag Room Wall A Tile ID 06', 0x05DE),
-            ('Tall Zig Zag Room Wall A Tile ID 08', 0x05C6),
-            ('Tall Zig Zag Room Wall A Tile ID 10', 0x05CE),
-            ('Tall Zig Zag Room Wall A Tile ID 12', 0x05D6),
-            ('Tall Zig Zag Room Wall A Tile ID 14', 0x05DE),
-            ('Tall Zig Zag Room Wall A Tile ID 16', 0x05C6),
-            ('Tall Zig Zag Room Wall A Tile ID 18', 0x05CE),
-            ('Tall Zig Zag Room Wall A Tile ID 20', 0x05D6),
-            ('Tall Zig Zag Room Wall A Tile ID 22', 0x05DE),
-            ('Tall Zig Zag Room Wall B Tile ID 00', 0x05C6),
-            ('Tall Zig Zag Room Wall B Tile ID 02', 0x05CE),
-            ('Tall Zig Zag Room Wall B Tile ID 04', 0x05D6),
-            ('Tall Zig Zag Room Wall B Tile ID 06', 0x05DE),
-            ('Tall Zig Zag Room Wall B Tile ID 08', 0x05C6),
-            ('Tall Zig Zag Room Wall B Tile ID 10', 0x05CE),
-            ('Tall Zig Zag Room Wall B Tile ID 12', 0x05D6),
-            ('Tall Zig Zag Room Wall B Tile ID 14', 0x05DE),
-            ('Tall Zig Zag Room Wall B Tile ID 16', 0x05C6),
-            ('Tall Zig Zag Room Wall B Tile ID 18', 0x05CE),
-            ('Tall Zig Zag Room Wall B Tile ID 20', 0x05D6),
-            ('Tall Zig Zag Room Wall B Tile ID 22', 0x05DE),
+        for (constant_name, index, value) in (
+            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 0, 0x05C6),
+            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 2, 0x05CE),
+            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 4, 0x05D6),
+            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 6, 0x05DE),
+            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 8, 0x05C6),
+            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 10, 0x05CE),
+            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 12, 0x05D6),
+            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 14, 0x05DE),
+            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 16, 0x05C6),
+            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 18, 0x05CE),
+            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 20, 0x05D6),
+            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 22, 0x05DE),
+            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 0, 0x05C6),
+            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 2, 0x05CE),
+            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 4, 0x05D6),
+            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 6, 0x05DE),
+            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 8, 0x05C6),
+            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 10, 0x05CE),
+            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 12, 0x05D6),
+            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 14, 0x05DE),
+            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 16, 0x05C6),
+            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 18, 0x05CE),
+            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 20, 0x05D6),
+            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 22, 0x05DE),
         ):
-            constant_extract = extract['Constants'][constant_name]
+            metadata = extract['Constants'][constant_name]['Metadata']
             result.patch_value(
                 value,
-                constant_extract['Type'],
-                sotn_address.Address(constant_extract['Start'])
+                metadata['Type'],
+                sotn_address.Address(metadata['Start'] + index * metadata['Size'])
             )
     # Option - Disable clipping on screen edge of Pendulum Room Wall
     if changes.get('Options', {}).get('Disable clipping on screen edge of Pendulum Room Wall', False):
-        for (constant_name, value) in (
-            ('Pendulum Room Wall A Tile ID 00', 0x0561),
-            ('Pendulum Room Wall A Tile ID 02', 0x0000),
-            ('Pendulum Room Wall A Tile ID 04', 0x0000),
-            ('Pendulum Room Wall A Tile ID 06', 0x0563),
-            ('Pendulum Room Wall A Tile ID 08', 0x0561),
-            ('Pendulum Room Wall A Tile ID 10', 0x0000),
-            ('Pendulum Room Wall A Tile ID 12', 0x0000),
-            ('Pendulum Room Wall A Tile ID 14', 0x0563),
-            ('Pendulum Room Wall A Tile ID 16', 0x0561),
-            ('Pendulum Room Wall A Tile ID 18', 0x0000),
-            ('Pendulum Room Wall A Tile ID 20', 0x0000),
-            ('Pendulum Room Wall A Tile ID 22', 0x0563),
-            ('Pendulum Room Wall B Tile ID 00', 0x0561),
-            ('Pendulum Room Wall B Tile ID 02', 0x0000),
-            ('Pendulum Room Wall B Tile ID 04', 0x0000),
-            ('Pendulum Room Wall B Tile ID 06', 0x0563),
-            ('Pendulum Room Wall B Tile ID 08', 0x0561),
-            ('Pendulum Room Wall B Tile ID 10', 0x0000),
-            ('Pendulum Room Wall B Tile ID 12', 0x0000),
-            ('Pendulum Room Wall B Tile ID 14', 0x0563),
-            ('Pendulum Room Wall B Tile ID 16', 0x0561),
-            ('Pendulum Room Wall B Tile ID 18', 0x0000),
-            ('Pendulum Room Wall B Tile ID 20', 0x0000),
-            ('Pendulum Room Wall B Tile ID 22', 0x0563),
+        for (constant_name, index, value) in (
+            ('Pendulum Room Wall Tiles (Clock Tower)', 0, 0x0561),
+            ('Pendulum Room Wall Tiles (Clock Tower)', 2, 0x0000),
+            ('Pendulum Room Wall Tiles (Clock Tower)', 4, 0x0000),
+            ('Pendulum Room Wall Tiles (Clock Tower)', 6, 0x0563),
+            ('Pendulum Room Wall Tiles (Clock Tower)', 8, 0x0561),
+            ('Pendulum Room Wall Tiles (Clock Tower)', 10, 0x0000),
+            ('Pendulum Room Wall Tiles (Clock Tower)', 12, 0x0000),
+            ('Pendulum Room Wall Tiles (Clock Tower)', 14, 0x0563),
+            ('Pendulum Room Wall Tiles (Clock Tower)', 16, 0x0561),
+            ('Pendulum Room Wall Tiles (Clock Tower)', 18, 0x0000),
+            ('Pendulum Room Wall Tiles (Clock Tower)', 20, 0x0000),
+            ('Pendulum Room Wall Tiles (Clock Tower)', 22, 0x0563),
+            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 0, 0x0561),
+            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 2, 0x0000),
+            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 4, 0x0000),
+            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 6, 0x0563),
+            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 8, 0x0561),
+            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 10, 0x0000),
+            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 12, 0x0000),
+            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 14, 0x0563),
+            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 16, 0x0561),
+            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 18, 0x0000),
+            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 20, 0x0000),
+            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 22, 0x0563),
         ):
-            constant_extract = extract['Constants'][constant_name]
+            metadata = extract['Constants'][constant_name]['Metadata']
             result.patch_value(
                 value,
-                constant_extract['Type'],
-                sotn_address.Address(constant_extract['Start'])
+                metadata['Type'],
+                sotn_address.Address(metadata['Start'] + index * metadata['Size'])
             )
     # Option - Shift wall in Plaque Room With Breakable Wall away from screen edge
     if changes.get('Options', {}).get('Shift wall in Plaque Room With Breakable Wall away from screen edge', False):
-        for (constant_name, value) in (
-            ('Plaque Room With Breakable Wall A Tile ID 00', 0x030F),
-            ('Plaque Room With Breakable Wall A Tile ID 01', 0x030E),
-            ('Plaque Room With Breakable Wall A Tile ID 02', 0x0334),
-            ('Plaque Room With Breakable Wall A Tile ID 03', 0x0766),
-            ('Plaque Room With Breakable Wall A Tile ID 04', 0x0327),
-            ('Plaque Room With Breakable Wall A Tile ID 05', 0x076B),
-            ('Plaque Room With Breakable Wall A Tile ID 06', 0x0351),
-            ('Plaque Room With Breakable Wall A Tile ID 07', 0x0323),
-            ('Plaque Room With Breakable Wall A Tile ID 08', 0x030F),
-            ('Plaque Room With Breakable Wall A Tile ID 09', 0x076D),
-            ('Plaque Room With Breakable Wall A Tile ID 10', 0x0334),
-            ('Plaque Room With Breakable Wall A Tile ID 11', 0x076E),
-            ('Plaque Room With Breakable Wall A Tile ID 12', 0x0327),
-            ('Plaque Room With Breakable Wall A Tile ID 13', 0x076F),
-            ('Plaque Room With Breakable Wall A Tile ID 14', 0x0351),
-            ('Plaque Room With Breakable Wall A Tile ID 15', 0x0770),
-            ('Plaque Room With Breakable Wall A Tile ID 16', 0x030F),
-            ('Plaque Room With Breakable Wall A Tile ID 17', 0x0771),
-            ('Plaque Room With Breakable Wall A Tile ID 18', 0x0334),
-            ('Plaque Room With Breakable Wall A Tile ID 19', 0x0772),
-            ('Plaque Room With Breakable Wall A Tile ID 20', 0x0327),
-            ('Plaque Room With Breakable Wall A Tile ID 21', 0x0773),
-            ('Plaque Room With Breakable Wall A Tile ID 22', 0x0351),
-            ('Plaque Room With Breakable Wall A Tile ID 23', 0x0774),
+        for (constant_name, index, value) in (
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 0, 0x030F),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 1, 0x030E),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 2, 0x0334),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 3, 0x0766),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 4, 0x0327),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 5, 0x076B),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 6, 0x0351),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 7, 0x0323),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 8, 0x030F),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 9, 0x076D),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 10, 0x0334),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 11, 0x076E),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 12, 0x0327),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 13, 0x076F),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 14, 0x0351),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 15, 0x0770),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 16, 0x030F),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 17, 0x0771),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 18, 0x0334),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 19, 0x0772),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 20, 0x0327),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 21, 0x0773),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 22, 0x0351),
+            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 23, 0x0774),
         ):
-            constant_extract = extract['Constants'][constant_name]
+            metadata = extract['Constants'][constant_name]['Metadata']
             result.patch_value(
                 value,
-                constant_extract['Type'],
-                sotn_address.Address(constant_extract['Start'])
+                metadata['Type'],
+                sotn_address.Address(metadata['Start'] + index * metadata['Size'])
             )
-        # NOTE(sestren): The entity responsible for the breakable wall works differently
+        # NOTE(sestren): The entity responsible for the breakable wall works differently in the Inverted Castle
         # https://github.com/SestrenExsis/SOTN-Shuffler/issues/92
         # Shift the starting point left 1 tile
         for (offset, value) in (
@@ -445,37 +445,37 @@ def get_ppf(extract, changes, data):
             result.patch_value(value, 'u16', sotn_address.Address(offset))
     # Option - Disable clipping on screen edge of Left Gear Room Wall
     if changes.get('Options', {}).get('Disable clipping on screen edge of Left Gear Room Wall', False):
-        for (constant_name, value) in (
-            ('Left Gear Room Wall A Tile ID 01', 0x0565),
-            ('Left Gear Room Wall A Tile ID 03', 0x056D),
-            ('Left Gear Room Wall A Tile ID 05', 0x0575),
-            ('Left Gear Room Wall A Tile ID 07', 0x057D),
-            ('Left Gear Room Wall A Tile ID 09', 0x0565),
-            ('Left Gear Room Wall A Tile ID 11', 0x056D),
-            ('Left Gear Room Wall A Tile ID 13', 0x0575),
-            ('Left Gear Room Wall A Tile ID 15', 0x057D),
-            ('Left Gear Room Wall A Tile ID 17', 0x0565),
-            ('Left Gear Room Wall A Tile ID 19', 0x056D),
-            ('Left Gear Room Wall A Tile ID 21', 0x0575),
-            ('Left Gear Room Wall A Tile ID 23', 0x057D),
-            ('Left Gear Room Wall B Tile ID 01', 0x0565),
-            ('Left Gear Room Wall B Tile ID 03', 0x056D),
-            ('Left Gear Room Wall B Tile ID 05', 0x0575),
-            ('Left Gear Room Wall B Tile ID 07', 0x057D),
-            ('Left Gear Room Wall B Tile ID 09', 0x0565),
-            ('Left Gear Room Wall B Tile ID 11', 0x056D),
-            ('Left Gear Room Wall B Tile ID 13', 0x0575),
-            ('Left Gear Room Wall B Tile ID 15', 0x057D),
-            ('Left Gear Room Wall B Tile ID 17', 0x0565),
-            ('Left Gear Room Wall B Tile ID 19', 0x056D),
-            ('Left Gear Room Wall B Tile ID 21', 0x0575),
-            ('Left Gear Room Wall B Tile ID 23', 0x057D),
+        for (constant_name, index, value) in (
+            ('Left Gear Room Wall Tiles (Clock Tower)', 1, 0x0565),
+            ('Left Gear Room Wall Tiles (Clock Tower)', 3, 0x056D),
+            ('Left Gear Room Wall Tiles (Clock Tower)', 5, 0x0575),
+            ('Left Gear Room Wall Tiles (Clock Tower)', 7, 0x057D),
+            ('Left Gear Room Wall Tiles (Clock Tower)', 9, 0x0565),
+            ('Left Gear Room Wall Tiles (Clock Tower)', 11, 0x056D),
+            ('Left Gear Room Wall Tiles (Clock Tower)', 13, 0x0575),
+            ('Left Gear Room Wall Tiles (Clock Tower)', 15, 0x057D),
+            ('Left Gear Room Wall Tiles (Clock Tower)', 17, 0x0565),
+            ('Left Gear Room Wall Tiles (Clock Tower)', 19, 0x056D),
+            ('Left Gear Room Wall Tiles (Clock Tower)', 21, 0x0575),
+            ('Left Gear Room Wall Tiles (Clock Tower)', 23, 0x057D),
+            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 1, 0x0565),
+            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 3, 0x056D),
+            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 5, 0x0575),
+            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 7, 0x057D),
+            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 9, 0x0565),
+            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 11, 0x056D),
+            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 13, 0x0575),
+            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 15, 0x057D),
+            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 17, 0x0565),
+            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 19, 0x056D),
+            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 21, 0x0575),
+            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 23, 0x057D),
         ):
-            constant_extract = extract['Constants'][constant_name]
+            metadata = extract['Constants'][constant_name]['Metadata']
             result.patch_value(
                 value,
-                constant_extract['Type'],
-                sotn_address.Address(constant_extract['Start'])
+                metadata['Type'],
+                sotn_address.Address(metadata['Start'] + index * metadata['Size'])
             )
         # NOTE(sestren): The entity responsible for the breakable wall works differently
         # https://github.com/SestrenExsis/SOTN-Shuffler/issues/92
