@@ -689,6 +689,38 @@ if __name__ == '__main__':
             data = cursor.u16(2 * index, True)
             constants[f'Snake Column Wall B Tile ID {index:02d}'] = data
         # NOTE(sestren); Snake Column Wall C Tile ID was found at 0x0596D620, maybe that's for Boss - Death?
+        cursor = BIN(binary_file, 0x049BF654)
+        for index in range(32):
+            data = cursor.u16(2 * index, True)
+            constants[f'Tall Zig Zag Room Wall A Tile ID {index:02d}'] = data
+        cursor = BIN(binary_file, 0x04D81C68)
+        for index in range(32):
+            data = cursor.u16(2 * index, True)
+            constants[f'Tall Zig Zag Room Wall B Tile ID {index:02d}'] = data
+        cursor = BIN(binary_file, 0x042590B0)
+        for index in range(32):
+            data = cursor.u16(2 * index, True)
+            constants[f'Plaque Room With Breakable Wall A Tile ID {index:02d}'] = data
+        cursor = BIN(binary_file, 0x047C4EEC)
+        for index in range(32):
+            data = cursor.u16(2 * index, True)
+            constants[f'Plaque Room With Breakable Wall B Tile ID {index:02d}'] = data
+        cursor = BIN(binary_file, 0x04A68038)
+        for index in range(32):
+            data = cursor.u16(2 * index, True)
+            constants[f'Left Gear Room Wall A Tile ID {index:02d}'] = data
+        cursor = BIN(binary_file, 0x04E22FC8)
+        for index in range(32):
+            data = cursor.u16(2 * index, True)
+            constants[f'Left Gear Room Wall B Tile ID {index:02d}'] = data
+        cursor = BIN(binary_file, 0x04A67FF8)
+        for index in range(32):
+            data = cursor.u16(2 * index, True)
+            constants[f'Pendulum Room Wall A Tile ID {index:02d}'] = data
+        cursor = BIN(binary_file, 0x04E22F88)
+        for index in range(32):
+            data = cursor.u16(2 * index, True)
+            constants[f'Pendulum Room Wall B Tile ID {index:02d}'] = data
         for (constant_address, constant_name, constant_data_type) in (
             # Found in the GetTeleportToOtherCastle function of the decomp
             (0x000FFCE4, 'DRA - Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40
