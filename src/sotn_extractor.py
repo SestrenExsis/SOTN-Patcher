@@ -664,13 +664,24 @@ if __name__ == '__main__':
                 'Teleporter Index': cursor.s32(0x14 * boss_teleporter_id + 0x10),
             }
             boss_teleporters['Data'].append(data)
-        # Extract constant data
+        # Extract constant data stored as arrays
         constants = {}
-        cursor = BIN(binary_file, 0x049BF79C)
-        for drop_index in range(2, 4):
-            data = cursor.u16(2 * drop_index, True)
-            constants[f'Relic Container Drop ID {str(drop_index)}'] = data
         for (starting_address, data_type, array_size, array_name) in (
+            # (0xFFFFFFFF, 'u16', 99, 'Unique Item Drops (Abandoned Mine)'),
+            (0x049BFBB0, 'u16', 11, 'Unique Item Drops (Alchemy Laboratory)'),
+            (0x0491BE18, 'u16', 10, 'Unique Item Drops (Castle Entrance)'),
+            (0x041A948C, 'u16', 10, 'Unique Item Drops (Castle Entrance Revisited)'),
+            # (0xFFFFFFFF, 'u16', 99, 'Unique Item Drops (Castle Keep)'),
+            (0x03BB474C, 'u16', 21, 'Unique Item Drops (Catacombs)'),
+            (0x04A6811C, 'u16', 12, 'Unique Item Drops (Clock Tower)'),
+            # (0xFFFFFFFF, 'u16', 99, 'Unique Item Drops (Colosseum)'),
+            (0x03E61290, 'u16', 11, 'Unique Item Drops (Long Library)'),
+            (0x03F8C100, 'u16', 14, 'Unique Item Drops (Marble Gallery)'),
+            (0x040FBFEC, 'u16', 13, "Unique Item Drops (Olrox's Quarters)"),
+            (0x04048A2C, 'u16', 7, 'Unique Item Drops (Outer Wall)'),
+            # (0xFFFFFFFF, 'u16', 99, 'Unique Item Drops (Royal Chapel)'),
+            (0x04259128, 'u16', 37, 'Unique Item Drops (Underground Caverns)'),
+            (0x049BF79C, 'u16', 4, 'Relic Container Drops'),
             (0x03CE009C, 'u16', 24, 'Demon Switch Wall Tiles (Abandoned Mine)'),
             (0x0439BFEC, 'u16', 24, 'Demon Switch Wall Tiles (Cave)'),
             (0x03CE00CC, 'u16', 24, 'Snake Column Wall Tiles (Abandoned Mine)'),
@@ -700,6 +711,7 @@ if __name__ == '__main__':
                 },
                 'Data': data,
             }
+        # Extract other constant data
         for (constant_address, constant_name, constant_data_type) in (
             # Found in the GetTeleportToOtherCastle function of the decomp
             (0x000FFCE4, 'DRA - Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40
