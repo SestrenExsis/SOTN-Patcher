@@ -1,0 +1,44 @@
+{
+    "Options": {
+        "Enable debug mode": true
+    },
+    "Constants": {
+        "Unique Item Drops (Alchemy Laboratory)": [
+            "Item - Library Card",
+            "Item - Library Card",
+            "Item - Library Card",
+            "Item - Library Card",
+            null,
+            null,
+            "Item - Library Card",
+            "Item - Library Card",
+            "Item - Library Card",
+            "Item - Library Card"
+        ],
+        "Unique Item Drops (Marble Gallery)": [
+            "Item - Potion",
+            "Item - Potion",
+            "Item - Potion",
+            "Item - Potion",
+            "Item - Potion",
+            "Item - Potion",
+            "Item - Potion",
+            "Item - Potion",
+            "Item - Potion",
+            "Item - Potion",
+            "Item - Potion",
+            "Item - Potion",
+            "Item - Potion",
+            "Item - Potion"
+        ],
+        "Unique Item Drops (Outer Wall)": [
+            "Item - Manna Prism",
+            "Item - Manna Prism",
+            "Item - Manna Prism",
+            "Item - Manna Prism",
+            "Item - Manna Prism",
+            "Item - Manna Prism",
+            "Item - Manna Prism"
+        ]
+    }
+}

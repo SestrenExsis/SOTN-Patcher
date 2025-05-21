@@ -245,7 +245,7 @@ def get_familiar_changes(changes, familiar_events):
 
 def get_ppf(extract, changes, data):
     aliases = data['Aliases']
-    result = PPF('Works with SOTN Shuffler Alpha Build 74')
+    result = PPF('Works with SOTN Shuffler Alpha Build 75')
     # Patch boss teleporters
     extract_metadata = extract['Boss Teleporters']['Metadata']
     for boss_teleporter_id in sorted(changes.get('Boss Teleporters', {})):
@@ -934,6 +934,23 @@ def get_ppf(extract, changes, data):
                             object_extract['Metadata']['Start'] + extract_id * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset']
                         ),
                     )
+    # Patch unique item drops
+    for constant_name in sorted(changes.get('Constants', {})):
+        if not constant_name.startswith('Unique Item Drops'):
+            continue
+        array_extract_meta = extract['Constants'][constant_name]['Metadata']
+        array_changes = changes['Constants'][constant_name]
+        for (array_index, item_name) in enumerate(array_changes):
+            if item_name is None:
+                continue
+            item_id = aliases['Items'].get(item_name, None)
+            result.patch_value(
+                item_id,
+                array_extract_meta['Type'],
+                sotn_address.Address(
+                    array_extract_meta['Start'] + array_index * array_extract_meta['Size']
+                ),
+            )
     # Patch strings
     # NOTE(sestren): There are no guards in place requiring that the resulting array of strings
     # NOTE(sestren): fits into place or uses up the same amount of bytes. It is the

@@ -34,7 +34,90 @@ Entity Types:
   Unique Item:
     Global: 12
 Items:
-  Holy Mail: 5
+  Item - Alucard Mail: 312
+  Item - Alucard Shield: 144
+  Item - Alucard Sword: 251
+  Item - Alucart Mail: 386
+  Item - Alucart Shield: 295
+  Item - Alucart Sword: 296
+  Item - Antivenom: 272
+  Item - Attack Potion: 279
+  Item - Aquamarine: 361
+  Item - Badelaire: 253
+  Item - Basilard: 146
+  Item - Bastard Sword: 224
+  Item - Bat Pentagram: 202
+  Item - Boomerang: 209
+  Item - Buffalo Star: 205
+  Item - Bwaka Knife: 208
+  Item - Cloth Cape: 346
+  Item - Dark Blade: 246
+  Item - Diamond: 366
+  Item - Dragon Helm: 342
+  Item - Elixir: 289
+  Item - Fire Boomerange: 262
+  Item - Fury Plate: 319
+  Item - Garnet: 364
+  Item - Gladius: 214
+  Item - Goddess Shield: 139
+  Item - Gram: 236
+  Item - Heart Max-Up: 12
+  Item - Heart Refresh: 270
+  Item - Hammer: 275
+  Item - Hide Cuirass: 299
+  Item - High Potion: 288
+  Item - Holy Mail: 5
+  Item - Iron Ball: 263
+  Item - Javelin: 210
+  Item - Jewel Knuckles: 225
+  Item - Karma Coin: 152
+  Item - Katana: 228
+  Item - Library Card: 294
+  Item - Life Apple: 274
+  Item - Life Max-Up: 23
+  Item - Lightning Mail: 308
+  Item - Luck Potion: 277
+  Item - Luminus: 233
+  Item - Magic Missile: 153
+  Item - Manna Prism: 290
+  Item - Meal Ticket: 198
+  Item - Mirror Cuirass: 310
+  Item - Moon Rod: 260
+  Item - Necklace of J: 375
+  Item - Neutron Bomb: 199
+  Item - Opal: 365
+  Item - Opal Circlet: 337
+  Item - Osafune Katana: 267
+  Item - Pot Roast: 195
+  Item - Potion: 287
+  Item - Power of Sire: 200
+  Item - Red Bean Bun: 192
+  Item - Resist Dark: 286
+  Item - Resist Fire: 281
+  Item - Resist Holy: 285
+  Item - Resist Ice: 283
+  Item - Resist Stone: 284
+  Item - Resist Thunder: 282
+  Item - Ring of Arcana: 372
+  Item - Royal Cloak: 350
+  Item - Ruby Circlet: 336
+  Item - Shield Potion: 280
+  Item - Shiitake: 165
+  Item - Shotel: 156
+  Item - Shuriken: 203
+  Item - Smart Potion: 278
+  Item - Staurolite: 358
+  Item - Strength Potion: 276
+  Item - Sunglasses: 324
+  Item - Sunstone: 356
+  Item - Sword of Dawn: 145
+  Item - Sword of Hador: 232
+  Item - Talwar: 227
+  Item - TNT: 207
+  Item - Toadstool: 164
+  Item - Turquoise: 362
+  Item - Twilight Cloak: 353
+  Item - Zircon: 360
 Object Layouts:
   Location - Cube of Zoe:
     - Stage: Castle Entrance
