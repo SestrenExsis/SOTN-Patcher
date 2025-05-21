@@ -667,26 +667,43 @@ if __name__ == '__main__':
         # Extract constant data stored as arrays
         constants = {}
         for (starting_address, data_type, array_size, array_name) in (
-            # (0xFFFFFFFF, 'u16', 99, 'Unique Item Drops (Abandoned Mine)'),
+            # Unique item drops in First Castle
+            (0x03CE01E4, 'u16', 13, 'Unique Item Drops (Abandoned Mine)'),
             (0x049BFBB0, 'u16', 11, 'Unique Item Drops (Alchemy Laboratory)'),
             (0x0491BE18, 'u16', 10, 'Unique Item Drops (Castle Entrance)'),
             (0x041A948C, 'u16', 10, 'Unique Item Drops (Castle Entrance Revisited)'),
-            # (0xFFFFFFFF, 'u16', 99, 'Unique Item Drops (Castle Keep)'),
+            (0x04AEFD10, 'u16', 19, 'Unique Item Drops (Castle Keep)'),
             (0x03BB474C, 'u16', 21, 'Unique Item Drops (Catacombs)'),
             (0x04A6811C, 'u16', 12, 'Unique Item Drops (Clock Tower)'),
-            # (0xFFFFFFFF, 'u16', 99, 'Unique Item Drops (Colosseum)'),
+            (0x03B00FE8, 'u16', 8, 'Unique Item Drops (Colosseum)'),
             (0x03E61290, 'u16', 11, 'Unique Item Drops (Long Library)'),
             (0x03F8C100, 'u16', 14, 'Unique Item Drops (Marble Gallery)'),
             (0x040FBFEC, 'u16', 13, "Unique Item Drops (Olrox's Quarters)"),
             (0x04048A2C, 'u16', 7, 'Unique Item Drops (Outer Wall)'),
-            # (0xFFFFFFFF, 'u16', 99, 'Unique Item Drops (Royal Chapel)'),
+            (0x03D5B6C0, 'u16', 16, 'Unique Item Drops (Royal Chapel)'),
             (0x04259128, 'u16', 37, 'Unique Item Drops (Underground Caverns)'),
+            # Unique item drops in Inverted Castle
+            (0x0439BFCC, 'u16', 8, 'Unique Item Drops (Cave)'),
+            (0x04D81CC8, 'u16', 10, 'Unique Item Drops (Necromancy Laboratory)'),
+            (0x0471EF10, 'u16', 10, 'Unique Item Drops (Reverse Entrance)'),
+            (0x04C847C8, 'u16', 25, 'Unique Item Drops (Reverse Keep)'),
+            (0x043083C8, 'u16', 18, 'Unique Item Drops (Floating Catacombs)'),
+            (0x04E22EC8, 'u16', 12, 'Unique Item Drops (Reverse Clock Tower)'),
+            (0x04C0823C, 'u16', 8, 'Unique Item Drops (Reverse Colosseum)'),
+            (0x044B0BC8, 'u16', 9, 'Unique Item Drops (Forbidden Library)'),
+            (0x0453E78C, 'u16', 12, 'Unique Item Drops (Black Marble Gallery)'),
+            (0x04681540, 'u16', 12, "Unique Item Drops (Death Wing's Lair)"),
+            (0x045EEAE4, 'u16', 8, 'Unique Item Drops (Reverse Outer Wall)'),
+            (0x04416D2C, 'u16', 18, 'Unique Item Drops (Anti-Chapel)'),
+            (0x047C4E20, 'u16', 27, 'Unique Item Drops (Reverse Caverns)'),
+            # Relic Container Drops
             (0x049BF79C, 'u16', 4, 'Relic Container Drops'),
+            # Breakable Wall Tiles
             (0x03CE009C, 'u16', 24, 'Demon Switch Wall Tiles (Abandoned Mine)'),
             (0x0439BFEC, 'u16', 24, 'Demon Switch Wall Tiles (Cave)'),
             (0x03CE00CC, 'u16', 24, 'Snake Column Wall Tiles (Abandoned Mine)'),
             (0x0439C01C, 'u16', 24, 'Snake Column Wall Tiles (Cave)'),
-            # NOTE(sestren); Snake Column Wall C Tile ID was found at 0x0596D620, maybe that's for Boss - Death?
+            # NOTE(sestren): Snake Column Wall C Tile ID was found at 0x0596D620, maybe that's for Boss - Death?
             (0x049BF654, 'u16', 32, 'Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)'),
             (0x04D81C68, 'u16', 32, 'Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)'),
             (0x042590B0, 'u16', 32, 'Plaque Room With Breakable Wall Tiles (Underground Caverns)'),
