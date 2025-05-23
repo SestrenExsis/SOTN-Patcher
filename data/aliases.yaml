@@ -70,6 +70,7 @@ Items:
   Item - Iron Ball: 263
   Item - Javelin: 210
   Item - Jewel Knuckles: 225
+  Item - Jewel Sword: 237
   Item - Karma Coin: 152
   Item - Katana: 228
   Item - Leather Shield: 133
@@ -239,6 +240,51 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 8
+  Location - Castle Entrance, Heart Max-Up Room (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Entrance)
+        Item Drop Index: 0
+  Location - Castle Entrance, Life Max-Up Room (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Entrance)
+        Item Drop Index: 1
+  Location - Castle Entrance, Jewel Sword Room (Life Apple):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Entrance)
+        Item Drop Index: 2
+  Location - Castle Entrance, Cube of Zoe Room (Shield Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Entrance)
+        Item Drop Index: 4
+  Location - Castle Entrance, Holy Mail Room (Holy Mail):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Entrance)
+        Item Drop Index: 5
+  Location - Castle Entrance, Shortcut to Underground Caverns (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Entrance)
+        Item Drop Index: 6
+  Location - Castle Entrance, Shortcut to Warp Rooms (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Entrance)
+        Item Drop Index: 7
+  Location - Castle Entrance, After Drawbridge (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Entrance)
+        Item Drop Index: 8
+  Location - Castle Entrance, Jewel Sword Room (Jewel Sword):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Entrance)
+        Item Drop Index: 9
   Location - Marble Gallery, Pathway After Left Statue (Life Max-Up):
     Type: Stage Item Drop
     Data:
@@ -314,11 +360,41 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 13
+  Location - Outer Wall, Jewel Knuckles Room (Jewel Knuckles):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Outer Wall)
+        Item Drop Index: 0
+  Location - Outer Wall, Jewel Knuckles Room (Mirror Cuirass):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Outer Wall)
+        Item Drop Index: 1
+  Location - Outer Wall, Elevator Shaft Room (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Outer Wall)
+        Item Drop Index: 2
   Location - Outer Wall, Garnet Vase Room (Garnet):
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Outer Wall)
         Item Drop Index: 3
+  Location - Outer Wall, Gladius Room (Gladius):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Outer Wall)
+        Item Drop Index: 4
+  Location - Outer Wall, Elevator Shaft Room (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Outer Wall)
+        Item Drop Index: 5
+  Location - Outer Wall, Exit to Marble Gallery (Zircon):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Outer Wall)
+        Item Drop Index: 6
   Location - XXX:
     Type: Stage Item Drop
     Data:
