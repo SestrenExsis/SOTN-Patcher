@@ -2,43 +2,22 @@
     "Options": {
         "Enable debug mode": true
     },
-    "Constants": {
-        "Unique Item Drops (Alchemy Laboratory)": [
-            "Item - Library Card",
-            "Item - Library Card",
-            "Item - Library Card",
-            "Item - Library Card",
-            null,
-            null,
-            "Item - Library Card",
-            "Item - Library Card",
-            "Item - Library Card",
-            "Item - Library Card"
-        ],
-        "Unique Item Drops (Marble Gallery)": [
-            "Item - Potion",
-            "Item - Potion",
-            "Item - Potion",
-            "Item - Potion",
-            "Item - Potion",
-            "Item - Potion",
-            "Item - Potion",
-            "Item - Potion",
-            "Item - Potion",
-            "Item - Potion",
-            "Item - Potion",
-            "Item - Potion",
-            "Item - Potion",
-            "Item - Potion"
-        ],
-        "Unique Item Drops (Outer Wall)": [
-            "Item - Manna Prism",
-            "Item - Manna Prism",
-            "Item - Manna Prism",
-            "Item - Manna Prism",
-            "Item - Manna Prism",
-            "Item - Manna Prism",
-            "Item - Manna Prism"
-        ]
+    "Quest Rewards": {
+        "Location - Marble Gallery, Pathway After Left Statue (Life Max-Up)": "Item - Potion",
+        "Location - Marble Gallery, Pathway After Right Statue (Alucart Shield)": "Item - Potion",
+        "Location - Marble Gallery, Pathway After Right Statue (Heart Max-Up)": "Item - Potion",
+        "Location - Marble Gallery, Gravity Boots Room (Life Apple)": "Item - Potion",
+        "Location - Marble Gallery, Gravity Boots Room (Hammer)": "Item - Potion",
+        "Location - Marble Gallery, Gravity Boots Room (Potion)": "Item - Potion",
+        "Location - Marble Gallery, Alucart Room (Alucart Mail)": "Item - Potion",
+        "Location - Marble Gallery, Alucart Room (Alucart Sword)": "Item - Potion",
+        "Location - Marble Gallery, Power-Up Room (Life Max-Up)": "Item - Potion",
+        "Location - Marble Gallery, Power-Up Room (Heart Max-Up)": "Item - Potion",
+        "Location - Marble Gallery, Beneath Right Trapdoor (Library Card)": "Item - Potion",
+        "Location - Marble Gallery, Beneath Right Trapdoor (Attack Potion)": "Item - Potion",
+        "Location - Marble Gallery, Spirit Orb Room (Hammer)": "Item - Potion",
+        "Location - Marble Gallery, Spirit Orb Room (Strength Potion)": "Item - Potion",
+        "Location - Alchemy Laboratory, Red Skeleton Lift Room (Leather Shield)": "Item - Library Card",
+        "Location - Outer Wall, Garnet Vase Room (Garnet)": "Item - Manna Prism"
     }
 }

@@ -72,6 +72,7 @@ Items:
   Item - Jewel Knuckles: 225
   Item - Karma Coin: 152
   Item - Katana: 228
+  Item - Leather Shield: 133
   Item - Library Card: 294
   Item - Life Apple: 274
   Item - Life Max-Up: 23
@@ -118,85 +119,211 @@ Items:
   Item - Turquoise: 362
   Item - Twilight Cloak: 353
   Item - Zircon: 360
-Object Layouts:
+Quest Rewards:
   Location - Cube of Zoe:
-    - Stage: Castle Entrance
-      Room: Castle Entrance, Cube of Zoe Room
-      Object Layout ID: 5
-    - Stage: Castle Entrance Revisited
-      Room: Castle Entrance Revisited, Cube of Zoe Room
-      Object Layout ID: 4
+    Type: Object Layout
+    Data:
+      - Stage: Castle Entrance
+        Room: Castle Entrance, Cube of Zoe Room
+        Object Layout ID: 5
+      - Stage: Castle Entrance Revisited
+        Room: Castle Entrance Revisited, Cube of Zoe Room
+        Object Layout ID: 4
   Location - Demon Card:
-    - Stage: Abandoned Mine
-      Room: Abandoned Mine, Demon Card Room
-      Object Layout ID: 0
+    Type: Object Layout
+    Data:
+      - Stage: Abandoned Mine
+        Room: Abandoned Mine, Demon Card Room
+        Object Layout ID: 0
   Location - Form of Mist:
-    - Stage: Colosseum
-      Room: Colosseum, Top of Elevator Shaft
-      Object Layout ID: 6
+    Type: Object Layout
+    Data:
+      - Stage: Colosseum
+        Room: Colosseum, Top of Elevator Shaft
+        Object Layout ID: 6
   Location - Power of Mist:
-    - Stage: Castle Keep
-      Room: Castle Keep, Keep Area
-      Object Layout ID: 11
+    Type: Object Layout
+    Data:
+      - Stage: Castle Keep
+        Room: Castle Keep, Keep Area
+        Object Layout ID: 11
   Location - Ghost Card:
-    - Stage: Castle Keep
-      Room: Castle Keep, Ghost Card Room
-      Object Layout ID: 5
+    Type: Object Layout
+    Data:
+      - Stage: Castle Keep
+        Room: Castle Keep, Ghost Card Room
+        Object Layout ID: 5
   Location - Gravity Boots:
-    - Stage: Marble Gallery
-      Room: Marble Gallery, Gravity Boots Room
-      Object Layout ID: 3
+    Type: Object Layout
+    Data:
+      - Stage: Marble Gallery
+        Room: Marble Gallery, Gravity Boots Room
+        Object Layout ID: 3
   Location - Leap Stone:
-    - Stage: Castle Keep
-      Room: Castle Keep, Keep Area
-      Object Layout ID: 12
+    Type: Object Layout
+    Data:
+      - Stage: Castle Keep
+        Room: Castle Keep, Keep Area
+        Object Layout ID: 12
   Location - Fire of Bat:
-    - Stage: Clock Tower
-      Room: Clock Tower, Fire of Bat Room
-      Object Layout ID: 1
+    Type: Object Layout
+    Data:
+      - Stage: Clock Tower
+        Room: Clock Tower, Fire of Bat Room
+        Object Layout ID: 1
   Location - Power of Wolf:
-    - Stage: Castle Entrance
-      Room: Castle Entrance, After Drawbridge
-      Object Layout ID: 9
-    - Stage: Castle Entrance Revisited
-      Room: Castle Entrance Revisited, After Drawbridge
-      Object Layout ID: 11
+    Type: Object Layout
+    Data:
+      - Stage: Castle Entrance
+        Room: Castle Entrance, After Drawbridge
+        Object Layout ID: 9
+      - Stage: Castle Entrance Revisited
+        Room: Castle Entrance Revisited, After Drawbridge
+        Object Layout ID: 11
   Location - Soul of Bat:
-    - Stage: Long Library
-      Room: Long Library, Lesser Demon Area
-      Object Layout ID: 30
+    Type: Object Layout
+    Data:
+      - Stage: Long Library
+        Room: Long Library, Lesser Demon Area
+        Object Layout ID: 30
   Location - Faerie Card:
-    - Stage: Long Library
-      Room: Long Library, Faerie Card Room
-      Object Layout ID: 0
+    Type: Object Layout
+    Data:
+      - Stage: Long Library
+        Room: Long Library, Faerie Card Room
+        Object Layout ID: 0
   Location - Faerie Scroll:
-    - Stage: Long Library
-      Room: Long Library, Spellbook Area
-      Object Layout ID: 38
+    Type: Object Layout
+    Data:
+      - Stage: Long Library
+        Room: Long Library, Spellbook Area
+        Object Layout ID: 38
   Location - Soul of Wolf:
-    - Stage: Outer Wall
-      Room: Outer Wall, Elevator Shaft Room
-      Object Layout ID: 55
+    Type: Object Layout
+    Data:
+      - Stage: Outer Wall
+        Room: Outer Wall, Elevator Shaft Room
+        Object Layout ID: 55
   Location - Spirit Orb:
-    - Stage: Marble Gallery
-      Room: Marble Gallery, Spirit Orb Room
-      Object Layout ID: 8
+    Type: Object Layout
+    Data:
+      - Stage: Marble Gallery
+        Room: Marble Gallery, Spirit Orb Room
+        Object Layout ID: 8
   Location - Echo of Bat:
-    - Stage: Olrox's Quarters
-      Room: Olrox's Quarters, Echo of Bat Room
-      Object Layout ID: 2
+    Type: Object Layout
+    Data:
+      - Stage: Olrox's Quarters
+        Room: Olrox's Quarters, Echo of Bat Room
+        Object Layout ID: 2
   Location - Sword Card:
-    - Stage: Olrox's Quarters
-      Room: Olrox's Quarters, Sword Card Room
-      Object Layout ID: 0
+    Type: Object Layout
+    Data:
+      - Stage: Olrox's Quarters
+        Room: Olrox's Quarters, Sword Card Room
+        Object Layout ID: 0
   Location - Holy Symbol:
-    - Stage: Underground Caverns
-      Room: Underground Caverns, Holy Symbol Room
-      Object Layout ID: 2
+    Type: Object Layout
+    Data:
+      - Stage: Underground Caverns
+        Room: Underground Caverns, Holy Symbol Room
+        Object Layout ID: 2
   Location - Merman Statue:
-    - Stage: Underground Caverns
-      Room: Underground Caverns, Merman Statue Room
-      Object Layout ID: 0
+    Type: Object Layout
+    Data:
+      - Stage: Underground Caverns
+        Room: Underground Caverns, Merman Statue Room
+        Object Layout ID: 0
+  Location - Alchemy Laboratory, Red Skeleton Lift Room (Leather Shield):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Alchemy Laboratory)
+        Item Drop Index: 8
+  Location - Marble Gallery, Pathway After Left Statue (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Marble Gallery)
+        Item Drop Index: 0
+  Location - Marble Gallery, Pathway After Left Statue (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Marble Gallery)
+        Item Drop Index: 0
+  Location - Marble Gallery, Pathway After Right Statue (Alucart Shield):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Marble Gallery)
+        Item Drop Index: 1
+  Location - Marble Gallery, Pathway After Right Statue (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Marble Gallery)
+        Item Drop Index: 2
+  Location - Marble Gallery, Gravity Boots Room (Life Apple):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Marble Gallery)
+        Item Drop Index: 3
+  Location - Marble Gallery, Gravity Boots Room (Hammer):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Marble Gallery)
+        Item Drop Index: 4
+  Location - Marble Gallery, Gravity Boots Room (Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Marble Gallery)
+        Item Drop Index: 5
+  Location - Marble Gallery, Alucart Room (Alucart Mail):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Marble Gallery)
+        Item Drop Index: 6
+  Location - Marble Gallery, Alucart Room (Alucart Sword):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Marble Gallery)
+        Item Drop Index: 7
+  Location - Marble Gallery, Power-Up Room (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Marble Gallery)
+        Item Drop Index: 8
+  Location - Marble Gallery, Power-Up Room (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Marble Gallery)
+        Item Drop Index: 9
+  Location - Marble Gallery, Beneath Right Trapdoor (Library Card):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Marble Gallery)
+        Item Drop Index: 10
+  Location - Marble Gallery, Beneath Right Trapdoor (Attack Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Marble Gallery)
+        Item Drop Index: 11
+  Location - Marble Gallery, Spirit Orb Room (Hammer):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Marble Gallery)
+        Item Drop Index: 12
+  Location - Marble Gallery, Spirit Orb Room (Strength Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Marble Gallery)
+        Item Drop Index: 13
+  Location - Outer Wall, Garnet Vase Room (Garnet):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Outer Wall)
+        Item Drop Index: 3
+  Location - XXX:
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (XXX)
+        Item Drop Index: 99
 Entities:
   Relic - Soul of Bat:
     Entity Type ID: 11

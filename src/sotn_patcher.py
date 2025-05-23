@@ -875,28 +875,42 @@ def get_ppf(extract, changes, data):
     # Option - Assign Power of Wolf relic a unique ID
     power_of_wolf_patch = changes.get('Options', {}).get('Assign Power of Wolf relic a unique ID', False)
     if power_of_wolf_patch:
-        if 'Object Layouts' not in changes:
-            changes['Object Layouts'] = {}
-        if 'Location - Power of Wolf' not in changes['Object Layouts']:
-            changes['Object Layouts']['Location - Power of Wolf'] = 'Relic - Power of Wolf'
-    # Object layouts - Apply changes
-    for location_name in sorted(changes.get('Object Layouts', {})):
-        entity_name = changes['Object Layouts'][location_name]
-        location_aliases = aliases['Object Layouts'].get(location_name, [])
-        for location_alias in location_aliases:
-            stage_name = location_alias['Stage']
-            room_name = location_alias['Room']
-            if (stage_name, room_name) not in object_layouts:
-                room_id = str(aliases['Rooms'].get(room_name, None))
-                room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
-                object_extract = room_extract['Object Layout - Horizontal']['Data'][1:-1]
-                object_layouts[(stage_name, room_name)] = copy.deepcopy(object_extract)
-            object_layout_id = location_alias['Object Layout ID']
-            for (property_key, property_value) in aliases['Entities'].get(entity_name, {}).items():
-                object_layouts[(stage_name, room_name)][object_layout_id][property_key] = property_value
-            if power_of_wolf_patch and location_name == 'Location - Power of Wolf':
-                object_layouts[(stage_name, room_name)][object_layout_id]['Entity Room Index'] = 18
-    # Object layouts - Apply patches from changes
+        if 'Quest Rewards' not in changes:
+            changes['Quest Rewards'] = {}
+        if 'Location - Power of Wolf' not in changes['Quest Rewards']:
+            changes['Quest Rewards']['Location - Power of Wolf'] = 'Relic - Power of Wolf'
+    # Quest Rewards - Part 1
+    for location_name in sorted(changes.get('Quest Rewards', {})):
+        reward_name = changes['Quest Rewards'][location_name]
+        quest_reward = aliases['Quest Rewards'][location_name]
+        if quest_reward['Type'] == 'Object Layout':
+            for location_alias in quest_reward['Data']:
+                stage_name = location_alias['Stage']
+                room_name = location_alias['Room']
+                if (stage_name, room_name) not in object_layouts:
+                    room_id = str(aliases['Rooms'].get(room_name, None))
+                    room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
+                    object_extract = room_extract['Object Layout - Horizontal']['Data'][1:-1]
+                    object_layouts[(stage_name, room_name)] = copy.deepcopy(object_extract)
+                object_layout_id = location_alias['Object Layout ID']
+                for (property_key, property_value) in aliases['Entities'].get(reward_name, {}).items():
+                    object_layouts[(stage_name, room_name)][object_layout_id][property_key] = property_value
+                if power_of_wolf_patch and location_name == 'Location - Power of Wolf':
+                    object_layouts[(stage_name, room_name)][object_layout_id]['Entity Room Index'] = 18
+        elif quest_reward['Type'] == 'Stage Item Drop':
+            for location_alias in quest_reward['Data']:
+                constant_name = location_alias['Constant']
+                item_drop_index = location_alias['Item Drop Index']
+                array_extract_meta = extract['Constants'][constant_name]['Metadata']
+                item_id = aliases['Items'][reward_name]
+                result.patch_value(
+                    item_id,
+                    array_extract_meta['Type'],
+                    sotn_address.Address(
+                        array_extract_meta['Start'] + item_drop_index * array_extract_meta['Size']
+                    ),
+                )
+    # Quest Rewards - Part 2
     for ((stage_name, room_name), object_layout) in object_layouts.items():
         horizontal_object_layout = list(sorted(object_layout,
             key=lambda x: (x['X'], x['Y'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
