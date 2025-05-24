@@ -670,8 +670,8 @@ if __name__ == '__main__':
             # Unique item drops in First Castle
             (0x03CE01E4, 'u16', 13, 'Unique Item Drops (Abandoned Mine)'),
             (0x049BFBB0, 'u16', 11, 'Unique Item Drops (Alchemy Laboratory)'),
-            (0x0491BE18, 'u16', 10, 'Unique Item Drops (Castle Entrance)'),
-            (0x041A948C, 'u16', 10, 'Unique Item Drops (Castle Entrance Revisited)'),
+            (0x041A948C, 'u16', 10, 'Unique Item Drops (Castle Entrance)'),
+            (0x0491BE18, 'u16', 10, 'Unique Item Drops (Castle Entrance Revisited)'),
             (0x04AEFD10, 'u16', 19, 'Unique Item Drops (Castle Keep)'),
             (0x03BB474C, 'u16', 21, 'Unique Item Drops (Catacombs)'),
             (0x04A6811C, 'u16', 12, 'Unique Item Drops (Clock Tower)'),

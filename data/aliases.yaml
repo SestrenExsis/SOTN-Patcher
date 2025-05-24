@@ -245,45 +245,63 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Castle Entrance)
         Item Drop Index: 0
+      - Constant: Unique Item Drops (Castle Entrance Revisited)
+        Item Drop Index: 0
   Location - Castle Entrance, Life Max-Up Room (Life Max-Up):
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Castle Entrance)
+        Item Drop Index: 1
+      - Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 1
   Location - Castle Entrance, Jewel Sword Room (Life Apple):
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Castle Entrance)
         Item Drop Index: 2
+      - Constant: Unique Item Drops (Castle Entrance Revisited)
+        Item Drop Index: 2
   Location - Castle Entrance, Cube of Zoe Room (Shield Potion):
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Castle Entrance)
+        Item Drop Index: 4
+      - Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 4
   Location - Castle Entrance, Holy Mail Room (Holy Mail):
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Castle Entrance)
         Item Drop Index: 5
+      - Constant: Unique Item Drops (Castle Entrance Revisited)
+        Item Drop Index: 5
   Location - Castle Entrance, Shortcut to Underground Caverns (Life Max-Up):
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Castle Entrance)
+        Item Drop Index: 6
+      - Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 6
   Location - Castle Entrance, Shortcut to Warp Rooms (Heart Max-Up):
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Castle Entrance)
         Item Drop Index: 7
+      - Constant: Unique Item Drops (Castle Entrance Revisited)
+        Item Drop Index: 7
   Location - Castle Entrance, After Drawbridge (Life Max-Up):
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Castle Entrance)
         Item Drop Index: 8
+      - Constant: Unique Item Drops (Castle Entrance Revisited)
+        Item Drop Index: 8
   Location - Castle Entrance, Jewel Sword Room (Jewel Sword):
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Castle Entrance)
+        Item Drop Index: 9
+      - Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 9
   Location - Marble Gallery, Pathway After Left Statue (Life Max-Up):
     Type: Stage Item Drop
