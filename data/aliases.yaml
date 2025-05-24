@@ -44,6 +44,7 @@ Items:
   Item - Attack Potion: 279
   Item - Aquamarine: 361
   Item - Badelaire: 253
+  Item - Bandanna: 326
   Item - Basilard: 146
   Item - Bastard Sword: 224
   Item - Bat Pentagram: 202
@@ -52,7 +53,9 @@ Items:
   Item - Buffalo Star: 205
   Item - Bwaka Knife: 208
   Item - Cheese: 175
+  Item - Claymore: 226
   Item - Cloth Cape: 346
+  Item - Crystal Cloak: 349
   Item - Dark Blade: 246
   Item - Diamond: 366
   Item - Dragon Helm: 342
@@ -63,19 +66,23 @@ Items:
   Item - Garnet: 364
   Item - Gladius: 214
   Item - Goddess Shield: 139
+  Item - Gold Ring: 369
   Item - Gram: 236
   Item - Heart Max-Up: 12
   Item - Heart Refresh: 270
   Item - Hammer: 275
+  Item - Herald Shield: 137
   Item - Hide Cuirass: 299
   Item - High Potion: 288
   Item - Holy Mail: 5
+  Item - Ice Mail: 309
   Item - Iron Ball: 263
   Item - Javelin: 210
   Item - Jewel Knuckles: 225
   Item - Jewel Sword: 237
   Item - Karma Coin: 152
   Item - Katana: 228
+  Item - Knuckle Duster: 213
   Item - Leather Shield: 133
   Item - Library Card: 294
   Item - Life Apple: 274
@@ -88,8 +95,10 @@ Items:
   Item - Meal Ticket: 198
   Item - Mirror Cuirass: 310
   Item - Moon Rod: 260
+  Item - Moonstone: 355
   Item - Necklace of J: 375
   Item - Neutron Bomb: 199
+  Item - Nunchaku: 149
   Item - Onyx: 363
   Item - Opal: 365
   Item - Opal Circlet: 337
@@ -108,6 +117,8 @@ Items:
   Item - Ring of Arcana: 372
   Item - Royal Cloak: 350
   Item - Ruby Circlet: 336
+  Item - Scimitar: 327
+  Item - Secret Boots: 385
   Item - Shield Potion: 280
   Item - Shiitake: 165
   Item - Shotel: 156
@@ -485,6 +496,263 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Outer Wall)
         Item Drop Index: 6
+  Location - Underground Caverns, Plaque Room With Breakable Wall and Left Ferryman Route (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 0
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 0
+  Location - Underground Caverns, Plaque Room With Life Max-Up (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 1
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 1
+  Location - Underground Caverns, Crystal Cloak Room (Crystal Cloak):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 2
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 2
+  Location - Underground Caverns, Unknown Item Drop 3 (Unknown Item):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 3
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 3
+  Location - Underground Caverns, Ice Floe Room (Antivenom):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 4
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 4
+  Location - Underground Caverns, Ice Floe Room (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 5
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 5
+  Location - Underground Caverns, Room ID 18 (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 6
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 6
+  Location - Underground Caverns, DK Button (Herald Shield):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 7
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 7
+  Location - Underground Caverns, Unknown Item Drop 8 (Unknown Item):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 8
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 8
+  Location - Underground Caverns, Long Drop (Zircon):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 9
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 9
+  Location - Underground Caverns, False Save Room (Gold Ring):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 10
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 10
+  Location - Underground Caverns, Bandanna Room (Bandanna):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 11
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 11
+  Location - Underground Caverns, Tall Stairwell (Shiitake):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 12
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 12
+  Location - Underground Caverns, Claymore Stairwell (Claymore):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 13
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 13
+  Location - Underground Caverns, Meal Tickets and Moonstone Room (Meal Ticket 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 14
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 14
+  Location - Underground Caverns, Meal Tickets and Moonstone Room (Meal Ticket 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 15
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 15
+  Location - Underground Caverns, Meal Tickets and Moonstone Room (Meal Ticket 3):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 16
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 16
+  Location - Underground Caverns, Meal Tickets and Moonstone Room (Meal Ticket 4):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 17
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 17
+  Location - Underground Caverns, Meal Tickets and Moonstone Room (Moonstone):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 18
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 18
+  Location - Underground Caverns, Rising Water Room (Scimitar):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 19
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 19
+  Location - Underground Caverns, Rising Water Room (Resist Ice):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 20
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 20
+  Location - Underground Caverns, Scylla Room (Pot Roast):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 21
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 21
+  Location - Underground Caverns, Right Ferryman Route (Onyx):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 22
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 22
+  Location - Underground Caverns, Right Ferryman Route (Knuckle Duster):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 23
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 23
+  Location - Underground Caverns, Right Ferryman Route (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 24
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 24
+  Location - Underground Caverns, Right Ferryman Route (Elixir):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 25
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 25
+  Location - Underground Caverns, Ice Floe Room (Shiitake):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 26
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 26
+  Location - Underground Caverns, Ice Floe Room (Toadstool):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 27
+  Location - Underground Caverns, DK Bridge (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 28
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 28
+  Location - Underground Caverns, DK Bridge (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 29
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 29
+  Location - Underground Caverns, Pentagram Room (Pentagram):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 30
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 30
+  Location - Underground Caverns, Waterfall (Secret Boots):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 31
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 31
+  Location - Underground Caverns, Waterfall (Toadstool):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 32
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 32
+  Location - Underground Caverns, Waterfall (Shiitake):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 33
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 33
+  Location - Underground Caverns, Unknown Item Drop 34 (Unknown Item):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 34
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 34
+  Location - Underground Caverns, Exit to Castle Entrance (Shiitake):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 35
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 35
+  Location - Underground Caverns, Ice Floe Room (Nunchaku):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 36
+      - Constant: Unique Item Drops (Underground Caverns)
+        Item Drop Index: 36
   Location - XXX:
     Type: Stage Item Drop
     Data:
