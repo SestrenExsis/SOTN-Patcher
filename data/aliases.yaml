@@ -40,6 +40,7 @@ Items:
   Item - Alucart Mail: 386
   Item - Alucart Shield: 295
   Item - Alucart Sword: 296
+  Item - Ankh of Life: 377
   Item - Antivenom: 272
   Item - Attack Potion: 279
   Item - Aquamarine: 361
@@ -50,6 +51,7 @@ Items:
   Item - Bat Pentagram: 202
   Item - Boomerang: 209
   Item - Broadsword: 219
+  Item - Bronze Cuirass: 300
   Item - Buffalo Star: 205
   Item - Bwaka Knife: 208
   Item - Cheese: 175
@@ -62,6 +64,7 @@ Items:
   Item - Elixir: 289
   Item - Estoc: 223
   Item - Fire Boomerange: 262
+  Item - Frankfurter: 172
   Item - Fury Plate: 319
   Item - Garnet: 364
   Item - Gladius: 214
@@ -75,6 +78,7 @@ Items:
   Item - Hide Cuirass: 299
   Item - High Potion: 288
   Item - Holy Mail: 5
+  Item - Holy Rod: 258
   Item - Ice Mail: 309
   Item - Iron Ball: 263
   Item - Javelin: 210
@@ -82,6 +86,7 @@ Items:
   Item - Jewel Sword: 237
   Item - Karma Coin: 152
   Item - Katana: 228
+  Item - Knight Shield: 134
   Item - Knuckle Duster: 213
   Item - Leather Shield: 133
   Item - Library Card: 294
@@ -125,14 +130,17 @@ Items:
   Item - Shuriken: 203
   Item - Smart Potion: 278
   Item - Staurolite: 358
+  Item - Stone Mask: 333
   Item - Strength Potion: 276
   Item - Sunglasses: 324
   Item - Sunstone: 356
   Item - Sword of Dawn: 145
   Item - Sword of Hador: 232
+  Item - Takemitsu: 155
   Item - Talwar: 227
   Item - TNT: 207
   Item - Toadstool: 164
+  Item - Topaz Circlet: 338
   Item - Turquoise: 362
   Item - Twilight Cloak: 353
   Item - Zircon: 360
@@ -326,6 +334,61 @@ Quest Rewards:
         Item Drop Index: 9
       - Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 9
+  Location - Long Library, Unknown Item Drop 0 (Ankh of Life):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Long Library)
+        Item Drop Index: 0
+  Location - Long Library, Secret Bookcase Room (Stone Mask):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Long Library)
+        Item Drop Index: 1
+  Location - Long Library, Holy Rod Room (Holy Rod):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Long Library)
+        Item Drop Index: 2
+  Location - Long Library, Unknown Item Drop 3 (Knight Shield):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Long Library)
+        Item Drop Index: 3
+  Location - Long Library, Shop (Bronze Cuirass):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Long Library)
+        Item Drop Index: 4
+  Location - Long Library, Lesser Demon Area (Takemitsu):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Long Library)
+        Item Drop Index: 5
+  Location - Long Library, Lesser Demon Area (Onyx):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Long Library)
+        Item Drop Index: 6
+  Location - Long Library, Lesser Demon Area (Frankfurter):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Long Library)
+        Item Drop Index: 7
+  Location - Long Library, Faerie Card Room (Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Long Library)
+        Item Drop Index: 8
+  Location - Long Library, Faerie Card Room (Antivenom):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Long Library)
+        Item Drop Index: 9
+  Location - Long Library, Holy Rod Room (Topaz Circlet):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Long Library)
+        Item Drop Index: 10
   Location - Marble Gallery, Pathway After Left Statue (Life Max-Up):
     Type: Stage Item Drop
     Data:
