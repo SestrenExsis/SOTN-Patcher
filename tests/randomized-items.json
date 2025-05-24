@@ -3,6 +3,15 @@
         "Enable debug mode": true
     },
     "Quest Rewards": {
+        "Location - Castle Entrance, After Drawbridge (Life Max-Up)": "Item - Leather Shield",
+        "Location - Castle Entrance, Cube of Zoe Room (Shield Potion)": "Item - Leather Shield",
+        "Location - Castle Entrance, Heart Max-Up Room (Heart Max-Up)": "Item - Leather Shield",
+        "Location - Castle Entrance, Holy Mail Room (Holy Mail)": "Item - Leather Shield",
+        "Location - Castle Entrance, Jewel Sword Room (Jewel Sword)": "Item - Leather Shield",
+        "Location - Castle Entrance, Jewel Sword Room (Life Apple)": "Item - Leather Shield",
+        "Location - Castle Entrance, Life Max-Up Room (Life Max-Up)": "Item - Leather Shield",
+        "Location - Castle Entrance, Shortcut to Underground Caverns (Life Max-Up)": "Item - Leather Shield",
+        "Location - Castle Entrance, Shortcut to Warp Rooms (Heart Max-Up)": "Item - Leather Shield",
         "Location - Marble Gallery, Pathway After Left Statue (Life Max-Up)": "Item - Potion",
         "Location - Marble Gallery, Pathway After Right Statue (Alucart Shield)": "Item - Potion",
         "Location - Marble Gallery, Pathway After Right Statue (Heart Max-Up)": "Item - Potion",
