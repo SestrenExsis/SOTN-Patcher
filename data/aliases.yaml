@@ -48,13 +48,16 @@ Items:
   Item - Bastard Sword: 224
   Item - Bat Pentagram: 202
   Item - Boomerang: 209
+  Item - Broadsword: 219
   Item - Buffalo Star: 205
   Item - Bwaka Knife: 208
+  Item - Cheese: 175
   Item - Cloth Cape: 346
   Item - Dark Blade: 246
   Item - Diamond: 366
   Item - Dragon Helm: 342
   Item - Elixir: 289
+  Item - Estoc: 223
   Item - Fire Boomerange: 262
   Item - Fury Plate: 319
   Item - Garnet: 364
@@ -87,9 +90,11 @@ Items:
   Item - Moon Rod: 260
   Item - Necklace of J: 375
   Item - Neutron Bomb: 199
+  Item - Onyx: 363
   Item - Opal: 365
   Item - Opal Circlet: 337
   Item - Osafune Katana: 267
+  Item - Pentagram: 201
   Item - Pot Roast: 195
   Item - Potion: 287
   Item - Power of Sire: 200
@@ -261,6 +266,13 @@ Quest Rewards:
         Item Drop Index: 2
       - Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 2
+  Location - Castle Entrance, Unknown Item Drop 3 (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Entrance)
+        Item Drop Index: 3
+      - Constant: Unique Item Drops (Castle Entrance Revisited)
+        Item Drop Index: 3
   Location - Castle Entrance, Cube of Zoe Room (Shield Potion):
     Type: Stage Item Drop
     Data:
@@ -303,11 +315,6 @@ Quest Rewards:
         Item Drop Index: 9
       - Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 9
-  Location - Marble Gallery, Pathway After Left Statue (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Marble Gallery)
-        Item Drop Index: 0
   Location - Marble Gallery, Pathway After Left Statue (Life Max-Up):
     Type: Stage Item Drop
     Data:
@@ -378,6 +385,71 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 13
+  Location - Olrox's Quarters, Unknown Item Drop 0 (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Olrox's Quarters)
+        Item Drop Index: 0
+  Location - Olrox's Quarters, Catwalk Crypt (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Olrox's Quarters)
+        Item Drop Index: 1
+  Location - Olrox's Quarters, Unknown Item Drop 2 (Pentagram):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Olrox's Quarters)
+        Item Drop Index: 2
+  Location - Olrox's Quarters, Unknown Item Drop 3 (Goddess Shield):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Olrox's Quarters)
+        Item Drop Index: 3
+  Location - Olrox's Quarters, Secret Onyx Room (Broadsword):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Olrox's Quarters)
+        Item Drop Index: 4
+  Location - Olrox's Quarters, Secret Onyx Room (Onyx):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Olrox's Quarters)
+        Item Drop Index: 5
+  Location - Olrox's Quarters, Secret Onyx Room (Cheese):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Olrox's Quarters)
+        Item Drop Index: 6
+  Location - Olrox's Quarters, Tall Shaft (Manna Prism):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Olrox's Quarters)
+        Item Drop Index: 7
+  Location - Olrox's Quarters, Tall Shaft (Resist Fire):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Olrox's Quarters)
+        Item Drop Index: 8
+  Location - Olrox's Quarters, Tall Shaft (Luck Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Olrox's Quarters)
+        Item Drop Index: 9
+  Location - Olrox's Quarters, Prison (Estoc):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Olrox's Quarters)
+        Item Drop Index: 10
+  Location - Olrox's Quarters, Narrow Hallway to Olrox (Iron Ball):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Olrox's Quarters)
+        Item Drop Index: 11
+  Location - Olrox's Quarters, Garnet Room (Garnet):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Olrox's Quarters)
+        Item Drop Index: 12
   Location - Outer Wall, Jewel Knuckles Room (Jewel Knuckles):
     Type: Stage Item Drop
     Data:
