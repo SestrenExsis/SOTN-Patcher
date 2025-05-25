@@ -45,18 +45,22 @@ Items:
   Item - Attack Potion: 279
   Item - Aquamarine: 361
   Item - Badelaire: 253
+  Item - Ballroom Mask: 325
   Item - Bandanna: 326
   Item - Basilard: 146
   Item - Bastard Sword: 224
   Item - Bat Pentagram: 202
+  Item - Bloodstone: 357
   Item - Boomerang: 209
   Item - Broadsword: 219
   Item - Bronze Cuirass: 300
   Item - Buffalo Star: 205
   Item - Bwaka Knife: 208
+  Item - Cat-Eye Circlet: 340
   Item - Cheese: 175
   Item - Claymore: 226
   Item - Cloth Cape: 346
+  Item - Cross Shuriken: 204
   Item - Crystal Cloak: 349
   Item - Dark Blade: 246
   Item - Diamond: 366
@@ -80,6 +84,7 @@ Items:
   Item - Holy Mail: 5
   Item - Holy Rod: 258
   Item - Ice Mail: 309
+  Item - Icebrand: 241
   Item - Iron Ball: 263
   Item - Javelin: 210
   Item - Jewel Knuckles: 225
@@ -99,8 +104,12 @@ Items:
   Item - Manna Prism: 290
   Item - Meal Ticket: 198
   Item - Mirror Cuirass: 310
+  Item - Monster Vial 1: 201
+  Item - Monster Vial 2: 202
+  Item - Monster Vial 3: 203
   Item - Moon Rod: 260
   Item - Moonstone: 355
+  Item - Mormegil: 238
   Item - Necklace of J: 375
   Item - Neutron Bomb: 199
   Item - Nunchaku: 149
@@ -109,6 +118,7 @@ Items:
   Item - Opal Circlet: 337
   Item - Osafune Katana: 267
   Item - Pentagram: 201
+  Item - Pork Bun: 191
   Item - Pot Roast: 195
   Item - Potion: 287
   Item - Power of Sire: 200
@@ -129,6 +139,7 @@ Items:
   Item - Shotel: 156
   Item - Shuriken: 203
   Item - Smart Potion: 278
+  Item - Spike Breaker: 311
   Item - Staurolite: 358
   Item - Stone Mask: 333
   Item - Strength Potion: 276
@@ -143,6 +154,7 @@ Items:
   Item - Topaz Circlet: 338
   Item - Turquoise: 362
   Item - Twilight Cloak: 353
+  Item - Walk Armor: 316
   Item - Zircon: 360
 Quest Rewards:
   Location - Cube of Zoe:
@@ -334,6 +346,111 @@ Quest Rewards:
         Item Drop Index: 9
       - Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 9
+  Location - Catacombs, Cat-Eye Circlet Room (Cat-Eye Circlet):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 0
+  Location - Catacombs, Icebrand Room (Icebrand):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 1
+  Location - Catacombs, Walk Armor Room (Walk Armor):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 2
+  Location - Catacombs, Mormegil Room (Mormegil):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 3
+  Location - Catacombs, Spike Breaker Room (Library Card):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 4
+  Location - Catacombs, Unknown Item Drop 5 (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 5
+  Location - Catacombs, Ballroom Mask Room (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 6
+  Location - Catacombs, Ballroom Mask Room (Ballroom Mask):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 7
+  Location - Catacombs, Cat-Eye Circlet Room (Bloodstone):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 8
+  Location - Catacombs, Room ID 19 (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 9
+  Location - Catacombs, Room ID 19 (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 10
+  Location - Catacombs, Room ID 25 (Cross Shuriken 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 11
+  Location - Catacombs, Room ID 25 (Cross Shuriken 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 12
+  Location - Catacombs, Room ID 25 (Karma Coin 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 13
+  Location - Catacombs, Room ID 25 (Karma Coin 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 14
+  Location - Catacombs, Room ID 26 (Pork Bun):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 15
+  Location - Catacombs, Spike Breaker Room (Spike Breaker):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 16
+  Location - Catacombs, Room ID 20 (Monster Vial 3 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 17
+  Location - Catacombs, Room ID 20 (Monster Vial 3 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 18
+  Location - Catacombs, Room ID 20 (Monster Vial 3 3):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 19
+  Location - Catacombs, Room ID 20 (Monster Vial 3 4):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Catacombs)
+        Item Drop Index: 20
   Location - Long Library, Unknown Item Drop 0 (Ankh of Life):
     Type: Stage Item Drop
     Data:
