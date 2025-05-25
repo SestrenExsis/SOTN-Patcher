@@ -42,8 +42,8 @@ Items:
   Item - Alucart Sword: 296
   Item - Ankh of Life: 377
   Item - Antivenom: 272
-  Item - Attack Potion: 279
   Item - Aquamarine: 361
+  Item - Attack Potion: 279
   Item - Badelaire: 253
   Item - Ballroom Mask: 325
   Item - Bandanna: 326
@@ -62,6 +62,7 @@ Items:
   Item - Cloth Cape: 346
   Item - Cross Shuriken: 204
   Item - Crystal Cloak: 349
+  Item - Cutlass: 216
   Item - Dark Blade: 246
   Item - Diamond: 366
   Item - Dragon Helm: 342
@@ -73,6 +74,7 @@ Items:
   Item - Garnet: 364
   Item - Gladius: 214
   Item - Goddess Shield: 139
+  Item - Goggles: 329
   Item - Gold Ring: 369
   Item - Gram: 236
   Item - Heart Max-Up: 12
@@ -110,6 +112,8 @@ Items:
   Item - Moon Rod: 260
   Item - Moonstone: 355
   Item - Mormegil: 238
+  Item - Morningstar: 257
+  Item - Mystic Pendant: 373
   Item - Necklace of J: 375
   Item - Neutron Bomb: 199
   Item - Nunchaku: 149
@@ -138,6 +142,8 @@ Items:
   Item - Shiitake: 165
   Item - Shotel: 156
   Item - Shuriken: 203
+  Item - Silver Plate: 303
+  Item - Silver Ring: 370
   Item - Smart Potion: 278
   Item - Spike Breaker: 311
   Item - Staurolite: 358
@@ -676,6 +682,86 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Outer Wall)
         Item Drop Index: 6
+  Location - Royal Chapel, Chapel Staircase (Ankh of Life):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 0
+  Location - Royal Chapel, Chapel Staircase (Morningstar):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 1
+  Location - Royal Chapel, Silver Ring Room (Silver Ring):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 2
+  Location - Royal Chapel, Chapel Staircase (Aquamarine):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 3
+  Location - Royal Chapel, Chapel Staircase (Mystic Pendant):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 4
+  Location - Royal Chapel, Chapel Staircase (Magic Missile):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 5
+  Location - Royal Chapel, Chapel Staircase (Shuriken):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 6
+  Location - Royal Chapel, Chapel Staircase (TNT):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 7
+  Location - Royal Chapel, Chapel Staircase (Boomerang):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 8
+  Location - Royal Chapel, Goggles Room (Goggles):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 9
+  Location - Royal Chapel, Left Tower (Silver Plate):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 10
+  Location - Royal Chapel, Left Tower (Strength Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 11
+  Location - Royal Chapel, Left Tower (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 12
+  Location - Royal Chapel, Middle Tower (Zircon):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 13
+  Location - Royal Chapel, Right Tower (Cutlass):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 14
+  Location - Royal Chapel, Right Tower (Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Royal Chapel)
+        Item Drop Index: 15
   Location - Underground Caverns, Plaque Room With Breakable Wall and Left Ferryman Route (Heart Max-Up):
     Type: Stage Item Drop
     Data:
