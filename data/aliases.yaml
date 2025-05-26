@@ -357,11 +357,61 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Abandoned Mine)
         Item Drop Index: 12
+  Location - Alchemy Laboratory, Entryway (Hide Cuirass):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Alchemy Laboratory)
+        Item Drop Index: 0
+  Location - Alchemy Laboratory, Heart Max-Up Room (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Alchemy Laboratory)
+        Item Drop Index: 1
+  Location - Alchemy Laboratory, Cloth Cape Room (Cloth Cape):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Alchemy Laboratory)
+        Item Drop Index: 2
+  Location - Alchemy Laboratory, Secret Life Max-Up Room (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Alchemy Laboratory)
+        Item Drop Index: 3
+  Location - Alchemy Laboratory, Unknown Item Drop 4 (Flamberge):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Alchemy Laboratory)
+        Item Drop Index: 4
+  Location - Alchemy Laboratory, Unknown Item Drop 5 (Bandanna):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Alchemy Laboratory)
+        Item Drop Index: 5
+  Location - Alchemy Laboratory, Sunglasses Room (Sunglasses):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Alchemy Laboratory)
+        Item Drop Index: 6
+  Location - Alchemy Laboratory, Short Zig Zag Room (Resist Thunder):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Alchemy Laboratory)
+        Item Drop Index: 7
   Location - Alchemy Laboratory, Red Skeleton Lift Room (Leather Shield):
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 8
+  Location - Alchemy Laboratory, Cannon Room (Basilard):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Alchemy Laboratory)
+        Item Drop Index: 9
+  Location - Alchemy Laboratory, Exit to Marble Gallery (Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Alchemy Laboratory)
+        Item Drop Index: 10
   Location - Castle Entrance, Heart Max-Up Room (Heart Max-Up):
     Type: Stage Item Drop
     Data:
