@@ -47,6 +47,7 @@ Items:
   Item - Badelaire: 253
   Item - Ballroom Mask: 325
   Item - Bandanna: 326
+  Item - Barley Tea: 185
   Item - Basilard: 146
   Item - Bastard Sword: 224
   Item - Bat Pentagram: 202
@@ -60,6 +61,7 @@ Items:
   Item - Cheese: 175
   Item - Claymore: 226
   Item - Cloth Cape: 346
+  Item - Combat Knife: 148
   Item - Cross Shuriken: 204
   Item - Crystal Cloak: 349
   Item - Cutlass: 216
@@ -121,6 +123,7 @@ Items:
   Item - Opal: 365
   Item - Opal Circlet: 337
   Item - Osafune Katana: 267
+  Item - Peanuts: 163
   Item - Pentagram: 201
   Item - Pork Bun: 191
   Item - Pot Roast: 195
@@ -134,6 +137,7 @@ Items:
   Item - Resist Stone: 284
   Item - Resist Thunder: 282
   Item - Ring of Arcana: 372
+  Item - Ring of Ares: 368
   Item - Royal Cloak: 350
   Item - Ruby Circlet: 336
   Item - Scimitar: 327
@@ -148,6 +152,7 @@ Items:
   Item - Spike Breaker: 311
   Item - Staurolite: 358
   Item - Stone Mask: 333
+  Item - Stone Sword: 242
   Item - Strength Potion: 276
   Item - Sunglasses: 324
   Item - Sunstone: 356
@@ -158,6 +163,7 @@ Items:
   Item - TNT: 207
   Item - Toadstool: 164
   Item - Topaz Circlet: 338
+  Item - Turkey: 197
   Item - Turquoise: 362
   Item - Twilight Cloak: 353
   Item - Walk Armor: 316
@@ -277,6 +283,71 @@ Quest Rewards:
       - Stage: Underground Caverns
         Room: Underground Caverns, Merman Statue Room
         Object Layout ID: 0
+  Location - Abandoned Mine, Peanuts Room (Power of Sire):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Abandoned Mine)
+        Item Drop Index: 0
+  Location - Abandoned Mine, Karma Coin Room (Karma Coin):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Abandoned Mine)
+        Item Drop Index: 1
+  Location - Abandoned Mine, Unknown Item Drop 2 (Stone Sword):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Abandoned Mine)
+        Item Drop Index: 2
+  Location - Abandoned Mine, Snake Column (Turkey):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Abandoned Mine)
+        Item Drop Index: 3
+  Location - Abandoned Mine, Snake Column (Ring of Ares):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Abandoned Mine)
+        Item Drop Index: 4
+  Location - Abandoned Mine, Karma Coin Room (Combat Knife):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Abandoned Mine)
+        Item Drop Index: 5
+  Location - Abandoned Mine, Crumbling Stairwells With Mushrooms (Shiitake 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Abandoned Mine)
+        Item Drop Index: 6
+  Location - Abandoned Mine, Crumbling Stairwells With Mushrooms (Shiitake 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Abandoned Mine)
+        Item Drop Index: 7
+  Location - Abandoned Mine, Peanuts Room (Barley Tea):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Abandoned Mine)
+        Item Drop Index: 8
+  Location - Abandoned Mine, Peanuts Room (Peanuts 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Abandoned Mine)
+        Item Drop Index: 9
+  Location - Abandoned Mine, Peanuts Room (Peanuts 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Abandoned Mine)
+        Item Drop Index: 10
+  Location - Abandoned Mine, Peanuts Room (Peanuts 3):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Abandoned Mine)
+        Item Drop Index: 11
+  Location - Abandoned Mine, Peanuts Room (Peanuts 4):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Abandoned Mine)
+        Item Drop Index: 12
   Location - Alchemy Laboratory, Red Skeleton Lift Room (Leather Shield):
     Type: Stage Item Drop
     Data:
