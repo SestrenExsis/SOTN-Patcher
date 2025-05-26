@@ -71,7 +71,9 @@ Items:
   Item - Dragon Helm: 342
   Item - Elixir: 289
   Item - Estoc: 223
-  Item - Fire Boomerange: 262
+  Item - Falchion: 218
+  Item - Fire Boomerang: 262
+  Item - Fire Mail: 307
   Item - Frankfurter: 172
   Item - Fury Plate: 319
   Item - Garnet: 364
@@ -128,6 +130,7 @@ Items:
   Item - Osafune Katana: 267
   Item - Peanuts: 163
   Item - Pentagram: 201
+  Item - Platinum Mail: 305
   Item - Pork Bun: 191
   Item - Pot Roast: 195
   Item - Potion: 287
@@ -152,6 +155,7 @@ Items:
   Item - Shuriken: 203
   Item - Silver Plate: 303
   Item - Silver Ring: 370
+  Item - Sirloin: 196
   Item - Smart Potion: 278
   Item - Spike Breaker: 311
   Item - Staurolite: 358
@@ -170,6 +174,7 @@ Items:
   Item - Turkey: 197
   Item - Turquoise: 362
   Item - Twilight Cloak: 353
+  Item - Tyrfing: 211
   Item - Walk Armor: 316
   Item - Zircon: 360
 Quest Rewards:
@@ -427,6 +432,101 @@ Quest Rewards:
         Item Drop Index: 9
       - Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 9
+  Location - Castle Keep, Keep Area (Turquoise):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 0
+  Location - Castle Keep, Unknown Item Drop 1 (Turkey):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 1
+  Location - Castle Keep, Keep Area (Fire Mail):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 2
+  Location - Castle Keep, Tyrfing Room (Tyrfing):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 3
+  Location - Castle Keep, Upper Attic (Sirloin):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 4
+  Location - Castle Keep, Unknown Item Drop 5 (Turkey):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 5
+  Location - Castle Keep, Upper Attic (Pot Roast):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 6
+  Location - Castle Keep, Upper Attic (Frankfurter):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 7
+  Location - Castle Keep, Upper Attic (Resist Stone):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 8
+  Location - Castle Keep, Upper Attic (Resist Dark):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 9
+  Location - Castle Keep, Upper Attic (Resist Holy):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 10
+  Location - Castle Keep, Upper Attic (Platinum Mail):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 11
+  Location - Castle Keep, Falchion Room (Falchion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 12
+  Location - Castle Keep, Ghost Card Room (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 13
+  Location - Castle Keep, Ghost Card Room (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 14
+  Location - Castle Keep, Ghost Card Room (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 15
+  Location - Castle Keep, Ghost Card Room (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 16
+  Location - Castle Keep, Unknown Item Drop 17 (Cat-Eye Circlet):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 17
+  Location - Castle Keep, Keep Area (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 18
   Location - Catacombs, Cat-Eye Circlet Room (Cat-Eye Circlet):
     Type: Stage Item Drop
     Data:
@@ -542,7 +642,7 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Colosseum)
         Item Drop Index: 1
-  Location - Colosseum, XXX (Unknown Item):
+  Location - Colosseum, Unknown Item Drop 2 (Moon Rod):
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Colosseum)
