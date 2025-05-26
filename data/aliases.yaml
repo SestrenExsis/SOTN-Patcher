@@ -1073,6 +1073,46 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Outer Wall)
         Item Drop Index: 6
+  Location - Reverse Outer Wall, Lower Medusa Room (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Outer Wall)
+        Item Drop Index: 0
+  Location - Reverse Outer Wall, Jewel Knuckles Room (Shotel):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Outer Wall)
+        Item Drop Index: 1
+  Location - Reverse Outer Wall, Jewel Knuckles Room (Hammer):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Outer Wall)
+        Item Drop Index: 2
+  Location - Reverse Outer Wall, Exit to Marble Gallery (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Outer Wall)
+        Item Drop Index: 3
+  Location - Reverse Outer Wall, Garnet Vase Room (Luck Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Outer Wall)
+        Item Drop Index: 4
+  Location - Reverse Outer Wall, Gladius Room (Shield Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Outer Wall)
+        Item Drop Index: 5
+  Location - Reverse Outer Wall, Elevator Shaft Room (High Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Outer Wall)
+        Item Drop Index: 6
+  Location - Reverse Outer Wall, Elevator Shaft Room (Garnet):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Outer Wall)
+        Item Drop Index: 7
   Location - Royal Chapel, Chapel Staircase (Ankh of Life):
     Type: Stage Item Drop
     Data:
