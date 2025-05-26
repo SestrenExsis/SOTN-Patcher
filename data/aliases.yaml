@@ -52,6 +52,7 @@ Items:
   Item - Bastard Sword: 224
   Item - Bat Pentagram: 202
   Item - Bloodstone: 357
+  Item - Blood Cloak: 351
   Item - Boomerang: 209
   Item - Broadsword: 219
   Item - Bronze Cuirass: 300
@@ -79,6 +80,7 @@ Items:
   Item - Goggles: 329
   Item - Gold Ring: 369
   Item - Gram: 236
+  Item - Green Tea: 186
   Item - Heart Max-Up: 12
   Item - Heart Refresh: 270
   Item - Hammer: 275
@@ -87,6 +89,7 @@ Items:
   Item - High Potion: 288
   Item - Holy Mail: 5
   Item - Holy Rod: 258
+  Item - Holy Sword: 243
   Item - Ice Mail: 309
   Item - Icebrand: 241
   Item - Iron Ball: 263
@@ -143,6 +146,7 @@ Items:
   Item - Scimitar: 327
   Item - Secret Boots: 385
   Item - Shield Potion: 280
+  Item - Shield Rod: 132
   Item - Shiitake: 165
   Item - Shotel: 156
   Item - Shuriken: 203
@@ -528,6 +532,46 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 20
+  Location - Colosseum, Right-Side Armory (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Colosseum)
+        Item Drop Index: 0
+  Location - Colosseum, Left-Side Armory (Shield Rod):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Colosseum)
+        Item Drop Index: 1
+  Location - Colosseum, XXX (Unknown Item):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Colosseum)
+        Item Drop Index: 2
+  Location - Colosseum, Blood Cloak Room (Blood Cloak):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Colosseum)
+        Item Drop Index: 3
+  Location - Colosseum, Passageway Between Arena and Royal Chapel (Knight Shield):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Colosseum)
+        Item Drop Index: 4
+  Location - Colosseum, Passageway Between Arena and Royal Chapel (Library Card):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Colosseum)
+        Item Drop Index: 5
+  Location - Colosseum, Fountain Room (Green Tea):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Colosseum)
+        Item Drop Index: 6
+  Location - Colosseum, Holy Sword Room (Holy Sword):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Colosseum)
+        Item Drop Index: 7
   Location - Long Library, Unknown Item Drop 0 (Ankh of Life):
     Type: Stage Item Drop
     Data:
