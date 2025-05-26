@@ -51,6 +51,7 @@ Items:
   Item - Basilard: 146
   Item - Bastard Sword: 224
   Item - Bat Pentagram: 202
+  Item - Bekatowa: 220
   Item - Bloodstone: 357
   Item - Blood Cloak: 351
   Item - Boomerang: 209
@@ -80,12 +81,14 @@ Items:
   Item - Gladius: 214
   Item - Goddess Shield: 139
   Item - Goggles: 329
+  Item - Gold Plate: 304
   Item - Gold Ring: 369
   Item - Gram: 236
   Item - Green Tea: 186
   Item - Heart Max-Up: 12
   Item - Heart Refresh: 270
   Item - Hammer: 275
+  Item - Healing Mail: 314
   Item - Herald Shield: 137
   Item - Hide Cuirass: 299
   Item - High Potion: 288
@@ -148,6 +151,7 @@ Items:
   Item - Ruby Circlet: 336
   Item - Scimitar: 327
   Item - Secret Boots: 385
+  Item - Shaman Shield: 140
   Item - Shield Potion: 280
   Item - Shield Rod: 132
   Item - Shiitake: 165
@@ -158,7 +162,9 @@ Items:
   Item - Sirloin: 196
   Item - Smart Potion: 278
   Item - Spike Breaker: 311
+  Item - Star Flail: 259
   Item - Staurolite: 358
+  Item - Steel Helm: 332
   Item - Stone Mask: 333
   Item - Stone Sword: 242
   Item - Strength Potion: 276
@@ -682,6 +688,66 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 20
+  Location - Clock Tower, Open Courtyard (Magic Missile):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Clock Tower)
+        Item Drop Index: 0
+  Location - Clock Tower, Open Courtyard (Pentagram):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Clock Tower)
+        Item Drop Index: 1
+  Location - Clock Tower, Unknown Item Drop 2 (Stone Sword):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Clock Tower)
+        Item Drop Index: 2
+  Location - Clock Tower, Hidden Armory (Star Flail):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Clock Tower)
+        Item Drop Index: 3
+  Location - Clock Tower, Hidden Armory (Gold Plate):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Clock Tower)
+        Item Drop Index: 4
+  Location - Clock Tower, Hidden Armory (Steel Helm):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Clock Tower)
+        Item Drop Index: 5
+  Location - Clock Tower, Healing Mail Room (Healing Mail):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Clock Tower)
+        Item Drop Index: 6
+  Location - Clock Tower, Open Courtyard (Bekatowa):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Clock Tower)
+        Item Drop Index: 7
+  Location - Clock Tower, Open Courtyard (Shaman Shield):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Clock Tower)
+        Item Drop Index: 8
+  Location - Clock Tower, Open Courtyard (Ice Mail):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Clock Tower)
+        Item Drop Index: 9
+  Location - Clock Tower, Spire (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Clock Tower)
+        Item Drop Index: 10
+  Location - Clock Tower, Spire (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Clock Tower)
+        Item Drop Index: 11
   Location - Colosseum, Right-Side Armory (Heart Max-Up):
     Type: Stage Item Drop
     Data:
@@ -1284,11 +1350,6 @@ Quest Rewards:
         Item Drop Index: 36
       - Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 36
-  Location - XXX:
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (XXX)
-        Item Drop Index: 99
 Entities:
   Relic - Soul of Bat:
     Entity Type ID: 11
