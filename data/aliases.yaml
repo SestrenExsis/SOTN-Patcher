@@ -848,6 +848,66 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Colosseum)
         Item Drop Index: 7
+  Location - Death Wing's Lair, Secret Onyx Room (Opal):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Death Wing's Lair)
+        Item Drop Index: 0
+  Location - Death Wing's Lair, Secret Onyx Room (Sword of Hador):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Death Wing's Lair)
+        Item Drop Index: 1
+  Location - Death Wing's Lair, Secret Onyx Room (High Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Death Wing's Lair)
+        Item Drop Index: 2
+  Location - Death Wing's Lair, Tall Shaft (Shield Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Death Wing's Lair)
+        Item Drop Index: 3
+  Location - Death Wing's Lair, Tall Shaft (Luck Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Death Wing's Lair)
+        Item Drop Index: 4
+  Location - Death Wing's Lair, Tall Shaft (Manna Prism):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Death Wing's Lair)
+        Item Drop Index: 5
+  Location - Death Wing's Lair, Prison (Aquamarine):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Death Wing's Lair)
+        Item Drop Index: 6
+  Location - Death Wing's Lair, Garnet Room (Alucard Mail):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Death Wing's Lair)
+        Item Drop Index: 7
+  Location - Death Wing's Lair, Catwalk Crypt (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Death Wing's Lair)
+        Item Drop Index: 8
+  Location - Death Wing's Lair, Sword Card Room (Heart Refresh):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Death Wing's Lair)
+        Item Drop Index: 9
+  Location - Death Wing's Lair, Narrow Hallway to Olrox (Shuriken):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Death Wing's Lair)
+        Item Drop Index: 10
+  Location - Death Wing's Lair, Echo of Bat Room (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Death Wing's Lair)
+        Item Drop Index: 11
   Location - Long Library, Unknown Item Drop 0 (Ankh of Life):
     Type: Stage Item Drop
     Data:
