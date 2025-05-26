@@ -418,6 +418,66 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 10
+  Location - Black Marble Gallery, S-Shaped Hallways (Library Card):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Black Marble Gallery)
+        Item Drop Index: 0
+  Location - Black Marble Gallery, Spirit Orb Room (Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Black Marble Gallery)
+        Item Drop Index: 1
+  Location - Black Marble Gallery, Spirit Orb Room (Antivenom):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Black Marble Gallery)
+        Item Drop Index: 2
+  Location - Black Marble Gallery, Gravity Boots Room (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Black Marble Gallery)
+        Item Drop Index: 3
+  Location - Black Marble Gallery, Gravity Boots Room (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Black Marble Gallery)
+        Item Drop Index: 4
+  Location - Black Marble Gallery, Alucart Room (Resist Dark):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Black Marble Gallery)
+        Item Drop Index: 5
+  Location - Black Marble Gallery, Alucart Room (Resist Holy):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Black Marble Gallery)
+        Item Drop Index: 6
+  Location - Black Marble Gallery, Pathway After Right Statue (Resist Thunder):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Black Marble Gallery)
+        Item Drop Index: 7
+  Location - Black Marble Gallery, Pathway After Right Statue (Resist Fire):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Black Marble Gallery)
+        Item Drop Index: 8
+  Location - Black Marble Gallery, Blue Door Room (Meal Ticket):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Black Marble Gallery)
+        Item Drop Index: 9
+  Location - Black Marble Gallery, Beneath Right Trapdoor (Iron Ball):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Black Marble Gallery)
+        Item Drop Index: 10
+  Location - Black Marble Gallery, Pathway After Left Statue (Heart Refresh):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Black Marble Gallery)
+        Item Drop Index: 11
   Location - Castle Entrance, Heart Max-Up Room (Heart Max-Up):
     Type: Stage Item Drop
     Data:
