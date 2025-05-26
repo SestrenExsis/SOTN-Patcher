@@ -497,22 +497,22 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 12
-  Location - Castle Keep, Ghost Card Room (Life Max-Up):
+  Location - Castle Keep, Ghost Card Room (Life Max-Up 1):
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 13
-  Location - Castle Keep, Ghost Card Room (Life Max-Up):
+  Location - Castle Keep, Ghost Card Room (Life Max-Up 2):
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 14
-  Location - Castle Keep, Ghost Card Room (Heart Max-Up):
+  Location - Castle Keep, Ghost Card Room (Heart Max-Up 1):
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 15
-  Location - Castle Keep, Ghost Card Room (Heart Max-Up):
+  Location - Castle Keep, Ghost Card Room (Heart Max-Up 2):
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Castle Keep)
