@@ -912,6 +912,96 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Death Wing's Lair)
         Item Drop Index: 11
+  Location - Floating Catacombs, XXX (Magic Missile):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 0
+  Location - Floating Catacombs, XXX (Buffalo Star):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 1
+  Location - Floating Catacombs, XXX (Resist Thunder):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 2
+  Location - Floating Catacombs, XXX (Resist Fire):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 3
+  Location - Floating Catacombs, XXX (Karma Coin 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 4
+  Location - Floating Catacombs, XXX (Karma Coin 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 5
+  Location - Floating Catacombs, XXX (Red Bean Bun):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 6
+  Location - Floating Catacombs, XXX (Elixir):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 7
+  Location - Floating Catacombs, XXX (Library Card):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 8
+  Location - Floating Catacombs, XXX (Life Max-Up 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 9
+  Location - Floating Catacombs, XXX (Heart Max-Up 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 10
+  Location - Floating Catacombs, XXX (Shield Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 11
+  Location - Floating Catacombs, XXX (Attack Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 12
+  Location - Floating Catacombs, XXX (Necklace of J):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 13
+  Location - Floating Catacombs, XXX (Diamond):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 14
+  Location - Floating Catacombs, XXX (Heart Max-Up 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 15
+  Location - Floating Catacombs, XXX (Life Max-Up 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 16
+  Location - Floating Catacombs, XXX (Ruby Circlet):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Floating Catacombs)
+        Item Drop Index: 17
   Location - Forbidden Library, XXX (Turquoise):
     Type: Stage Item Drop
     Data:
