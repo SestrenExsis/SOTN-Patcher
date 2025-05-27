@@ -1135,6 +1135,141 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Outer Wall)
         Item Drop Index: 6
+  Location - Reverse Caverns, XXX (Alucard Shield):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 0
+  Location - Reverse Caverns, Item Drop 1 (Shiitake):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 1
+  Location - Reverse Caverns, XXX (Toadstool):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 2
+  Location - Reverse Caverns, Item Drop 3 (Shiitake):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 3
+  Location - Reverse Caverns, XXX (Garnet):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 4
+  Location - Reverse Caverns, XXX (Bat Pentagram):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 5
+  Location - Reverse Caverns, Item Drop 6 (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 6
+  Location - Reverse Caverns, Item Drop 7 (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 7
+  Location - Reverse Caverns, XXX (Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 8
+  Location - Reverse Caverns, Item Drop 9 (Shiitake):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 9
+  Location - Reverse Caverns, Item Drop 10 (Shiitake):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 10
+  Location - Reverse Caverns, XXX (Opal):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 11
+  Location - Reverse Caverns, Item Drop 12 (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 12
+  Location - Reverse Caverns, XXX (Diamond):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 13
+  Location - Reverse Caverns, Item Drop 14 (Zircon):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 14
+  Location - Reverse Caverns, Item Drop 15 (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 15
+  Location - Reverse Caverns, Item Drop 16 (Meal Ticket):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 16
+  Location - Reverse Caverns, Item Drop 17 (Meal Ticket):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 17
+  Location - Reverse Caverns, Item Drop 18 (Meal Ticket):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 18
+  Location - Reverse Caverns, Item Drop 19 (Meal Ticket):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 19
+  Location - Reverse Caverns, Item Drop 20 (Meal Ticket):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 20
+  Location - Reverse Caverns, Item Drop 21 (Zircon):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 21
+  Location - Reverse Caverns, XXX (Pot Roast):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 22
+  Location - Reverse Caverns, XXX (Dark Blade):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 23
+  Location - Reverse Caverns, XXX (Manna Prism):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 24
+  Location - Reverse Caverns, XXX (Elixir):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 25
+  Location - Reverse Caverns, XXX (Osafune Katana):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Caverns)
+        Item Drop Index: 26
   Location - Reverse Entrance, After Drawbridge (Hammer):
     Type: Stage Item Drop
     Data:
