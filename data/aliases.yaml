@@ -51,6 +51,7 @@ Items:
   Item - Basilard: 146
   Item - Bastard Sword: 224
   Item - Bat Pentagram: 202
+  Item - Badelaire: 253
   Item - Bekatowa: 220
   Item - Beryl Circlet: 339
   Item - Bloodstone: 357
@@ -158,6 +159,7 @@ Items:
   Item - Shiitake: 165
   Item - Shotel: 156
   Item - Shuriken: 203
+  Item - Staurolite: 358
   Item - Silver Plate: 303
   Item - Silver Ring: 370
   Item - Sirloin: 196
@@ -910,6 +912,51 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Death Wing's Lair)
         Item Drop Index: 11
+  Location - Forbidden Library, XXX (Turquoise):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Forbidden Library)
+        Item Drop Index: 0
+  Location - Forbidden Library, XXX (Opal):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Forbidden Library)
+        Item Drop Index: 1
+  Location - Forbidden Library, XXX (Library Card):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Forbidden Library)
+        Item Drop Index: 2
+  Location - Forbidden Library, XXX (Resist Fire):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Forbidden Library)
+        Item Drop Index: 3
+  Location - Forbidden Library, XXX (Resist Ice):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Forbidden Library)
+        Item Drop Index: 4
+  Location - Forbidden Library, XXX (Resist Stone):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Forbidden Library)
+        Item Drop Index: 5
+  Location - Forbidden Library, XXX (Neutron Bomb):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Forbidden Library)
+        Item Drop Index: 6
+  Location - Forbidden Library, XXX (Badelaire):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Forbidden Library)
+        Item Drop Index: 7
+  Location - Forbidden Library, XXX (Staurolite):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Forbidden Library)
+        Item Drop Index: 8
   Location - Long Library, Unknown Item Drop 0 (Ankh of Life):
     Type: Stage Item Drop
     Data:
