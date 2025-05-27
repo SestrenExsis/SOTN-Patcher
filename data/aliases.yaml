@@ -1627,6 +1627,131 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Reverse Entrance)
         Item Drop Index: 9
+  Location - Reverse Keep, XXX (Sword of Dawn):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 0
+  Location - Reverse Keep, XXX (Iron Ball):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 1
+  Location - Reverse Keep, XXX (Zircon):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 2
+  Location - Reverse Keep, XXX (Unknown Item 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 3
+  Location - Reverse Keep, XXX (Bastard Sword):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 4
+  Location - Reverse Keep, XXX (Life Max-Up 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 5
+  Location - Reverse Keep, XXX (Heart Max-Up 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 6
+  Location - Reverse Keep, XXX (Life Max-Up 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 7
+  Location - Reverse Keep, XXX (Heart Max-Up 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 8
+  Location - Reverse Keep, XXX (Life Max-Up 3):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 9
+  Location - Reverse Keep, XXX (Heart Max-Up 3):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 10
+  Location - Reverse Keep, XXX (Royal Cloak):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 11
+  Location - Reverse Keep, XXX (Unknown Item 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 12
+  Location - Reverse Keep, XXX (Unknown Item 3):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 13
+  Location - Reverse Keep, XXX (Unknown Item 4):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 14
+  Location - Reverse Keep, XXX (Unknown Item 5):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 15
+  Location - Reverse Keep, XXX (Unknown Item 6):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 16
+  Location - Reverse Keep, XXX (Resist Fire):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 17
+  Location - Reverse Keep, XXX (Resist Ice):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 18
+  Location - Reverse Keep, XXX (Resist Thunder):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 19
+  Location - Reverse Keep, XXX (Resist Stone):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 20
+  Location - Reverse Keep, XXX (High Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 21
+  Location - Reverse Keep, XXX (Garnet):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 22
+  Location - Reverse Keep, XXX (Lightning Mail):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 23
+  Location - Reverse Keep, XXX (Library Card):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Keep)
+        Item Drop Index: 24
   Location - Reverse Outer Wall, Lower Medusa Room (Heart Max-Up):
     Type: Stage Item Drop
     Data:
