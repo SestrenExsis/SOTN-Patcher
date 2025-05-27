@@ -842,6 +842,46 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 20
+  Location - Cave, XXX (Power of Sire 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Cave)
+        Item Drop Index: 0
+  Location - Cave, XXX (Life Apple):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Cave)
+        Item Drop Index: 1
+  Location - Cave, XXX (Alucard Sword):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Cave)
+        Item Drop Index: 2
+  Location - Cave, XXX (Green Tea):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Cave)
+        Item Drop Index: 3
+  Location - Cave, XXX (Power of Sire 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Cave)
+        Item Drop Index: 4
+  Location - Cave, XXX (Unknown Item):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Cave)
+        Item Drop Index: 5
+  Location - Cave, XXX (Shiitake 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Cave)
+        Item Drop Index: 6
+  Location - Cave, XXX (Shiitake 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Cave)
+        Item Drop Index: 7
   Location - Clock Tower, Open Courtyard (Magic Missile):
     Type: Stage Item Drop
     Data:
