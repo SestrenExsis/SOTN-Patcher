@@ -52,6 +52,7 @@ Items:
   Item - Bastard Sword: 224
   Item - Bat Pentagram: 202
   Item - Bekatowa: 220
+  Item - Beryl Circlet: 339
   Item - Bloodstone: 357
   Item - Blood Cloak: 351
   Item - Boomerang: 209
@@ -173,6 +174,7 @@ Items:
   Item - Sword of Dawn: 145
   Item - Sword of Hador: 232
   Item - Takemitsu: 155
+  Item - Talisman: 380
   Item - Talwar: 227
   Item - TNT: 207
   Item - Toadstool: 164
@@ -1133,6 +1135,56 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Outer Wall)
         Item Drop Index: 6
+  Location - Reverse Entrance, After Drawbridge (Hammer):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Entrance)
+        Item Drop Index: 0
+  Location - Reverse Entrance, After Drawbridge (Antivenom):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Entrance)
+        Item Drop Index: 1
+  Location - Reverse Entrance, Warg Hallway (High Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Entrance)
+        Item Drop Index: 2
+  Location - Reverse Entrance, Cube of Zoe Room (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Entrance)
+        Item Drop Index: 3
+  Location - Reverse Entrance, Jewel Sword Room (Zircon):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Entrance)
+        Item Drop Index: 4
+  Location - Reverse Entrance, Jewel Sword Room (Opal):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Entrance)
+        Item Drop Index: 5
+  Location - Reverse Entrance, Jewel Sword Room (Beryl Circlet):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Entrance)
+        Item Drop Index: 6
+  Location - Reverse Entrance, Holy Mail Room (Fire Boomerang):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Entrance)
+        Item Drop Index: 7
+  Location - Reverse Entrance, Heart Max-Up Room (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Entrance)
+        Item Drop Index: 8
+  Location - Reverse Entrance, Life Max-Up Room (Talisman):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Entrance)
+        Item Drop Index: 9
   Location - Reverse Outer Wall, Lower Medusa Room (Heart Max-Up):
     Type: Stage Item Drop
     Data:
