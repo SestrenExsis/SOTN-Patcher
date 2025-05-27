@@ -1302,6 +1302,56 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 13
+  Location - Necromancy Laboratory, XXX (Unknown Item):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Necromancy Laboratory)
+        Item Drop Index: 0
+  Location - Necromancy Laboratory, XXX (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Necromancy Laboratory)
+        Item Drop Index: 1
+  Location - Necromancy Laboratory, XXX (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Necromancy Laboratory)
+        Item Drop Index: 2
+  Location - Necromancy Laboratory, XXX (Goddess Shield):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Necromancy Laboratory)
+        Item Drop Index: 3
+  Location - Necromancy Laboratory, XXX (Manna Prism):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Necromancy Laboratory)
+        Item Drop Index: 4
+  Location - Necromancy Laboratory, XXX (Katana):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Necromancy Laboratory)
+        Item Drop Index: 5
+  Location - Necromancy Laboratory, XXX (High Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Necromancy Laboratory)
+        Item Drop Index: 6
+  Location - Necromancy Laboratory, XXX (Turquoise):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Necromancy Laboratory)
+        Item Drop Index: 7
+  Location - Necromancy Laboratory, XXX (Ring of Arcana):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Necromancy Laboratory)
+        Item Drop Index: 8
+  Location - Necromancy Laboratory, XXX (Resist Dark):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Necromancy Laboratory)
+        Item Drop Index: 9
   Location - Olrox's Quarters, Unknown Item Drop 0 (Life Max-Up):
     Type: Stage Item Drop
     Data:
