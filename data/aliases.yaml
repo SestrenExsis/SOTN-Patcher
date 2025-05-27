@@ -422,6 +422,96 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 10
+  Location - Anti-Chapel, XXX (Unknown Item 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 0
+  Location - Anti-Chapel, XXX (Unknown Item 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 1
+  Location - Anti-Chapel, XXX (Fire Boomerang):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 2
+  Location - Anti-Chapel, XXX (Diamond):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 3
+  Location - Anti-Chapel, XXX (Zircon):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 4
+  Location - Anti-Chapel, XXX (Heart Max-Up 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 5
+  Location - Anti-Chapel, XXX (Shuriken):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 6
+  Location - Anti-Chapel, XXX (TNT):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 7
+  Location - Anti-Chapel, XXX (Boomerang):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 8
+  Location - Anti-Chapel, XXX (Javelin):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 9
+  Location - Anti-Chapel, XXX (Manna Prism):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 10
+  Location - Anti-Chapel, XXX (Smart Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 11
+  Location - Anti-Chapel, XXX (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 12
+  Location - Anti-Chapel, XXX (Talwar):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 13
+  Location - Anti-Chapel, XXX (Bwaka Knife):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 14
+  Location - Anti-Chapel, XXX (Magic Missile):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 15
+  Location - Anti-Chapel, XXX (Twilight Cloak):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 16
+  Location - Anti-Chapel, XXX (Heart Max-Up 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Anti-Chapel)
+        Item Drop Index: 17
   Location - Black Marble Gallery, S-Shaped Hallways (Library Card):
     Type: Stage Item Drop
     Data:
