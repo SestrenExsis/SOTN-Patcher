@@ -1537,6 +1537,46 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 26
+  Location - Reverse Colosseum, XXX (Fury Plate):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Colosseum)
+        Item Drop Index: 0
+  Location - Reverse Colosseum, XXX (Zircon):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Colosseum)
+        Item Drop Index: 1
+  Location - Reverse Colosseum, XXX (Buffalo Star):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Colosseum)
+        Item Drop Index: 2
+  Location - Reverse Colosseum, XXX (Gram):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Colosseum)
+        Item Drop Index: 3
+  Location - Reverse Colosseum, XXX (Aquamarine):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Colosseum)
+        Item Drop Index: 4
+  Location - Reverse Colosseum, XXX (Heart Max-Up 1):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Colosseum)
+        Item Drop Index: 5
+  Location - Reverse Colosseum, XXX (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Colosseum)
+        Item Drop Index: 6
+  Location - Reverse Colosseum, XXX (Heart Max-Up 2):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Colosseum)
+        Item Drop Index: 7
   Location - Reverse Entrance, After Drawbridge (Hammer):
     Type: Stage Item Drop
     Data:
