@@ -1587,6 +1587,66 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 26
+  Location - Reverse Clock Tower, XXX (Magic Missile):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Clock Tower)
+        Item Drop Index: 0
+  Location - Reverse Clock Tower, XXX (Karma Coin):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Clock Tower)
+        Item Drop Index: 1
+  Location - Reverse Clock Tower, XXX (Strength Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Clock Tower)
+        Item Drop Index: 2
+  Location - Reverse Clock Tower, XXX (Luminus):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Clock Tower)
+        Item Drop Index: 3
+  Location - Reverse Clock Tower, XXX (Smart Potion):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Clock Tower)
+        Item Drop Index: 4
+  Location - Reverse Clock Tower, XXX (Dragon Helm):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Clock Tower)
+        Item Drop Index: 5
+  Location - Reverse Clock Tower, XXX (Diamond):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Clock Tower)
+        Item Drop Index: 6
+  Location - Reverse Clock Tower, XXX (Life Apple):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Clock Tower)
+        Item Drop Index: 7
+  Location - Reverse Clock Tower, XXX (Sunstone):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Clock Tower)
+        Item Drop Index: 8
+  Location - Reverse Clock Tower, XXX (Life Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Clock Tower)
+        Item Drop Index: 9
+  Location - Reverse Clock Tower, XXX (Heart Max-Up):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Clock Tower)
+        Item Drop Index: 10
+  Location - Reverse Clock Tower, XXX (Moon Rod):
+    Type: Stage Item Drop
+    Data:
+      - Constant: Unique Item Drops (Reverse Clock Tower)
+        Item Drop Index: 11
   Location - Reverse Colosseum, XXX (Fury Plate):
     Type: Stage Item Drop
     Data:
