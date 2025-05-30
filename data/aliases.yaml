@@ -141,6 +141,7 @@ Items:
   Item - Potion: 287
   Item - Power of Sire: 200
   Item - Red Bean Bun: 192
+  Item - Red Rust: 154
   Item - Resist Dark: 286
   Item - Resist Fire: 281
   Item - Resist Holy: 285
@@ -157,6 +158,7 @@ Items:
   Item - Shield Potion: 280
   Item - Shield Rod: 132
   Item - Shiitake: 165
+  Item - Short Sword: 147
   Item - Shotel: 156
   Item - Shuriken: 203
   Item - Staurolite: 358
@@ -607,6 +609,14 @@ Quest Rewards:
         Item Drop Index: 4
       - Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 4
+  Location - Castle Entrance, Cube of Zoe Room (Short Sword):
+    Type: Guaranteed Enemy Drop
+    Data:
+      - Constant: Bone Scimitar Item Drop 1
+  Location - Castle Entrance, Cube of Zoe Room (Red Rust):
+    Type: Guaranteed Enemy Drop
+    Data:
+      - Constant: Bone Scimitar Item Drop 2
   Location - Castle Entrance, Holy Mail Room (Holy Mail):
     Type: Stage Item Drop
     Data:
