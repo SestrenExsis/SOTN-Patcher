@@ -910,6 +910,20 @@ def get_ppf(extract, changes, data):
                         array_extract_meta['Start'] + item_drop_index * array_extract_meta['Size']
                     ),
                 )
+        elif quest_reward['Type'] == 'Guaranteed Enemy Drop':
+            for location_alias in quest_reward['Data']:
+                constant_name = location_alias['Constant']
+                array_extract_meta = extract['Constants'][constant_name]['Metadata']
+                # NOTE(sestren): Subtract 0x80 since item IDs are offset by 0x80 in aliases
+                # TODO(sestren): Standardize item IDs
+                item_id = aliases['Items'][reward_name] - 0x80
+                result.patch_value(
+                    item_id,
+                    array_extract_meta['Type'],
+                    sotn_address.Address(
+                        array_extract_meta['Start']
+                    ),
+                )
     # Quest Rewards - Part 2
     for ((stage_name, room_name), object_layout) in object_layouts.items():
         horizontal_object_layout = list(sorted(object_layout,
@@ -948,23 +962,6 @@ def get_ppf(extract, changes, data):
                             object_extract['Metadata']['Start'] + extract_id * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset']
                         ),
                     )
-    # Patch unique item drops
-    for constant_name in sorted(changes.get('Constants', {})):
-        if not constant_name.startswith('Unique Item Drops'):
-            continue
-        array_extract_meta = extract['Constants'][constant_name]['Metadata']
-        array_changes = changes['Constants'][constant_name]
-        for (array_index, item_name) in enumerate(array_changes):
-            if item_name is None:
-                continue
-            item_id = aliases['Items'].get(item_name, None)
-            result.patch_value(
-                item_id,
-                array_extract_meta['Type'],
-                sotn_address.Address(
-                    array_extract_meta['Start'] + array_index * array_extract_meta['Size']
-                ),
-            )
     # Patch strings
     # NOTE(sestren): There are no guards in place requiring that the resulting array of strings
     # NOTE(sestren): fits into place or uses up the same amount of bytes. It is the
