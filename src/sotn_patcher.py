@@ -913,16 +913,14 @@ def get_ppf(extract, changes, data):
         elif quest_reward['Type'] == 'Guaranteed Enemy Drop':
             for location_alias in quest_reward['Data']:
                 constant_name = location_alias['Constant']
-                array_extract_meta = extract['Constants'][constant_name]['Metadata']
+                constant_extract = extract['Constants'][constant_name]
                 # NOTE(sestren): Subtract 0x80 since item IDs are offset by 0x80 in aliases
                 # TODO(sestren): Standardize item IDs
                 item_id = aliases['Items'][reward_name] - 0x80
                 result.patch_value(
                     item_id,
-                    array_extract_meta['Type'],
-                    sotn_address.Address(
-                        array_extract_meta['Start']
-                    ),
+                    constant_extract['Type'],
+                    sotn_address.Address(constant_extract['Start']),
                 )
     # Quest Rewards - Part 2
     for ((stage_name, room_name), object_layout) in object_layouts.items():
