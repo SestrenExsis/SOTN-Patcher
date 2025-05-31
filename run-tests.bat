@@ -16,6 +16,7 @@ python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/softlock-in
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/customized-castle-map-reveals.json" --ppf="build/ppf/customized-castle-map-reveals.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/sample-randomized-map.json" --ppf="build/ppf/sample-randomized-map.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/randomized-relics.json" --ppf="build/ppf/randomized-relics.ppf" || goto :error
+python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/randomized-items.json" --ppf="build/ppf/randomized-items.ppf" || goto :error
 
 sha1sum -c tests/checksums.sha1
 

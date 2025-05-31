@@ -664,63 +664,72 @@ if __name__ == '__main__':
                 'Teleporter Index': cursor.s32(0x14 * boss_teleporter_id + 0x10),
             }
             boss_teleporters['Data'].append(data)
-        # Extract constant data
+        # Extract constant data stored as arrays
         constants = {}
-        cursor = BIN(binary_file, 0x049BF79C)
-        for drop_index in range(2, 4):
-            data = cursor.u16(2 * drop_index, True)
-            constants[f'Relic Container Drop ID {str(drop_index)}'] = data
-        # TODO(sestren): Extract as an array instead?
-        # [ 0x039D, 0x03A0, ... ]
-        cursor = BIN(binary_file, 0x03CE009C)
-        for index in range(24):
-            data = cursor.u16(2 * index, True)
-            constants[f'Demon Switch Wall A Tile ID {index:02d}'] = data
-        cursor = BIN(binary_file, 0x0439BFEC)
-        for index in range(24):
-            data = cursor.u16(2 * index, True)
-            constants[f'Demon Switch Wall B Tile ID {index:02d}'] = data
-        cursor = BIN(binary_file, 0x03CE00CC)
-        for index in range(24):
-            data = cursor.u16(2 * index, True)
-            constants[f'Snake Column Wall A Tile ID {index:02d}'] = data
-        cursor = BIN(binary_file, 0x0439C01C)
-        for index in range(24):
-            data = cursor.u16(2 * index, True)
-            constants[f'Snake Column Wall B Tile ID {index:02d}'] = data
-        # NOTE(sestren); Snake Column Wall C Tile ID was found at 0x0596D620, maybe that's for Boss - Death?
-        cursor = BIN(binary_file, 0x049BF654)
-        for index in range(32):
-            data = cursor.u16(2 * index, True)
-            constants[f'Tall Zig Zag Room Wall A Tile ID {index:02d}'] = data
-        cursor = BIN(binary_file, 0x04D81C68)
-        for index in range(32):
-            data = cursor.u16(2 * index, True)
-            constants[f'Tall Zig Zag Room Wall B Tile ID {index:02d}'] = data
-        cursor = BIN(binary_file, 0x042590B0)
-        for index in range(32):
-            data = cursor.u16(2 * index, True)
-            constants[f'Plaque Room With Breakable Wall A Tile ID {index:02d}'] = data
-        cursor = BIN(binary_file, 0x047C4EEC)
-        for index in range(32):
-            data = cursor.u16(2 * index, True)
-            constants[f'Plaque Room With Breakable Wall B Tile ID {index:02d}'] = data
-        cursor = BIN(binary_file, 0x04A68038)
-        for index in range(32):
-            data = cursor.u16(2 * index, True)
-            constants[f'Left Gear Room Wall A Tile ID {index:02d}'] = data
-        cursor = BIN(binary_file, 0x04E22FC8)
-        for index in range(32):
-            data = cursor.u16(2 * index, True)
-            constants[f'Left Gear Room Wall B Tile ID {index:02d}'] = data
-        cursor = BIN(binary_file, 0x04A67FF8)
-        for index in range(32):
-            data = cursor.u16(2 * index, True)
-            constants[f'Pendulum Room Wall A Tile ID {index:02d}'] = data
-        cursor = BIN(binary_file, 0x04E22F88)
-        for index in range(32):
-            data = cursor.u16(2 * index, True)
-            constants[f'Pendulum Room Wall B Tile ID {index:02d}'] = data
+        for (starting_address, data_type, array_size, array_name) in (
+            # Unique item drops in First Castle
+            (0x03CE01E4, 'u16', 13, 'Unique Item Drops (Abandoned Mine)'),
+            (0x049BFBB0, 'u16', 11, 'Unique Item Drops (Alchemy Laboratory)'),
+            (0x0550808C, 'u16', 37, 'Unique Item Drops (Boss - Scylla)'),
+            (0x041A948C, 'u16', 10, 'Unique Item Drops (Castle Entrance)'),
+            (0x0491BE18, 'u16', 10, 'Unique Item Drops (Castle Entrance Revisited)'),
+            (0x04AEFD10, 'u16', 19, 'Unique Item Drops (Castle Keep)'),
+            (0x03BB474C, 'u16', 21, 'Unique Item Drops (Catacombs)'),
+            (0x04A6811C, 'u16', 12, 'Unique Item Drops (Clock Tower)'),
+            (0x03B00FE8, 'u16', 8, 'Unique Item Drops (Colosseum)'),
+            (0x03E61290, 'u16', 11, 'Unique Item Drops (Long Library)'),
+            (0x03F8C100, 'u16', 14, 'Unique Item Drops (Marble Gallery)'),
+            (0x040FBFEC, 'u16', 13, "Unique Item Drops (Olrox's Quarters)"),
+            (0x04048A2C, 'u16', 7, 'Unique Item Drops (Outer Wall)'),
+            (0x03D5B6C0, 'u16', 16, 'Unique Item Drops (Royal Chapel)'),
+            (0x04259128, 'u16', 37, 'Unique Item Drops (Underground Caverns)'),
+            # Unique item drops in Inverted Castle
+            (0x0439BFCC, 'u16', 8, 'Unique Item Drops (Cave)'),
+            (0x04D81CC8, 'u16', 10, 'Unique Item Drops (Necromancy Laboratory)'),
+            (0x0471EF10, 'u16', 10, 'Unique Item Drops (Reverse Entrance)'),
+            (0x04C847C8, 'u16', 25, 'Unique Item Drops (Reverse Keep)'),
+            (0x043083C8, 'u16', 18, 'Unique Item Drops (Floating Catacombs)'),
+            (0x04E22EC8, 'u16', 12, 'Unique Item Drops (Reverse Clock Tower)'),
+            (0x04C0823C, 'u16', 8, 'Unique Item Drops (Reverse Colosseum)'),
+            (0x044B0BC8, 'u16', 9, 'Unique Item Drops (Forbidden Library)'),
+            (0x0453E78C, 'u16', 12, 'Unique Item Drops (Black Marble Gallery)'),
+            (0x04681540, 'u16', 12, "Unique Item Drops (Death Wing's Lair)"),
+            (0x045EEAE4, 'u16', 8, 'Unique Item Drops (Reverse Outer Wall)'),
+            (0x04416D2C, 'u16', 18, 'Unique Item Drops (Anti-Chapel)'),
+            (0x047C4E20, 'u16', 27, 'Unique Item Drops (Reverse Caverns)'),
+            # Relic Container Drops
+            (0x049BF79C, 'u16', 4, 'Relic Container Drops'),
+            # Breakable Wall Tiles
+            (0x03CE009C, 'u16', 24, 'Demon Switch Wall Tiles (Abandoned Mine)'),
+            (0x0439BFEC, 'u16', 24, 'Demon Switch Wall Tiles (Cave)'),
+            (0x03CE00CC, 'u16', 24, 'Snake Column Wall Tiles (Abandoned Mine)'),
+            (0x0439C01C, 'u16', 24, 'Snake Column Wall Tiles (Cave)'),
+            # NOTE(sestren): Snake Column Wall C Tile ID was found at 0x0596D620, maybe that's for Boss - Death?
+            (0x049BF654, 'u16', 32, 'Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)'),
+            (0x04D81C68, 'u16', 32, 'Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)'),
+            (0x042590B0, 'u16', 32, 'Plaque Room With Breakable Wall Tiles (Underground Caverns)'),
+            (0x047C4EEC, 'u16', 32, 'Plaque Room With Breakable Wall Tiles (Reverse Caverns)'),
+            (0x04A68038, 'u16', 32, 'Left Gear Room Wall Tiles (Clock Tower)'),
+            (0x04E22FC8, 'u16', 32, 'Left Gear Room Wall Tiles (Reverse Clock Tower)'),
+            (0x04A67FF8, 'u16', 32, 'Pendulum Room Wall Tiles (Clock Tower)'),
+            (0x04E22F88, 'u16', 32, 'Pendulum Room Wall Tiles (Reverse Clock Tower)'),
+        ):
+            assert data_type == 'u16' # NOTE(sestren): Only handling u16s for now
+            cursor = BIN(binary_file, starting_address)
+            data = []
+            for index in range(array_size):
+                value = cursor.u16(2 * index)
+                data.append(value)
+            constants[array_name] = {
+                'Metadata': {
+                    'Start': cursor.cursor.address,
+                    'Count': array_size,
+                    'Size': 0x02,
+                    'Type': 'u16',
+                },
+                'Data': data,
+            }
+        # Extract other constant data
         for (constant_address, constant_name, constant_data_type) in (
             # Found in the GetTeleportToOtherCastle function of the decomp
             (0x000FFCE4, 'DRA - Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40
@@ -744,6 +753,9 @@ if __name__ == '__main__':
             # (0x0009840C, 'Castle map reveal boundary', 'u32') # 0x06082600 --> {0, 26, 8, 6} # Change to 0x40400000???
             # (0x049F761C, 'Stun player when meeting Maria in Alchemy Lab', 'u32'), # 0x34100001 --> ori s0,0,$1 # Change to 0x36100000 --> ori s0,$0
             (0x049F66EC, 'Should skip Maria Alchemy Laboratory', 'u32'), # 0x144002DA --> bne v0,0,$801B8A58 # Change to 0x0806E296 --> j $801B8A58
+            # Hard-coded drops from Bone Scimitars in Castle Entrance
+            (0x041FD8FC, 'Bone Scimitar Item Drop 1', 'u16'), # 0x0013 --> Item - Short Sword
+            (0x041FD900, 'Bone Scimitar Item Drop 2', 'u16'), # 0x001A --> Item - Red Rust
         ):
             cursor = BIN(binary_file, constant_address)
             constants[constant_name] = cursor.indirect(0, constant_data_type, True)
