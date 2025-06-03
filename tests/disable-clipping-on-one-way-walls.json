@@ -9,19 +9,19 @@
         "Shift wall in Plaque Room With Breakable Wall away from screen edge": true
     },
     "Teleporters": {
-        "13": {
+        "Castle Entrance, Fake Room with Teleporter to Alchemy Laboratory": {
             "Player X": 752,
             "Player Y": 132,
             "Room": "Abandoned Mine, Four-Way Intersection",
             "Stage": "Abandoned Mine"
         },
-        "20": {
+        "Abandoned Mine, Fake Room with Teleporter to Warp Rooms": {
             "Player X": 16,
             "Player Y": 1924,
             "Room": "Castle Keep, Keep Area",
             "Stage": "Castle Keep"
         },
-        "47": {
+        "Castle Keep, Fake Room with Teleporter to Royal Chapel": {
             "Player X": 752,
             "Player Y": 132,
             "Room": "Abandoned Mine, Four-Way Intersection",

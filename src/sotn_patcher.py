@@ -713,10 +713,10 @@ def get_ppf(extract, changes, data):
                                     offset += 2
     # Patch teleporters
     extract_metadata = extract['Teleporters']['Metadata']
-    for teleporter_id in sorted(changes.get('Teleporters', {})):
-        teleporter_data = changes['Teleporters'][teleporter_id]
-        extract_id = getID(aliases, ('Teleporters', teleporter_id))
-        extract_data = extract['Teleporters']['Data'][extract_id]
+    for teleporter_name in sorted(changes.get('Teleporters', {})):
+        teleporter_data = changes['Teleporters'][teleporter_name]
+        teleporter_id = getID(aliases, ('Teleporters', teleporter_name))
+        extract_data = extract['Teleporters']['Data'][teleporter_id]
         # Teleporter: Patch player X
         player_x = extract_data['Player X']
         if 'Player X' in teleporter_data:
