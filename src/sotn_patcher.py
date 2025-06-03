@@ -245,7 +245,7 @@ def get_familiar_changes(changes, familiar_events):
 
 def get_ppf(extract, changes, data):
     aliases = data['Aliases']
-    result = PPF('Works with SOTN Shuffler Alpha Build 76')
+    result = PPF('Works with SOTN Shuffler Alpha Build 77')
     # Patch boss teleporters
     extract_metadata = extract['Boss Teleporters']['Metadata']
     for boss_teleporter_id in sorted(changes.get('Boss Teleporters', {})):
