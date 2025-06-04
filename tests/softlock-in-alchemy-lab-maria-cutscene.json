@@ -4,7 +4,7 @@
         "Skip Maria cutscene in Alchemy Laboratory": true
     },
     "Teleporters": {
-        "11": {
+        "Castle Entrance, Fake Room with Teleporter to Marble Gallery": {
             "Player X": 16,
             "Player Y": 132,
             "Room": "Alchemy Laboratory, Exit to Royal Chapel",

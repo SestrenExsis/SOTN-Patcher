@@ -3153,3 +3153,56 @@ Stages:
   Royal Chapel: 6
   Underground Caverns: 9
   Warp Rooms: 14
+Teleporters:
+  Abandoned Mine, Fake Room with Teleporter to Catacombs: 18
+  Abandoned Mine, Fake Room with Teleporter to Underground Caverns: 19
+  Abandoned Mine, Fake Room with Teleporter to Warp Rooms: 20
+  Alchemy Laboratory, Fake Room with Teleporter to Castle Entrance: 21
+  Alchemy Laboratory, Fake Room with Teleporter to Marble Gallery: 22
+  Alchemy Laboratory, Fake Room with Teleporter to Royal Chapel: 23
+  Castle Center, Fake Room with Teleporter to Marble Gallery: 7
+  Castle Entrance, Fake Room with Teleporter to Alchemy Laboratory: 13
+  Castle Entrance, Fake Room with Teleporter to Marble Gallery: 11
+  Castle Entrance, Fake Room with Teleporter to Underground Caverns: 12
+  Castle Entrance, Fake Room with Teleporter to Warp Rooms: 14
+  Castle Entrance Revisited, Fake Room with Teleporter to Alchemy Laboratory: 58
+  Castle Entrance Revisited, Fake Room with Teleporter to Marble Gallery: 56
+  Castle Entrance Revisited, Fake Room with Teleporter to Underground Caverns: 57
+  Castle Entrance Revisited, Fake Room with Teleporter to Warp Rooms: 59
+  Castle Keep, Fake Room with Teleporter to Clock Tower: 45
+  Castle Keep, Fake Room with Teleporter to Royal Chapel: 47
+  Castle Keep, Fake Room with Teleporter to Warp Rooms: 46
+  Catacombs, Fake Room with Teleporter to Abandoned Mine: 16
+  Clock Tower, Fake Room with Teleporter to Castle Keep: 9
+  Clock Tower, Fake Room with Teleporter to Outer Wall: 10
+  Colosseum, Fake Room with Teleporter to Olrox's Quarters: 53
+  Colosseum, Fake Room with Teleporter to Royal Chapel: 52
+  Long Library, Fake Room with Teleporter to Outer Wall: 6
+  Marble Gallery, Fake Room with Teleporter to Alchemy Laboratory: 0
+  Marble Gallery, Fake Room with Teleporter to Castle Center: 5
+  Marble Gallery, Fake Room with Teleporter to Castle Entrance: 3
+  Marble Gallery, Fake Room with Teleporter to Olrox's Quarters: 1
+  Marble Gallery, Fake Room with Teleporter to Outer Wall: 2
+  Marble Gallery, Fake Room with Teleporter to Underground Caverns: 4
+  Olrox's Quarters, Fake Room with Teleporter to Colosseum: 26
+  Olrox's Quarters, Fake Room with Teleporter to Marble Gallery: 24
+  Olrox's Quarters, Fake Room with Teleporter to Royal Chapel: 25
+  Olrox's Quarters, Fake Room with Teleporter to Warp Rooms: 27
+  Outer Wall, Fake Room with Teleporter to Clock Tower: 43
+  Outer Wall, Fake Room with Teleporter to Long Library: 41
+  Outer Wall, Fake Room with Teleporter to Marble Gallery: 40
+  Outer Wall, Fake Room with Teleporter to Warp Rooms: 42
+  Royal Chapel, Fake Room with Teleporter to Alchemy Laboratory: 35
+  Royal Chapel, Fake Room with Teleporter to Castle Keep: 36
+  Royal Chapel, Fake Room with Teleporter to Colosseum: 34
+  Royal Chapel, Fake Room with Teleporter to Olrox's Quarters: 33
+  Special, Succubus Defeated: 60
+  Underground Caverns, Fake Room with Teleporter to Abandoned Mine: 50
+  Underground Caverns, Fake Room with Teleporter to Boss - Succubus: 51
+  Underground Caverns, Fake Room with Teleporter to Castle Entrance: 48
+  Underground Caverns, Fake Room with Teleporter to Marble Gallery: 49
+  Warp Rooms, Fake Room with Teleporter to Abandoned Mine: 32
+  Warp Rooms, Fake Room with Teleporter to Castle Entrance: 31
+  Warp Rooms, Fake Room with Teleporter to Castle Keep: 28
+  Warp Rooms, Fake Room with Teleporter to Olrox's Quarters: 30
+  Warp Rooms, Fake Room with Teleporter to Outer Wall: 29

@@ -41,7 +41,7 @@
         "Enable debug mode": true
     },
     "Teleporters": {
-        "11": {
+        "Castle Entrance, Fake Room with Teleporter to Marble Gallery": {
             "Player X": 16,
             "Player Y": 132,
             "Room": "Outer Wall, Exit to Marble Gallery",
