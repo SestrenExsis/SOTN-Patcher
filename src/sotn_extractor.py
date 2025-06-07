@@ -713,19 +713,25 @@ if __name__ == '__main__':
             (0x04E22FC8, 'u16', 32, 'Left Gear Room Wall Tiles (Reverse Clock Tower)'),
             (0x04A67FF8, 'u16', 32, 'Pendulum Room Wall Tiles (Clock Tower)'),
             (0x04E22F88, 'u16', 32, 'Pendulum Room Wall Tiles (Reverse Clock Tower)'),
+            # Waterfall Sound Parameters
+            (0x04258D9C, 's16', 16, 'Waterfall Sound Parameters (Underground Caverns)'),
+            (0x047C4CE8, 's16', 16, 'Waterfall Sound Parameters (Reverse Caverns)'),
         ):
-            assert data_type == 'u16' # NOTE(sestren): Only handling u16s for now
+            assert data_type in ('u16', 's16') # NOTE(sestren): Only handling u16s and s16s for now
             cursor = BIN(binary_file, starting_address)
             data = []
             for index in range(array_size):
-                value = cursor.u16(2 * index)
+                if data_type == 'u16':
+                    value = cursor.u16(2 * index)
+                elif data_type == 's16':
+                    value = cursor.s16(2 * index)
                 data.append(value)
             constants[array_name] = {
                 'Metadata': {
                     'Start': cursor.cursor.address,
                     'Count': array_size,
                     'Size': 0x02,
-                    'Type': 'u16',
+                    'Type': data_type,
                 },
                 'Data': data,
             }

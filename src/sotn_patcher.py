@@ -9,8 +9,7 @@ import yaml
 import sotn_address
 
 class PPF:
-    def __init__(self, description):
-        self.patches = []
+    def __init__(self, description, patch):
         self.description = (description + 50 * ' ')[:50]
         self.bytes = bytearray()
         self.write_string('PPF30')
@@ -21,52 +20,25 @@ class PPF:
         self.write_byte(0) # Undo data = Not available
         self.write_byte(0) # Dummy
         assert len(self.bytes) == 60 # 0x3C
+        for high in sorted(patch.writes.keys()):
+            left = 0
+            right = 0
+            lows = list(reversed(sorted(patch.writes[high].keys())))
+            while len(lows) > 0:
+                right = left = lows.pop()
+                while (len(lows) > 0) and (lows[-1] == (right + 1)):
+                    right = lows.pop()
+                disc_address = patch.partition_size * high + left
+                size = 1 + (right - left)
+                self.write_u64(disc_address)
+                self.write_byte(size)
+                for low in range(left, right + 1):
+                    value = patch.writes[high][low]
+                    self.write_byte(value)
     
     def write_byte(self, byte):
         assert 0x00 <= byte < 0x100
         self.bytes.append(byte)
-    
-    def write_u8(self, value):
-        write_value = value
-        for _ in range(1):
-            write_value, byte = divmod(write_value, 0x100)
-            self.write_byte(byte)
-    
-    def write_s8(self, value):
-        write_value = (value & 0x7F) + (0x80 if value < 0 else 0x00)
-        for _ in range(1):
-            write_value, byte = divmod(write_value, 0x100)
-            self.write_byte(byte)
-    
-    def write_u16(self, value):
-        write_value = value
-        for _ in range(2):
-            write_value, byte = divmod(write_value, 0x100)
-            self.write_byte(byte)
-    
-    def write_s16(self, value):
-        write_value = (value & 0x7FFF) + (0x8000 if value < 0 else 0x0000)
-        for _ in range(2):
-            write_value, byte = divmod(write_value, 0x100)
-            self.write_byte(byte)
-    
-    def write_u32(self, value):
-        write_value = value
-        for _ in range(4):
-            write_value, byte = divmod(write_value, 0x100)
-            self.write_byte(byte)
-    
-    def write_u32(self, value):
-        write_value = value
-        for _ in range(4):
-            write_value, byte = divmod(write_value, 0x100)
-            self.write_byte(byte)
-    
-    def write_s32(self, value):
-        write_value = (value & 0x7FFFFFFF) + (0x80000000 if value < 0 else 0x00000000)
-        for _ in range(4):
-            write_value, byte = divmod(write_value, 0x100)
-            self.write_byte(byte)
     
     def write_u64(self, value):
         write_value = value
@@ -77,35 +49,78 @@ class PPF:
     def write_string(self, string):
         for char in string:
             self.write_byte(ord(char))
+
+class Patch:
+    def __init__(self):
+        self.writes = {}
+        self.cursor = 0
+        self.partition_size = 0x80
+    
+    def write_byte(self, byte):
+        assert 0x00 <= byte < 0x100
+        (high, low) = divmod(self.cursor, self.partition_size)
+        if high not in self.writes:
+            self.writes[high] = {}
+        self.writes[high][low] = byte
+    
+    def write_u8(self, value):
+        write_value = value
+        for _ in range(1):
+            write_value, byte = divmod(write_value, 0x100)
+            self.write_byte(byte)
+            self.cursor += 1
+    
+    def write_s8(self, value):
+        write_value = (value & 0x7F) + (0x80 if value < 0 else 0x00)
+        for _ in range(1):
+            write_value, byte = divmod(write_value, 0x100)
+            self.write_byte(byte)
+            self.cursor += 1
+    
+    def write_u16(self, value):
+        write_value = value
+        for _ in range(2):
+            write_value, byte = divmod(write_value, 0x100)
+            self.write_byte(byte)
+            self.cursor += 1
+    
+    def write_s16(self, value):
+        write_value = (value & 0x7FFF) + (0x8000 if value < 0 else 0x0000)
+        for _ in range(2):
+            write_value, byte = divmod(write_value, 0x100)
+            self.write_byte(byte)
+            self.cursor += 1
+    
+    def write_u32(self, value):
+        write_value = value
+        for _ in range(4):
+            write_value, byte = divmod(write_value, 0x100)
+            self.write_byte(byte)
+            self.cursor += 1
+    
+    def write_s32(self, value):
+        write_value = (value & 0x7FFFFFFF) + (0x80000000 if value < 0 else 0x00000000)
+        for _ in range(4):
+            write_value, byte = divmod(write_value, 0x100)
+            self.write_byte(byte)
+            self.cursor += 1
     
     def patch_value(self, value: int, type: str, address: sotn_address.Address):
-        self.write_u64(address.to_disc_address())
+        self.cursor = address.to_disc_address()
         if type == 'u8':
-            size = 1
-            self.write_byte(size)
             self.write_u8(value)
         elif type == 's8':
-            size = 1
-            self.write_byte(size)
             self.write_s8(value)
         elif type == 'u16':
-            size = 2
-            self.write_byte(size)
             self.write_u16(value)
         elif type == 's16':
-            size = 2
-            self.write_byte(size)
             self.write_s16(value)
         elif type == 'u32':
-            size = 4
-            self.write_byte(size)
             self.write_u32(value)
         elif type == 's32':
-            size = 4
-            self.write_byte(size)
             self.write_s32(value)
         else:
-            raise Exception('Incorrect size for value:', (value, size))
+            raise Exception('Incorrect type for patch_value:', (value, type, address))
 
 def get_changes_template_file(extract):
     result = {
@@ -243,9 +258,9 @@ def get_familiar_changes(changes, familiar_events):
                 }
     return familiar_changes
 
-def get_ppf(extract, changes, data):
+def get_patch(extract, changes, data):
     aliases = data['Aliases']
-    result = PPF('Works with SOTN Shuffler Alpha Build 77')
+    result = Patch()
     # Patch boss teleporters
     extract_metadata = extract['Boss Teleporters']['Metadata']
     for boss_teleporter_id in sorted(changes.get('Boss Teleporters', {})):
@@ -1060,6 +1075,7 @@ if __name__ == '__main__':
     Usage
     python sotn_patcher.py EXTRACTION_JSON --data= --changes=CHANGES_JSON --ppf=OUTPUT_PPF
     '''
+    DESCRIPTION = 'Works with SOTN Shuffler Alpha Build 77'
     parser = argparse.ArgumentParser()
     parser.add_argument('extract_file', help='Input a filepath to the extract JSON file', type=str)
     parser.add_argument('--data', help='Input an optional (required if changes argument is given) filepath to a folder containing various data dependency files', type=str)
@@ -1093,5 +1109,6 @@ if __name__ == '__main__':
                 if 'Changes' in changes:
                     changes = changes['Changes']
                 validate_changes(changes)
-                patch = get_ppf(extract, changes, data)
-                ppf_file.write(patch.bytes)
+                patch = get_patch(extract, changes, data)
+                ppf = PPF(DESCRIPTION, patch)
+                ppf_file.write(ppf.bytes)
