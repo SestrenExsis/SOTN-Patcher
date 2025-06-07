@@ -4,7 +4,7 @@ efba1cb3a23eac956895379e60b5fbe0bbcbbb0d *build/ppf/customized-castle-map-reveal
 bf8e23138d09b37b3b5b25eab71cf93fd8ee7783 *build/ppf/disable-clipping-on-one-way-walls.ppf
 5d4370b49bb327d05146cecf928979226b1c24b1 *build/ppf/enable-debug-mode.ppf
 83b03e7203c6aee697d96a60e5ace649f3ead1ad *build/ppf/randomized-items.ppf
-0d56fc11d5a5e14ab8f67494e4f90c09807fbb16 *build/ppf/randomized-relics.ppf
+71c9bd7d541cf5a4f2f231d188dacb83e1f9e3c4 *build/ppf/randomized-relics.ppf
 32827aacd0bbe999d79da6965ce96c3c3bdc2692 *build/ppf/sample-randomized-map.ppf
 db9f8231b379907fbce394cc0c447a6d74891e2b *build/ppf/shuffle-spike-room.ppf
 4c6ba186a49f8dea95c0da76b3f4204fb765a85a *build/ppf/softlock-in-alchemy-lab-maria-cutscene.ppf

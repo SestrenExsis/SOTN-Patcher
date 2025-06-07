@@ -937,6 +937,21 @@ def get_patch(extract, changes, data):
                     constant_extract['Type'],
                     sotn_address.Address(constant_extract['Start']),
                 )
+        elif quest_reward['Type'] == 'Breakable Container Drop':
+            # TODO(sestren): Combine this with 'Stage Item Drop' above (make it type 'Array' instead?)
+            for location_alias in quest_reward['Data']:
+                constant_name = location_alias['Constant']
+                drop_index = location_alias['Drop Index']
+                assert 2 <= drop_index <= 3 # NOTE(sestren): Drop indexes outside this range are not relics and should be handled differently
+                array_extract_meta = extract['Constants'][constant_name]['Metadata']
+                relic_id = aliases['Entities'][reward_name]['Params']
+                result.patch_value(
+                    relic_id,
+                    array_extract_meta['Type'],
+                    sotn_address.Address(
+                        array_extract_meta['Start'] + drop_index * array_extract_meta['Size']
+                    ),
+                )
     # Quest Rewards - Part 2
     for ((stage_name, room_name), object_layout) in object_layouts.items():
         horizontal_object_layout = list(sorted(object_layout,

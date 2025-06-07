@@ -190,6 +190,11 @@ Items:
   Item - Walk Armor: 316
   Item - Zircon: 360
 Quest Rewards:
+  Location - Bat Card:
+    Type: Breakable Container Drop
+    Data:
+      - Constant: Breakable Container Drops
+        Drop Index: 2
   Location - Cube of Zoe:
     Type: Object Layout
     Data:
@@ -268,6 +273,11 @@ Quest Rewards:
       - Stage: Long Library
         Room: Long Library, Spellbook Area
         Object Layout ID: 38
+  Location - Skill of Wolf:
+    Type: Breakable Container Drop
+    Data:
+      - Constant: Breakable Container Drops
+        Drop Index: 3
   Location - Soul of Wolf:
     Type: Object Layout
     Data:

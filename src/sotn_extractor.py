@@ -697,8 +697,8 @@ if __name__ == '__main__':
             (0x045EEAE4, 'u16', 8, 'Unique Item Drops (Reverse Outer Wall)'),
             (0x04416D2C, 'u16', 18, 'Unique Item Drops (Anti-Chapel)'),
             (0x047C4E20, 'u16', 27, 'Unique Item Drops (Reverse Caverns)'),
-            # Relic Container Drops
-            (0x049BF79C, 'u16', 4, 'Relic Container Drops'),
+            # Breakable Container Drops
+            (0x049BF79C, 'u16', 4, 'Breakable Container Drops'),
             # Breakable Wall Tiles
             (0x03CE009C, 'u16', 24, 'Demon Switch Wall Tiles (Abandoned Mine)'),
             (0x0439BFEC, 'u16', 24, 'Demon Switch Wall Tiles (Cave)'),
