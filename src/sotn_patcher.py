@@ -894,6 +894,22 @@ def get_patch(extract, changes, data):
             changes['Quest Rewards'] = {}
         if 'Location - Power of Wolf' not in changes['Quest Rewards']:
             changes['Quest Rewards']['Location - Power of Wolf'] = 'Relic - Power of Wolf'
+    # Color Palettes
+    if 'Castle Map Color Palette' in changes:
+        for (palette_index, argb32) in enumerate(changes['Castle Map Color Palette']):
+            alpha = int(argb32[1:3], 16) // 128
+            red = int(argb32[3:5], 16) // 8
+            green = int(argb32[5:7], 16) // 8
+            blue = int(argb32[7:9], 16) // 8
+            value = (alpha << 15) + (blue << 10) + (green << 5) + red
+            array_extract_meta = extract['Constants']['Castle Map Color Palette']['Metadata']
+            result.patch_value(
+                value,
+                'u16',
+                sotn_address.Address(
+                    array_extract_meta['Start'] + palette_index * array_extract_meta['Size']
+                ),
+            )
     # Quest Rewards - Part 1
     for location_name in sorted(changes.get('Quest Rewards', {})):
         reward_name = changes['Quest Rewards'][location_name]

@@ -716,8 +716,10 @@ if __name__ == '__main__':
             # Waterfall Sound Parameters
             (0x04258D9C, 's16', 16, 'Waterfall Sound Parameters (Underground Caverns)'),
             (0x047C4CE8, 's16', 16, 'Waterfall Sound Parameters (Reverse Caverns)'),
+            # Castle Map Color Palette
+            (0x03128800, 'argb32', 16, 'Castle Map Color Palette'),
         ):
-            assert data_type in ('u16', 's16') # NOTE(sestren): Only handling u16s and s16s for now
+            assert data_type in ('u16', 's16', 'argb32') # NOTE(sestren): Only handling u16s, s16s, and CLUTs in ARGB32 format for now
             cursor = BIN(binary_file, starting_address)
             data = []
             for index in range(array_size):
@@ -725,6 +727,18 @@ if __name__ == '__main__':
                     value = cursor.u16(2 * index)
                 elif data_type == 's16':
                     value = cursor.s16(2 * index)
+                elif data_type == 'argb32':
+                    value = cursor.u16(2 * index)
+                    (value, red) = divmod(value, 32)
+                    (value, green) = divmod(value, 32)
+                    (value, blue) = divmod(value, 32)
+                    (value, alpha) = divmod(value, 32)
+                    # NOTE(sestren): Multiplying by 8 will cause 0 to map to 0x00 and 31 to map to 0xF8
+                    rr = ('{:02X}').format(int(8 * red))
+                    gg = ('{:02X}').format(int(8 * green))
+                    bb = ('{:02X}').format(int(8 * blue))
+                    aa = 'FF' if alpha == 1 else '7F'
+                    value = '#' + aa + rr + gg + bb
                 data.append(value)
             constants[array_name] = {
                 'Metadata': {

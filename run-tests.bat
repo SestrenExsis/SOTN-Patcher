@@ -8,6 +8,7 @@ python src/sotn_extractor.py "build/Castlevania - Symphony of the Night (Track 1
 python src/sotn_patcher.py %EXTRACT% || goto :error
 
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/assign-power-of-wolf-relic-a-unique-id.json" --ppf="build/ppf/assign-power-of-wolf-relic-a-unique-id.ppf" || goto :error
+python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/customized-color-palettes.json" --ppf="build/ppf/customized-color-palettes.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/enable-debug-mode.json" --ppf="build/ppf/enable-debug-mode.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/shuffle-spike-room.json" --ppf="build/ppf/shuffle-spike-room.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/clock-hands-mod.json" --ppf="build/ppf/clock-hands-mod.ppf" || goto :error
