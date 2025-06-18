@@ -15,8 +15,8 @@
         "Location - Bat Card": "Relic - Form of Mist",
         "Location - Soul of Wolf": "Relic - Bat Card"
     },
-    "Strings": {
-        "10": "Randomized relics           ",
-        "11": "Beta Release 1      "
+    "Constants": {
+        "Message - Richter Mode Instructions 1": "Randomized relics           ",
+        "Message - Richter Mode Instructions 2": "Beta Release 1      "
     }
 }

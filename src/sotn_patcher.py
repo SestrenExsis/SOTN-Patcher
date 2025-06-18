@@ -1013,10 +1013,8 @@ def get_patch(extract, changes, data):
                         ),
                     )
     # Patch strings
-    # NOTE(sestren): There are no guards in place requiring that the resulting array of strings
-    # NOTE(sestren): fits into place or uses up the same amount of bytes. It is the
-    # NOTE(sestren): responsibility of the user to ensure that custom string arrays will not
-    # NOTE(sestren): cause issues.
+    # NOTE(sestren): For now, there is nothing preventing strings from overflowing their boundaries
+    # TODO(sestren): Ensure strings fit by truncating strings that are too long
     NULL_CHAR = 0x00
     SPACE_CHAR = 0x20
     PERIOD_CHAR = 0x44
@@ -1024,53 +1022,67 @@ def get_patch(extract, changes, data):
     APOSTROPHE_CHAR = 0x66
     QUOTE_CHAR = 0x68
     DOUBLE_BYTE_CHAR = 0x81
-    extract_metadata = extract['Strings']['Metadata']
-    offset = 0
-    # NOTE(sestren): Going through all the strings on the extract side is necessary because strings take up a variable amount of bytes
-    # TODO(sestren): Fix string-related bugs because I did them wrong
-    for (string_id, extracted_string) in extract['Strings']['Data'].items():
-        if 'Strings' not in changes:
+    NULL_CHAR_SHIFTED = 0xFF
+    for constant_name in changes.get('Constants', {}):
+        constant_extract = extract['Constants'][constant_name]
+        offset = 0
+        if constant_extract.get('Type', None) not in ('string', 'shifted-string'):
             continue
-        string = extracted_string
-        if string_id in changes['Strings']:
-            string = changes['Strings'][string_id]
-        if str(string_id) in changes['Strings']:
-            string = changes['Strings'][str(string_id)]
-        for char in string:
-            if char in '".?\'':
-                result.patch_value(DOUBLE_BYTE_CHAR, 'u8',
-                    sotn_address.Address(extract_metadata['Start'] + offset),
-                )
-                offset += 1
-            char_code = SPACE_CHAR
-            if char == '"':
-                char_code = QUOTE_CHAR
-            elif char == ".":
-                char_code = PERIOD_CHAR
-            elif char == "?":
-                char_code = QUESTION_MARK_CHAR
-            elif char == "'":
-                char_code = APOSTROPHE_CHAR
-            elif char in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-                char_code = ord(char)
-            elif char in '0123456789':
-                result.patch_value(0x82, 'u8',
-                    sotn_address.Address(extract_metadata['Start'] + offset),
-                )
-                offset += 1
-                char_code = 0x4f + (ord(char) - ord('0'))
-            else:
+        string = changes['Constants'][constant_name]
+        if constant_extract['Type'] == 'string':
+            # Strings in SOTN are null-terminated, Shift JIS-encoded character arrays
+            for char in string:
+                if char in '".?\'':
+                    result.patch_value(DOUBLE_BYTE_CHAR, 'u8',
+                        sotn_address.Address(constant_extract['Start'] + offset),
+                    )
+                    offset += 1
                 char_code = SPACE_CHAR
-            result.patch_value(char_code, 'u8',
-                sotn_address.Address(extract_metadata['Start'] + offset),
-            )
-            offset += 1
-        padding = 4 - (offset % 4)
-        for _ in range(padding):
-            result.patch_value(NULL_CHAR, 'u8',
-                sotn_address.Address(extract_metadata['Start'] + offset),
-            )
-            offset += 1
+                if char == '"':
+                    char_code = QUOTE_CHAR
+                elif char == ".":
+                    char_code = PERIOD_CHAR
+                elif char == "?":
+                    char_code = QUESTION_MARK_CHAR
+                elif char == "'":
+                    char_code = APOSTROPHE_CHAR
+                elif char in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+                    char_code = ord(char)
+                elif char in '0123456789':
+                    result.patch_value(0x82, 'u8',
+                        sotn_address.Address(constant_extract['Start'] + offset),
+                    )
+                    offset += 1
+                    char_code = 0x4f + (ord(char) - ord('0'))
+                else:
+                    char_code = SPACE_CHAR
+                result.patch_value(char_code, 'u8',
+                    sotn_address.Address(constant_extract['Start'] + offset),
+                )
+                offset += 1
+            padding = 4 - (offset % 4)
+            for _ in range(padding):
+                result.patch_value(NULL_CHAR, 'u8',
+                    sotn_address.Address(constant_extract['Start'] + offset),
+                )
+                offset += 1
+        elif constant_extract['Type'] == 'shifted-string':
+            # Shifted strings in SOTN are terminated with an 0xFF, and every character is shifted smaller by 0x20
+            for char in string:
+                char_code = ord('*') - 0x20
+                if char in '0123456789 abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+                    char_code = ord(char) - 0x20
+                result.patch_value(char_code, 'u8',
+                    sotn_address.Address(constant_extract['Start'] + offset),
+                )
+                offset += 1
+            padding = 4 - (offset % 4)
+            for i in range(padding):
+                null_char = NULL_CHAR if i > 0 else NULL_CHAR_SHIFTED
+                result.patch_value(null_char, 'u8',
+                    sotn_address.Address(constant_extract['Start'] + offset),
+                )
+                offset += 1
     # Adjust the target points for the Castle Teleporter and False Save Room locations
     for (constant_id, source_stage, source_room_name, offset_type, offset_amount) in (
         # Adjust the target point for the Castle Teleporter locations (in both DRA and RIC)
