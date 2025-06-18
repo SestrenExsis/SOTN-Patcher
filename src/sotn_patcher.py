@@ -127,13 +127,13 @@ def get_changes_template_file(extract):
         'Boss Teleporters': {},
         'Castle Map': [],
         'Castle Map Reveals': [],
+        'Constants': {},
         'Options': {
             'Assign Power of Wolf relic a unique ID': False,
             'Enable debug mode': False,
             'Skip Maria cutscene in Alchemy Laboratory': False,
         },
         'Stages': {},
-        'Strings': {},
         'Teleporters': {},
     }
     for boss_teleporter_id in range(len(extract['Boss Teleporters']['Data'])):
@@ -198,9 +198,15 @@ def get_changes_template_file(extract):
             'Grid': extract['Castle Map Reveals']['Data'][castle_map_reveal_id]['Grid'],
         }
         result['Castle Map Reveals'].append(castle_map_reveal)
-    for string_id in extract['Strings']['Data']:
-        string = extract['Strings']['Data'][string_id]
-        result['Strings'][string_id] = string
+    # Add constants
+    for constant_name in sorted(extract['Constants']):
+        constant = extract['Constants'][constant_name]
+        if constant.get('Type', None) in ('string', 'shifted-string'):
+            if constant_name in (
+                'Message - Richter Mode Instructions 1',
+                'Message - Richter Mode Instructions 2',
+            ):
+                result['Constants'][constant_name] = constant['Value']
     return result
 
 def validate_changes(changes):
