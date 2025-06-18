@@ -31,7 +31,7 @@ class BIN:
         return result
     
     def indirect(self, offset: int, data_type: str='u8', include_meta: bool=False):
-        assert data_type in ('u8', 's8', 'u16', 's16', 'u32', 's32')
+        assert data_type in ('u8', 's8', 'u16', 's16', 'u32', 's32', 'string', 'shifted-string')
         dispatch = {
             'u8': self.u8,
             's8': self.s8,
@@ -39,6 +39,8 @@ class BIN:
             's16': self.s16,
             'u32': self.u32,
             's32': self.s32,
+            'string': self.string,
+            'shifted-string': self.shifted_string,
         }
         result = dispatch[data_type](offset, include_meta)
         return result
@@ -122,6 +124,90 @@ class BIN:
                 'Value': value,
                 'Start': self.cursor.address + offset,
                 'Type': 's32',
+            }
+        else:
+            result = value
+        return result
+
+    def string(self, offset: int=0, include_meta: bool=False):
+        # Strings in SOTN are null-terminated, Shift JIS-encoded character arrays
+        result = None
+        UNKNOWN_CHAR = '*'
+        value = ''
+        size = 0
+        while True:
+            char_code = self.u8(size)
+            if char_code == 0x00:
+                # Strings must end in a Null character
+                size += 4 - (size % 4)
+                break
+            elif char_code == 0x81:
+                # Shift JIS has some 2-byte characters that start with 0x81
+                size += 1
+                char_code = self.u8(size)
+                if char_code == 0x44:
+                    value += '.'
+                elif char_code == 0x48:
+                    value += '?'
+                elif char_code == 0x66:
+                    value += "'"
+                elif char_code == 0x68:
+                    value += '"'
+                else:
+                    value += UNKNOWN_CHAR
+            elif char_code == 0x82:
+                # Shift JIS has some 2-byte characters that start with 0x82
+                size += 1
+                char_code = self.u8(size)
+                if 0x4F <= char_code <= 0x58:
+                    value += chr(ord('0') + (char_code - 0x4F))
+                else:
+                    value += UNKNOWN_CHAR
+            elif chr(char_code) in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+                value += chr(char_code)
+            elif chr(char_code) in '0123456789':
+                value += chr(char_code)
+            else:
+                value += UNKNOWN_CHAR
+            size += 1
+        if include_meta:
+            result = {
+                'Value': value,
+                'Start': self.cursor.address + offset,
+                'Size': size,
+                'Type': 'string',
+            }
+        else:
+            result = value
+        return result
+
+    def shifted_string(self, offset: int=0, include_meta: bool=False):
+        # Shifted strings in SOTN are terminated with an 0xFF, and every character is shifted smaller by 0x20
+        result = None
+        UNKNOWN_CHAR = '*'
+        value = ''
+        size = 0
+        while True:
+            shifted_char_code = self.u8(size)
+            if shifted_char_code == 0xFF:
+                # Strings must end in a 0xFF character
+                size += 4 - (size % 4)
+                break
+            else:
+                char_code = shifted_char_code + 0x20
+                if chr(char_code) in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+                    value += chr(char_code)
+                elif chr(char_code) in '0123456789':
+                    value += chr(char_code)
+                else:
+                    value += UNKNOWN_CHAR
+            size += 1
+        if include_meta:
+            result = {
+                'Value': value,
+                'Start': self.cursor.address + offset,
+                'Size': size,
+                'Type': 'shifted-string',
             }
         else:
             result = value
@@ -778,62 +864,13 @@ if __name__ == '__main__':
             # Hard-coded drops from Bone Scimitars in Castle Entrance
             (0x041FD8FC, 'Bone Scimitar Item Drop 1', 'u16'), # 0x0013 --> Item - Short Sword
             (0x041FD900, 'Bone Scimitar Item Drop 2', 'u16'), # 0x001A --> Item - Red Rust
+            # Strings
+            (0x03ACF0B4, 'Message - Richter Mode Instructions 1', 'string'), # 'Input "RICHTER" to play'
+            (0x03ACF0D4, 'Message - Richter Mode Instructions 2', 'string'), # 'as Richter Belmont.'
+            (0x03E8C888, 'Message - Shop Item Name 1', 'shifted-string'), # 'Jewel of Open'
         ):
             cursor = BIN(binary_file, constant_address)
             constants[constant_name] = cursor.indirect(0, constant_data_type, True)
-        # Extract string data
-        cursor = BIN(binary_file, 0x03ACEFD4)
-        strings = {
-            'Metadata': {
-                'Start': cursor.cursor.address,
-                'Count': 27,
-                'Type': 'string',
-                'Note': 'Strings in SOTN are null-terminated, Shift JIS-encoded character arrays',
-            },
-            'Data': {},
-        }
-        offset = 0
-        UNKNOWN_CHAR = '*'
-        for string_id in range(strings['Metadata']['Count']):
-            # Strings are assumed to be 4-byte aligned
-            assert (offset % 4) == 0
-            string = ''
-            while True:
-                char_code = cursor.u8(offset)
-                if char_code == 0x00:
-                    # Strings must end in a Null character
-                    offset += 4 - (offset % 4)
-                    break
-                elif char_code == 0x81:
-                    # Shift JIS has some 2-byte characters that start with 0x81
-                    offset += 1
-                    char_code = cursor.u8(offset)
-                    if char_code == 0x44:
-                        string += '.'
-                    elif char_code == 0x48:
-                        string += '?'
-                    elif char_code == 0x66:
-                        string += "'"
-                    elif char_code == 0x68:
-                        string += '"'
-                    else:
-                        string += UNKNOWN_CHAR
-                elif char_code == 0x82:
-                    # Shift JIS has some 2-byte characters that start with 0x82
-                    offset += 1
-                    char_code = cursor.u8(offset)
-                    if 0x4F <= char_code <= 0x58:
-                        string += chr(ord('0') + (char_code - 0x4F))
-                    else:
-                        string += UNKNOWN_CHAR
-                elif chr(char_code) in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-                    string += chr(char_code)
-                elif chr(char_code) in '0123456789':
-                    string += chr(char_code)
-                else:
-                    string += UNKNOWN_CHAR
-                offset += 1
-            strings['Data'][string_id] = string
         # Extract castle map data
         cursor = BIN(binary_file, 0x001AF800)
         castle_map = {
@@ -1015,7 +1052,7 @@ if __name__ == '__main__':
             'Familiar Events': familiar_events,
             'Reverse Warp Room Coordinates': reverse_warp_room_coordinates,
             'Stages': stages,
-            'Strings': strings,
+            # 'Strings': strings,
             'Teleporters': teleporters,
             'Warp Room Coordinates': warp_room_coordinates,
         }
