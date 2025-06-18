@@ -718,6 +718,8 @@ if __name__ == '__main__':
             (0x047C4CE8, 's16', 16, 'Waterfall Sound Parameters (Reverse Caverns)'),
             # Castle Map Color Palette
             (0x03128800, 'argb32', 16, 'Castle Map Color Palette'),
+            # Shop Relic IDs
+            (0x03E60CD4, 'u16', 2, 'Shop Relic IDs'),
         ):
             assert data_type in ('u16', 's16', 'argb32') # NOTE(sestren): Only handling u16s, s16s, and CLUTs in ARGB32 format for now
             cursor = BIN(binary_file, starting_address)
