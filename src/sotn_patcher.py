@@ -122,7 +122,7 @@ class Patch:
         else:
             raise Exception('Incorrect type for patch_value:', (value, type, address))
 
-def get_changes_template_file(extract):
+def get_changes_template_file(extract, aliases):
     result = {
         'Boss Teleporters': {},
         'Castle Map': [],
@@ -145,6 +145,11 @@ def get_changes_template_file(extract):
         result['Stages'][stage_id] = {}
         result['Stages'][stage_id]['Rooms'] = {}
         for (room_id, room_data) in stage_data['Rooms'].items():
+            room_name = room_id
+            for (alias_room_name, alias_room_id) in aliases['Rooms'].items():
+                if alias_room_name.startswith(stage_id + ', ') and alias_room_id == int(room_id):
+                    room_name = alias_room_name
+                    break
             relic_found_ind = False
             object_layout_h = None
             object_layout_v = None
@@ -171,12 +176,12 @@ def get_changes_template_file(extract):
                             'Params': object_layout_data['Params'],
                         }
                         object_layout_v[index] = object_h
-            result['Stages'][stage_id]['Rooms'][room_id] = {
+            result['Stages'][stage_id]['Rooms'][room_name] = {
                 'Left': room_data['Left']['Value'],
                 'Top': room_data['Top']['Value'],
             }
             if relic_found_ind:
-                room = result['Stages'][stage_id]['Rooms'][room_id]
+                room = result['Stages'][stage_id]['Rooms'][room_name]
                 room['Object Layout - Horizontal'] = object_layout_h
                 room['Object Layout - Vertical'] = object_layout_v
     for teleporter_id in range(len(extract['Teleporters']['Data'])):
@@ -1146,11 +1151,12 @@ if __name__ == '__main__':
     Usage
     python sotn_patcher.py EXTRACTION_JSON --data= --changes=CHANGES_JSON --ppf=OUTPUT_PPF
     '''
-    DESCRIPTION = 'Works with SOTN Shuffler Alpha Build 77'
+    DESCRIPTION = 'Works with SOTN Shuffler Beta Release 2'
     parser = argparse.ArgumentParser()
     parser.add_argument('extract_file', help='Input a filepath to the extract JSON file', type=str)
     parser.add_argument('--data', help='Input an optional (required if changes argument is given) filepath to a folder containing various data dependency files', type=str)
     parser.add_argument('--changes', help='Input an optional (required if data argument is given) filepath to the changes JSON file', type=str)
+    parser.add_argument('--template', help='Input an optional filepath to the output template file, if one is generated', type=str)
     parser.add_argument('--ppf', help='Input an optional filepath to the output PPF file', type=str)
     args = parser.parse_args()
     with open(args.extract_file) as extract_file:
@@ -1158,8 +1164,14 @@ if __name__ == '__main__':
         if 'Extract' in extract:
             extract = extract['Extract']
         if args.changes is None:
-            with open(os.path.join('build', 'changes.json'), 'w') as changes_file:
-                changes = get_changes_template_file(extract)
+            if args.template is None:
+                args.template = "build/vanilla-changes.json"
+            with (
+                open(os.path.join(os.path.normpath(args.template)), 'w') as changes_file,
+                open(os.path.join(os.path.normpath(args.data), 'aliases.yaml')) as aliases_file,
+            ):
+                aliases = yaml.safe_load(aliases_file)
+                changes = get_changes_template_file(extract, aliases)
                 json.dump(changes, changes_file, indent='    ', sort_keys=True)
         else:
             with (

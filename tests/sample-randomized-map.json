@@ -426,6 +426,8 @@
         "Skip Maria cutscene in Alchemy Laboratory": true
     },
     "Quest Rewards": {
+        "Enemy - Bone Scimitar, Copper (Red Rust)": "Item - Leather Shield",
+        "Enemy - Bone Scimitar, Green (Short Sword)": "Item - Manna Prism",
         "Location - Abandoned Mine, Crumbling Stairwells With Mushrooms (Shiitake 1)": "Item - Resist Stone",
         "Location - Abandoned Mine, Crumbling Stairwells With Mushrooms (Shiitake 2)": "Item - Cross Shuriken",
         "Location - Abandoned Mine, Karma Coin Room (Combat Knife)": "Item - Resist Stone",
@@ -477,9 +479,7 @@
         "Location - Black Marble Gallery, Spirit Orb Room (Antivenom)": "Item - Bat Pentagram",
         "Location - Black Marble Gallery, Spirit Orb Room (Potion)": "Item - Potion",
         "Location - Castle Entrance, After Drawbridge (Life Max-Up)": "Item - Bat Pentagram",
-        "Location - Castle Entrance, Cube of Zoe Room (Red Rust)": "Item - Leather Shield",
         "Location - Castle Entrance, Cube of Zoe Room (Shield Potion)": "Item - Peanuts",
-        "Location - Castle Entrance, Cube of Zoe Room (Short Sword)": "Item - Manna Prism",
         "Location - Castle Entrance, Heart Max-Up Room (Heart Max-Up)": "Item - Sunglasses",
         "Location - Castle Entrance, Holy Mail Room (Holy Mail)": "Item - Potion",
         "Location - Castle Entrance, Jewel Sword Room (Jewel Sword)": "Item - Resist Stone",

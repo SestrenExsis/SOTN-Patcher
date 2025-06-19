@@ -626,11 +626,11 @@ Quest Rewards:
         Item Drop Index: 4
       - Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 4
-  Location - Castle Entrance, Cube of Zoe Room (Short Sword):
+  Enemy - Bone Scimitar, Green (Short Sword):
     Type: Guaranteed Enemy Drop
     Data:
       - Constant: Bone Scimitar Item Drop 1
-  Location - Castle Entrance, Cube of Zoe Room (Red Rust):
+  Enemy - Bone Scimitar, Copper (Red Rust):
     Type: Guaranteed Enemy Drop
     Data:
       - Constant: Bone Scimitar Item Drop 2

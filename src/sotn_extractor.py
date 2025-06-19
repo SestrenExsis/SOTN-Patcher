@@ -1052,7 +1052,6 @@ if __name__ == '__main__':
             'Familiar Events': familiar_events,
             'Reverse Warp Room Coordinates': reverse_warp_room_coordinates,
             'Stages': stages,
-            # 'Strings': strings,
             'Teleporters': teleporters,
             'Warp Room Coordinates': warp_room_coordinates,
         }

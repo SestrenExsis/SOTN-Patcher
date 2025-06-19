@@ -3,10 +3,10 @@
         "Enable debug mode": true
     },
     "Quest Rewards": {
+        "Enemy - Bone Scimitar, Copper (Red Rust)": "Item - Leather Shield",
+        "Enemy - Bone Scimitar, Green (Short Sword)": "Item - Holy Mail",
         "Location - Castle Entrance, After Drawbridge (Life Max-Up)": "Item - Leather Shield",
-        "Location - Castle Entrance, Cube of Zoe Room (Red Rust)": "Item - Leather Shield",
         "Location - Castle Entrance, Cube of Zoe Room (Shield Potion)": "Item - Leather Shield",
-        "Location - Castle Entrance, Cube of Zoe Room (Short Sword)": "Item - Holy Mail",
         "Location - Castle Entrance, Heart Max-Up Room (Heart Max-Up)": "Item - Leather Shield",
         "Location - Castle Entrance, Holy Mail Room (Holy Mail)": "Item - Leather Shield",
         "Location - Castle Entrance, Jewel Sword Room (Jewel Sword)": "Item - Leather Shield",
