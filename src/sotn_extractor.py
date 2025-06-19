@@ -807,7 +807,7 @@ if __name__ == '__main__':
             # Shop Relic IDs
             (0x03E60CD4, 'u16', 2, 'Shop Relic IDs'),
         ):
-            assert data_type in ('u16', 's16', 'rgba32') # NOTE(sestren): Only handling u16s, s16s, and CLUTs in ARGB32 format for now
+            assert data_type in ('u16', 's16', 'rgba32') # NOTE(sestren): Only handling u16s, s16s, and CLUTs in RGBA32 format for now
             cursor = BIN(binary_file, starting_address)
             data = []
             for index in range(array_size):
