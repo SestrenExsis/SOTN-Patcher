@@ -974,6 +974,27 @@ def get_patch(extract, changes, data):
                         array_extract_meta['Start'] + drop_index * array_extract_meta['Size']
                     ),
                 )
+        elif quest_reward['Type'] == 'Shop Purchase Option':
+            # Update label on shop item
+            if 'Constants' not in changes:
+                changes['Constants'] = {}
+            constant_name = 'Message - Shop Item Name 1'
+            if constant_name not in changes['Constants']:
+                changes['Constants'][constant_name] = aliases['Entities'][reward_name]['Label']
+            for location_alias in quest_reward['Data']:
+                constant_name = location_alias['Constant']
+                shop_index = location_alias['Shop Index']
+                relic_id = aliases['Entities'][reward_name]['Params']
+                array_extract_meta = extract['Constants'][constant_name]['Metadata']
+                result.patch_value(
+                    relic_id,
+                    array_extract_meta['Type'],
+                    sotn_address.Address(
+                        array_extract_meta['Start'] + shop_index * array_extract_meta['Size']
+                    ),
+                )
+                # https://github.com/Xeeynamo/sotn-decomp/blob/3e18d5e8654cdfd77fbebeabefebb7333c1da98f/src/st/lib/e_shop.c#L1899
+                result.patch_value(0x64 + relic_id, 'u8', sotn_address.Address(0x03E92308))
     # Quest Rewards - Part 2
     for ((stage_name, room_name), object_layout) in object_layouts.items():
         horizontal_object_layout = list(sorted(object_layout,
@@ -1076,7 +1097,8 @@ def get_patch(extract, changes, data):
                     sotn_address.Address(constant_extract['Start'] + offset),
                 )
                 offset += 1
-            padding = 4 - (offset % 4)
+            padding = constant_extract['Size'] - offset
+            assert padding > 0
             for i in range(padding):
                 null_char = NULL_CHAR if i > 0 else NULL_CHAR_SHIFTED
                 result.patch_value(null_char, 'u8',

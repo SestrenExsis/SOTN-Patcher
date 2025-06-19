@@ -4,7 +4,7 @@
     },
     "Quest Rewards": {
         "Location - Demon Card": "Relic - Spirit Orb",
-        "Location - Cube of Zoe": "Relic - Soul of Bat",
+        "Location - Cube of Zoe": "Relic - Jewel of Open",
         "Location - Power of Wolf": "Relic - Demon Card",
         "Location - Leap Stone": "Relic - Soul of Wolf",
         "Location - Form of Mist": "Relic - Power of Wolf",
@@ -13,10 +13,11 @@
         "Location - Spirit Orb": "Relic - Cube of Zoe",
         "Location - Skill of Wolf": "Relic - Gravity Boots",
         "Location - Bat Card": "Relic - Form of Mist",
-        "Location - Soul of Wolf": "Relic - Bat Card"
+        "Location - Soul of Wolf": "Relic - Bat Card",
+        "Location - Jewel of Open": "Relic - Soul of Bat"
     },
     "Constants": {
         "Message - Richter Mode Instructions 1": "Randomized relics           ",
-        "Message - Richter Mode Instructions 2": "Beta Release 1      "
+        "Message - Richter Mode Instructions 2": "Beta Release 2      "
     }
 }

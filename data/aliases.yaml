@@ -190,6 +190,11 @@ Items:
   Item - Walk Armor: 316
   Item - Zircon: 360
 Quest Rewards:
+  Location - Jewel of Open:
+    Type: Shop Purchase Option
+    Data:
+      - Constant: Shop Relic IDs
+        Shop Index: 0
   Location - Bat Card:
     Type: Breakable Container Drop
     Data:
@@ -261,6 +266,8 @@ Quest Rewards:
       - Stage: Long Library
         Room: Long Library, Lesser Demon Area
         Object Layout ID: 30
+        Notes:
+          - If this location is turned into an item, Long Library needs another item slot to store it
   Location - Faerie Card:
     Type: Object Layout
     Data:
@@ -324,7 +331,7 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Abandoned Mine)
         Item Drop Index: 1
-  Location - Abandoned Mine, Unknown Item Drop 2 (Stone Sword):
+  Location - Abandoned Mine, Unused Item Slot 0:
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Abandoned Mine)
@@ -399,12 +406,12 @@ Quest Rewards:
     Data:
       - Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 3
-  Location - Alchemy Laboratory, Unknown Item Drop 4 (Flamberge):
+  Location - Alchemy Laboratory, Unused Item Slot 0:
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 4
-  Location - Alchemy Laboratory, Unknown Item Drop 5 (Bandanna):
+  Location - Alchemy Laboratory, Unused Item Slot 1:
     Type: Stage Item Drop
     Data:
       - Constant: Unique Item Drops (Alchemy Laboratory)
@@ -2263,93 +2270,123 @@ Entities:
   Relic - Soul of Bat:
     Entity Type ID: 11
     Params: 0
+    Label: Soul of Bat
   Relic - Fire of Bat:
     Entity Type ID: 11
     Params: 1
+    Label: Fire of Bat
   Relic - Echo of Bat:
     Entity Type ID: 11
     Params: 2
+    Label: Echo of Bat
   Relic - Force of Echo:
     Entity Type ID: 11
     Params: 3
+    Label: Force of Echo
   Relic - Soul of Wolf:
     Entity Type ID: 11
     Params: 4
+    Label: Soul of Wolf
   Relic - Power of Wolf:
     Entity Type ID: 11
     Params: 5
+    Label: Power of Wolf
   Relic - Skill of Wolf:
     Entity Type ID: 11
     Params: 6
+    Label: Skill of Wolf
   Relic - Form of Mist:
     Entity Type ID: 11
     Params: 7
+    Label: Form of Mist
   Relic - Power of Mist:
     Entity Type ID: 11
     Params: 8
+    Label: Power of Mist
   Relic - Gas Cloud:
     Entity Type ID: 11
     Params: 9
+    Label: Gas Cloud
   Relic - Cube of Zoe:
     Entity Type ID: 11
     Params: 10
+    Label: Cube of Zoe
   Relic - Spirit Orb:
     Entity Type ID: 11
     Params: 11
+    Label: Spirit Orb
   Relic - Gravity Boots:
     Entity Type ID: 11
     Params: 12
+    Label: Gravity Boots
   Relic - Leap Stone:
     Entity Type ID: 11
     Params: 13
+    Label: Leap Stone
   Relic - Holy Symbol:
     Entity Type ID: 11
     Params: 14
+    Label: Holy Symbol
   Relic - Faerie Scroll:
     Entity Type ID: 11
     Params: 15
+    Label: Faerie Scroll
   Relic - Jewel of Open:
     Entity Type ID: 11
     Params: 16
+    Label: Jewel of Open
   Relic - Merman Statue:
     Entity Type ID: 11
     Params: 17
+    Label: Merman Statue
   Relic - Bat Card:
     Entity Type ID: 11
     Params: 18
+    Label: Bat Card
   Relic - Ghost Card:
     Entity Type ID: 11
     Params: 19
+    Label: Ghost Card
   Relic - Faerie Card:
     Entity Type ID: 11
     Params: 20
+    Label: Faerie Card
   Relic - Demon Card:
     Entity Type ID: 11
     Params: 21
+    Label: Demon Card
   Relic - Sword Card:
     Entity Type ID: 11
     Params: 22
+    Label: Sword Card
   Relic - Sprite Card:
     Entity Type ID: 11
     Params: 23
+    Label: Sprite Card
   Relic - Nosedevil Card:
     Entity Type ID: 11
     Params: 24
+    Label: Nosedevil Card
   Relic - Heart of Vlad:
     Entity Type ID: 11
     Params: 25
+    Label: Heart of Vlad
   Relic - Tooth of Vlad:
     Entity Type ID: 11
     Params: 26
+    Label: Tooth of Vlad
   Relic - Rib of Vlad:
     Entity Type ID: 11
     Params: 27
+    Label: Rib of Vlad
   Relic - Ring of Vlad:
     Entity Type ID: 11
     Params: 28
+    Label: Ring of Vlad
   Relic - Eye of Vlad:
     Entity Type ID: 11
     Params: 29
+    Label: Eye of Vlad
 Rooms:
   Abandoned Mine, Bend: 10
   Abandoned Mine, Cerberus Room: 2
