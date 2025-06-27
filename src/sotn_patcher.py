@@ -569,6 +569,41 @@ def get_patch(extract, changes, data):
                     'Top': source_room['Top'] + target_room['Top'],
                     'Left': source_room['Left'] + target_room['Left'],
                 }
+        for (address, source_stage_name, source_room_name, offset, edge) in (
+            # func_800F1A3C for Underground Caverns
+            (0x000E7248 + 0x00, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 6, 'Left'),
+            (0x000E7248 + 0x08, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 1, 'Top'),
+            (0x000E7248 + 0x0C, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 7, 'Left'),
+            (0x000E7248 + 0x14, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 1, 'Top'),
+            (0x000E7248 + 0x18, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 3, 'Left'),
+            (0x000E7248 + 0x20, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
+            (0x000E7248 + 0x24, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 4, 'Left'),
+            (0x000E7248 + 0x2C, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
+            (0x000E7248 + 0x30, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 5, 'Left'),
+            (0x000E7248 + 0x38, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
+            (0x000E7248 + 0x3C, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 8, 'Left'),
+            (0x000E7248 + 0x44, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
+            # func_800F1A3C for Reverse Caverns
+            (0x000E7248 + 0x50, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 6, 'Left'),
+            (0x000E7248 + 0x54, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 1, 'Top'),
+            (0x000E7248 + 0x60, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 7, 'Left'),
+            (0x000E7248 + 0x64, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 1, 'Top'),
+            (0x000E7248 + 0x70, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 3, 'Left'),
+            (0x000E7248 + 0x74, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
+            (0x000E7248 + 0x80, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 4, 'Left'),
+            (0x000E7248 + 0x84, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
+            (0x000E7248 + 0x90, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 5, 'Left'),
+            (0x000E7248 + 0x94, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
+            (0x000E7248 + 0xA0, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 8, 'Left'),
+            (0x000E7248 + 0xA4, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
+        ):
+            if source_stage_name not in changes['Stages']:
+                continue
+            if source_room_name not in changes['Stages'][source_stage_name]['Rooms']:
+                continue
+            source_room = changes['Stages'][source_stage_name]['Rooms'][source_room_name]
+            value = source_room[edge] + offset
+            result.patch_value(value, 'u8', sotn_address.Address(address))
     # Patch stage data
     for stage_id in sorted(changes.get('Stages', {})):
         stage_data = changes['Stages'][stage_id]
