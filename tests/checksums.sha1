@@ -4,9 +4,10 @@ f0ad7193f0d3df6490d0d057e799369f62a9ad24 *build/ppf/customized-castle-map-reveal
 e5ab4a277ed32ff21605f934731032128d7c533f *build/ppf/customized-color-palettes.ppf
 144847ba4a5521d6d029d5dd1a5070ae7553903e *build/ppf/disable-clipping-on-one-way-walls.ppf
 ddacff41346deec00cbf879f675b3aa228e0e592 *build/ppf/enable-debug-mode.ppf
+28188d6d4d07775e11d29101d4150c911b13cb49 *build/ppf/monochrome-castle-map.ppf
 53d370b02ed5a27342f05041b2c8d3139117c7cb *build/ppf/randomized-items.ppf
 7e9cf65d06609906af26cf225758deec93cd8321 *build/ppf/randomized-relics.ppf
-17e93d24e5461626bc60115508a5bff5a97fd1b1 *build/ppf/sample-randomized-map.ppf
+97507e811c116d76cc0eea9e92e7a6a134153d85 *build/ppf/sample-randomized-map.ppf
 6c4629687d16d32dbe9269f807b0d8bfbb0e93ab *build/ppf/shop-relic-name.ppf
 434e3602fbc65889f30f73bc3661d427838743c4 *build/ppf/shuffle-spike-room.ppf
 5fb4259eaa1c86be3be71375b48a5accb4cd9114 *build/ppf/softlock-in-alchemy-lab-maria-cutscene.ppf
