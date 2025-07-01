@@ -807,7 +807,8 @@ if __name__ == '__main__':
             # Shop Relic IDs
             (0x03E60CD4, 'u16', 2, 'Shop Relic IDs'),
         ):
-            assert data_type in ('u16', 's16', 'rgba32') # NOTE(sestren): Only handling u16s, s16s, and CLUTs in RGBA32 format for now
+            # NOTE(sestren): Only handling specific formats for now
+            assert data_type in ('u16', 's16', 'rgba32')
             cursor = BIN(binary_file, starting_address)
             data = []
             for index in range(array_size):
@@ -925,6 +926,101 @@ if __name__ == '__main__':
             if grid_cursor.u8(0) == 0xFF:
                 castle_map_reveals['Metadata']['Footprint'] += 4 - (castle_map_reveals['Metadata']['Footprint'] % 4)
                 break
+        # Enemy Definitions
+        cursor = BIN(binary_file, 0x0009E100)
+        size = 0x28
+        enemy_definitions = {
+            'Metadata': {
+                'Start': cursor.cursor.address,
+                'Size': size,
+                'Count': 399,
+                'Fields': {
+                    'Name Pointer': {
+                        'Offset': 0x00,
+                        'Type': 'u32',
+                    },
+                    'Hit Points': {
+                        'Offset': 0x04,
+                        'Type': 's16',
+                    },
+                    'Attack': {
+                        'Offset': 0x06,
+                        'Type': 's16',
+                    },
+                    'Attack Element': {
+                        'Offset': 0x08,
+                        'Type': 'u16',
+                    },
+                    'Defense': {
+                        'Offset': 0x0A,
+                        'Type': 's16',
+                    },
+                    'Hitbox State': {
+                        'Offset': 0x0C,
+                        'Type': 'u16',
+                    },
+                    'Weaknesses': {
+                        'Offset': 0x0E,
+                        'Type': 'u16',
+                    },
+                    'Strengths': {
+                        'Offset': 0x10,
+                        'Type': 'u16',
+                    },
+                    'Immunities': {
+                        'Offset': 0x12,
+                        'Type': 'u16',
+                    },
+                    'Absorbs': {
+                        'Offset': 0x14,
+                        'Type': 'u16',
+                    },
+                    'Level': {
+                        'Offset': 0x16,
+                        'Type': 'u16',
+                    },
+                    'Experience': {
+                        'Offset': 0x18,
+                        'Type': 'u16',
+                    },
+                    'Rare Item ID': {
+                        'Offset': 0x1A,
+                        'Type': 'u16',
+                    },
+                    'Uncommon Item ID': {
+                        'Offset': 0x1C,
+                        'Type': 'u16',
+                    },
+                    'Rare Item Drop Rate': {
+                        'Offset': 0x1E,
+                        'Type': 'u16',
+                    },
+                    'Uncommon Item Drop Rate': {
+                        'Offset': 0x20,
+                        'Type': 'u16',
+                    },
+                    'Hitbox Width': {
+                        'Offset': 0x22,
+                        'Type': 'u8',
+                    },
+                    'Hitbox Height': {
+                        'Offset': 0x23,
+                        'Type': 'u8',
+                    },
+                    'Flags': {
+                        'Offset': 0x24,
+                        'Type': 's32',
+                    },
+                },
+            },
+            'Data': [],
+        }
+        for enemy_definition_id in range(enemy_definitions['Metadata']['Count']):
+            enemy_def_cursor = cursor.clone(size * enemy_definition_id)
+            data = {}
+            for (field_name, field) in enemy_definitions['Metadata']['Fields'].items():
+                data[field_name] = enemy_def_cursor.indirect(field['Offset'], field['Type'], False)
+            enemy_definitions['Data'].append(data)
         # Extract Warp Room coordinates list
         cursor = BIN(binary_file, 0x04D12E5C)
         warp_room_coordinates = {
@@ -1049,6 +1145,7 @@ if __name__ == '__main__':
             'Castle Map': castle_map,
             'Castle Map Reveals': castle_map_reveals,
             'Constants': constants,
+            'Enemy Definitions': enemy_definitions,
             'Familiar Events': familiar_events,
             'Reverse Warp Room Coordinates': reverse_warp_room_coordinates,
             'Stages': stages,
