@@ -933,56 +933,58 @@ if __name__ == '__main__':
             'Metadata': {
                 'Start': cursor.cursor.address,
                 'Size': size,
-                'Count': 399,
+                'Count': 400,
                 'Fields': {
-                    'Name Pointer': {
+                    'Name': {
                         'Offset': 0x00,
                         'Type': 'u32',
+                        'Secondary Offset': -0x8000A800,
+                        'Secondary Type': 'shifted-string',
                     },
-                    'Hit Points': {
-                        'Offset': 0x04,
-                        'Type': 's16',
-                    },
-                    'Attack': {
-                        'Offset': 0x06,
-                        'Type': 's16',
-                    },
-                    'Attack Element': {
-                        'Offset': 0x08,
-                        'Type': 'u16',
-                    },
-                    'Defense': {
-                        'Offset': 0x0A,
-                        'Type': 's16',
-                    },
-                    'Hitbox State': {
-                        'Offset': 0x0C,
-                        'Type': 'u16',
-                    },
-                    'Weaknesses': {
-                        'Offset': 0x0E,
-                        'Type': 'u16',
-                    },
-                    'Strengths': {
-                        'Offset': 0x10,
-                        'Type': 'u16',
-                    },
-                    'Immunities': {
-                        'Offset': 0x12,
-                        'Type': 'u16',
-                    },
-                    'Absorbs': {
-                        'Offset': 0x14,
-                        'Type': 'u16',
-                    },
-                    'Level': {
-                        'Offset': 0x16,
-                        'Type': 'u16',
-                    },
-                    'Experience': {
-                        'Offset': 0x18,
-                        'Type': 'u16',
-                    },
+                    # 'Hit Points': {
+                    #     'Offset': 0x04,
+                    #     'Type': 's16',
+                    # },
+                    # 'Attack': {
+                    #     'Offset': 0x06,
+                    #     'Type': 's16',
+                    # },
+                    # 'Attack Element': {
+                    #     'Offset': 0x08,
+                    #     'Type': 'u16',
+                    # },
+                    # 'Defense': {
+                    #     'Offset': 0x0A,
+                    #     'Type': 's16',
+                    # },
+                    # 'Hitbox State': {
+                    #     'Offset': 0x0C,
+                    #     'Type': 'u16',
+                    # },
+                    # 'Weaknesses': {
+                    #     'Offset': 0x0E,
+                    #     'Type': 'u16',
+                    # },
+                    # 'Strengths': {
+                    #     'Offset': 0x10,
+                    #     'Type': 'u16',
+                    # },
+                    # 'Immunities': {
+                    #     'Offset': 0x12,
+                    #     'Type': 'u16',
+                    # },
+                    # 'Absorbs': {
+                    #     'Offset': 0x14,
+                    #     'Type': 'u16',
+                    # },
+                    # 'Level': {
+                    #     'Offset': 0x16,
+                    #     'Type': 'u16',
+                    # },
+                    # 'Experience': {
+                    #     'Offset': 0x18,
+                    #     'Type': 'u16',
+                    # },
                     'Rare Item ID': {
                         'Offset': 0x1A,
                         'Type': 'u16',
@@ -999,18 +1001,18 @@ if __name__ == '__main__':
                         'Offset': 0x20,
                         'Type': 'u16',
                     },
-                    'Hitbox Width': {
-                        'Offset': 0x22,
-                        'Type': 'u8',
-                    },
-                    'Hitbox Height': {
-                        'Offset': 0x23,
-                        'Type': 'u8',
-                    },
-                    'Flags': {
-                        'Offset': 0x24,
-                        'Type': 's32',
-                    },
+                    # 'Hitbox Width': {
+                    #     'Offset': 0x22,
+                    #     'Type': 'u8',
+                    # },
+                    # 'Hitbox Height': {
+                    #     'Offset': 0x23,
+                    #     'Type': 'u8',
+                    # },
+                    # 'Flags': {
+                    #     'Offset': 0x24,
+                    #     'Type': 's32',
+                    # },
                 },
             },
             'Data': [],
@@ -1020,6 +1022,10 @@ if __name__ == '__main__':
             data = {}
             for (field_name, field) in enemy_definitions['Metadata']['Fields'].items():
                 data[field_name] = enemy_def_cursor.indirect(field['Offset'], field['Type'], False)
+                if 'Secondary Type' in field:
+                    secondary_offset = data[field_name] + field.get('Secondary Offset', 0)
+                    secondary_cursor = BIN(binary_file, secondary_offset)
+                    data[field_name] = secondary_cursor.indirect(0, field['Secondary Type'], False)
             enemy_definitions['Data'].append(data)
         # Extract Warp Room coordinates list
         cursor = BIN(binary_file, 0x04D12E5C)
