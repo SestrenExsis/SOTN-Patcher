@@ -300,22 +300,22 @@ Quest Rewards:
       - Enemy Definition ID: 34
         Property: Uncommon Item ID
     Type: Enemy Definition
-  Enemy - Axe Knight, Level 4 (Rare Drop):
+  Enemy - Axe Knight, Type A (Rare Drop):
     Data:
       - Enemy Definition ID: 246
         Property: Rare Item ID
     Type: Enemy Definition
-  Enemy - Axe Knight, Level 4 (Uncommon Drop):
+  Enemy - Axe Knight, Type A (Uncommon Drop):
     Data:
       - Enemy Definition ID: 246
         Property: Uncommon Item ID
     Type: Enemy Definition
-  Enemy - Axe Knight, Level 9 (Rare Drop):
+  Enemy - Axe Knight, Type B (Rare Drop):
     Data:
       - Enemy Definition ID: 6
         Property: Rare Item ID
     Type: Enemy Definition
-  Enemy - Axe Knight, Level 9 (Uncommon Drop):
+  Enemy - Axe Knight, Type B (Uncommon Drop):
     Data:
       - Enemy Definition ID: 6
         Property: Uncommon Item ID
@@ -420,23 +420,17 @@ Quest Rewards:
       - Enemy Definition ID: 114
         Property: Uncommon Item ID
     Type: Enemy Definition
-  Enemy - Blue Venus Weed, 100 HP (Rare Drop):
+  Enemy - Blue Venus Weed (Rare Drop):
     Data:
       - Enemy Definition ID: 392
         Property: Rare Item ID
-    Type: Enemy Definition
-  Enemy - Blue Venus Weed, 100 HP (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 392
-        Property: Uncommon Item ID
-    Type: Enemy Definition
-  Enemy - Blue Venus Weed, 550 HP (Rare Drop):
-    Data:
       - Enemy Definition ID: 393
         Property: Rare Item ID
     Type: Enemy Definition
-  Enemy - Blue Venus Weed, 550 HP (Uncommon Drop):
+  Enemy - Blue Venus Weed (Uncommon Drop):
     Data:
+      - Enemy Definition ID: 392
+        Property: Uncommon Item ID
       - Enemy Definition ID: 393
         Property: Uncommon Item ID
     Type: Enemy Definition
@@ -460,25 +454,17 @@ Quest Rewards:
       - Enemy Definition ID: 108
         Property: Uncommon Item ID
     Type: Enemy Definition
-  Enemy - Bone Ark (Rare Drop):
-    Data:
-      - Enemy Definition ID: 46
-        Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Bone Ark (Uncommon Drop):
     Data:
+      - Enemy Definition ID: 45
+        Property: Uncommon Item ID
       - Enemy Definition ID: 46
         Property: Uncommon Item ID
     Type: Enemy Definition
-  Enemy - Bone Ark, Moving (Rare Drop):
+  Enemy - Bone Ark (Rare Drop):
     Data:
       - Enemy Definition ID: 45
         Property: Rare Item ID
-    Type: Enemy Definition
-  Enemy - Bone Ark, Moving (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 45
-        Property: Uncommon Item ID
     Type: Enemy Definition
   Enemy - Bone Halberd (Rare Drop):
     Data:
@@ -809,10 +795,12 @@ Quest Rewards:
   Enemy - Guardian (Rare Drop):
     Data:
       - Enemy Definition ID: 396
+        Property: Rare Item ID
     Type: Enemy Definition
   Enemy - Guardian (Uncommon Drop):
     Data:
       - Enemy Definition ID: 396
+        Property: Uncommon Item ID
     Type: Enemy Definition
   Enemy - Gurkha (Rare Drop):
     Data:
@@ -964,43 +952,31 @@ Quest Rewards:
       - Enemy Definition ID: 49
         Property: Uncommon Item ID
     Type: Enemy Definition
-  Enemy - Medusa Head, Level 7 (Rare Drop):
+  Enemy - Medusa Head (Rare Drop):
     Data:
       - Enemy Definition ID: 303
         Property: Rare Item ID
+      - Enemy Definition ID: 304
+        Property: Rare Item ID
     Type: Enemy Definition
-  Enemy - Medusa Head, Level 7 (Uncommon Drop):
+  Enemy - Medusa Head (Uncommon Drop):
     Data:
       - Enemy Definition ID: 303
         Property: Uncommon Item ID
-    Type: Enemy Definition
-  Enemy - Medusa Head, Level 8 (Rare Drop):
-    Data:
-      - Enemy Definition ID: 304
-        Property: Rare Item ID
-    Type: Enemy Definition
-  Enemy - Medusa Head, Level 8 (Uncommon Drop):
-    Data:
       - Enemy Definition ID: 304
         Property: Uncommon Item ID
     Type: Enemy Definition
-  Enemy - Merman, Level 2 (Rare Drop):
+  Enemy - Merman (Rare Drop):
     Data:
       - Enemy Definition ID: 27
         Property: Rare Item ID
-    Type: Enemy Definition
-  Enemy - Merman, Level 2 (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 27
-        Property: Uncommon Item ID
-    Type: Enemy Definition
-  Enemy - Merman, Level 3 (Rare Drop):
-    Data:
       - Enemy Definition ID: 29
         Property: Rare Item ID
     Type: Enemy Definition
-  Enemy - Merman, Level 3 (Uncommon Drop):
+  Enemy - Merman (Uncommon Drop):
     Data:
+      - Enemy Definition ID: 27
+        Property: Uncommon Item ID
       - Enemy Definition ID: 29
         Property: Uncommon Item ID
     Type: Enemy Definition
@@ -1254,32 +1230,26 @@ Quest Rewards:
       - Enemy Definition ID: 93
         Property: Uncommon Item ID
     Type: Enemy Definition
-  Enemy - Spectral Sword, Level 13 (Rare Drop):
+  Enemy - Spectral Sword, Type A (Rare Drop):
     Data:
       - Enemy Definition ID: 129
         Property: Rare Item ID
-    Type: Enemy Definition
-  Enemy - Spectral Sword, Level 13 (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 129
-        Property: Uncommon Item ID
-    Type: Enemy Definition
-  Enemy - Spectral Sword, Level 15 (Rare Drop):
-    Data:
       - Enemy Definition ID: 136
         Property: Rare Item ID
     Type: Enemy Definition
-  Enemy - Spectral Sword, Level 15 (Uncommon Drop):
+  Enemy - Spectral Sword, Type A (Uncommon Drop):
     Data:
+      - Enemy Definition ID: 129
+        Property: Uncommon Item ID
       - Enemy Definition ID: 136
         Property: Uncommon Item ID
     Type: Enemy Definition
-  Enemy - Spectral Sword, Level 36 (Rare Drop):
+  Enemy - Spectral Sword, Type B (Rare Drop):
     Data:
       - Enemy Definition ID: 138
         Property: Rare Item ID
     Type: Enemy Definition
-  Enemy - Spectral Sword, Level 36 (Uncommon Drop):
+  Enemy - Spectral Sword, Type B (Uncommon Drop):
     Data:
       - Enemy Definition ID: 138
         Property: Uncommon Item ID
@@ -1384,23 +1354,17 @@ Quest Rewards:
       - Enemy Definition ID: 228
         Property: Uncommon Item ID
     Type: Enemy Definition
-  Enemy - Venus Weed, 100 HP (Rare Drop):
+  Enemy - Venus Weed (Rare Drop):
     Data:
       - Enemy Definition ID: 161
         Property: Rare Item ID
-    Type: Enemy Definition
-  Enemy - Venus Weed, 100 HP (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 161
-        Property: Uncommon Item ID
-    Type: Enemy Definition
-  Enemy - Venus Weed, 500 HP (Rare Drop):
-    Data:
       - Enemy Definition ID: 162
         Property: Rare Item ID
     Type: Enemy Definition
-  Enemy - Venus Weed, 500 HP (Uncommon Drop):
+  Enemy - Venus Weed (Uncommon Drop):
     Data:
+      - Enemy Definition ID: 161
+        Property: Uncommon Item ID
       - Enemy Definition ID: 162
         Property: Uncommon Item ID
     Type: Enemy Definition
