@@ -34,9 +34,22 @@ Entity Types:
   Unique Item:
     Global: 12
 Items:
+  Item - Pineapple: 162
+  Item - Parfait: 169
+  Item - Pudding: 170
+  Item - Hamburger: 173
+  Item - Omelette: 177
+  Item - Lunch B: 180
+  Item - Curry Rice: 181
+  Item - Gryos Plate: 182
+  Item - Spaghetti: 183
+  Item - Grape Juice: 184
+  Item - Chinese Bun: 193
+  Item - Dim Sum Set: 194
   Item - $100: 5
+  Item - $1000: 9
   Item - $2000: 10
-  Subweapon - Axe: 15
+  Item - $400: 7
   Item - Alucard Mail: 312
   Item - Alucard Shield: 144
   Item - Alucard Sword: 251
@@ -45,70 +58,110 @@ Items:
   Item - Alucart Sword: 296
   Item - Ankh of Life: 377
   Item - Antivenom: 272
+  Item - Apple: 158
   Item - Aquamarine: 361
   Item - Attack Potion: 279
+  Item - Axe Lord Armor: 322
+  Item - Axe Lord Shield: 136
+  Item - Badelaire: 253
   Item - Ballroom Mask: 325
+  Item - Banana: 159
   Item - Bandanna: 326
   Item - Barley Tea: 185
   Item - Basilard: 146
   Item - Bastard Sword: 224
   Item - Bat Pentagram: 202
-  Item - Badelaire: 253
   Item - Bekatowa: 220
   Item - Beryl Circlet: 339
-  Item - Bloodstone: 357
   Item - Blood Cloak: 351
+  Item - Bloodstone: 357
+  Item - Blue Knuckles: 265
   Item - Boomerang: 209
+  Item - Brilliant Mail: 317
   Item - Broadsword: 219
   Item - Bronze Cuirass: 300
   Item - Buffalo Star: 205
   Item - Bwaka Knife: 208
   Item - Cat-Eye Circlet: 340
+  Item - Chakram: 261
   Item - Cheese: 175
+  Item - Cheesecake: 166
+  Item - Circlet: 334
   Item - Claymore: 226
   Item - Cloth Cape: 346
+  Item - Cloth Tunic: 298
   Item - Combat Knife: 148
+  Item - Coral Circlet: 341
+  Item - Covenant Stone: 383
+  Item - Crissaegrim: 292
   Item - Cross Shuriken: 204
   Item - Crystal Cloak: 349
   Item - Cutlass: 216
+  Item - Damascus Sword: 221
+  Item - Dark Armor: 313
   Item - Dark Blade: 246
+  Item - Dark Shield: 138
   Item - Diamond: 366
   Item - Dragon Helm: 342
+  Item - Dynamite: 266
   Item - Elixir: 289
   Item - Estoc: 223
   Item - Falchion: 218
+  Item - Felt Hat: 327
   Item - Fire Boomerang: 262
   Item - Fire Mail: 307
+  Item - Fire Shield: 143
+  Item - Firebrand: 239
+  Item - Fist of Tulkas: 248
+  Item - Flamberge: 229
+  Item - Flame Star: 206
   Item - Frankfurter: 172
   Item - Fury Plate: 319
   Item - Garnet: 364
+  Item - Gauntlet: 376
   Item - Gladius: 214
+  Item - God's Garb: 321
   Item - Goddess Shield: 139
   Item - Goggles: 329
+  Item - Gold Circlet: 335
   Item - Gold Plate: 304
   Item - Gold Ring: 369
   Item - Gram: 236
+  Item - Grapes: 160
+  Item - Great Sword: 255
   Item - Green Tea: 186
-  Item - Heart Max-Up: 12
-  Item - Heart Refresh: 270
+  Item - Gurthang: 249
+  Item - Ham and Eggs: 176
   Item - Hammer: 275
   Item - Healing Mail: 314
+  Item - Heart Broach: 374
+  Item - Heart Max-Up: 12
+  Item - Heart Refresh: 270
+  Item - Heaven Sword: 247
   Item - Herald Shield: 137
   Item - Hide Cuirass: 299
   Item - High Potion: 288
+  Item - Holbein Dagger: 264
   Item - Holy Mail: 315
   Item - Holy Rod: 258
   Item - Holy Sword: 243
+  Item - Hunter Sword: 222
+  Item - Ice Cream: 171
   Item - Ice Mail: 309
   Item - Icebrand: 241
   Item - Iron Ball: 263
+  Item - Iron Cuirass: 301
+  Item - Iron Fist: 230
+  Item - Iron Shield: 135
   Item - Javelin: 210
   Item - Jewel Knuckles: 225
   Item - Jewel Sword: 237
   Item - Karma Coin: 152
   Item - Katana: 228
+  Item - King's Stone: 382
   Item - Knight Shield: 134
   Item - Knuckle Duster: 213
+  Item - Lapis Lazuli: 367
   Item - Leather Shield: 133
   Item - Library Card: 294
   Item - Life Apple: 274
@@ -116,32 +169,51 @@ Items:
   Item - Lightning Mail: 308
   Item - Luck Potion: 277
   Item - Luminus: 233
+  Item - Lunch A: 179
+  Item - Mablung Sword: 252
   Item - Magic Missile: 153
   Item - Manna Prism: 290
+  Item - Marsil: 245
+  Item - Masamune: 268
   Item - Meal Ticket: 198
+  Item - Medal: 379
+  Item - Medusa Shield: 141
   Item - Mirror Cuirass: 310
-  Item - Monster Vial 1: 201
-  Item - Monster Vial 2: 202
-  Item - Monster Vial 3: 203
+  Item - Miso Soup: 189
+  Item - Mojo Mail: 318
+  Item - Monster Vial 1: 129
+  Item - Monster Vial 2: 130
+  Item - Monster Vial 3: 131
   Item - Moon Rod: 260
   Item - Moonstone: 355
   Item - Mormegil: 238
+  Item - Morning Set: 178
   Item - Morningstar: 257
+  Item - Mourneblade: 250
+  Item - Muramasa: 269
   Item - Mystic Pendant: 373
+  Item - Namakura: 212
+  Item - Natou: 187
+  Item - Nauglamir: 384
   Item - Necklace of J: 375
   Item - Neutron Bomb: 199
   Item - Nunchaku: 149
+  Item - Obsidian Sword: 235
   Item - Onyx: 363
   Item - Opal: 365
   Item - Opal Circlet: 337
+  Item - Orange: 157
   Item - Osafune Katana: 267
   Item - Peanuts: 163
   Item - Pentagram: 201
+  Item - Pizza: 174
   Item - Platinum Mail: 305
   Item - Pork Bun: 191
   Item - Pot Roast: 195
   Item - Potion: 287
   Item - Power of Sire: 200
+  Item - Ramen: 188
+  Item - Rapier: 151
   Item - Red Bean Bun: 192
   Item - Red Rust: 154
   Item - Resist Dark: 286
@@ -152,20 +224,26 @@ Items:
   Item - Resist Thunder: 282
   Item - Ring of Arcana: 372
   Item - Ring of Ares: 368
+  Item - Ring of Feanor: 378
+  Item - Ring of Varda: 371
   Item - Royal Cloak: 350
   Item - Ruby Circlet: 336
-  Item - Scimitar: 327
+  Item - Runesword: 271
+  Item - Saber: 217
+  Item - Scimitar: 215
   Item - Secret Boots: 385
   Item - Shaman Shield: 140
   Item - Shield Potion: 280
   Item - Shield Rod: 132
   Item - Shiitake: 165
   Item - Short Sword: 147
+  Item - Shortcake: 167
   Item - Shotel: 156
   Item - Shuriken: 203
   Item - Silver Plate: 303
   Item - Silver Ring: 370
   Item - Sirloin: 196
+  Item - Skull Shield: 142
   Item - Smart Potion: 278
   Item - Spike Breaker: 311
   Item - Star Flail: 259
@@ -173,23 +251,34 @@ Items:
   Item - Steel Helm: 332
   Item - Stone Mask: 333
   Item - Stone Sword: 242
+  Item - Strawberry: 161
   Item - Strength Potion: 276
   Item - Sunglasses: 324
   Item - Sunstone: 356
+  Item - Sushi: 190
   Item - Sword of Dawn: 145
   Item - Sword of Hador: 232
+  Item - TNT: 207
   Item - Takemitsu: 155
   Item - Talisman: 380
   Item - Talwar: 227
-  Item - TNT: 207
+  Item - Tart: 168
+  Item - Terminus Est: 244
   Item - Toadstool: 164
   Item - Topaz Circlet: 338
   Item - Turkey: 197
   Item - Turquoise: 362
   Item - Twilight Cloak: 353
   Item - Tyrfing: 211
+  Item - Uncurse: 273
+  Item - Vorpal Blade: 291
   Item - Walk Armor: 316
+  Item - Were Bane: 150
+  Item - Wizard Hat: 344
+  Item - Yasutsuna: 293
   Item - Zircon: 360
+  Item - Zwei Hander: 231
+  Subweapon - Axe: 15
 Quest Rewards:
   Enemy - Archer (Rare Drop):
     Data:
@@ -3983,6 +4072,24 @@ Rooms:
   Marble Gallery, Beneath Left Trapdoor: 23
   Marble Gallery, Beneath Right Trapdoor: 24
   Marble Gallery, Blue Door Room: 12
+  Marble Gallery, Clock Room (Testing Things Out):
+    Room Index: 9
+    Dependents:
+      - Type: Room
+        Stage: Cutscene - Meeting Maria in Clock Room
+        Room: Cutscene - Meeting Maria in Clock Room, Clock Room
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Cutscene - Meeting Maria in Clock Room
+        Room: Cutscene - Meeting Maria in Clock Room, Fake Room With Teleporter A
+        Top: 0
+        Left: -1
+      - Type: Room
+        Stage: Cutscene - Meeting Maria in Clock Room
+        Room: Cutscene - Meeting Maria in Clock Room, Fake Room With Teleporter B
+        Top: 0
+        Left: 1
   Marble Gallery, Clock Room: 9
   Marble Gallery, Dropoff: 5
   Marble Gallery, Elevator Room: 21
