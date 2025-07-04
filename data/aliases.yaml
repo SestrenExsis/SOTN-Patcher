@@ -34,6 +34,9 @@ Entity Types:
   Unique Item:
     Global: 12
 Items:
+  Item - $100: 5
+  Item - $2000: 10
+  Subweapon - Axe: 15
   Item - Alucard Mail: 312
   Item - Alucard Shield: 144
   Item - Alucard Sword: 251
@@ -44,7 +47,6 @@ Items:
   Item - Antivenom: 272
   Item - Aquamarine: 361
   Item - Attack Potion: 279
-  Item - Badelaire: 253
   Item - Ballroom Mask: 325
   Item - Bandanna: 326
   Item - Barley Tea: 185
@@ -161,7 +163,6 @@ Items:
   Item - Short Sword: 147
   Item - Shotel: 156
   Item - Shuriken: 203
-  Item - Staurolite: 358
   Item - Silver Plate: 303
   Item - Silver Ring: 370
   Item - Sirloin: 196
@@ -190,6 +191,1180 @@ Items:
   Item - Walk Armor: 316
   Item - Zircon: 360
 Quest Rewards:
+  Enemy - Archer (Rare Drop):
+    Data:
+      - Enemy Definition ID: 305
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Archer (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 305
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Armor Lord (Rare Drop):
+    Data:
+      - Enemy Definition ID: 34
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Armor Lord (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 34
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Axe Knight, Level 4 (Rare Drop):
+    Data:
+      - Enemy Definition ID: 246
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Axe Knight, Level 4 (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 246
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Axe Knight, Level 9 (Rare Drop):
+    Data:
+      - Enemy Definition ID: 6
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Axe Knight, Level 9 (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 6
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Azaghal (Rare Drop):
+    Data:
+      - Enemy Definition ID: 224
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Azaghal (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 224
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Bat (Rare Drop):
+    Data:
+      - Enemy Definition ID: 64
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Bat (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 64
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Bitterfly (Rare Drop):
+    Data:
+      - Enemy Definition ID: 182
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Bitterfly (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 182
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Black Crow (Rare Drop):
+    Data:
+      - Enemy Definition ID: 115
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Black Crow (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 115
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Black Panther (Rare Drop):
+    Data:
+      - Enemy Definition ID: 37
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Black Panther (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 37
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Blade (Rare Drop):
+    Data:
+      - Enemy Definition ID: 190
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Blade (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 190
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Blade Master (Rare Drop):
+    Data:
+      - Enemy Definition ID: 122
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Blade Master (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 122
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Blade Soldier (Rare Drop):
+    Data:
+      - Enemy Definition ID: 124
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Blade Soldier (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 124
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Bloody Zombie (Rare Drop):
+    Data:
+      - Enemy Definition ID: 13
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Bloody Zombie (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 13
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Blue Raven (Rare Drop):
+    Data:
+      - Enemy Definition ID: 114
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Blue Raven (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 114
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Blue Venus Weed, 100 HP (Rare Drop):
+    Data:
+      - Enemy Definition ID: 392
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Blue Venus Weed, 100 HP (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 392
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Blue Venus Weed, 550 HP (Rare Drop):
+    Data:
+      - Enemy Definition ID: 393
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Blue Venus Weed, 550 HP (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 393
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Bomb Knight (Rare Drop):
+    Data:
+      - Enemy Definition ID: 165
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Bomb Knight (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 165
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Bone Archer (Rare Drop):
+    Data:
+      - Enemy Definition ID: 108
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Bone Archer (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 108
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Bone Ark (Rare Drop):
+    Data:
+      - Enemy Definition ID: 46
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Bone Ark (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 46
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Bone Ark, Moving (Rare Drop):
+    Data:
+      - Enemy Definition ID: 45
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Bone Ark, Moving (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 45
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Bone Halberd (Rare Drop):
+    Data:
+      - Enemy Definition ID: 118
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Bone Halberd (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 118
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Bone Musket (Rare Drop):
+    Data:
+      - Enemy Definition ID: 102
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Bone Musket (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 102
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Bone Pillar (Rare Drop):
+    Data:
+      - Enemy Definition ID: 183
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Bone Pillar (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 183
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Bone Scimitar, Blue (Rare Drop):
+    Data:
+      - Enemy Definition ID: 105
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Bone Scimitar, Blue (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 105
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Bone Scimitar, Copper (Guaranteed Drop):
+    Data:
+      - Constant: Bone Scimitar Item Drop 2
+    Type: Guaranteed Enemy Drop
+  Enemy - Bone Scimitar, Green (Guaranteed Drop):
+    Data:
+      - Constant: Bone Scimitar Item Drop 1
+    Type: Guaranteed Enemy Drop
+  Enemy - Cave Troll (Rare Drop):
+    Data:
+      - Enemy Definition ID: 153
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Cave Troll (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 153
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Cloaked Knight (Rare Drop):
+    Data:
+      - Enemy Definition ID: 271
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Cloaked Knight (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 271
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Corner Guard (Rare Drop):
+    Data:
+      - Enemy Definition ID: 180
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Corner Guard (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 180
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Corpseweed (Rare Drop):
+    Data:
+      - Enemy Definition ID: 158
+        Property: Rare Item ID
+      - Enemy Definition ID: 159
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Corpseweed (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 158
+        Property: Uncommon Item ID
+      - Enemy Definition ID: 159
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Ctulhu (Rare Drop):
+    Data:
+      - Enemy Definition ID: 233
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Ctulhu (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 233
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Dark Octopus (Rare Drop):
+    Data:
+      - Enemy Definition ID: 38
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Dark Octopus (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 38
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Dhuron (Rare Drop):
+    Data:
+      - Enemy Definition ID: 146
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Dhuron (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 146
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Diplocephalus (Rare Drop):
+    Data:
+      - Enemy Definition ID: 16
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Diplocephalus (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 16
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Discus Lord (Rare Drop):
+    Data:
+      - Enemy Definition ID: 77
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Discus Lord (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 77
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Dodo Bird (Rare Drop):
+    Data:
+      - Enemy Definition ID: 104
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Dodo Bird (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 104
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Ectoplasm (Rare Drop):
+    Data:
+      - Enemy Definition ID: 88
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Ectoplasm (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 88
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Fire Demon (Rare Drop):
+    Data:
+      - Enemy Definition ID: 79
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Fire Demon (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 79
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Fire Warg (Rare Drop):
+    Data:
+      - Enemy Definition ID: 148
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Fire Warg (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 148
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Fishhead (Rare Drop):
+    Data:
+      - Enemy Definition ID: 277
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Fishhead (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 277
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Flail Guard (Rare Drop):
+    Data:
+      - Enemy Definition ID: 68
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Flail Guard (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 68
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Flea Armor (Rare Drop):
+    Data:
+      - Enemy Definition ID: 41
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Flea Armor (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 41
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Flea Man (Rare Drop):
+    Data:
+      - Enemy Definition ID: 40
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Flea Man (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 40
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Flea Rider (Rare Drop):
+    Data:
+      - Enemy Definition ID: 48
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Flea Rider (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 48
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Flying Zombie (Rare Drop):
+    Data:
+      - Enemy Definition ID: 14
+        Property: Rare Item ID
+      - Enemy Definition ID: 15
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Flying Zombie (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 14
+        Property: Uncommon Item ID
+      - Enemy Definition ID: 15
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Frog (Rare Drop):
+    Data:
+      - Enemy Definition ID: 107
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Frog (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 107
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Frozen Half (Rare Drop):
+    Data:
+      - Enemy Definition ID: 217
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Frozen Half (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 217
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Frozen Shade (Rare Drop):
+    Data:
+      - Enemy Definition ID: 99
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Frozen Shade (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 99
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Ghost (Rare Drop):
+    Data:
+      - Enemy Definition ID: 156
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Ghost (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 156
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Ghost Dancer (Rare Drop):
+    Data:
+      - Enemy Definition ID: 216
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Ghost Dancer (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 216
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Gorgon (Rare Drop):
+    Data:
+      - Enemy Definition ID: 31
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Gorgon (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 31
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Grave Keeper (Rare Drop):
+    Data:
+      - Enemy Definition ID: 111
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Grave Keeper (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 111
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Gremlin (Rare Drop):
+    Data:
+      - Enemy Definition ID: 225
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Gremlin (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 225
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Guardian (Rare Drop):
+    Data:
+      - Enemy Definition ID: 396
+    Type: Enemy Definition
+  Enemy - Guardian (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 396
+    Type: Enemy Definition
+  Enemy - Gurkha (Rare Drop):
+    Data:
+      - Enemy Definition ID: 188
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Gurkha (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 188
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Hammer (Rare Drop):
+    Data:
+      - Enemy Definition ID: 186
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Hammer (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 186
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Harpy (Rare Drop):
+    Data:
+      - Enemy Definition ID: 239
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Harpy (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 239
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Hellfire Beast (Rare Drop):
+    Data:
+      - Enemy Definition ID: 71
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Hellfire Beast (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 71
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Hunting Girl (Rare Drop):
+    Data:
+      - Enemy Definition ID: 227
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Hunting Girl (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 227
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Imp (Rare Drop):
+    Data:
+      - Enemy Definition ID: 284
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Imp (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 284
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Jack O'Bones (Rare Drop):
+    Data:
+      - Enemy Definition ID: 116
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Jack O'Bones (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 116
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Karasuman (Rare Drop):
+    Data:
+      - Enemy Definition ID: 280
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Karasuman (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 280
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Killer Fish (Rare Drop):
+    Data:
+      - Enemy Definition ID: 350
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Killer Fish (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 350
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Lesser Demon (Rare Drop):
+    Data:
+      - Enemy Definition ID: 23
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Lesser Demon (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 23
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Lion (Rare Drop):
+    Data:
+      - Enemy Definition ID: 262
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Lion (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 262
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Lossoth (Rare Drop):
+    Data:
+      - Enemy Definition ID: 131
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Lossoth (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 131
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Magic Tome (Rare Drop):
+    Data:
+      - Enemy Definition ID: 251
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Magic Tome (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 251
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Malachi (Rare Drop):
+    Data:
+      - Enemy Definition ID: 236
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Malachi (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 236
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Marionette (Rare Drop):
+    Data:
+      - Enemy Definition ID: 49
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Marionette (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 49
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Medusa Head, Level 7 (Rare Drop):
+    Data:
+      - Enemy Definition ID: 303
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Medusa Head, Level 7 (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 303
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Medusa Head, Level 8 (Rare Drop):
+    Data:
+      - Enemy Definition ID: 304
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Medusa Head, Level 8 (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 304
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Merman, Level 2 (Rare Drop):
+    Data:
+      - Enemy Definition ID: 27
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Merman, Level 2 (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 27
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Merman, Level 3 (Rare Drop):
+    Data:
+      - Enemy Definition ID: 29
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Merman, Level 3 (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 29
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Minotaur (Rare Drop):
+    Data:
+      - Enemy Definition ID: 386
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Minotaur (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 386
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Nova Skeleton (Rare Drop):
+    Data:
+      - Enemy Definition ID: 126
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Nova Skeleton (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 126
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Orobourous (Rare Drop):
+    Data:
+      - Enemy Definition ID: 141
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Orobourous (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 141
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Ouija Table (Rare Drop):
+    Data:
+      - Enemy Definition ID: 193
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Ouija Table (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 193
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Owl Knight (Rare Drop):
+    Data:
+      - Enemy Definition ID: 20
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Owl Knight (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 20
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Paranthropus (Rare Drop):
+    Data:
+      - Enemy Definition ID: 211
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Paranthropus (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 211
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Phantom Skull (Rare Drop):
+    Data:
+      - Enemy Definition ID: 67
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Phantom Skull (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 67
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Plate Lord (Rare Drop):
+    Data:
+      - Enemy Definition ID: 97
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Plate Lord (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 97
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Poltergeist (Rare Drop):
+    Data:
+      - Enemy Definition ID: 130
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Poltergeist (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 130
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Puppet Sword (Rare Drop):
+    Data:
+      - Enemy Definition ID: 137
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Puppet Sword (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 137
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Rock Knight (Rare Drop):
+    Data:
+      - Enemy Definition ID: 167
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Rock Knight (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 167
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Salem Witch (Rare Drop):
+    Data:
+      - Enemy Definition ID: 221
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Salem Witch (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 221
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Salome (Rare Drop):
+    Data:
+      - Enemy Definition ID: 229
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Salome (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 229
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Scarecrow (Rare Drop):
+    Data:
+      - Enemy Definition ID: 322
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Scarecrow (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 322
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Schmoo (Rare Drop):
+    Data:
+      - Enemy Definition ID: 323
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Schmoo (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 323
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Shield (Rare Drop):
+    Data:
+      - Enemy Definition ID: 140
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Shield (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 140
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Skelerang (Rare Drop):
+    Data:
+      - Enemy Definition ID: 11
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Skelerang (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 11
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Skeleton (Rare Drop):
+    Data:
+      - Enemy Definition ID: 75
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Skeleton (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 75
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Skeleton Ape (Rare Drop):
+    Data:
+      - Enemy Definition ID: 83
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Skeleton Ape (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 83
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Skull (Rare Drop):
+    Data:
+      - Enemy Definition ID: 121
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Skull (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 121
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Skull Lord (Rare Drop):
+    Data:
+      - Enemy Definition ID: 261
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Skull Lord (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 261
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Slinger (Rare Drop):
+    Data:
+      - Enemy Definition ID: 178
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Slinger (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 178
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Sniper of Goth (Rare Drop):
+    Data:
+      - Enemy Definition ID: 195
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Sniper of Goth (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 195
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Spear (Rare Drop):
+    Data:
+      - Enemy Definition ID: 139
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Spear (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 139
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Spear Guard (Rare Drop):
+    Data:
+      - Enemy Definition ID: 93
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Spear Guard (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 93
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Spectral Sword, Level 13 (Rare Drop):
+    Data:
+      - Enemy Definition ID: 129
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Spectral Sword, Level 13 (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 129
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Spectral Sword, Level 15 (Rare Drop):
+    Data:
+      - Enemy Definition ID: 136
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Spectral Sword, Level 15 (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 136
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Spectral Sword, Level 36 (Rare Drop):
+    Data:
+      - Enemy Definition ID: 138
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Spectral Sword, Level 36 (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 138
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Spellbook (Rare Drop):
+    Data:
+      - Enemy Definition ID: 247
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Spellbook (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 247
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Spiked Ball (Rare Drop):
+    Data:
+      - Enemy Definition ID: 185
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Spiked Ball (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 185
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Stone Rose (Rare Drop):
+    Data:
+      - Enemy Definition ID: 85
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Stone Rose (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 85
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Sword Lord (Rare Drop):
+    Data:
+      - Enemy Definition ID: 9
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Sword Lord (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 9
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Thornweed (Rare Drop):
+    Data:
+      - Enemy Definition ID: 157
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Thornweed (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 157
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Tin Man (Rare Drop):
+    Data:
+      - Enemy Definition ID: 264
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Tin Man (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 264
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Toad (Rare Drop):
+    Data:
+      - Enemy Definition ID: 106
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Toad (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 106
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Tombstone (Rare Drop):
+    Data:
+      - Enemy Definition ID: 113
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Tombstone (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 113
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Valhalla Knight (Rare Drop):
+    Data:
+      - Enemy Definition ID: 133
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Valhalla Knight (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 133
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Vandal Sword (Rare Drop):
+    Data:
+      - Enemy Definition ID: 228
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Vandal Sword (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 228
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Venus Weed, 100 HP (Rare Drop):
+    Data:
+      - Enemy Definition ID: 161
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Venus Weed, 100 HP (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 161
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Venus Weed, 500 HP (Rare Drop):
+    Data:
+      - Enemy Definition ID: 162
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Venus Weed, 500 HP (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 162
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Wereskeleton (Rare Drop):
+    Data:
+      - Enemy Definition ID: 61
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Wereskeleton (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 61
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Werewolf (Rare Drop):
+    Data:
+      - Enemy Definition ID: 389
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Werewolf (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 389
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Winged Guard (Rare Drop):
+    Data:
+      - Enemy Definition ID: 128
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Winged Guard (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 128
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Yorick (Rare Drop):
+    Data:
+      - Enemy Definition ID: 120
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Yorick (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 120
+        Property: Uncommon Item ID
+    Type: Enemy Definition
+  Enemy - Zombie (Rare Drop):
+    Data:
+      - Enemy Definition ID: 110
+        Property: Rare Item ID
+    Type: Enemy Definition
+  Enemy - Zombie (Uncommon Drop):
+    Data:
+      - Enemy Definition ID: 110
+        Property: Uncommon Item ID
+    Type: Enemy Definition
   Location - Jewel of Open:
     Type: Shop Purchase Option
     Data:
@@ -626,14 +1801,6 @@ Quest Rewards:
         Item Drop Index: 4
       - Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 4
-  Enemy - Bone Scimitar, Green (Short Sword):
-    Type: Guaranteed Enemy Drop
-    Data:
-      - Constant: Bone Scimitar Item Drop 1
-  Enemy - Bone Scimitar, Copper (Red Rust):
-    Type: Guaranteed Enemy Drop
-    Data:
-      - Constant: Bone Scimitar Item Drop 2
   Location - Castle Entrance, Holy Mail Room (Holy Mail):
     Type: Stage Item Drop
     Data:

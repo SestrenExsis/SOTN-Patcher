@@ -426,8 +426,8 @@
         "Skip Maria cutscene in Alchemy Laboratory": true
     },
     "Quest Rewards": {
-        "Enemy - Bone Scimitar, Copper (Red Rust)": "Item - Leather Shield",
-        "Enemy - Bone Scimitar, Green (Short Sword)": "Item - Manna Prism",
+        "Enemy - Bone Scimitar, Copper (Guaranteed Drop)": "Item - Leather Shield",
+        "Enemy - Bone Scimitar, Green (Guaranteed Drop)": "Item - Manna Prism",
         "Location - Abandoned Mine, Crumbling Stairwells With Mushrooms (Shiitake 1)": "Item - Resist Stone",
         "Location - Abandoned Mine, Crumbling Stairwells With Mushrooms (Shiitake 2)": "Item - Cross Shuriken",
         "Location - Abandoned Mine, Karma Coin Room (Combat Knife)": "Item - Resist Stone",

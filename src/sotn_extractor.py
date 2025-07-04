@@ -977,10 +977,10 @@ if __name__ == '__main__':
                     #     'Offset': 0x14,
                     #     'Type': 'u16',
                     # },
-                    # 'Level': {
-                    #     'Offset': 0x16,
-                    #     'Type': 'u16',
-                    # },
+                    'Level': {
+                        'Offset': 0x16,
+                        'Type': 'u16',
+                    },
                     # 'Experience': {
                     #     'Offset': 0x18,
                     #     'Type': 'u16',

@@ -999,6 +999,20 @@ def get_patch(extract, changes, data):
                     constant_extract['Type'],
                     sotn_address.Address(constant_extract['Start']),
                 )
+        elif quest_reward['Type'] == 'Enemy Definition':
+            for location_alias in quest_reward['Data']:
+                enemy_def_id = location_alias['Enemy Definition ID']
+                field_name = location_alias['Property']
+                array_extract_meta = extract['Enemy Definitions']['Metadata']
+                field_extract_meta = array_extract_meta['Fields'][field_name]
+                item_id = aliases['Items'][reward_name]
+                result.patch_value(
+                    item_id,
+                    field_extract_meta['Type'],
+                    sotn_address.Address(
+                        array_extract_meta['Start'] + enemy_def_id * array_extract_meta['Size'] + field_extract_meta['Offset']
+                    ),
+                )
         elif quest_reward['Type'] == 'Breakable Container Drop':
             # TODO(sestren): Combine this with 'Stage Item Drop' above (make it type 'Array' instead?)
             for location_alias in quest_reward['Data']:
@@ -1186,7 +1200,7 @@ if __name__ == '__main__':
     Usage
     python sotn_patcher.py EXTRACTION_JSON --data= --changes=CHANGES_JSON --ppf=OUTPUT_PPF
     '''
-    DESCRIPTION = 'Works with SOTN Shuffler Beta Release 2'
+    DESCRIPTION = 'Works with SOTN Shuffler Beta Release 3'
     parser = argparse.ArgumentParser()
     parser.add_argument('extract_file', help='Input a filepath to the extract JSON file', type=str)
     parser.add_argument('--data', help='Input an optional (required if changes argument is given) filepath to a folder containing various data dependency files', type=str)
