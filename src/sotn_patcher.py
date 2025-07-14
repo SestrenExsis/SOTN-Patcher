@@ -540,6 +540,46 @@ def get_patch(extract, changes, data):
             ):
                 value = a_value if type == 'A' else b_value
                 result.patch_value(value, 'u32', sotn_address.Address(base + offset))
+    # Option - Preserve map exploration across saves
+    if changes.get('Options', {}).get('Preserve map exploration across saves', False):
+        # 0x801B948C - StoreSaveData
+        for (base, type) in (
+            (0x000DFA70, 'A'), # ???
+            (0x03AE0C8C, 'B'), # ???
+        ):
+            for (offset, value) in (
+                (0x018C, 0x3C018004), # lui     at,$8004       @ 0x000DFBFC
+                (0x0190, 0x8C24CB04), # lw      a0,-$34FC(at) 
+                (0x0194, 0x01431825), # or      v1,t2,v1      
+                (0x0198, 0x01642025), # or      a0,t3,a0      
+                (0x019C, 0xAC430000), # sw      v1,$0(v0)     
+                (0x01A0, 0xAC24CB04), # sw      a0,-$34FC(at) 
+                (0x01A4, 0x01051021), # addu    v0,t0,a1      
+                (0x01A8, 0x904206C8), # lbu     v0,$6C8(v0)   
+                (0x01AC, 0x24210001), # addiu   at,$1         
+                (0x01B0, 0xA022BDED), # sb      v0,-$4213(at) 
+                (0x01B4, 0x24A50001), # addiu   a1,$1         
+                (0x01B8, 0x28A20300), # slti    v0,a1,$300    
+                (0x01BC, 0x1440FFFA), # bne     v0,0,$801B9634
+                (0x01C0, 0x01051021), # addu    v0,t0,a1      
+                (0x01C4, 0x00002821), # addu    a1,0,0        
+                (0x01C8, 0x01051021), # addu    v0,t0,a1      
+                (0x01CC, 0x904209C8), # lbu     v0,$9C8(v0)   
+                (0x01D0, 0x3C018007), # lui     at,$8007      
+                (0x01D4, 0x00250821), # addu    at,a1         
+                (0x01D8, 0x9023BB74), # lbu     v1,-$448C(at) 
+                (0x01DC, 0x00431025), # or      v0,v0,v1      
+                (0x01E0, 0xA022BB74), # sb      v0,-$448C(at) 
+                (0x01E4, 0x24A50001), # addiu   a1,$1         
+                (0x01E8, 0x28A20800), # slti    v0,a1,$800    
+                (0x01EC, 0x1440FFF7), # bne     v0,0,$801B9658
+                (0x01F0, 0x01051021), # addu    v0,t0,a1      
+                (0x01F4, 0x8D0311C8), # lw      v1,$11C8(t0)  
+                (0x01F8, 0x00001021), # addu    v0,0,0        
+                (0x01FC, 0x3C018009), # lui     at,$8009      
+            ):
+                # value = a_value if type == 'A' else b_value
+                result.patch_value(value, 'u32', sotn_address.Address(base + offset))
     # Room shuffler - Normalize room connections
     # if changes.get('Options', {}).get('Normalize room connections', False):
     #     for (offset, value) in (
