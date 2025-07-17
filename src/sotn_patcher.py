@@ -540,6 +540,58 @@ def get_patch(extract, changes, data):
             ):
                 value = a_value if type == 'A' else b_value
                 result.patch_value(value, 'u32', sotn_address.Address(base + offset))
+    # Option - Normalize Ferryman Gate
+    if changes.get('Options', {}).get('Normalize Ferryman Gate', False):
+        # 0x801C5C7C - EntityFerrymanController
+        # ------------------------------------------
+        # Roughly equivalent to the following C code
+        # ------------------------------------------
+        # offset = self->posX.i.hi + g_Tilemap.scrollX.i.hi;
+        # if (abs(offset - 2912) < 192 && !g_CastleFlags[FERRYMAN_GATE_OPEN]) {
+        #     g_CastleFlags[FERRYMAN_GATE_OPEN] = true;
+        # }
+        # if (
+        #     (self->facingLeft && offset > 0xBE0) ||
+        #     (!self->facingLeft && offset < 0x120)
+        # ) {
+        #     self->step++;
+        # }
+        for (base, description) in (
+            (0x0429D47C, 'Underground Caverns'),
+        ):
+            for (offset, value) in (
+                (0x3FC, 0x00431021), # addu    v0,v0,v1
+                (0x400, 0x24520000), # addu    s2,v0,0
+                (0x404, 0x00021400), # sll     v0,v0,0x10
+                (0x408, 0x00021403), # sra     v0,v0,0x10
+                (0x40C, 0x2442F4A0), # addiu   v0,v0,-0xb60
+                (0x410, 0x04410002), # bgez    v0,$801C6098
+                (0x414, 0x00000000), # nop
+                (0x418, 0x00021022), # sub     v0,zero,v0       (negu v0,v0)
+                (0x41C, 0x284200C0), # slti    v0,v0,0xc0
+                (0x420, 0x10400008), # beqz    v0,$801C60C0     (beq v0,0,$801C60C0)
+                (0x424, 0x00000000), # nop
+                (0x428, 0x3C038004), # lui     v1,$8004
+                (0x42C, 0x2463BEAE), # addiu   v1,-$4152
+                (0x430, 0x90620000), # lbu     v0,$0(v1)
+                (0x434, 0x00000000), # nop
+                (0x438, 0x14400002), # bnez    v0,$801C60C0     (bne v0,0,$801C60C0)
+                (0x43C, 0x34020001), # li      v0,$1
+                (0x440, 0xA0620000), # sb      v0,$0(v1)
+                (0x444, 0x96020014), # lhu     v0,0x14(s0)
+                (0x448, 0x00000000), # nop
+                (0x44C, 0x10400006), # beqz    v0,$801C60E4     (beq v0,0,$801C60E4)
+                (0x450, 0x00121400), # sll     v0,s2,0x10
+                (0x454, 0x00021403), # sra     v0,v0,0x10
+                (0x458, 0x28420BE1), # slti    v0,v0,0xbe1
+                (0x45C, 0x10400006), # beqz     v0,$801C60F4    (beq v0,0,$801C60F4)
+                (0x460, 0x00000000), # nop
+                (0x464, 0x0807185F), # j       $801C617C
+                (0x468, 0x00021403), # sra     v0,v0,0x10
+                (0x46C, 0x28420120), # slti    v0,v0,0x120
+                (0x470, 0x1040001F), # beqz    v0,$801C616C     (beq v0,0,$801C616C)
+            ):
+                result.patch_value(value, 'u32', sotn_address.Address(base + offset))
     # Room shuffler - Normalize room connections
     # if changes.get('Options', {}).get('Normalize room connections', False):
     #     for (offset, value) in (
@@ -1200,7 +1252,7 @@ if __name__ == '__main__':
     Usage
     python sotn_patcher.py EXTRACTION_JSON --data= --changes=CHANGES_JSON --ppf=OUTPUT_PPF
     '''
-    DESCRIPTION = 'Works with SOTN Shuffler Beta Release 3'
+    DESCRIPTION = 'Designed to work with SOTN Shuffler'
     parser = argparse.ArgumentParser()
     parser.add_argument('extract_file', help='Input a filepath to the extract JSON file', type=str)
     parser.add_argument('--data', help='Input an optional (required if changes argument is given) filepath to a folder containing various data dependency files', type=str)
