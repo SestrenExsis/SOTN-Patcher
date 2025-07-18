@@ -547,49 +547,60 @@ def get_patch(extract, changes, data):
         # Roughly equivalent to the following C code
         # ------------------------------------------
         # offset = self->posX.i.hi + g_Tilemap.scrollX.i.hi;
-        # if (abs(offset - 2912) < 192 && !g_CastleFlags[FERRYMAN_GATE_OPEN]) {
-        #     g_CastleFlags[FERRYMAN_GATE_OPEN] = true;
-        # }
-        # if (
-        #     (self->facingLeft && offset > 0xBE0) ||
-        #     (!self->facingLeft && offset < 0x120)
-        # ) {
-        #     self->step++;
+        # if (self->facingLeft) {
+        #     if (offset > 3040) {
+        #         self->step++;
+        #     }
+        #     else if (offset > 2720) {
+        #         g_CastleFlags[0xC2] = true;
+        #     }
+        # } else {
+        #     if (offset < 288) {
+        #         self->step++;
+        #     }
+        #     else if (offset < 3104) {
+        #         g_CastleFlags[0xC2] = true;
+        #     }
         # }
         for (base, description) in (
             (0x0429D47C, 'Underground Caverns'),
         ):
             for (offset, value) in (
-                (0x3FC, 0x00431021), # addu    v0,v0,v1
-                (0x400, 0x24520000), # addu    s2,v0,0
-                (0x404, 0x00021400), # sll     v0,v0,0x10
-                (0x408, 0x00021403), # sra     v0,v0,0x10
-                (0x40C, 0x2442F4A0), # addiu   v0,v0,-0xb60
-                (0x410, 0x04410002), # bgez    v0,$801C6098
-                (0x414, 0x00000000), # nop
-                (0x418, 0x00021022), # sub     v0,zero,v0       (negu v0,v0)
-                (0x41C, 0x284200C0), # slti    v0,v0,0xc0
-                (0x420, 0x10400008), # beqz    v0,$801C60C0     (beq v0,0,$801C60C0)
-                (0x424, 0x00000000), # nop
-                (0x428, 0x3C038004), # lui     v1,$8004
-                (0x42C, 0x2463BEAE), # addiu   v1,-$4152
-                (0x430, 0x90620000), # lbu     v0,$0(v1)
-                (0x434, 0x00000000), # nop
-                (0x438, 0x14400002), # bnez    v0,$801C60C0     (bne v0,0,$801C60C0)
-                (0x43C, 0x34020001), # li      v0,$1
-                (0x440, 0xA0620000), # sb      v0,$0(v1)
-                (0x444, 0x96020014), # lhu     v0,0x14(s0)
-                (0x448, 0x00000000), # nop
-                (0x44C, 0x10400006), # beqz    v0,$801C60E4     (beq v0,0,$801C60E4)
-                (0x450, 0x00121400), # sll     v0,s2,0x10
-                (0x454, 0x00021403), # sra     v0,v0,0x10
-                (0x458, 0x28420BE1), # slti    v0,v0,0xbe1
-                (0x45C, 0x10400006), # beqz     v0,$801C60F4    (beq v0,0,$801C60F4)
-                (0x460, 0x00000000), # nop
-                (0x464, 0x0807185F), # j       $801C617C
-                (0x468, 0x00021403), # sra     v0,v0,0x10
-                (0x46C, 0x28420120), # slti    v0,v0,0x120
-                (0x470, 0x1040001F), # beqz    v0,$801C616C     (beq v0,0,$801C616C)
+                (0x3F8, 0x96040014), # 801C6074 lhu     a0,0x14(s0)
+                (0x3FC, 0x00000000), # 801C6078 nop     
+                (0x400, 0x1080000E), # 801C607C beqz    a0,$801C60B8
+                (0x404, 0x00431021), # 801C6080 addu    v0,v0,v1
+                (0x408, 0x00021400), # 801C6084 sll     v0,v0,0x10
+                (0x40C, 0x00021C03), # 801C6088 sra     v1,v0,0x10
+                (0x410, 0x28620BE1), # 801C608C slti    v0,v1,0xbe1
+                (0x414, 0x14400004), # 801C6090 bnez    v0,$801C60A4
+                (0x418, 0x00000000), # 801C6094 nop     
+                (0x41C, 0x9602002C), # 801C6098 lhu     v0,0x2c(s0)
+                (0x420, 0x0807185A), # 801C609C j       $801C6168
+                (0x424, 0x24420001), # 801C60A0 addiu   v0,v0,1
+                (0x428, 0x28620AA1), # 801C60A4 slti    v0,v1,0xaa1
+                (0x42C, 0x14400030), # 801C60A8 bnez    v0,$801C616C
+                (0x430, 0x34020001), # 801C60AC li      v0,0x1
+                (0x434, 0x08071839), # 801C60B0 j       $801C60E4
+                (0x438, 0x00000000), # 801C60B4 nop     
+                (0x43C, 0x00021400), # 801C60B8 sll     v0,v0,0x10
+                (0x440, 0x00021C03), # 801C60BC sra     v1,v0,0x10
+                (0x444, 0x28620120), # 801C60C0 slti    v0,v1,0x120
+                (0x448, 0x10400004), # 801C60C4 beqz    v0,$801C60D8
+                (0x44C, 0x00000000), # 801C60C8 nop     
+                (0x450, 0x9602002C), # 801C60CC lhu     v0,0x2c(s0)
+                (0x454, 0x0807185A), # 801C60D0 j       $801C6168
+                (0x458, 0x24420001), # 801C60D4 addiu   v0,v0,1
+                (0x45C, 0x28620C20), # 801C60D8 slti    v0,v1,0xc20
+                (0x460, 0x10400023), # 801C60DC beqz    v0,$801C616C
+                (0x464, 0x34020001), # 801C60E0 li      v0,0x1
+                (0x468, 0x3C018004), # 801C60E4 lui     at,$8004
+                (0x46C, 0xA022BEAE), # 801C60E8 sb      v0,-$4152(at)
+                (0x470, 0x0807185B), # 801C60EC j       $801C616C
+                (0x474, 0x00000000), # 801C60F0 nop     
+                (0x478, 0x00000000), # 801C60F4 nop     
+                (0x47C, 0x00000000), # 801C60F8 nop     
+                (0x480, 0x00000000), # 801C60FC nop     
             ):
                 result.patch_value(value, 'u32', sotn_address.Address(base + offset))
     # Room shuffler - Normalize room connections

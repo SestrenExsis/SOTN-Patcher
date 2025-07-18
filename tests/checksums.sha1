@@ -6,7 +6,7 @@ acffe21a5576c6d448088299dce6f9c450740e4c *build/ppf/customized-color-palettes.pp
 1b4e959023df1a446ed025a6aa577055face0067 *build/ppf/disable-clipping-on-one-way-walls.ppf
 cc27ae98f9fe9bf8231da2eb3081224085b63206 *build/ppf/enable-debug-mode.ppf
 28188d6d4d07775e11d29101d4150c911b13cb49 *build/ppf/monochrome-castle-map.ppf
-1e6d4a19e3b1074e363f23a67e5e2b266fc5440c *build/ppf/normalize-ferryman-gate.ppf
+858ede9278769d531886ef66798ffdaad9c71c95 *build/ppf/normalize-ferryman-gate.ppf
 6f025191bfd7928400369a06a9bf7dd79241619f *build/ppf/randomized-items.ppf
 29ab1a198cd8ce17d75f0bc58a8db1a760dda4f2 *build/ppf/randomized-relics.ppf
 5784b4cf5bef07fb78a192c60013efdce3bbbf15 *build/ppf/sample-randomized-map.ppf
