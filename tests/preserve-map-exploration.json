@@ -1,7 +1,7 @@
 {
     "Options": {
         "Enable debug mode": true,
-        "Preserve map exploration across saves": true
+        "Preserve unsaved map data": "Revelation"
     },
     "Constants": {
         "Message - Richter Mode Instructions 1": "Preserve map exploration    ",

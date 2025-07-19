@@ -604,11 +604,13 @@ def get_patch(extract, changes, data):
             ):
                 # value = a_value if type == 'A' else b_value
                 result.patch_value(value, 'u32', sotn_address.Address(base + offset))
-    # Option - Preserve map exploration across saves
-    if changes.get('Options', {}).get('Preserve map exploration across saves', False):
+    # Option - Preserve unsaved map data
+    if changes.get('Options', {}).get('Preserve unsaved map data', 'None') != 'None':
+        preservation_method = changes['Options']['Preserve unsaved map data']
+        assert preservation_method in ('None', 'Revelation', 'Exploration')
         # 0x801B948C - LoadSaveData
         # ------------------------------------------
-        # Equivalent to the following C code
+        # Equivalent to the following C code (for Revelation Mode)
         # ------------------------------------------
         # i = 0;
         # while (i < LEN(g_CastleFlags)) {
@@ -620,6 +622,8 @@ def get_patch(extract, changes, data):
         #     g_CastleMap[i] = ((0x55 & g_CastleMap[i]) << 1) | (0xAA & g_CastleMap[i]) | savePtr->castleMap[i];
         #     i++;
         # }
+        # ------------------------------------------
+        revelation_ind = (preservation_method == 'Revelation')
         for (base, type) in (
             (0x000DFA70, 'A'), # SEL or DRA?
             (0x03AE0C8C, 'B'), # SEL or DRA?
@@ -646,7 +650,9 @@ def get_patch(extract, changes, data):
                 (0x01C8, 0x90C30000), # lbu     v1,0(a2)          
                 (0x01CC, 0x908409C8), # lbu     a0,0x9c8(a0)      
                 (0x01D0, 0x30620055), # andi    v0,v1,0x55        
-                (0x01D4, 0x00021040), # sll     v0,v0,0x1         
+                (0x01D4, 0x00021040 if revelation_ind else 0x00000000),
+                                      # sll     v0,v0,0x1         (for Revelation)
+                                      # nop                       (for Exploration)
                 (0x01D8, 0x306300AA), # andi    v1,v1,0xaa        
                 (0x01DC, 0x00431025), # or      v0,v0,v1          
                 (0x01E0, 0x00441025), # or      v0,v0,a0          
@@ -655,7 +661,6 @@ def get_patch(extract, changes, data):
                 (0x01EC, 0x1440FFF0), # bnez    v0,154c ~>        
                 (0x01F0, 0x24C60001), # addiu   a2,a2,1           
             ):
-                # value = a_value if type == 'A' else b_value
                 result.patch_value(value, 'u32', sotn_address.Address(base + offset))
     # Room shuffler - Normalize room connections
     # if changes.get('Options', {}).get('Normalize room connections', False):
