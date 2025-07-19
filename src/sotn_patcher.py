@@ -613,11 +613,11 @@ def get_patch(extract, changes, data):
         # i = 0;
         # while (i < LEN(g_CastleFlags)) {
         #     g_CastleFlags[i] = savePtr->castleFlags[i];
-        #     g_CastleMap[i] = (0xFF & g_CastleMap[i]) | savePtr->castleMap[i];
+        #     g_CastleMap[i] = ((0x55 & g_CastleMap[i]) << 1) | (0xAA & g_CastleMap[i]) | savePtr->castleMap[i];
         #     i++
         # }
         # while (i < LEN(g_CastleMap)) {
-        #     g_CastleMap[i] = (0xFF & g_CastleMap[i]) | savePtr->castleMap[i];
+        #     g_CastleMap[i] = ((0x55 & g_CastleMap[i]) << 1) | (0xAA & g_CastleMap[i]) | savePtr->castleMap[i];
         #     i++;
         # }
         for (base, type) in (
@@ -625,35 +625,35 @@ def get_patch(extract, changes, data):
             (0x03AE0C8C, 'B'), # SEL or DRA?
         ):
             for (offset, value) in (
-                (0x0180, 0x3C068007), # lui     a2,$8007     @ 0x801B960C
-                (0x0184, 0x24C6BB74), # addiu   a2,-$448C
-                (0x0188, 0x3C028004), # lui     v0,$8004
-                (0x018C, 0x2442CB00), # addiu   v0,-$3500
-                (0x0190, 0x8C430000), # lw      v1,$0(v0)
-                (0x0194, 0x3C048004), # lui     a0,$8004
-                (0x0198, 0x8C84CB04), # lw      a0,-$34FC(a0)
-                (0x019C, 0x01431825), # or      v1,t2,v1
-                (0x01A0, 0x01642025), # or      a0,t3,a0
-                (0x01A4, 0xAC430000), # sw      v1,$0(v0)
-                (0x01A8, 0x3C018004), # lui     at,$8004
-                (0x01AC, 0xAC24CB04), # sw      a0,-$34FC(at)
-                (0x01B0, 0x01051821), # addu    v1,t0,a1
-                (0x01B4, 0x906206C8), # lbu     v0,$6C8(v1)
-                (0x01B8, 0x3C018004), # lui     at,$8004
-                (0x01BC, 0x00250821), # addu    at,a1
-                (0x01C0, 0xA022BDEC), # sb      v0,-$4214(at)
-                (0x01C4, 0x24A50001), # addiu   a1,$1
-                (0x01C8, 0x90C20000), # lbu     v0,$0(a2)
-                (0x01CC, 0x906309C8), # lbu     v1,$9C8(v1)
-                (0x01D0, 0x304200FF), # andi    v0,$FF
-                (0x01D4, 0x00431025), # or      v0,v1
-                (0x01D8, 0xA0C20000), # sb      v0,$0(a2)
-                (0x01DC, 0x28A20300), # slti    v0,a1,$300
-                (0x01E0, 0x1440FFF3), # bne     v0,0,$801B963C
-                (0x01E4, 0x24C60001), # addiu   a2,$1
-                (0x01E8, 0x00000000), # nop
-                (0x01EC, 0x00000000), # nop
-                (0x01F0, 0x00000000), # nop
+                (0x0180, 0x3C068007), # lui     a2,$8007          ; %hi(g_CastleMap)
+                (0x0184, 0x24C6BB74), # addiu   a2,a2,-$448C      ; %lo(g_CastleMap)
+                (0x0188, 0x3C028004), # lui     v0,$8004          ; %hi(g_Settings+0x108)
+                (0x018C, 0x2442CB00), # addiu   v0,v0,-$3500      ; %lo(g_Settings+0x108)
+                (0x0190, 0x8C430000), # lw      v1,0(v0)          
+                (0x0194, 0x3C048004), # lui     a0,$8004          ; %hi(g_Settings+0x10c)
+                (0x0198, 0x8C84CB04), # lw      a0,-$34FC(a0)     ; %lo(g_Settings+0x10c)
+                (0x019C, 0x01431825), # or      v1,t2,v1          
+                (0x01A0, 0x01642025), # or      a0,t3,a0          
+                (0x01A4, 0xAC430000), # sw      v1,0(v0)          
+                (0x01A8, 0x3C018004), # lui     at,$8004          ; %hi(g_Settings+0x10c)
+                (0x01AC, 0xAC24CB04), # sw      a0,-$34FC(at)     ; %lo(g_Settings+0x10c)
+                (0x01B0, 0x01052021), # addu    a0,t0,a1          
+                (0x01B4, 0x908206C8), # lbu     v0,0x6c8(a0)      
+                (0x01B8, 0x3C018004), # lui     at,$8004          ; %hi(g_CastleFlags)
+                (0x01BC, 0x00250821), # addu    at,at,a1          
+                (0x01C0, 0xA022BDEC), # sb      v0,-$4214(at)     ; %lo(g_CastleFlags)
+                (0x01C4, 0x24A50001), # addiu   a1,a1,1           
+                (0x01C8, 0x90C30000), # lbu     v1,0(a2)          
+                (0x01CC, 0x908409C8), # lbu     a0,0x9c8(a0)      
+                (0x01D0, 0x30620055), # andi    v0,v1,0x55        
+                (0x01D4, 0x00021040), # sll     v0,v0,0x1         
+                (0x01D8, 0x306300AA), # andi    v1,v1,0xaa        
+                (0x01DC, 0x00431025), # or      v0,v0,v1          
+                (0x01E0, 0x00441025), # or      v0,v0,a0          
+                (0x01E4, 0xA0C20000), # sb      v0,0(a2)          
+                (0x01E8, 0x28A20300), # slti    v0,a1,0x300       
+                (0x01EC, 0x1440FFF0), # bnez    v0,154c ~>        
+                (0x01F0, 0x24C60001), # addiu   a2,a2,1           
             ):
                 # value = a_value if type == 'A' else b_value
                 result.patch_value(value, 'u32', sotn_address.Address(base + offset))
