@@ -146,8 +146,8 @@ def get_changes_template_file(extract, aliases):
         result['Stages'][stage_id]['Rooms'] = {}
         for (room_id, room_data) in stage_data['Rooms'].items():
             room_name = room_id
-            for (alias_room_name, alias_room_id) in aliases['Rooms'].items():
-                if alias_room_name.startswith(stage_id + ', ') and alias_room_id == int(room_id):
+            for (alias_room_name, alias_room) in aliases['Rooms'].items():
+                if alias_room_name.startswith(stage_id + ', ') and alias_room['Room Index'] == int(room_id):
                     room_name = alias_room_name
                     break
             relic_found_ind = False
@@ -238,6 +238,7 @@ def getID(aliases: dict, path: tuple):
     result = path[-1]
     scope = aliases
     for token in path:
+        result = token
         if token not in scope:
             break
         scope = scope[token]
@@ -733,7 +734,7 @@ def get_patch(extract, changes, data):
         # Stage: Patch room data
         for room_id in sorted(stage_data.get('Rooms', {})):
             room_data = stage_data['Rooms'][room_id]
-            extract_id = getID(aliases, ('Rooms', room_id))
+            extract_id = getID(aliases, ('Rooms', room_id, 'Room Index'))
             room_extract = stage_extract['Rooms'][str(extract_id)]
             left = room_extract['Left']['Value']
             right = room_extract['Right']['Value']
@@ -922,7 +923,7 @@ def get_patch(extract, changes, data):
         room_offset = extract_data['Room']
         if 'Room' in teleporter_data:
             # NOTE(sestren): Multiply by 8 to translate room ID to room offset
-            extract_room_offset = 8 * getID(aliases, ('Rooms', teleporter_data['Room']))
+            extract_room_offset = 8 * getID(aliases, ('Rooms', teleporter_data['Room'], 'Room Index'))
             if extract_room_offset != room_offset:
                 room_offset = extract_room_offset
                 result.patch_value(room_offset,
@@ -1087,7 +1088,7 @@ def get_patch(extract, changes, data):
                 stage_name = location_alias['Stage']
                 room_name = location_alias['Room']
                 if (stage_name, room_name) not in object_layouts:
-                    room_id = str(aliases['Rooms'].get(room_name, None))
+                    room_id = str(aliases['Rooms'].get(room_name, {}).get('Room Index', None))
                     room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
                     object_extract = room_extract['Object Layout - Horizontal']['Data'][1:-1]
                     object_layouts[(stage_name, room_name)] = copy.deepcopy(object_extract)
@@ -1184,7 +1185,7 @@ def get_patch(extract, changes, data):
             ('Horizontal', horizontal_object_layout),
             ('Vertical', vertical_object_layout),
         ):
-            room_id = str(aliases['Rooms'].get(room_name, None))
+            room_id = str(aliases['Rooms'].get(room_name, {}).get('Room Index', None))
             room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
             object_extract = room_extract['Object Layout - ' + sort_method]
             for object_layout_id in range(len(sorted_object_layout)):

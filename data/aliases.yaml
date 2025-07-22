@@ -3608,435 +3608,863 @@ Entities:
     Params: 29
     Label: Eye of Vlad
 Rooms:
-  Abandoned Mine, Bend: 10
-  Abandoned Mine, Cerberus Room: 2
-  Abandoned Mine, Crumbling Stairwells With Demon Switch: 3
-  Abandoned Mine, Crumbling Stairwells With Mushrooms: 8
-  Abandoned Mine, Demon Card Room: 11
-  Abandoned Mine, Fake Room with Teleporter to Catacombs: 18
-  Abandoned Mine, Fake Room with Teleporter to Underground Caverns: 16
-  Abandoned Mine, Fake Room with Teleporter to Warp Rooms: 17
-  Abandoned Mine, Four-Way Intersection: 7
-  Abandoned Mine, Karma Coin Room: 9
-  Abandoned Mine, Loading Room to Catacombs: 12
-  Abandoned Mine, Loading Room to Underground Caverns: 14
-  Abandoned Mine, Loading Room to Warp Rooms: 13
-  Abandoned Mine, Peanuts Room: 6
-  Abandoned Mine, Save Room A: 15
-  Abandoned Mine, Snake Column: 5
-  Abandoned Mine, Venus Weed Room: 4
-  Abandoned Mine, Well-Lit Skull Room: 1
-  Abandoned Mine, Wolf's Head Column: 0
-  Alchemy Laboratory, Bat Card Room: 0
-  Alchemy Laboratory, Bloody Zombie Hallway: 3
-  Alchemy Laboratory, Blue Door Hallway: 2
-  Alchemy Laboratory, Box Puzzle Room: 17
-  Alchemy Laboratory, Cannon Room: 4
-  Alchemy Laboratory, Cloth Cape Room: 5
-  Alchemy Laboratory, Corridor to Elevator: 21
-  Alchemy Laboratory, Elevator Shaft: 22
-  Alchemy Laboratory, Empty Zig Zag Room: 12
-  Alchemy Laboratory, Entryway: 10
-  Alchemy Laboratory, Exit to Marble Gallery: 20
-  Alchemy Laboratory, Exit to Royal Chapel: 1
-  Alchemy Laboratory, Fake Room with Teleporter to Castle Entrance: 31
-  Alchemy Laboratory, Fake Room with Teleporter to Marble Gallery: 29
-  Alchemy Laboratory, Fake Room with Teleporter to Royal Chapel: 30
-  Alchemy Laboratory, Glass Vats: 7
-  Alchemy Laboratory, Heart Max-Up Room: 9
-  Alchemy Laboratory, Loading Room to Castle Entrance: 28
-  Alchemy Laboratory, Loading Room to Marble Gallery: 26
-  Alchemy Laboratory, Loading Room to Royal Chapel: 27
-  Alchemy Laboratory, Red Skeleton Lift Room: 18
-  Alchemy Laboratory, Save Room A: 23
-  Alchemy Laboratory, Save Room B: 24
-  Alchemy Laboratory, Save Room C: 25
-  Alchemy Laboratory, Secret Life Max-Up Room: 15
-  Alchemy Laboratory, Short Zig Zag Room: 13
-  Alchemy Laboratory, Skill of Wolf Room: 8
-  Alchemy Laboratory, Slogra and Gaibon Room: 16
-  Alchemy Laboratory, Sunglasses Room: 6
-  Alchemy Laboratory, Tall Spittlebone Room: 11
-  Alchemy Laboratory, Tall Zig Zag Room: 14
-  Alchemy Laboratory, Tetromino Room: 19
-  Anti-Chapel, Chapel Staircase: 11
-  Anti-Chapel, Confessional Booth: 7
-  Anti-Chapel, Empty Room: 10
-  Anti-Chapel, Fake Room with Teleporter to Alchemy Laboratory: 22
-  Anti-Chapel, Fake Room with Teleporter to Castle Keep: 25
-  Anti-Chapel, Fake Room with Teleporter to Colosseum: 23
-  Anti-Chapel, Fake Room with Teleporter to Olrox's Quarters: 24
-  Anti-Chapel, Goggles Room: 8
-  Anti-Chapel, Hippogryph Room: 4
-  Anti-Chapel, Left Tower: 13
-  Anti-Chapel, Loading Room to Alchemy Laboratory: 19
-  Anti-Chapel, Loading Room to Castle Keep: 15
-  Anti-Chapel, Loading Room to Colosseum: 20
-  Anti-Chapel, Loading Room to Olrox's Quarters: 21
-  Anti-Chapel, Middle Tower: 14
-  Anti-Chapel, Nave: 9
-  Anti-Chapel, Pushing Statue Shortcut: 6
-  Anti-Chapel, Right Tower: 17
-  Anti-Chapel, Save Room A: 18
-  Anti-Chapel, Save Room B: 16
-  Anti-Chapel, Silver Ring Room: 0
-  Anti-Chapel, Spike Hallway: 1
-  Anti-Chapel, Statue Ledge: 12
-  Anti-Chapel, Walkway Between Towers: 2
-  Anti-Chapel, Walkway Left of Hippogryph: 3
-  Anti-Chapel, Walkway Right of Hippogryph: 5
-  Black Marble Gallery, Alucart Room: 25
-  Black Marble Gallery, Beneath Dropoff: 4
-  Black Marble Gallery, Beneath Left Trapdoor: 23
-  Black Marble Gallery, Beneath Right Trapdoor: 24
-  Black Marble Gallery, Blue Door Room: 12
-  Black Marble Gallery, Clock Room: 9
-  Black Marble Gallery, Dropoff: 5
-  Black Marble Gallery, Elevator Room: 21
-  Black Marble Gallery, Empty Room: 11
-  Black Marble Gallery, Entrance: 6
-  Black Marble Gallery, Fake Room with Teleporter to Alchemy Laboratory: 36
-  Black Marble Gallery, Fake Room with Teleporter to Castle Center: 34
-  Black Marble Gallery, Fake Room with Teleporter to Castle Entrance: 33
-  Black Marble Gallery, Fake Room with Teleporter to Olrox's Quarters: 38
-  Black Marble Gallery, Fake Room with Teleporter to Outer Wall: 37
-  Black Marble Gallery, Fake Room with Teleporter to Underground Caverns: 35
-  Black Marble Gallery, Gravity Boots Room: 20
-  Black Marble Gallery, Left of Clock Room: 10
-  Black Marble Gallery, Loading Room to Alchemy Laboratory: 28
-  Black Marble Gallery, Loading Room to Castle Entrance: 30
-  Black Marble Gallery, Loading Room to Olrox's Quarters: 29
-  Black Marble Gallery, Loading Room to Outer Wall: 26
-  Black Marble Gallery, Loading Room to Underground Caverns: 27
-  Black Marble Gallery, Long Hallway: 8
-  Black Marble Gallery, Ouija Table Stairway: 15
-  Black Marble Gallery, Pathway After Left Statue: 13
-  Black Marble Gallery, Pathway After Right Statue: 14
-  Black Marble Gallery, Power-Up Room: 22
-  Black Marble Gallery, Right of Clock Room: 19
-  Black Marble Gallery, S-Shaped Hallways: 0
-  Black Marble Gallery, Save Room A: 31
-  Black Marble Gallery, Save Room B: 32
-  Black Marble Gallery, Slinger Staircase: 18
-  Black Marble Gallery, Spirit Orb Room: 2
-  Black Marble Gallery, Stained Glass Corner: 3
-  Black Marble Gallery, Stairwell to Underground Caverns: 17
-  Black Marble Gallery, Stopwatch Room: 7
-  Black Marble Gallery, Tall Stained Glass Windows: 1
-  Black Marble Gallery, Three Paths: 16
-  Boss - Akmodan II, Fake Room With Teleporter A: 1
-  Boss - Akmodan II, Fake Room With Teleporter B: 2
-  Boss - Akmodan II, Olrox's Room: 0
-  Boss - Beelzebub, Fake Room With Teleporter A: 1
-  Boss - Beelzebub, Fake Room With Teleporter B: 2
-  Boss - Beelzebub, Fake Room With Teleporter C: 3
-  Boss - Beelzebub, Slogra and Gaibon Room: 0
-  Boss - Cerberus, Cerberus Room: 0
-  Boss - Cerberus, Fake Room With Teleporter A: 1
-  Boss - Cerberus, Fake Room With Teleporter B: 2
-  Boss - Creature, Doppelganger Room: 0
-  Boss - Creature, Fake Room With Teleporter A: 1
-  Boss - Creature, Fake Room With Teleporter B: 2
-  Boss - Death, Cerberus Room: 0
-  Boss - Death, Fake Room With Teleporter A: 1
-  Boss - Death, Fake Room With Teleporter B: 2
-  Boss - Doppelganger 10, Doppelganger Room: 0
-  Boss - Doppelganger 10, Fake Room With Teleporter A: 1
-  Boss - Doppelganger 10, Fake Room With Teleporter B: 2
-  Boss - Doppelganger 40, Fake Room With Teleporter A: 1
-  Boss - Doppelganger 40, Fake Room With Teleporter B: 2
-  Boss - Doppelganger 40, Scylla Wyrm Room: 0
-  Boss - Galamoth, Fake Room With Teleporter A: 1
-  Boss - Galamoth, Fake Room With Teleporter B: 2
-  Boss - Galamoth, Granfaloon's Lair: 0
-  Boss - Granfaloon, Fake Room With Teleporter A: 1
-  Boss - Granfaloon, Fake Room With Teleporter B: 2
-  Boss - Granfaloon, Granfaloon's Lair: 0
-  Boss - Hippogryph, Fake Room With Teleporter A: 1
-  Boss - Hippogryph, Fake Room With Teleporter B: 2
-  Boss - Hippogryph, Hippogryph Room: 0
-  Boss - Medusa, Fake Room With Teleporter A: 1
-  Boss - Medusa, Fake Room With Teleporter B: 2
-  Boss - Medusa, Hippogryph Room: 0
-  Boss - Minotaur and Werewolf, Arena: 0
-  Boss - Minotaur and Werewolf, Fake Room With Teleporter A: 1
-  Boss - Minotaur and Werewolf, Fake Room With Teleporter B: 2
-  Boss - Olrox, Fake Room With Teleporter A: 1
-  Boss - Olrox, Fake Room With Teleporter B: 2
-  Boss - Olrox, Olrox's Room: 0
-  Boss - Richter, Throne Room: 0
-  Boss - Scylla, Crystal Cloak Room: 3
-  Boss - Scylla, Fake Room With Teleporter A: 4
-  Boss - Scylla, Rising Water Room: 2
-  Boss - Scylla, Scylla Room: 0
-  Boss - Scylla, Scylla Wyrm Room: 1
-  Boss - Trio, Arena: 0
-  Boss - Trio, Fake Room With Teleporter A: 1
-  Boss - Trio, Fake Room With Teleporter B: 2
-  Castle Center, Center Cube: 1
-  Castle Center, Elevator Shaft: 0
-  Castle Center, Fake Room with Teleporter to BO6: 4
-  Castle Center, Fake Room with Teleporter to Marble Gallery: 3
-  Castle Center, Unknown Room ID 02: 2
-  Castle Entrance Revisited, After Drawbridge: 0
-  Castle Entrance Revisited, Attic Entrance: 6
-  Castle Entrance Revisited, Attic Hallway: 5
-  Castle Entrance Revisited, Attic Staircase: 4
-  Castle Entrance Revisited, Cube of Zoe Room: 15
-  Castle Entrance Revisited, Drop Under Portcullis: 1
-  Castle Entrance Revisited, Fake Room with Teleporter to Alchemy Laboratory: 25
-  Castle Entrance Revisited, Fake Room with Teleporter to Marble Gallery: 26
-  Castle Entrance Revisited, Fake Room with Teleporter to Underground Caverns: 28
-  Castle Entrance Revisited, Fake Room with Teleporter to Warp Rooms: 27
-  Castle Entrance Revisited, Gargoyle Room: 13
-  Castle Entrance Revisited, Heart Max-Up Room: 14
-  Castle Entrance Revisited, Holy Mail Room: 3
-  Castle Entrance Revisited, Jewel Sword Room: 8
-  Castle Entrance Revisited, Life Max-Up Room: 17
-  Castle Entrance Revisited, Loading Room to Alchemy Laboratory: 20
-  Castle Entrance Revisited, Loading Room to Marble Gallery: 18
-  Castle Entrance Revisited, Loading Room to Underground Caverns: 21
-  Castle Entrance Revisited, Loading Room to Warp Rooms: 19
-  Castle Entrance Revisited, Meeting Room With Death: 11
-  Castle Entrance Revisited, Merman Room: 7
-  Castle Entrance Revisited, Save Room A: 22
-  Castle Entrance Revisited, Save Room B: 23
-  Castle Entrance Revisited, Save Room C: 24
-  Castle Entrance Revisited, Shortcut to Underground Caverns: 10
-  Castle Entrance Revisited, Shortcut to Warp Rooms: 16
-  Castle Entrance Revisited, Stairwell After Death: 12
-  Castle Entrance Revisited, Warg Hallway: 9
-  Castle Entrance Revisited, Zombie Hallway: 2
-  Castle Entrance, After Drawbridge: 0
-  Castle Entrance, Attic Entrance: 6
-  Castle Entrance, Attic Hallway: 5
-  Castle Entrance, Attic Staircase: 4
-  Castle Entrance, Cube of Zoe Room: 15
-  Castle Entrance, Drop Under Portcullis: 1
-  Castle Entrance, Fake Room with Teleporter to Alchemy Laboratory: 28
-  Castle Entrance, Fake Room with Teleporter to Marble Gallery: 29
-  Castle Entrance, Fake Room with Teleporter to Underground Caverns: 31
-  Castle Entrance, Fake Room with Teleporter to Warp Rooms: 30
-  Castle Entrance, Forest Cutscene: 18
-  Castle Entrance, Gargoyle Room: 13
-  Castle Entrance, Heart Max-Up Room: 14
-  Castle Entrance, Holy Mail Room: 3
-  Castle Entrance, Jewel Sword Room: 8
-  Castle Entrance, Life Max-Up Room: 17
-  Castle Entrance, Loading Room to Alchemy Laboratory: 23
-  Castle Entrance, Loading Room to Marble Gallery: 21
-  Castle Entrance, Loading Room to Underground Caverns: 24
-  Castle Entrance, Loading Room to Warp Rooms: 22
-  Castle Entrance, Meeting Room With Death: 11
-  Castle Entrance, Merman Room: 7
-  Castle Entrance, Save Room A: 25
-  Castle Entrance, Save Room B: 26
-  Castle Entrance, Save Room C: 27
-  Castle Entrance, Shortcut to Underground Caverns: 10
-  Castle Entrance, Shortcut to Warp Rooms: 16
-  Castle Entrance, Stairwell After Death: 12
-  Castle Entrance, Unknown Room 19: 19
-  Castle Entrance, Unknown Room 20: 20
-  Castle Entrance, Warg Hallway: 9
-  Castle Entrance, Zombie Hallway: 2
-  Castle Keep, Bend: 4
-  Castle Keep, Dual Platforms: 7
-  Castle Keep, Fake Room with Teleporter to Clock Tower: 13
-  Castle Keep, Fake Room with Teleporter to Royal Chapel: 14
-  Castle Keep, Fake Room with Teleporter to Warp Rooms: 15
-  Castle Keep, Falchion Room: 5
-  Castle Keep, Ghost Card Room: 3
-  Castle Keep, Keep Area: 2
-  Castle Keep, Lion Torch Platform: 6
-  Castle Keep, Loading Room to Clock Tower: 10
-  Castle Keep, Loading Room to Royal Chapel: 12
-  Castle Keep, Loading Room to Warp Rooms: 11
-  Castle Keep, Lower Attic: 1
-  Castle Keep, Save Room A: 9
-  Castle Keep, Tyrfing Room: 8
-  Castle Keep, Upper Attic: 0
-  Catacombs, Ballroom Mask Room: 11
-  Catacombs, Bone Ark Room: 18
-  Catacombs, Cat-Eye Circlet Room: 13
-  Catacombs, Exit to Abandoned Mine: 17
-  Catacombs, Fake Room with Teleporter to Abandoned Mine: 29
-  Catacombs, Granfaloon's Lair: 3
-  Catacombs, Hellfire Beast Room: 16
-  Catacombs, Icebrand Room: 9
-  Catacombs, Left Lava Path: 10
-  Catacombs, Loading Room to Abandoned Mine: 28
-  Catacombs, Mormegil Room: 1
-  Catacombs, Pitch Black Spike Maze: 24
-  Catacombs, Right Lava Path: 12
-  Catacombs, Room ID 00: 0
-  Catacombs, Room ID 02: 2
-  Catacombs, Room ID 04: 4
-  Catacombs, Room ID 05: 5
-  Catacombs, Room ID 14: 14
-  Catacombs, Room ID 19: 19
-  Catacombs, Room ID 20: 20
-  Catacombs, Room ID 21: 21
-  Catacombs, Room ID 22: 22
-  Catacombs, Room ID 23: 23
-  Catacombs, Room ID 25: 25
-  Catacombs, Room ID 26: 26
-  Catacombs, Save Room A: 7
-  Catacombs, Save Room B: 15
-  Catacombs, Small Gremlin Room: 6
-  Catacombs, Spike Breaker Room: 27
-  Catacombs, Walk Armor Room: 8
-  Cave, Bend: 10
-  Cave, Cerberus Room: 2
-  Cave, Crumbling Stairwells With Demon Switch: 3
-  Cave, Crumbling Stairwells With Mushrooms: 8
-  Cave, Demon Card Room: 11
-  Cave, Fake Room with Teleporter to Catacombs: 16
-  Cave, Fake Room with Teleporter to Underground Caverns: 18
-  Cave, Fake Room with Teleporter to Warp Rooms: 17
-  Cave, Four-Way Intersection: 7
-  Cave, Karma Coin Room: 9
-  Cave, Loading Room to Catacombs: 12
-  Cave, Loading Room to Underground Caverns: 14
-  Cave, Loading Room to Warp Rooms: 13
-  Cave, Peanuts Room: 6
-  Cave, Save Room A: 15
-  Cave, Snake Column: 5
-  Cave, Venus Weed Room: 4
-  Cave, Well-Lit Skull Room: 1
-  Cave, Wolf's Head Column: 0
-  Clock Tower, Belfry: 9
-  Clock Tower, Exit to Courtyard: 8
-  Clock Tower, Fake Room with Teleporter to Castle Keep: 15
-  Clock Tower, Fake Room with Teleporter to Outer Wall: 16
-  Clock Tower, Fire of Bat Room: 12
-  Clock Tower, Healing Mail Room: 2
-  Clock Tower, Hidden Armory: 5
-  Clock Tower, Karasuman's Room: 0
-  Clock Tower, Left Gear Room: 6
-  Clock Tower, Loading Room to Castle Keep: 14
-  Clock Tower, Loading Room to Outer Wall: 13
-  Clock Tower, Open Courtyard: 10
-  Clock Tower, Path to Karasuman: 1
-  Clock Tower, Pendulum Room: 3
-  Clock Tower, Right Gear Room: 7
-  Clock Tower, Spire: 4
-  Clock Tower, Stairwell to Outer Wall: 11
-  Colosseum, Arena: 5
-  Colosseum, Blade Master Room: 2
-  Colosseum, Blood Cloak Room: 10
-  Colosseum, Bottom of Elevator Shaft: 11
-  Colosseum, Fake Room with Teleporter to Olrox's Quarters: 19
-  Colosseum, Fake Room with Teleporter to Royal Chapel: 18
-  Colosseum, Fountain Room: 9
-  Colosseum, Holy Sword Room: 0
-  Colosseum, Left-Side Armory: 12
-  Colosseum, Loading Room to Olrox's Quarters: 15
-  Colosseum, Loading Room to Royal Chapel: 14
-  Colosseum, Passageway Between Arena and Royal Chapel: 4
-  Colosseum, Right-Side Armory: 13
-  Colosseum, Save Room A: 16
-  Colosseum, Save Room B: 17
-  Colosseum, Spiral Staircases: 7
-  Colosseum, Top of Elevator Shaft: 6
-  Colosseum, Top of Left Spiral Staircase: 1
-  Colosseum, Top of Right Spiral Staircase: 3
-  Colosseum, Valhalla Knight Room: 8
-  Cutscene - Meeting Maria in Clock Room, Clock Room: 0
-  Cutscene - Meeting Maria in Clock Room, Fake Room With Teleporter A: 1
-  Cutscene - Meeting Maria in Clock Room, Fake Room With Teleporter B: 2
-  Death Wing's Lair, Bottom of Stairwell: 1
-  Death Wing's Lair, Catwalk Crypt: 15
-  Death Wing's Lair, Echo of Bat Room: 13
-  Death Wing's Lair, Empty Cells: 9
-  Death Wing's Lair, Empty Room: 5
-  Death Wing's Lair, Fake Room with Teleporter to Colosseum: 22
-  Death Wing's Lair, Fake Room with Teleporter to Marble Gallery: 21
-  Death Wing's Lair, Fake Room with Teleporter to Royal Chapel: 24
-  Death Wing's Lair, Fake Room with Teleporter to Warp Rooms: 23
-  Death Wing's Lair, Garnet Room: 10
-  Death Wing's Lair, Grand Staircase: 2
-  Death Wing's Lair, Hammer and Blade Room: 4
-  Death Wing's Lair, Loading Room to Colosseum: 18
-  Death Wing's Lair, Loading Room to Marble Gallery: 17
-  Death Wing's Lair, Loading Room to Royal Chapel: 20
-  Death Wing's Lair, Loading Room to Warp Rooms: 19
-  Death Wing's Lair, Narrow Hallway to Olrox: 11
-  Death Wing's Lair, Olrox's Room: 12
-  Death Wing's Lair, Open Courtyard: 8
-  Death Wing's Lair, Prison: 7
-  Death Wing's Lair, Save Room A: 16
-  Death Wing's Lair, Secret Onyx Room: 3
-  Death Wing's Lair, Skelerang Room: 0
-  Death Wing's Lair, Sword Card Room: 14
-  Death Wing's Lair, Tall Shaft: 6
-  Floating Catacombs, Ballroom Mask Room: 11
-  Floating Catacombs, Bone Ark Room: 18
-  Floating Catacombs, Cat-Eye Circlet Room: 13
-  Floating Catacombs, Exit to Abandoned Mine: 17
-  Floating Catacombs, Fake Room with Teleporter to Abandoned Mine: 29
-  Floating Catacombs, Granfaloon's Lair: 3
-  Floating Catacombs, Hellfire Beast Room: 16
-  Floating Catacombs, Icebrand Room: 9
-  Floating Catacombs, Left Lava Path: 10
-  Floating Catacombs, Loading Room to Abandoned Mine: 28
-  Floating Catacombs, Mormegil Room: 1
-  Floating Catacombs, Pitch Black Spike Maze: 24
-  Floating Catacombs, Right Lava Path: 12
-  Floating Catacombs, Room ID 00: 0
-  Floating Catacombs, Room ID 02: 2
-  Floating Catacombs, Room ID 04: 4
-  Floating Catacombs, Room ID 05: 5
-  Floating Catacombs, Room ID 14: 14
-  Floating Catacombs, Room ID 19: 19
-  Floating Catacombs, Room ID 20: 20
-  Floating Catacombs, Room ID 21: 21
-  Floating Catacombs, Room ID 22: 22
-  Floating Catacombs, Room ID 23: 23
-  Floating Catacombs, Room ID 25: 25
-  Floating Catacombs, Room ID 26: 26
-  Floating Catacombs, Save Room A: 7
-  Floating Catacombs, Save Room B: 15
-  Floating Catacombs, Small Gremlin Room: 6
-  Floating Catacombs, Spike Breaker Room: 27
-  Floating Catacombs, Walk Armor Room: 8
-  Forbidden Library, Dhuron and Flea Armor Room: 3
-  Forbidden Library, Dhuron and Flea Man Room: 10
-  Forbidden Library, Exit to Outer Wall: 12
-  Forbidden Library, Faerie Card Room: 7
-  Forbidden Library, Fake Room with Teleporter to Outer Wall: 15
-  Forbidden Library, Flea Man Room: 6
-  Forbidden Library, Foot of Staircase: 11
-  Forbidden Library, Holy Rod Room: 2
-  Forbidden Library, Lesser Demon Area: 0
-  Forbidden Library, Loading Room to Outer Wall: 13
-  Forbidden Library, Outside Shop: 5
-  Forbidden Library, Save Room A: 14
-  Forbidden Library, Secret Bookcase Room: 1
-  Forbidden Library, Shop: 4
-  Forbidden Library, Spellbook Area: 9
-  Forbidden Library, Three Layer Room: 8
-  Long Library, Dhuron and Flea Armor Room: 3
-  Long Library, Dhuron and Flea Man Room: 10
-  Long Library, Exit to Outer Wall: 12
-  Long Library, Faerie Card Room: 7
-  Long Library, Fake Room with Teleporter to Outer Wall: 15
-  Long Library, Flea Man Room: 6
-  Long Library, Foot of Staircase: 11
-  Long Library, Holy Rod Room: 2
-  Long Library, Lesser Demon Area: 0
-  Long Library, Loading Room to Outer Wall: 13
-  Long Library, Outside Shop: 5
-  Long Library, Save Room A: 14
-  Long Library, Secret Bookcase Room: 1
-  Long Library, Shop: 4
-  Long Library, Spellbook Area: 9
-  Long Library, Three Layer Room: 8
-  Marble Gallery, Alucart Room: 25
-  Marble Gallery, Beneath Dropoff: 4
-  Marble Gallery, Beneath Left Trapdoor: 23
-  Marble Gallery, Beneath Right Trapdoor: 24
-  Marble Gallery, Blue Door Room: 12
-  Marble Gallery, Clock Room (Testing Things Out):
+  Abandoned Mine, Bend:
+    Room Index: 10
+  Abandoned Mine, Cerberus Room:
+    Room Index: 2
+  Abandoned Mine, Crumbling Stairwells With Demon Switch:
+    Room Index: 3
+  Abandoned Mine, Crumbling Stairwells With Mushrooms:
+    Room Index: 8
+  Abandoned Mine, Demon Card Room:
+    Room Index: 11
+  Abandoned Mine, Fake Room with Teleporter to Catacombs:
+    Room Index: 18
+  Abandoned Mine, Fake Room with Teleporter to Underground Caverns:
+    Room Index: 16
+  Abandoned Mine, Fake Room with Teleporter to Warp Rooms:
+    Room Index: 17
+  Abandoned Mine, Four-Way Intersection:
+    Room Index: 7
+  Abandoned Mine, Karma Coin Room:
+    Room Index: 9
+  Abandoned Mine, Loading Room to Catacombs:
+    Room Index: 12
+  Abandoned Mine, Loading Room to Underground Caverns:
+    Room Index: 14
+  Abandoned Mine, Loading Room to Warp Rooms:
+    Room Index: 13
+  Abandoned Mine, Peanuts Room:
+    Room Index: 6
+  Abandoned Mine, Save Room A:
+    Room Index: 15
+  Abandoned Mine, Snake Column:
+    Room Index: 5
+  Abandoned Mine, Venus Weed Room:
+    Room Index: 4
+  Abandoned Mine, Well-Lit Skull Room:
+    Room Index: 1
+  Abandoned Mine, Wolf's Head Column:
+    Room Index: 0
+  Alchemy Laboratory, Bat Card Room:
+    Room Index: 0
+  Alchemy Laboratory, Bloody Zombie Hallway:
+    Room Index: 3
+  Alchemy Laboratory, Blue Door Hallway:
+    Room Index: 2
+  Alchemy Laboratory, Box Puzzle Room:
+    Room Index: 17
+  Alchemy Laboratory, Cannon Room:
+    Room Index: 4
+  Alchemy Laboratory, Cloth Cape Room:
+    Room Index: 5
+  Alchemy Laboratory, Corridor to Elevator:
+    Room Index: 21
+  Alchemy Laboratory, Elevator Shaft:
+    Room Index: 22
+  Alchemy Laboratory, Empty Zig Zag Room:
+    Room Index: 12
+  Alchemy Laboratory, Entryway:
+    Room Index: 10
+  Alchemy Laboratory, Exit to Marble Gallery:
+    Room Index: 20
+  Alchemy Laboratory, Exit to Royal Chapel:
+    Room Index: 1
+  Alchemy Laboratory, Fake Room with Teleporter to Castle Entrance:
+    Room Index: 31
+  Alchemy Laboratory, Fake Room with Teleporter to Marble Gallery:
+    Room Index: 29
+  Alchemy Laboratory, Fake Room with Teleporter to Royal Chapel:
+    Room Index: 30
+  Alchemy Laboratory, Glass Vats:
+    Room Index: 7
+  Alchemy Laboratory, Heart Max-Up Room:
+    Room Index: 9
+  Alchemy Laboratory, Loading Room to Castle Entrance:
+    Room Index: 28
+  Alchemy Laboratory, Loading Room to Marble Gallery:
+    Room Index: 26
+  Alchemy Laboratory, Loading Room to Royal Chapel:
+    Room Index: 27
+  Alchemy Laboratory, Red Skeleton Lift Room:
+    Room Index: 18
+  Alchemy Laboratory, Save Room A:
+    Room Index: 23
+  Alchemy Laboratory, Save Room B:
+    Room Index: 24
+  Alchemy Laboratory, Save Room C:
+    Room Index: 25
+  Alchemy Laboratory, Secret Life Max-Up Room:
+    Room Index: 15
+  Alchemy Laboratory, Short Zig Zag Room:
+    Room Index: 13
+  Alchemy Laboratory, Skill of Wolf Room:
+    Room Index: 8
+  Alchemy Laboratory, Slogra and Gaibon Room:
+    Room Index: 16
+  Alchemy Laboratory, Sunglasses Room:
+    Room Index: 6
+  Alchemy Laboratory, Tall Spittlebone Room:
+    Room Index: 11
+  Alchemy Laboratory, Tall Zig Zag Room:
+    Room Index: 14
+  Alchemy Laboratory, Tetromino Room:
+    Room Index: 19
+  Anti-Chapel, Chapel Staircase:
+    Room Index: 11
+  Anti-Chapel, Confessional Booth:
+    Room Index: 7
+  Anti-Chapel, Empty Room:
+    Room Index: 10
+  Anti-Chapel, Fake Room with Teleporter to Alchemy Laboratory:
+    Room Index: 22
+  Anti-Chapel, Fake Room with Teleporter to Castle Keep:
+    Room Index: 25
+  Anti-Chapel, Fake Room with Teleporter to Colosseum:
+    Room Index: 23
+  Anti-Chapel, Fake Room with Teleporter to Olrox's Quarters:
+    Room Index: 24
+  Anti-Chapel, Goggles Room:
+    Room Index: 8
+  Anti-Chapel, Hippogryph Room:
+    Room Index: 4
+  Anti-Chapel, Left Tower:
+    Room Index: 13
+  Anti-Chapel, Loading Room to Alchemy Laboratory:
+    Room Index: 19
+  Anti-Chapel, Loading Room to Castle Keep:
+    Room Index: 15
+  Anti-Chapel, Loading Room to Colosseum:
+    Room Index: 20
+  Anti-Chapel, Loading Room to Olrox's Quarters:
+    Room Index: 21
+  Anti-Chapel, Middle Tower:
+    Room Index: 14
+  Anti-Chapel, Nave:
+    Room Index: 9
+  Anti-Chapel, Pushing Statue Shortcut:
+    Room Index: 6
+  Anti-Chapel, Right Tower:
+    Room Index: 17
+  Anti-Chapel, Save Room A:
+    Room Index: 18
+  Anti-Chapel, Save Room B:
+    Room Index: 16
+  Anti-Chapel, Silver Ring Room:
+    Room Index: 0
+  Anti-Chapel, Spike Hallway:
+    Room Index: 1
+  Anti-Chapel, Statue Ledge:
+    Room Index: 12
+  Anti-Chapel, Walkway Between Towers:
+    Room Index: 2
+  Anti-Chapel, Walkway Left of Hippogryph:
+    Room Index: 3
+  Anti-Chapel, Walkway Right of Hippogryph:
+    Room Index: 5
+  Black Marble Gallery, Alucart Room:
+    Room Index: 25
+  Black Marble Gallery, Beneath Dropoff:
+    Room Index: 4
+  Black Marble Gallery, Beneath Left Trapdoor:
+    Room Index: 23
+  Black Marble Gallery, Beneath Right Trapdoor:
+    Room Index: 24
+  Black Marble Gallery, Blue Door Room:
+    Room Index: 12
+  Black Marble Gallery, Clock Room:
+    Room Index: 9
+  Black Marble Gallery, Dropoff:
+    Room Index: 5
+  Black Marble Gallery, Elevator Room:
+    Room Index: 21
+  Black Marble Gallery, Empty Room:
+    Room Index: 11
+  Black Marble Gallery, Entrance:
+    Room Index: 6
+  Black Marble Gallery, Fake Room with Teleporter to Alchemy Laboratory:
+    Room Index: 36
+  Black Marble Gallery, Fake Room with Teleporter to Castle Center:
+    Room Index: 34
+  Black Marble Gallery, Fake Room with Teleporter to Castle Entrance:
+    Room Index: 33
+  Black Marble Gallery, Fake Room with Teleporter to Olrox's Quarters:
+    Room Index: 38
+  Black Marble Gallery, Fake Room with Teleporter to Outer Wall:
+    Room Index: 37
+  Black Marble Gallery, Fake Room with Teleporter to Underground Caverns:
+    Room Index: 35
+  Black Marble Gallery, Gravity Boots Room:
+    Room Index: 20
+  Black Marble Gallery, Left of Clock Room:
+    Room Index: 10
+  Black Marble Gallery, Loading Room to Alchemy Laboratory:
+    Room Index: 28
+  Black Marble Gallery, Loading Room to Castle Entrance:
+    Room Index: 30
+  Black Marble Gallery, Loading Room to Olrox's Quarters:
+    Room Index: 29
+  Black Marble Gallery, Loading Room to Outer Wall:
+    Room Index: 26
+  Black Marble Gallery, Loading Room to Underground Caverns:
+    Room Index: 27
+  Black Marble Gallery, Long Hallway:
+    Room Index: 8
+  Black Marble Gallery, Ouija Table Stairway:
+    Room Index: 15
+  Black Marble Gallery, Pathway After Left Statue:
+    Room Index: 13
+  Black Marble Gallery, Pathway After Right Statue:
+    Room Index: 14
+  Black Marble Gallery, Power-Up Room:
+    Room Index: 22
+  Black Marble Gallery, Right of Clock Room:
+    Room Index: 19
+  Black Marble Gallery, S-Shaped Hallways:
+    Room Index: 0
+  Black Marble Gallery, Save Room A:
+    Room Index: 31
+  Black Marble Gallery, Save Room B:
+    Room Index: 32
+  Black Marble Gallery, Slinger Staircase:
+    Room Index: 18
+  Black Marble Gallery, Spirit Orb Room:
+    Room Index: 2
+  Black Marble Gallery, Stained Glass Corner:
+    Room Index: 3
+  Black Marble Gallery, Stairwell to Underground Caverns:
+    Room Index: 17
+  Black Marble Gallery, Stopwatch Room:
+    Room Index: 7
+  Black Marble Gallery, Tall Stained Glass Windows:
+    Room Index: 1
+  Black Marble Gallery, Three Paths:
+    Room Index: 16
+  Boss - Akmodan II, Fake Room With Teleporter A:
+    Room Index: 1
+  Boss - Akmodan II, Fake Room With Teleporter B:
+    Room Index: 2
+  Boss - Akmodan II, Olrox's Room:
+    Room Index: 0
+  Boss - Beelzebub, Fake Room With Teleporter A:
+    Room Index: 1
+  Boss - Beelzebub, Fake Room With Teleporter B:
+    Room Index: 2
+  Boss - Beelzebub, Fake Room With Teleporter C:
+    Room Index: 3
+  Boss - Beelzebub, Slogra and Gaibon Room:
+    Room Index: 0
+  Boss - Cerberus, Cerberus Room:
+    Room Index: 0
+  Boss - Cerberus, Fake Room With Teleporter A:
+    Room Index: 1
+  Boss - Cerberus, Fake Room With Teleporter B:
+    Room Index: 2
+  Boss - Creature, Doppelganger Room:
+    Room Index: 0
+  Boss - Creature, Fake Room With Teleporter A:
+    Room Index: 1
+  Boss - Creature, Fake Room With Teleporter B:
+    Room Index: 2
+  Boss - Death, Cerberus Room:
+    Room Index: 0
+  Boss - Death, Fake Room With Teleporter A:
+    Room Index: 1
+  Boss - Death, Fake Room With Teleporter B:
+    Room Index: 2
+  Boss - Doppelganger 10, Doppelganger Room:
+    Room Index: 0
+  Boss - Doppelganger 10, Fake Room With Teleporter A:
+    Room Index: 1
+  Boss - Doppelganger 10, Fake Room With Teleporter B:
+    Room Index: 2
+  Boss - Doppelganger 40, Fake Room With Teleporter A:
+    Room Index: 1
+  Boss - Doppelganger 40, Fake Room With Teleporter B:
+    Room Index: 2
+  Boss - Doppelganger 40, Scylla Wyrm Room:
+    Room Index: 0
+  Boss - Galamoth, Fake Room With Teleporter A:
+    Room Index: 1
+  Boss - Galamoth, Fake Room With Teleporter B:
+    Room Index: 2
+  Boss - Galamoth, Granfaloon's Lair:
+    Room Index: 0
+  Boss - Granfaloon, Fake Room With Teleporter A:
+    Room Index: 1
+  Boss - Granfaloon, Fake Room With Teleporter B:
+    Room Index: 2
+  Boss - Granfaloon, Granfaloon's Lair:
+    Room Index: 0
+  Boss - Hippogryph, Fake Room With Teleporter A:
+    Room Index: 1
+  Boss - Hippogryph, Fake Room With Teleporter B:
+    Room Index: 2
+  Boss - Hippogryph, Hippogryph Room:
+    Room Index: 0
+  Boss - Medusa, Fake Room With Teleporter A:
+    Room Index: 1
+  Boss - Medusa, Fake Room With Teleporter B:
+    Room Index: 2
+  Boss - Medusa, Hippogryph Room:
+    Room Index: 0
+  Boss - Minotaur and Werewolf, Arena:
+    Room Index: 0
+  Boss - Minotaur and Werewolf, Fake Room With Teleporter A:
+    Room Index: 1
+  Boss - Minotaur and Werewolf, Fake Room With Teleporter B:
+    Room Index: 2
+  Boss - Olrox, Fake Room With Teleporter A:
+    Room Index: 1
+  Boss - Olrox, Fake Room With Teleporter B:
+    Room Index: 2
+  Boss - Olrox, Olrox's Room:
+    Room Index: 0
+  Boss - Richter, Throne Room:
+    Room Index: 0
+  Boss - Scylla, Crystal Cloak Room:
+    Room Index: 3
+  Boss - Scylla, Fake Room With Teleporter A:
+    Room Index: 4
+  Boss - Scylla, Rising Water Room:
+    Room Index: 2
+  Boss - Scylla, Scylla Room:
+    Room Index: 0
+  Boss - Scylla, Scylla Wyrm Room:
+    Room Index: 1
+  Boss - Trio, Arena:
+    Room Index: 0
+  Boss - Trio, Fake Room With Teleporter A:
+    Room Index: 1
+  Boss - Trio, Fake Room With Teleporter B:
+    Room Index: 2
+  Castle Center, Center Cube:
+    Room Index: 1
+  Castle Center, Elevator Shaft:
+    Room Index: 0
+  Castle Center, Fake Room with Teleporter to BO6:
+    Room Index: 4
+  Castle Center, Fake Room with Teleporter to Marble Gallery:
+    Room Index: 3
+  Castle Center, Unknown Room ID 02:
+    Room Index: 2
+  Castle Entrance Revisited, After Drawbridge:
+    Room Index: 0
+  Castle Entrance Revisited, Attic Entrance:
+    Room Index: 6
+  Castle Entrance Revisited, Attic Hallway:
+    Room Index: 5
+  Castle Entrance Revisited, Attic Staircase:
+    Room Index: 4
+  Castle Entrance Revisited, Cube of Zoe Room:
+    Room Index: 15
+  Castle Entrance Revisited, Drop Under Portcullis:
+    Room Index: 1
+  Castle Entrance Revisited, Fake Room with Teleporter to Alchemy Laboratory:
+    Room Index: 25
+  Castle Entrance Revisited, Fake Room with Teleporter to Marble Gallery:
+    Room Index: 26
+  Castle Entrance Revisited, Fake Room with Teleporter to Underground Caverns:
+    Room Index: 28
+  Castle Entrance Revisited, Fake Room with Teleporter to Warp Rooms:
+    Room Index: 27
+  Castle Entrance Revisited, Gargoyle Room:
+    Room Index: 13
+  Castle Entrance Revisited, Heart Max-Up Room:
+    Room Index: 14
+  Castle Entrance Revisited, Holy Mail Room:
+    Room Index: 3
+  Castle Entrance Revisited, Jewel Sword Room:
+    Room Index: 8
+  Castle Entrance Revisited, Life Max-Up Room:
+    Room Index: 17
+  Castle Entrance Revisited, Loading Room to Alchemy Laboratory:
+    Room Index: 20
+  Castle Entrance Revisited, Loading Room to Marble Gallery:
+    Room Index: 18
+  Castle Entrance Revisited, Loading Room to Underground Caverns:
+    Room Index: 21
+  Castle Entrance Revisited, Loading Room to Warp Rooms:
+    Room Index: 19
+  Castle Entrance Revisited, Meeting Room With Death:
+    Room Index: 11
+  Castle Entrance Revisited, Merman Room:
+    Room Index: 7
+  Castle Entrance Revisited, Save Room A:
+    Room Index: 22
+  Castle Entrance Revisited, Save Room B:
+    Room Index: 23
+  Castle Entrance Revisited, Save Room C:
+    Room Index: 24
+  Castle Entrance Revisited, Shortcut to Underground Caverns:
+    Room Index: 10
+  Castle Entrance Revisited, Shortcut to Warp Rooms:
+    Room Index: 16
+  Castle Entrance Revisited, Stairwell After Death:
+    Room Index: 12
+  Castle Entrance Revisited, Warg Hallway:
+    Room Index: 9
+  Castle Entrance Revisited, Zombie Hallway:
+    Room Index: 2
+  Castle Entrance, After Drawbridge:
+    Room Index: 0
+  Castle Entrance, Attic Entrance:
+    Room Index: 6
+  Castle Entrance, Attic Hallway:
+    Room Index: 5
+  Castle Entrance, Attic Staircase:
+    Room Index: 4
+  Castle Entrance, Cube of Zoe Room:
+    Room Index: 15
+  Castle Entrance, Drop Under Portcullis:
+    Room Index: 1
+  Castle Entrance, Fake Room with Teleporter to Alchemy Laboratory:
+    Room Index: 28
+  Castle Entrance, Fake Room with Teleporter to Marble Gallery:
+    Room Index: 29
+  Castle Entrance, Fake Room with Teleporter to Underground Caverns:
+    Room Index: 31
+  Castle Entrance, Fake Room with Teleporter to Warp Rooms:
+    Room Index: 30
+  Castle Entrance, Forest Cutscene:
+    Room Index: 18
+  Castle Entrance, Gargoyle Room:
+    Room Index: 13
+  Castle Entrance, Heart Max-Up Room:
+    Room Index: 14
+  Castle Entrance, Holy Mail Room:
+    Room Index: 3
+  Castle Entrance, Jewel Sword Room:
+    Room Index: 8
+  Castle Entrance, Life Max-Up Room:
+    Room Index: 17
+  Castle Entrance, Loading Room to Alchemy Laboratory:
+    Room Index: 23
+  Castle Entrance, Loading Room to Marble Gallery:
+    Room Index: 21
+  Castle Entrance, Loading Room to Underground Caverns:
+    Room Index: 24
+  Castle Entrance, Loading Room to Warp Rooms:
+    Room Index: 22
+  Castle Entrance, Meeting Room With Death:
+    Room Index: 11
+  Castle Entrance, Merman Room:
+    Room Index: 7
+  Castle Entrance, Save Room A:
+    Room Index: 25
+  Castle Entrance, Save Room B:
+    Room Index: 26
+  Castle Entrance, Save Room C:
+    Room Index: 27
+  Castle Entrance, Shortcut to Underground Caverns:
+    Room Index: 10
+  Castle Entrance, Shortcut to Warp Rooms:
+    Room Index: 16
+  Castle Entrance, Stairwell After Death:
+    Room Index: 12
+  Castle Entrance, Unknown Room 19:
+    Room Index: 19
+  Castle Entrance, Unknown Room 20:
+    Room Index: 20
+  Castle Entrance, Warg Hallway:
+    Room Index: 9
+  Castle Entrance, Zombie Hallway:
+    Room Index: 2
+  Castle Keep, Bend:
+    Room Index: 4
+  Castle Keep, Dual Platforms:
+    Room Index: 7
+  Castle Keep, Fake Room with Teleporter to Clock Tower:
+    Room Index: 13
+  Castle Keep, Fake Room with Teleporter to Royal Chapel:
+    Room Index: 14
+  Castle Keep, Fake Room with Teleporter to Warp Rooms:
+    Room Index: 15
+  Castle Keep, Falchion Room:
+    Room Index: 5
+  Castle Keep, Ghost Card Room:
+    Room Index: 3
+  Castle Keep, Keep Area:
+    Room Index: 2
+  Castle Keep, Lion Torch Platform:
+    Room Index: 6
+  Castle Keep, Loading Room to Clock Tower:
+    Room Index: 10
+  Castle Keep, Loading Room to Royal Chapel:
+    Room Index: 12
+  Castle Keep, Loading Room to Warp Rooms:
+    Room Index: 11
+  Castle Keep, Lower Attic:
+    Room Index: 1
+  Castle Keep, Save Room A:
+    Room Index: 9
+  Castle Keep, Tyrfing Room:
+    Room Index: 8
+  Castle Keep, Upper Attic:
+    Room Index: 0
+  Catacombs, Ballroom Mask Room:
+    Room Index: 11
+  Catacombs, Bone Ark Room:
+    Room Index: 18
+  Catacombs, Cat-Eye Circlet Room:
+    Room Index: 13
+  Catacombs, Exit to Abandoned Mine:
+    Room Index: 17
+  Catacombs, Fake Room with Teleporter to Abandoned Mine:
+    Room Index: 29
+  Catacombs, Granfaloon's Lair:
+    Room Index: 3
+  Catacombs, Hellfire Beast Room:
+    Room Index: 16
+  Catacombs, Icebrand Room:
+    Room Index: 9
+  Catacombs, Left Lava Path:
+    Room Index: 10
+  Catacombs, Loading Room to Abandoned Mine:
+    Room Index: 28
+  Catacombs, Mormegil Room:
+    Room Index: 1
+  Catacombs, Pitch Black Spike Maze:
+    Room Index: 24
+  Catacombs, Right Lava Path:
+    Room Index: 12
+  Catacombs, Room ID 00:
+    Room Index: 0
+  Catacombs, Room ID 02:
+    Room Index: 2
+  Catacombs, Room ID 04:
+    Room Index: 4
+  Catacombs, Room ID 05:
+    Room Index: 5
+  Catacombs, Room ID 14:
+    Room Index: 14
+  Catacombs, Room ID 19:
+    Room Index: 19
+  Catacombs, Room ID 20:
+    Room Index: 20
+  Catacombs, Room ID 21:
+    Room Index: 21
+  Catacombs, Room ID 22:
+    Room Index: 22
+  Catacombs, Room ID 23:
+    Room Index: 23
+  Catacombs, Room ID 25:
+    Room Index: 25
+  Catacombs, Room ID 26:
+    Room Index: 26
+  Catacombs, Save Room A:
+    Room Index: 7
+  Catacombs, Save Room B:
+    Room Index: 15
+  Catacombs, Small Gremlin Room:
+    Room Index: 6
+  Catacombs, Spike Breaker Room:
+    Room Index: 27
+  Catacombs, Walk Armor Room:
+    Room Index: 8
+  Cave, Bend:
+    Room Index: 10
+  Cave, Cerberus Room:
+    Room Index: 2
+  Cave, Crumbling Stairwells With Demon Switch:
+    Room Index: 3
+  Cave, Crumbling Stairwells With Mushrooms:
+    Room Index: 8
+  Cave, Demon Card Room:
+    Room Index: 11
+  Cave, Fake Room with Teleporter to Catacombs:
+    Room Index: 16
+  Cave, Fake Room with Teleporter to Underground Caverns:
+    Room Index: 18
+  Cave, Fake Room with Teleporter to Warp Rooms:
+    Room Index: 17
+  Cave, Four-Way Intersection:
+    Room Index: 7
+  Cave, Karma Coin Room:
+    Room Index: 9
+  Cave, Loading Room to Catacombs:
+    Room Index: 12
+  Cave, Loading Room to Underground Caverns:
+    Room Index: 14
+  Cave, Loading Room to Warp Rooms:
+    Room Index: 13
+  Cave, Peanuts Room:
+    Room Index: 6
+  Cave, Save Room A:
+    Room Index: 15
+  Cave, Snake Column:
+    Room Index: 5
+  Cave, Venus Weed Room:
+    Room Index: 4
+  Cave, Well-Lit Skull Room:
+    Room Index: 1
+  Cave, Wolf's Head Column:
+    Room Index: 0
+  Clock Tower, Belfry:
+    Room Index: 9
+  Clock Tower, Exit to Courtyard:
+    Room Index: 8
+  Clock Tower, Fake Room with Teleporter to Castle Keep:
+    Room Index: 15
+  Clock Tower, Fake Room with Teleporter to Outer Wall:
+    Room Index: 16
+  Clock Tower, Fire of Bat Room:
+    Room Index: 12
+  Clock Tower, Healing Mail Room:
+    Room Index: 2
+  Clock Tower, Hidden Armory:
+    Room Index: 5
+  Clock Tower, Karasuman's Room:
+    Room Index: 0
+  Clock Tower, Left Gear Room:
+    Room Index: 6
+  Clock Tower, Loading Room to Castle Keep:
+    Room Index: 14
+  Clock Tower, Loading Room to Outer Wall:
+    Room Index: 13
+  Clock Tower, Open Courtyard:
+    Room Index: 10
+  Clock Tower, Path to Karasuman:
+    Room Index: 1
+  Clock Tower, Pendulum Room:
+    Room Index: 3
+  Clock Tower, Right Gear Room:
+    Room Index: 7
+  Clock Tower, Spire:
+    Room Index: 4
+  Clock Tower, Stairwell to Outer Wall:
+    Room Index: 11
+  Colosseum, Arena:
+    Room Index: 5
+  Colosseum, Blade Master Room:
+    Room Index: 2
+  Colosseum, Blood Cloak Room:
+    Room Index: 10
+  Colosseum, Bottom of Elevator Shaft:
+    Room Index: 11
+  Colosseum, Fake Room with Teleporter to Olrox's Quarters:
+    Room Index: 19
+  Colosseum, Fake Room with Teleporter to Royal Chapel:
+    Room Index: 18
+  Colosseum, Fountain Room:
+    Room Index: 9
+  Colosseum, Holy Sword Room:
+    Room Index: 0
+  Colosseum, Left-Side Armory:
+    Room Index: 12
+  Colosseum, Loading Room to Olrox's Quarters:
+    Room Index: 15
+  Colosseum, Loading Room to Royal Chapel:
+    Room Index: 14
+  Colosseum, Passageway Between Arena and Royal Chapel:
+    Room Index: 4
+  Colosseum, Right-Side Armory:
+    Room Index: 13
+  Colosseum, Save Room A:
+    Room Index: 16
+  Colosseum, Save Room B:
+    Room Index: 17
+  Colosseum, Spiral Staircases:
+    Room Index: 7
+  Colosseum, Top of Elevator Shaft:
+    Room Index: 6
+  Colosseum, Top of Left Spiral Staircase:
+    Room Index: 1
+  Colosseum, Top of Right Spiral Staircase:
+    Room Index: 3
+  Colosseum, Valhalla Knight Room:
+    Room Index: 8
+  Cutscene - Meeting Maria in Clock Room, Clock Room:
+    Room Index: 0
+  Cutscene - Meeting Maria in Clock Room, Fake Room With Teleporter A:
+    Room Index: 1
+  Cutscene - Meeting Maria in Clock Room, Fake Room With Teleporter B:
+    Room Index: 2
+  Death Wing's Lair, Bottom of Stairwell:
+    Room Index: 1
+  Death Wing's Lair, Catwalk Crypt:
+    Room Index: 15
+  Death Wing's Lair, Echo of Bat Room:
+    Room Index: 13
+  Death Wing's Lair, Empty Cells:
+    Room Index: 9
+  Death Wing's Lair, Empty Room:
+    Room Index: 5
+  Death Wing's Lair, Fake Room with Teleporter to Colosseum:
+    Room Index: 22
+  Death Wing's Lair, Fake Room with Teleporter to Marble Gallery:
+    Room Index: 21
+  Death Wing's Lair, Fake Room with Teleporter to Royal Chapel:
+    Room Index: 24
+  Death Wing's Lair, Fake Room with Teleporter to Warp Rooms:
+    Room Index: 23
+  Death Wing's Lair, Garnet Room:
+    Room Index: 10
+  Death Wing's Lair, Grand Staircase:
+    Room Index: 2
+  Death Wing's Lair, Hammer and Blade Room:
+    Room Index: 4
+  Death Wing's Lair, Loading Room to Colosseum:
+    Room Index: 18
+  Death Wing's Lair, Loading Room to Marble Gallery:
+    Room Index: 17
+  Death Wing's Lair, Loading Room to Royal Chapel:
+    Room Index: 20
+  Death Wing's Lair, Loading Room to Warp Rooms:
+    Room Index: 19
+  Death Wing's Lair, Narrow Hallway to Olrox:
+    Room Index: 11
+  Death Wing's Lair, Olrox's Room:
+    Room Index: 12
+  Death Wing's Lair, Open Courtyard:
+    Room Index: 8
+  Death Wing's Lair, Prison:
+    Room Index: 7
+  Death Wing's Lair, Save Room A:
+    Room Index: 16
+  Death Wing's Lair, Secret Onyx Room:
+    Room Index: 3
+  Death Wing's Lair, Skelerang Room:
+    Room Index: 0
+  Death Wing's Lair, Sword Card Room:
+    Room Index: 14
+  Death Wing's Lair, Tall Shaft:
+    Room Index: 6
+  Floating Catacombs, Ballroom Mask Room:
+    Room Index: 11
+  Floating Catacombs, Bone Ark Room:
+    Room Index: 18
+  Floating Catacombs, Cat-Eye Circlet Room:
+    Room Index: 13
+  Floating Catacombs, Exit to Abandoned Mine:
+    Room Index: 17
+  Floating Catacombs, Fake Room with Teleporter to Abandoned Mine:
+    Room Index: 29
+  Floating Catacombs, Granfaloon's Lair:
+    Room Index: 3
+  Floating Catacombs, Hellfire Beast Room:
+    Room Index: 16
+  Floating Catacombs, Icebrand Room:
+    Room Index: 9
+  Floating Catacombs, Left Lava Path:
+    Room Index: 10
+  Floating Catacombs, Loading Room to Abandoned Mine:
+    Room Index: 28
+  Floating Catacombs, Mormegil Room:
+    Room Index: 1
+  Floating Catacombs, Pitch Black Spike Maze:
+    Room Index: 24
+  Floating Catacombs, Right Lava Path:
+    Room Index: 12
+  Floating Catacombs, Room ID 00:
+    Room Index: 0
+  Floating Catacombs, Room ID 02:
+    Room Index: 2
+  Floating Catacombs, Room ID 04:
+    Room Index: 4
+  Floating Catacombs, Room ID 05:
+    Room Index: 5
+  Floating Catacombs, Room ID 14:
+    Room Index: 14
+  Floating Catacombs, Room ID 19:
+    Room Index: 19
+  Floating Catacombs, Room ID 20:
+    Room Index: 20
+  Floating Catacombs, Room ID 21:
+    Room Index: 21
+  Floating Catacombs, Room ID 22:
+    Room Index: 22
+  Floating Catacombs, Room ID 23:
+    Room Index: 23
+  Floating Catacombs, Room ID 25:
+    Room Index: 25
+  Floating Catacombs, Room ID 26:
+    Room Index: 26
+  Floating Catacombs, Save Room A:
+    Room Index: 7
+  Floating Catacombs, Save Room B:
+    Room Index: 15
+  Floating Catacombs, Small Gremlin Room:
+    Room Index: 6
+  Floating Catacombs, Spike Breaker Room:
+    Room Index: 27
+  Floating Catacombs, Walk Armor Room:
+    Room Index: 8
+  Forbidden Library, Dhuron and Flea Armor Room:
+    Room Index: 3
+  Forbidden Library, Dhuron and Flea Man Room:
+    Room Index: 10
+  Forbidden Library, Exit to Outer Wall:
+    Room Index: 12
+  Forbidden Library, Faerie Card Room:
+    Room Index: 7
+  Forbidden Library, Fake Room with Teleporter to Outer Wall:
+    Room Index: 15
+  Forbidden Library, Flea Man Room:
+    Room Index: 6
+  Forbidden Library, Foot of Staircase:
+    Room Index: 11
+  Forbidden Library, Holy Rod Room:
+    Room Index: 2
+  Forbidden Library, Lesser Demon Area:
+    Room Index: 0
+  Forbidden Library, Loading Room to Outer Wall:
+    Room Index: 13
+  Forbidden Library, Outside Shop:
+    Room Index: 5
+  Forbidden Library, Save Room A:
+    Room Index: 14
+  Forbidden Library, Secret Bookcase Room:
+    Room Index: 1
+  Forbidden Library, Shop:
+    Room Index: 4
+  Forbidden Library, Spellbook Area:
+    Room Index: 9
+  Forbidden Library, Three Layer Room:
+    Room Index: 8
+  Long Library, Dhuron and Flea Armor Room:
+    Room Index: 3
+  Long Library, Dhuron and Flea Man Room:
+    Room Index: 10
+  Long Library, Exit to Outer Wall:
+    Room Index: 12
+  Long Library, Faerie Card Room:
+    Room Index: 7
+  Long Library, Fake Room with Teleporter to Outer Wall:
+    Room Index: 15
+  Long Library, Flea Man Room:
+    Room Index: 6
+  Long Library, Foot of Staircase:
+    Room Index: 11
+  Long Library, Holy Rod Room:
+    Room Index: 2
+  Long Library, Lesser Demon Area:
+    Room Index: 0
+  Long Library, Loading Room to Outer Wall:
+    Room Index: 13
+  Long Library, Outside Shop:
+    Room Index: 5
+  Long Library, Save Room A:
+    Room Index: 14
+  Long Library, Secret Bookcase Room:
+    Room Index: 1
+  Long Library, Shop:
+    Room Index: 4
+  Long Library, Spellbook Area:
+    Room Index: 9
+  Long Library, Three Layer Room:
+    Room Index: 8
+  Marble Gallery, Alucart Room:
+    Room Index: 25
+  Marble Gallery, Beneath Dropoff:
+    Room Index: 4
+  Marble Gallery, Beneath Left Trapdoor:
+    Room Index: 23
+  Marble Gallery, Beneath Right Trapdoor:
+    Room Index: 24
+  Marble Gallery, Blue Door Room:
+    Room Index: 12
+  Marble Gallery, Clock Room:
     Room Index: 9
     Dependents:
       - Type: Room
@@ -4054,373 +4482,738 @@ Rooms:
         Room: Cutscene - Meeting Maria in Clock Room, Fake Room With Teleporter B
         Top: 0
         Left: 1
-  Marble Gallery, Clock Room: 9
-  Marble Gallery, Dropoff: 5
-  Marble Gallery, Elevator Room: 21
-  Marble Gallery, Empty Room: 11
-  Marble Gallery, Entrance: 6
-  Marble Gallery, Fake Room with Teleporter to Alchemy Laboratory: 35
-  Marble Gallery, Fake Room with Teleporter to Castle Center: 37
-  Marble Gallery, Fake Room with Teleporter to Castle Entrance: 38
-  Marble Gallery, Fake Room with Teleporter to Olrox's Quarters: 33
-  Marble Gallery, Fake Room with Teleporter to Outer Wall: 34
-  Marble Gallery, Fake Room with Teleporter to Underground Caverns: 36
-  Marble Gallery, Gravity Boots Room: 20
-  Marble Gallery, Left of Clock Room: 10
-  Marble Gallery, Loading Room to Alchemy Laboratory: 28
-  Marble Gallery, Loading Room to Castle Entrance: 30
-  Marble Gallery, Loading Room to Olrox's Quarters: 29
-  Marble Gallery, Loading Room to Outer Wall: 26
-  Marble Gallery, Loading Room to Underground Caverns: 27
-  Marble Gallery, Long Hallway: 8
-  Marble Gallery, Ouija Table Stairway: 15
-  Marble Gallery, Pathway After Left Statue: 13
-  Marble Gallery, Pathway After Right Statue: 14
-  Marble Gallery, Power-Up Room: 22
-  Marble Gallery, Right of Clock Room: 19
-  Marble Gallery, S-Shaped Hallways: 0
-  Marble Gallery, Save Room A: 31
-  Marble Gallery, Save Room B: 32
-  Marble Gallery, Slinger Staircase: 18
-  Marble Gallery, Spirit Orb Room: 2
-  Marble Gallery, Stained Glass Corner: 3
-  Marble Gallery, Stairwell to Underground Caverns: 17
-  Marble Gallery, Stopwatch Room: 7
-  Marble Gallery, Tall Stained Glass Windows: 1
-  Marble Gallery, Three Paths: 16
-  Necromancy Laboratory, Bat Card Room: 0
-  Necromancy Laboratory, Bloody Zombie Hallway: 3
-  Necromancy Laboratory, Blue Door Hallway: 2
-  Necromancy Laboratory, Box Puzzle Room: 17
-  Necromancy Laboratory, Cannon Room: 4
-  Necromancy Laboratory, Cloth Cape Room: 5
-  Necromancy Laboratory, Corridor to Elevator: 21
-  Necromancy Laboratory, Elevator Shaft: 22
-  Necromancy Laboratory, Empty Zig Zag Room: 12
-  Necromancy Laboratory, Entryway: 10
-  Necromancy Laboratory, Exit to Marble Gallery: 20
-  Necromancy Laboratory, Exit to Royal Chapel: 1
-  Necromancy Laboratory, Fake Room with Teleporter to Castle Entrance: 29
-  Necromancy Laboratory, Fake Room with Teleporter to Marble Gallery: 31
-  Necromancy Laboratory, Fake Room with Teleporter to Royal Chapel: 30
-  Necromancy Laboratory, Glass Vats: 7
-  Necromancy Laboratory, Heart Max-Up Room: 9
-  Necromancy Laboratory, Loading Room to Castle Entrance: 28
-  Necromancy Laboratory, Loading Room to Marble Gallery: 26
-  Necromancy Laboratory, Loading Room to Royal Chapel: 27
-  Necromancy Laboratory, Red Skeleton Lift Room: 18
-  Necromancy Laboratory, Save Room A: 23
-  Necromancy Laboratory, Save Room B: 24
-  Necromancy Laboratory, Save Room C: 25
-  Necromancy Laboratory, Secret Life Max-Up Room: 15
-  Necromancy Laboratory, Short Zig Zag Room: 13
-  Necromancy Laboratory, Skill of Wolf Room: 8
-  Necromancy Laboratory, Slogra and Gaibon Room: 16
-  Necromancy Laboratory, Sunglasses Room: 6
-  Necromancy Laboratory, Tall Spittlebone Room: 11
-  Necromancy Laboratory, Tall Zig Zag Room: 14
-  Necromancy Laboratory, Tetromino Room: 19
-  Olrox's Quarters, Bottom of Stairwell: 1
-  Olrox's Quarters, Catwalk Crypt: 15
-  Olrox's Quarters, Echo of Bat Room: 13
-  Olrox's Quarters, Empty Cells: 9
-  Olrox's Quarters, Empty Room: 5
-  Olrox's Quarters, Fake Room with Teleporter to Colosseum: 23
-  Olrox's Quarters, Fake Room with Teleporter to Marble Gallery: 24
-  Olrox's Quarters, Fake Room with Teleporter to Royal Chapel: 21
-  Olrox's Quarters, Fake Room with Teleporter to Warp Rooms: 22
-  Olrox's Quarters, Garnet Room: 10
-  Olrox's Quarters, Grand Staircase: 2
-  Olrox's Quarters, Hammer and Blade Room: 4
-  Olrox's Quarters, Loading Room to Colosseum: 18
-  Olrox's Quarters, Loading Room to Marble Gallery: 17
-  Olrox's Quarters, Loading Room to Royal Chapel: 20
-  Olrox's Quarters, Loading Room to Warp Rooms: 19
-  Olrox's Quarters, Narrow Hallway to Olrox: 11
-  Olrox's Quarters, Olrox's Room: 12
-  Olrox's Quarters, Open Courtyard: 8
-  Olrox's Quarters, Prison: 7
-  Olrox's Quarters, Save Room A: 16
-  Olrox's Quarters, Secret Onyx Room: 3
-  Olrox's Quarters, Skelerang Room: 0
-  Olrox's Quarters, Sword Card Room: 14
-  Olrox's Quarters, Tall Shaft: 6
-  Outer Wall, Blue Axe Knight Room: 9
-  Outer Wall, Doppelganger Room: 11
-  Outer Wall, Elevator Shaft Room: 13
-  Outer Wall, Exit to Clock Tower: 2
-  Outer Wall, Exit to Marble Gallery: 7
-  Outer Wall, Fake Room with Teleporter to Clock Tower: 19
-  Outer Wall, Fake Room with Teleporter to Long Library: 21
-  Outer Wall, Fake Room with Teleporter to Marble Gallery: 22
-  Outer Wall, Fake Room with Teleporter to Warp Rooms: 20
-  Outer Wall, Garlic Room: 10
-  Outer Wall, Garnet Vase Room: 8
-  Outer Wall, Gladius Room: 12
-  Outer Wall, Jewel Knuckles Room: 5
-  Outer Wall, Loading Room to Clock Tower: 15
-  Outer Wall, Loading Room to Long Library: 16
-  Outer Wall, Loading Room to Marble Gallery: 18
-  Outer Wall, Loading Room to Warp Rooms: 0
-  Outer Wall, Lower Medusa Room: 4
-  Outer Wall, Save Room A: 14
-  Outer Wall, Save Room B: 17
-  Outer Wall, Secret Platform Room: 6
-  Outer Wall, Telescope Room: 3
-  Outer Wall, Top of Outer Wall: 1
-  Reverse Castle Center, Center Cube: 1
-  Reverse Castle Center, Elevator Shaft: 0
-  Reverse Castle Center, Fake Room with Teleporter to BO6: 3
-  Reverse Castle Center, Fake Room with Teleporter to Marble Gallery: 4
-  Reverse Castle Center, Unknown Room ID 02: 2
-  Reverse Caverns, Bandanna Room: 30
-  Reverse Caverns, Claymore Stairwell: 6
-  Reverse Caverns, Crystal Bend: 2
-  Reverse Caverns, Crystal Cloak Room: 24
-  Reverse Caverns, DK Bridge: 15
-  Reverse Caverns, DK Button: 17
-  Reverse Caverns, Exit to Abandoned Mine: 16
-  Reverse Caverns, Exit to Castle Entrance: 20
-  Reverse Caverns, Fake Room with Teleporter to Abandoned Mine: 39
-  Reverse Caverns, Fake Room with Teleporter to Boss - Succubus: 40
-  Reverse Caverns, Fake Room with Teleporter to Castle Entrance: 38
-  Reverse Caverns, Fake Room with Teleporter to Marble Gallery: 41
-  Reverse Caverns, False Save Room: 37
-  Reverse Caverns, Hidden Crystal Entrance: 1
-  Reverse Caverns, Holy Symbol Room: 13
-  Reverse Caverns, Ice Floe Room: 22
-  Reverse Caverns, Left Ferryman Route: 25
-  Reverse Caverns, Loading Room to Abandoned Mine: 33
-  Reverse Caverns, Loading Room to Castle Entrance: 31
-  Reverse Caverns, Loading Room to Marble Gallery: 32
-  Reverse Caverns, Long Drop: 0
-  Reverse Caverns, Meal Tickets and Moonstone Room: 7
-  Reverse Caverns, Merman Statue Room: 21
-  Reverse Caverns, Pentagram Room: 14
-  Reverse Caverns, Plaque Room With Breakable Wall: 8
-  Reverse Caverns, Plaque Room With Life Max-Up: 4
-  Reverse Caverns, Right Ferryman Route: 23
-  Reverse Caverns, Rising Water Room: 29
-  Reverse Caverns, Room ID 09: 9
-  Reverse Caverns, Room ID 10: 10
-  Reverse Caverns, Room ID 11: 11
-  Reverse Caverns, Room ID 12: 12
-  Reverse Caverns, Room ID 18: 18
-  Reverse Caverns, Room ID 19: 19
-  Reverse Caverns, Save Room A: 34
-  Reverse Caverns, Save Room B: 35
-  Reverse Caverns, Save Room C: 36
-  Reverse Caverns, Scylla Room: 27
-  Reverse Caverns, Scylla Wyrm Room: 28
-  Reverse Caverns, Small Stairwell: 5
-  Reverse Caverns, Tall Stairwell: 3
-  Reverse Caverns, Waterfall: 26
-  Reverse Clock Tower, Belfry: 9
-  Reverse Clock Tower, Exit to Courtyard: 8
-  Reverse Clock Tower, Fake Room with Teleporter to Castle Keep: 16
-  Reverse Clock Tower, Fake Room with Teleporter to Outer Wall: 15
-  Reverse Clock Tower, Fire of Bat Room: 12
-  Reverse Clock Tower, Healing Mail Room: 2
-  Reverse Clock Tower, Hidden Armory: 5
-  Reverse Clock Tower, Karasuman's Room: 0
-  Reverse Clock Tower, Left Gear Room: 6
-  Reverse Clock Tower, Loading Room to Castle Keep: 14
-  Reverse Clock Tower, Loading Room to Outer Wall: 13
-  Reverse Clock Tower, Open Courtyard: 10
-  Reverse Clock Tower, Path to Karasuman: 1
-  Reverse Clock Tower, Pendulum Room: 3
-  Reverse Clock Tower, Right Gear Room: 7
-  Reverse Clock Tower, Spire: 4
-  Reverse Clock Tower, Stairwell to Outer Wall: 11
-  Reverse Colosseum, Arena: 5
-  Reverse Colosseum, Blade Master Room: 2
-  Reverse Colosseum, Blood Cloak Room: 10
-  Reverse Colosseum, Bottom of Elevator Shaft: 11
-  Reverse Colosseum, Fake Room with Teleporter to Olrox's Quarters: 18
-  Reverse Colosseum, Fake Room with Teleporter to Royal Chapel: 19
-  Reverse Colosseum, Fountain Room: 9
-  Reverse Colosseum, Holy Sword Room: 0
-  Reverse Colosseum, Left-Side Armory: 12
-  Reverse Colosseum, Loading Room to Olrox's Quarters: 15
-  Reverse Colosseum, Loading Room to Royal Chapel: 14
-  Reverse Colosseum, Passageway Between Arena and Royal Chapel: 4
-  Reverse Colosseum, Right-Side Armory: 13
-  Reverse Colosseum, Save Room A: 16
-  Reverse Colosseum, Save Room B: 17
-  Reverse Colosseum, Spiral Staircases: 7
-  Reverse Colosseum, Top of Elevator Shaft: 6
-  Reverse Colosseum, Top of Left Spiral Staircase: 1
-  Reverse Colosseum, Top of Right Spiral Staircase: 3
-  Reverse Colosseum, Valhalla Knight Room: 8
-  Reverse Entrance, After Drawbridge: 0
-  Reverse Entrance, Attic Entrance: 6
-  Reverse Entrance, Attic Hallway: 5
-  Reverse Entrance, Attic Staircase: 4
-  Reverse Entrance, Cube of Zoe Room: 15
-  Reverse Entrance, Drop Under Portcullis: 1
-  Reverse Entrance, Fake Room with Teleporter to Alchemy Laboratory: 31
-  Reverse Entrance, Fake Room with Teleporter to Marble Gallery: 30
-  Reverse Entrance, Fake Room with Teleporter to Underground Caverns: 28
-  Reverse Entrance, Fake Room with Teleporter to Warp Rooms: 29
-  Reverse Entrance, Forest Cutscene: 18
-  Reverse Entrance, Gargoyle Room: 13
-  Reverse Entrance, Heart Max-Up Room: 14
-  Reverse Entrance, Holy Mail Room: 3
-  Reverse Entrance, Jewel Sword Room: 8
-  Reverse Entrance, Life Max-Up Room: 17
-  Reverse Entrance, Loading Room to Alchemy Laboratory: 23
-  Reverse Entrance, Loading Room to Marble Gallery: 21
-  Reverse Entrance, Loading Room to Underground Caverns: 24
-  Reverse Entrance, Loading Room to Warp Rooms: 22
-  Reverse Entrance, Meeting Room With Death: 11
-  Reverse Entrance, Merman Room: 7
-  Reverse Entrance, Save Room A: 25
-  Reverse Entrance, Save Room B: 26
-  Reverse Entrance, Save Room C: 27
-  Reverse Entrance, Shortcut to Underground Caverns: 10
-  Reverse Entrance, Shortcut to Warp Rooms: 16
-  Reverse Entrance, Stairwell After Death: 12
-  Reverse Entrance, Unknown Room 19: 19
-  Reverse Entrance, Unknown Room 20: 20
-  Reverse Entrance, Warg Hallway: 9
-  Reverse Entrance, Zombie Hallway: 2
-  Reverse Keep, Bend: 4
-  Reverse Keep, Dual Platforms: 7
-  Reverse Keep, Fake Room with Teleporter to Clock Tower: 15
-  Reverse Keep, Fake Room with Teleporter to Royal Chapel: 14
-  Reverse Keep, Fake Room with Teleporter to Warp Rooms: 13
-  Reverse Keep, Falchion Room: 5
-  Reverse Keep, Ghost Card Room: 3
-  Reverse Keep, Keep Area: 2
-  Reverse Keep, Lion Torch Platform: 6
-  Reverse Keep, Loading Room to Clock Tower: 10
-  Reverse Keep, Loading Room to Royal Chapel: 12
-  Reverse Keep, Loading Room to Warp Rooms: 11
-  Reverse Keep, Lower Attic: 1
-  Reverse Keep, Save Room A: 9
-  Reverse Keep, Tyrfing Room: 8
-  Reverse Keep, Upper Attic: 0
-  Reverse Outer Wall, Blue Axe Knight Room: 9
-  Reverse Outer Wall, Doppelganger Room: 11
-  Reverse Outer Wall, Elevator Shaft Room: 13
-  Reverse Outer Wall, Exit to Clock Tower: 2
-  Reverse Outer Wall, Exit to Marble Gallery: 7
-  Reverse Outer Wall, Fake Room with Teleporter to Clock Tower: 22
-  Reverse Outer Wall, Fake Room with Teleporter to Long Library: 20
-  Reverse Outer Wall, Fake Room with Teleporter to Marble Gallery: 19
-  Reverse Outer Wall, Fake Room with Teleporter to Warp Rooms: 21
-  Reverse Outer Wall, Garlic Room: 10
-  Reverse Outer Wall, Garnet Vase Room: 8
-  Reverse Outer Wall, Gladius Room: 12
-  Reverse Outer Wall, Jewel Knuckles Room: 5
-  Reverse Outer Wall, Loading Room to Clock Tower: 15
-  Reverse Outer Wall, Loading Room to Long Library: 16
-  Reverse Outer Wall, Loading Room to Marble Gallery: 18
-  Reverse Outer Wall, Loading Room to Warp Rooms: 0
-  Reverse Outer Wall, Lower Medusa Room: 4
-  Reverse Outer Wall, Save Room A: 14
-  Reverse Outer Wall, Save Room B: 17
-  Reverse Outer Wall, Secret Platform Room: 6
-  Reverse Outer Wall, Telescope Room: 3
-  Reverse Outer Wall, Top of Outer Wall: 1
-  Reverse Warp Rooms, Fake Room with Teleporter to Abandoned Mine: 10
-  Reverse Warp Rooms, Fake Room with Teleporter to Castle Entrance: 11
-  Reverse Warp Rooms, Fake Room with Teleporter to Castle Keep: 14
-  Reverse Warp Rooms, Fake Room with Teleporter to Olrox's Quarters: 12
-  Reverse Warp Rooms, Fake Room with Teleporter to Outer Wall: 13
-  Reverse Warp Rooms, Loading Room to Abandoned Mine: 5
-  Reverse Warp Rooms, Loading Room to Castle Entrance: 6
-  Reverse Warp Rooms, Loading Room to Castle Keep: 9
-  Reverse Warp Rooms, Loading Room to Olrox's Quarters: 7
-  Reverse Warp Rooms, Loading Room to Outer Wall: 8
-  Reverse Warp Rooms, Warp Room to Abandoned Mine: 4
-  Reverse Warp Rooms, Warp Room to Castle Entrance: 3
-  Reverse Warp Rooms, Warp Room to Castle Keep: 0
-  Reverse Warp Rooms, Warp Room to Olrox's Quarters: 1
-  Reverse Warp Rooms, Warp Room to Outer Wall: 2
-  Royal Chapel, Chapel Staircase: 11
-  Royal Chapel, Confessional Booth: 7
-  Royal Chapel, Empty Room: 10
-  Royal Chapel, Fake Room with Teleporter to Alchemy Laboratory: 25
-  Royal Chapel, Fake Room with Teleporter to Castle Keep: 22
-  Royal Chapel, Fake Room with Teleporter to Colosseum: 24
-  Royal Chapel, Fake Room with Teleporter to Olrox's Quarters: 23
-  Royal Chapel, Goggles Room: 8
-  Royal Chapel, Hippogryph Room: 4
-  Royal Chapel, Left Tower: 13
-  Royal Chapel, Loading Room to Alchemy Laboratory: 19
-  Royal Chapel, Loading Room to Castle Keep: 15
-  Royal Chapel, Loading Room to Colosseum: 20
-  Royal Chapel, Loading Room to Olrox's Quarters: 21
-  Royal Chapel, Middle Tower: 14
-  Royal Chapel, Nave: 9
-  Royal Chapel, Pushing Statue Shortcut: 6
-  Royal Chapel, Right Tower: 17
-  Royal Chapel, Save Room A: 18
-  Royal Chapel, Save Room B: 16
-  Royal Chapel, Silver Ring Room: 0
-  Royal Chapel, Spike Hallway: 1
-  Royal Chapel, Statue Ledge: 12
-  Royal Chapel, Walkway Between Towers: 2
-  Royal Chapel, Walkway Left of Hippogryph: 3
-  Royal Chapel, Walkway Right of Hippogryph: 5
-  Underground Caverns, Bandanna Room: 30
-  Underground Caverns, Claymore Stairwell: 6
-  Underground Caverns, Crystal Bend: 2
-  Underground Caverns, Crystal Cloak Room: 24
-  Underground Caverns, DK Bridge: 15
-  Underground Caverns, DK Button: 17
-  Underground Caverns, Exit to Abandoned Mine: 16
-  Underground Caverns, Exit to Castle Entrance: 20
-  Underground Caverns, Fake Room with Teleporter to Abandoned Mine: 40
-  Underground Caverns, Fake Room with Teleporter to Boss - Succubus: 39
-  Underground Caverns, Fake Room with Teleporter to Castle Entrance: 41
-  Underground Caverns, Fake Room with Teleporter to Marble Gallery: 38
-  Underground Caverns, False Save Room: 37
-  Underground Caverns, Hidden Crystal Entrance: 1
-  Underground Caverns, Holy Symbol Room: 13
-  Underground Caverns, Ice Floe Room: 22
-  Underground Caverns, Left Ferryman Route: 25
-  Underground Caverns, Loading Room to Abandoned Mine: 33
-  Underground Caverns, Loading Room to Castle Entrance: 31
-  Underground Caverns, Loading Room to Marble Gallery: 32
-  Underground Caverns, Long Drop: 0
-  Underground Caverns, Meal Tickets and Moonstone Room: 7
-  Underground Caverns, Merman Statue Room: 21
-  Underground Caverns, Pentagram Room: 14
-  Underground Caverns, Plaque Room With Breakable Wall: 8
-  Underground Caverns, Plaque Room With Life Max-Up: 4
-  Underground Caverns, Right Ferryman Route: 23
-  Underground Caverns, Rising Water Room: 29
-  Underground Caverns, Room ID 09: 9
-  Underground Caverns, Room ID 10: 10
-  Underground Caverns, Room ID 11: 11
-  Underground Caverns, Room ID 12: 12
-  Underground Caverns, Room ID 18: 18
-  Underground Caverns, Room ID 19: 19
-  Underground Caverns, Save Room A: 34
-  Underground Caverns, Save Room B: 35
-  Underground Caverns, Save Room C: 36
-  Underground Caverns, Scylla Room: 27
-  Underground Caverns, Scylla Wyrm Room: 28
-  Underground Caverns, Small Stairwell: 5
-  Underground Caverns, Tall Stairwell: 3
-  Underground Caverns, Waterfall: 26
-  Warp Rooms, Fake Room with Teleporter to Abandoned Mine: 14
-  Warp Rooms, Fake Room with Teleporter to Castle Entrance: 13
-  Warp Rooms, Fake Room with Teleporter to Castle Keep: 10
-  Warp Rooms, Fake Room with Teleporter to Olrox's Quarters: 12
-  Warp Rooms, Fake Room with Teleporter to Outer Wall: 11
-  Warp Rooms, Loading Room to Abandoned Mine: 5
-  Warp Rooms, Loading Room to Castle Entrance: 6
-  Warp Rooms, Loading Room to Castle Keep: 9
-  Warp Rooms, Loading Room to Olrox's Quarters: 7
-  Warp Rooms, Loading Room to Outer Wall: 8
-  Warp Rooms, Warp Room to Abandoned Mine: 4
-  Warp Rooms, Warp Room to Castle Entrance: 3
-  Warp Rooms, Warp Room to Castle Keep: 0
-  Warp Rooms, Warp Room to Olrox's Quarters: 1
-  Warp Rooms, Warp Room to Outer Wall: 2
+  Marble Gallery, Dropoff:
+    Room Index: 5
+  Marble Gallery, Elevator Room:
+    Room Index: 21
+  Marble Gallery, Empty Room:
+    Room Index: 11
+  Marble Gallery, Entrance:
+    Room Index: 6
+  Marble Gallery, Fake Room with Teleporter to Alchemy Laboratory:
+    Room Index: 35
+  Marble Gallery, Fake Room with Teleporter to Castle Center:
+    Room Index: 37
+  Marble Gallery, Fake Room with Teleporter to Castle Entrance:
+    Room Index: 38
+  Marble Gallery, Fake Room with Teleporter to Olrox's Quarters:
+    Room Index: 33
+  Marble Gallery, Fake Room with Teleporter to Outer Wall:
+    Room Index: 34
+  Marble Gallery, Fake Room with Teleporter to Underground Caverns:
+    Room Index: 36
+  Marble Gallery, Gravity Boots Room:
+    Room Index: 20
+  Marble Gallery, Left of Clock Room:
+    Room Index: 10
+  Marble Gallery, Loading Room to Alchemy Laboratory:
+    Room Index: 28
+  Marble Gallery, Loading Room to Castle Entrance:
+    Room Index: 30
+  Marble Gallery, Loading Room to Olrox's Quarters:
+    Room Index: 29
+  Marble Gallery, Loading Room to Outer Wall:
+    Room Index: 26
+  Marble Gallery, Loading Room to Underground Caverns:
+    Room Index: 27
+  Marble Gallery, Long Hallway:
+    Room Index: 8
+  Marble Gallery, Ouija Table Stairway:
+    Room Index: 15
+  Marble Gallery, Pathway After Left Statue:
+    Room Index: 13
+  Marble Gallery, Pathway After Right Statue:
+    Room Index: 14
+  Marble Gallery, Power-Up Room:
+    Room Index: 22
+  Marble Gallery, Right of Clock Room:
+    Room Index: 19
+  Marble Gallery, S-Shaped Hallways:
+    Room Index: 0
+  Marble Gallery, Save Room A:
+    Room Index: 31
+  Marble Gallery, Save Room B:
+    Room Index: 32
+  Marble Gallery, Slinger Staircase:
+    Room Index: 18
+  Marble Gallery, Spirit Orb Room:
+    Room Index: 2
+  Marble Gallery, Stained Glass Corner:
+    Room Index: 3
+  Marble Gallery, Stairwell to Underground Caverns:
+    Room Index: 17
+  Marble Gallery, Stopwatch Room:
+    Room Index: 7
+  Marble Gallery, Tall Stained Glass Windows:
+    Room Index: 1
+  Marble Gallery, Three Paths:
+    Room Index: 16
+  Necromancy Laboratory, Bat Card Room:
+    Room Index: 0
+  Necromancy Laboratory, Bloody Zombie Hallway:
+    Room Index: 3
+  Necromancy Laboratory, Blue Door Hallway:
+    Room Index: 2
+  Necromancy Laboratory, Box Puzzle Room:
+    Room Index: 17
+  Necromancy Laboratory, Cannon Room:
+    Room Index: 4
+  Necromancy Laboratory, Cloth Cape Room:
+    Room Index: 5
+  Necromancy Laboratory, Corridor to Elevator:
+    Room Index: 21
+  Necromancy Laboratory, Elevator Shaft:
+    Room Index: 22
+  Necromancy Laboratory, Empty Zig Zag Room:
+    Room Index: 12
+  Necromancy Laboratory, Entryway:
+    Room Index: 10
+  Necromancy Laboratory, Exit to Marble Gallery:
+    Room Index: 20
+  Necromancy Laboratory, Exit to Royal Chapel:
+    Room Index: 1
+  Necromancy Laboratory, Fake Room with Teleporter to Castle Entrance:
+    Room Index: 29
+  Necromancy Laboratory, Fake Room with Teleporter to Marble Gallery:
+    Room Index: 31
+  Necromancy Laboratory, Fake Room with Teleporter to Royal Chapel:
+    Room Index: 30
+  Necromancy Laboratory, Glass Vats:
+    Room Index: 7
+  Necromancy Laboratory, Heart Max-Up Room:
+    Room Index: 9
+  Necromancy Laboratory, Loading Room to Castle Entrance:
+    Room Index: 28
+  Necromancy Laboratory, Loading Room to Marble Gallery:
+    Room Index: 26
+  Necromancy Laboratory, Loading Room to Royal Chapel:
+    Room Index: 27
+  Necromancy Laboratory, Red Skeleton Lift Room:
+    Room Index: 18
+  Necromancy Laboratory, Save Room A:
+    Room Index: 23
+  Necromancy Laboratory, Save Room B:
+    Room Index: 24
+  Necromancy Laboratory, Save Room C:
+    Room Index: 25
+  Necromancy Laboratory, Secret Life Max-Up Room:
+    Room Index: 15
+  Necromancy Laboratory, Short Zig Zag Room:
+    Room Index: 13
+  Necromancy Laboratory, Skill of Wolf Room:
+    Room Index: 8
+  Necromancy Laboratory, Slogra and Gaibon Room:
+    Room Index: 16
+  Necromancy Laboratory, Sunglasses Room:
+    Room Index: 6
+  Necromancy Laboratory, Tall Spittlebone Room:
+    Room Index: 11
+  Necromancy Laboratory, Tall Zig Zag Room:
+    Room Index: 14
+  Necromancy Laboratory, Tetromino Room:
+    Room Index: 19
+  Olrox's Quarters, Bottom of Stairwell:
+    Room Index: 1
+  Olrox's Quarters, Catwalk Crypt:
+    Room Index: 15
+  Olrox's Quarters, Echo of Bat Room:
+    Room Index: 13
+  Olrox's Quarters, Empty Cells:
+    Room Index: 9
+  Olrox's Quarters, Empty Room:
+    Room Index: 5
+  Olrox's Quarters, Fake Room with Teleporter to Colosseum:
+    Room Index: 23
+  Olrox's Quarters, Fake Room with Teleporter to Marble Gallery:
+    Room Index: 24
+  Olrox's Quarters, Fake Room with Teleporter to Royal Chapel:
+    Room Index: 21
+  Olrox's Quarters, Fake Room with Teleporter to Warp Rooms:
+    Room Index: 22
+  Olrox's Quarters, Garnet Room:
+    Room Index: 10
+  Olrox's Quarters, Grand Staircase:
+    Room Index: 2
+  Olrox's Quarters, Hammer and Blade Room:
+    Room Index: 4
+  Olrox's Quarters, Loading Room to Colosseum:
+    Room Index: 18
+  Olrox's Quarters, Loading Room to Marble Gallery:
+    Room Index: 17
+  Olrox's Quarters, Loading Room to Royal Chapel:
+    Room Index: 20
+  Olrox's Quarters, Loading Room to Warp Rooms:
+    Room Index: 19
+  Olrox's Quarters, Narrow Hallway to Olrox:
+    Room Index: 11
+  Olrox's Quarters, Olrox's Room:
+    Room Index: 12
+  Olrox's Quarters, Open Courtyard:
+    Room Index: 8
+  Olrox's Quarters, Prison:
+    Room Index: 7
+  Olrox's Quarters, Save Room A:
+    Room Index: 16
+  Olrox's Quarters, Secret Onyx Room:
+    Room Index: 3
+  Olrox's Quarters, Skelerang Room:
+    Room Index: 0
+  Olrox's Quarters, Sword Card Room:
+    Room Index: 14
+  Olrox's Quarters, Tall Shaft:
+    Room Index: 6
+  Outer Wall, Blue Axe Knight Room:
+    Room Index: 9
+  Outer Wall, Doppelganger Room:
+    Room Index: 11
+  Outer Wall, Elevator Shaft Room:
+    Room Index: 13
+  Outer Wall, Exit to Clock Tower:
+    Room Index: 2
+  Outer Wall, Exit to Marble Gallery:
+    Room Index: 7
+  Outer Wall, Fake Room with Teleporter to Clock Tower:
+    Room Index: 19
+  Outer Wall, Fake Room with Teleporter to Long Library:
+    Room Index: 21
+  Outer Wall, Fake Room with Teleporter to Marble Gallery:
+    Room Index: 22
+  Outer Wall, Fake Room with Teleporter to Warp Rooms:
+    Room Index: 20
+  Outer Wall, Garlic Room:
+    Room Index: 10
+  Outer Wall, Garnet Vase Room:
+    Room Index: 8
+  Outer Wall, Gladius Room:
+    Room Index: 12
+  Outer Wall, Jewel Knuckles Room:
+    Room Index: 5
+  Outer Wall, Loading Room to Clock Tower:
+    Room Index: 15
+  Outer Wall, Loading Room to Long Library:
+    Room Index: 16
+  Outer Wall, Loading Room to Marble Gallery:
+    Room Index: 18
+  Outer Wall, Loading Room to Warp Rooms:
+    Room Index: 0
+  Outer Wall, Lower Medusa Room:
+    Room Index: 4
+  Outer Wall, Save Room A:
+    Room Index: 14
+  Outer Wall, Save Room B:
+    Room Index: 17
+  Outer Wall, Secret Platform Room:
+    Room Index: 6
+  Outer Wall, Telescope Room:
+    Room Index: 3
+  Outer Wall, Top of Outer Wall:
+    Room Index: 1
+  Reverse Castle Center, Center Cube:
+    Room Index: 1
+  Reverse Castle Center, Elevator Shaft:
+    Room Index: 0
+  Reverse Castle Center, Fake Room with Teleporter to BO6:
+    Room Index: 3
+  Reverse Castle Center, Fake Room with Teleporter to Marble Gallery:
+    Room Index: 4
+  Reverse Castle Center, Unknown Room ID 02:
+    Room Index: 2
+  Reverse Caverns, Bandanna Room:
+    Room Index: 30
+  Reverse Caverns, Claymore Stairwell:
+    Room Index: 6
+  Reverse Caverns, Crystal Bend:
+    Room Index: 2
+  Reverse Caverns, Crystal Cloak Room:
+    Room Index: 24
+  Reverse Caverns, DK Bridge:
+    Room Index: 15
+  Reverse Caverns, DK Button:
+    Room Index: 17
+  Reverse Caverns, Exit to Abandoned Mine:
+    Room Index: 16
+  Reverse Caverns, Exit to Castle Entrance:
+    Room Index: 20
+  Reverse Caverns, Fake Room with Teleporter to Abandoned Mine:
+    Room Index: 39
+  Reverse Caverns, Fake Room with Teleporter to Boss - Succubus:
+    Room Index: 40
+  Reverse Caverns, Fake Room with Teleporter to Castle Entrance:
+    Room Index: 38
+  Reverse Caverns, Fake Room with Teleporter to Marble Gallery:
+    Room Index: 41
+  Reverse Caverns, False Save Room:
+    Room Index: 37
+  Reverse Caverns, Hidden Crystal Entrance:
+    Room Index: 1
+  Reverse Caverns, Holy Symbol Room:
+    Room Index: 13
+  Reverse Caverns, Ice Floe Room:
+    Room Index: 22
+  Reverse Caverns, Left Ferryman Route:
+    Room Index: 25
+  Reverse Caverns, Loading Room to Abandoned Mine:
+    Room Index: 33
+  Reverse Caverns, Loading Room to Castle Entrance:
+    Room Index: 31
+  Reverse Caverns, Loading Room to Marble Gallery:
+    Room Index: 32
+  Reverse Caverns, Long Drop:
+    Room Index: 0
+  Reverse Caverns, Meal Tickets and Moonstone Room:
+    Room Index: 7
+  Reverse Caverns, Merman Statue Room:
+    Room Index: 21
+  Reverse Caverns, Pentagram Room:
+    Room Index: 14
+  Reverse Caverns, Plaque Room With Breakable Wall:
+    Room Index: 8
+  Reverse Caverns, Plaque Room With Life Max-Up:
+    Room Index: 4
+  Reverse Caverns, Right Ferryman Route:
+    Room Index: 23
+  Reverse Caverns, Rising Water Room:
+    Room Index: 29
+  Reverse Caverns, Room ID 09:
+    Room Index: 9
+  Reverse Caverns, Room ID 10:
+    Room Index: 10
+  Reverse Caverns, Room ID 11:
+    Room Index: 11
+  Reverse Caverns, Room ID 12:
+    Room Index: 12
+  Reverse Caverns, Room ID 18:
+    Room Index: 18
+  Reverse Caverns, Room ID 19:
+    Room Index: 19
+  Reverse Caverns, Save Room A:
+    Room Index: 34
+  Reverse Caverns, Save Room B:
+    Room Index: 35
+  Reverse Caverns, Save Room C:
+    Room Index: 36
+  Reverse Caverns, Scylla Room:
+    Room Index: 27
+  Reverse Caverns, Scylla Wyrm Room:
+    Room Index: 28
+  Reverse Caverns, Small Stairwell:
+    Room Index: 5
+  Reverse Caverns, Tall Stairwell:
+    Room Index: 3
+  Reverse Caverns, Waterfall:
+    Room Index: 26
+  Reverse Clock Tower, Belfry:
+    Room Index: 9
+  Reverse Clock Tower, Exit to Courtyard:
+    Room Index: 8
+  Reverse Clock Tower, Fake Room with Teleporter to Castle Keep:
+    Room Index: 16
+  Reverse Clock Tower, Fake Room with Teleporter to Outer Wall:
+    Room Index: 15
+  Reverse Clock Tower, Fire of Bat Room:
+    Room Index: 12
+  Reverse Clock Tower, Healing Mail Room:
+    Room Index: 2
+  Reverse Clock Tower, Hidden Armory:
+    Room Index: 5
+  Reverse Clock Tower, Karasuman's Room:
+    Room Index: 0
+  Reverse Clock Tower, Left Gear Room:
+    Room Index: 6
+  Reverse Clock Tower, Loading Room to Castle Keep:
+    Room Index: 14
+  Reverse Clock Tower, Loading Room to Outer Wall:
+    Room Index: 13
+  Reverse Clock Tower, Open Courtyard:
+    Room Index: 10
+  Reverse Clock Tower, Path to Karasuman:
+    Room Index: 1
+  Reverse Clock Tower, Pendulum Room:
+    Room Index: 3
+  Reverse Clock Tower, Right Gear Room:
+    Room Index: 7
+  Reverse Clock Tower, Spire:
+    Room Index: 4
+  Reverse Clock Tower, Stairwell to Outer Wall:
+    Room Index: 11
+  Reverse Colosseum, Arena:
+    Room Index: 5
+  Reverse Colosseum, Blade Master Room:
+    Room Index: 2
+  Reverse Colosseum, Blood Cloak Room:
+    Room Index: 10
+  Reverse Colosseum, Bottom of Elevator Shaft:
+    Room Index: 11
+  Reverse Colosseum, Fake Room with Teleporter to Olrox's Quarters:
+    Room Index: 18
+  Reverse Colosseum, Fake Room with Teleporter to Royal Chapel:
+    Room Index: 19
+  Reverse Colosseum, Fountain Room:
+    Room Index: 9
+  Reverse Colosseum, Holy Sword Room:
+    Room Index: 0
+  Reverse Colosseum, Left-Side Armory:
+    Room Index: 12
+  Reverse Colosseum, Loading Room to Olrox's Quarters:
+    Room Index: 15
+  Reverse Colosseum, Loading Room to Royal Chapel:
+    Room Index: 14
+  Reverse Colosseum, Passageway Between Arena and Royal Chapel:
+    Room Index: 4
+  Reverse Colosseum, Right-Side Armory:
+    Room Index: 13
+  Reverse Colosseum, Save Room A:
+    Room Index: 16
+  Reverse Colosseum, Save Room B:
+    Room Index: 17
+  Reverse Colosseum, Spiral Staircases:
+    Room Index: 7
+  Reverse Colosseum, Top of Elevator Shaft:
+    Room Index: 6
+  Reverse Colosseum, Top of Left Spiral Staircase:
+    Room Index: 1
+  Reverse Colosseum, Top of Right Spiral Staircase:
+    Room Index: 3
+  Reverse Colosseum, Valhalla Knight Room:
+    Room Index: 8
+  Reverse Entrance, After Drawbridge:
+    Room Index: 0
+  Reverse Entrance, Attic Entrance:
+    Room Index: 6
+  Reverse Entrance, Attic Hallway:
+    Room Index: 5
+  Reverse Entrance, Attic Staircase:
+    Room Index: 4
+  Reverse Entrance, Cube of Zoe Room:
+    Room Index: 15
+  Reverse Entrance, Drop Under Portcullis:
+    Room Index: 1
+  Reverse Entrance, Fake Room with Teleporter to Alchemy Laboratory:
+    Room Index: 31
+  Reverse Entrance, Fake Room with Teleporter to Marble Gallery:
+    Room Index: 30
+  Reverse Entrance, Fake Room with Teleporter to Underground Caverns:
+    Room Index: 28
+  Reverse Entrance, Fake Room with Teleporter to Warp Rooms:
+    Room Index: 29
+  Reverse Entrance, Forest Cutscene:
+    Room Index: 18
+  Reverse Entrance, Gargoyle Room:
+    Room Index: 13
+  Reverse Entrance, Heart Max-Up Room:
+    Room Index: 14
+  Reverse Entrance, Holy Mail Room:
+    Room Index: 3
+  Reverse Entrance, Jewel Sword Room:
+    Room Index: 8
+  Reverse Entrance, Life Max-Up Room:
+    Room Index: 17
+  Reverse Entrance, Loading Room to Alchemy Laboratory:
+    Room Index: 23
+  Reverse Entrance, Loading Room to Marble Gallery:
+    Room Index: 21
+  Reverse Entrance, Loading Room to Underground Caverns:
+    Room Index: 24
+  Reverse Entrance, Loading Room to Warp Rooms:
+    Room Index: 22
+  Reverse Entrance, Meeting Room With Death:
+    Room Index: 11
+  Reverse Entrance, Merman Room:
+    Room Index: 7
+  Reverse Entrance, Save Room A:
+    Room Index: 25
+  Reverse Entrance, Save Room B:
+    Room Index: 26
+  Reverse Entrance, Save Room C:
+    Room Index: 27
+  Reverse Entrance, Shortcut to Underground Caverns:
+    Room Index: 10
+  Reverse Entrance, Shortcut to Warp Rooms:
+    Room Index: 16
+  Reverse Entrance, Stairwell After Death:
+    Room Index: 12
+  Reverse Entrance, Unknown Room 19:
+    Room Index: 19
+  Reverse Entrance, Unknown Room 20:
+    Room Index: 20
+  Reverse Entrance, Warg Hallway:
+    Room Index: 9
+  Reverse Entrance, Zombie Hallway:
+    Room Index: 2
+  Reverse Keep, Bend:
+    Room Index: 4
+  Reverse Keep, Dual Platforms:
+    Room Index: 7
+  Reverse Keep, Fake Room with Teleporter to Clock Tower:
+    Room Index: 15
+  Reverse Keep, Fake Room with Teleporter to Royal Chapel:
+    Room Index: 14
+  Reverse Keep, Fake Room with Teleporter to Warp Rooms:
+    Room Index: 13
+  Reverse Keep, Falchion Room:
+    Room Index: 5
+  Reverse Keep, Ghost Card Room:
+    Room Index: 3
+  Reverse Keep, Keep Area:
+    Room Index: 2
+  Reverse Keep, Lion Torch Platform:
+    Room Index: 6
+  Reverse Keep, Loading Room to Clock Tower:
+    Room Index: 10
+  Reverse Keep, Loading Room to Royal Chapel:
+    Room Index: 12
+  Reverse Keep, Loading Room to Warp Rooms:
+    Room Index: 11
+  Reverse Keep, Lower Attic:
+    Room Index: 1
+  Reverse Keep, Save Room A:
+    Room Index: 9
+  Reverse Keep, Tyrfing Room:
+    Room Index: 8
+  Reverse Keep, Upper Attic:
+    Room Index: 0
+  Reverse Outer Wall, Blue Axe Knight Room:
+    Room Index: 9
+  Reverse Outer Wall, Doppelganger Room:
+    Room Index: 11
+  Reverse Outer Wall, Elevator Shaft Room:
+    Room Index: 13
+  Reverse Outer Wall, Exit to Clock Tower:
+    Room Index: 2
+  Reverse Outer Wall, Exit to Marble Gallery:
+    Room Index: 7
+  Reverse Outer Wall, Fake Room with Teleporter to Clock Tower:
+    Room Index: 22
+  Reverse Outer Wall, Fake Room with Teleporter to Long Library:
+    Room Index: 20
+  Reverse Outer Wall, Fake Room with Teleporter to Marble Gallery:
+    Room Index: 19
+  Reverse Outer Wall, Fake Room with Teleporter to Warp Rooms:
+    Room Index: 21
+  Reverse Outer Wall, Garlic Room:
+    Room Index: 10
+  Reverse Outer Wall, Garnet Vase Room:
+    Room Index: 8
+  Reverse Outer Wall, Gladius Room:
+    Room Index: 12
+  Reverse Outer Wall, Jewel Knuckles Room:
+    Room Index: 5
+  Reverse Outer Wall, Loading Room to Clock Tower:
+    Room Index: 15
+  Reverse Outer Wall, Loading Room to Long Library:
+    Room Index: 16
+  Reverse Outer Wall, Loading Room to Marble Gallery:
+    Room Index: 18
+  Reverse Outer Wall, Loading Room to Warp Rooms:
+    Room Index: 0
+  Reverse Outer Wall, Lower Medusa Room:
+    Room Index: 4
+  Reverse Outer Wall, Save Room A:
+    Room Index: 14
+  Reverse Outer Wall, Save Room B:
+    Room Index: 17
+  Reverse Outer Wall, Secret Platform Room:
+    Room Index: 6
+  Reverse Outer Wall, Telescope Room:
+    Room Index: 3
+  Reverse Outer Wall, Top of Outer Wall:
+    Room Index: 1
+  Reverse Warp Rooms, Fake Room with Teleporter to Abandoned Mine:
+    Room Index: 10
+  Reverse Warp Rooms, Fake Room with Teleporter to Castle Entrance:
+    Room Index: 11
+  Reverse Warp Rooms, Fake Room with Teleporter to Castle Keep:
+    Room Index: 14
+  Reverse Warp Rooms, Fake Room with Teleporter to Olrox's Quarters:
+    Room Index: 12
+  Reverse Warp Rooms, Fake Room with Teleporter to Outer Wall:
+    Room Index: 13
+  Reverse Warp Rooms, Loading Room to Abandoned Mine:
+    Room Index: 5
+  Reverse Warp Rooms, Loading Room to Castle Entrance:
+    Room Index: 6
+  Reverse Warp Rooms, Loading Room to Castle Keep:
+    Room Index: 9
+  Reverse Warp Rooms, Loading Room to Olrox's Quarters:
+    Room Index: 7
+  Reverse Warp Rooms, Loading Room to Outer Wall:
+    Room Index: 8
+  Reverse Warp Rooms, Warp Room to Abandoned Mine:
+    Room Index: 4
+  Reverse Warp Rooms, Warp Room to Castle Entrance:
+    Room Index: 3
+  Reverse Warp Rooms, Warp Room to Castle Keep:
+    Room Index: 0
+  Reverse Warp Rooms, Warp Room to Olrox's Quarters:
+    Room Index: 1
+  Reverse Warp Rooms, Warp Room to Outer Wall:
+    Room Index: 2
+  Royal Chapel, Chapel Staircase:
+    Room Index: 11
+  Royal Chapel, Confessional Booth:
+    Room Index: 7
+  Royal Chapel, Empty Room:
+    Room Index: 10
+  Royal Chapel, Fake Room with Teleporter to Alchemy Laboratory:
+    Room Index: 25
+  Royal Chapel, Fake Room with Teleporter to Castle Keep:
+    Room Index: 22
+  Royal Chapel, Fake Room with Teleporter to Colosseum:
+    Room Index: 24
+  Royal Chapel, Fake Room with Teleporter to Olrox's Quarters:
+    Room Index: 23
+  Royal Chapel, Goggles Room:
+    Room Index: 8
+  Royal Chapel, Hippogryph Room:
+    Room Index: 4
+  Royal Chapel, Left Tower:
+    Room Index: 13
+  Royal Chapel, Loading Room to Alchemy Laboratory:
+    Room Index: 19
+  Royal Chapel, Loading Room to Castle Keep:
+    Room Index: 15
+  Royal Chapel, Loading Room to Colosseum:
+    Room Index: 20
+  Royal Chapel, Loading Room to Olrox's Quarters:
+    Room Index: 21
+  Royal Chapel, Middle Tower:
+    Room Index: 14
+  Royal Chapel, Nave:
+    Room Index: 9
+  Royal Chapel, Pushing Statue Shortcut:
+    Room Index: 6
+  Royal Chapel, Right Tower:
+    Room Index: 17
+  Royal Chapel, Save Room A:
+    Room Index: 18
+  Royal Chapel, Save Room B:
+    Room Index: 16
+  Royal Chapel, Silver Ring Room:
+    Room Index: 0
+  Royal Chapel, Spike Hallway:
+    Room Index: 1
+  Royal Chapel, Statue Ledge:
+    Room Index: 12
+  Royal Chapel, Walkway Between Towers:
+    Room Index: 2
+  Royal Chapel, Walkway Left of Hippogryph:
+    Room Index: 3
+  Royal Chapel, Walkway Right of Hippogryph:
+    Room Index: 5
+  Underground Caverns, Bandanna Room:
+    Room Index: 30
+  Underground Caverns, Claymore Stairwell:
+    Room Index: 6
+  Underground Caverns, Crystal Bend:
+    Room Index: 2
+  Underground Caverns, Crystal Cloak Room:
+    Room Index: 24
+  Underground Caverns, DK Bridge:
+    Room Index: 15
+  Underground Caverns, DK Button:
+    Room Index: 17
+  Underground Caverns, Exit to Abandoned Mine:
+    Room Index: 16
+  Underground Caverns, Exit to Castle Entrance:
+    Room Index: 20
+  Underground Caverns, Fake Room with Teleporter to Abandoned Mine:
+    Room Index: 40
+  Underground Caverns, Fake Room with Teleporter to Boss - Succubus:
+    Room Index: 39
+  Underground Caverns, Fake Room with Teleporter to Castle Entrance:
+    Room Index: 41
+  Underground Caverns, Fake Room with Teleporter to Marble Gallery:
+    Room Index: 38
+  Underground Caverns, False Save Room:
+    Room Index: 37
+  Underground Caverns, Hidden Crystal Entrance:
+    Room Index: 1
+  Underground Caverns, Holy Symbol Room:
+    Room Index: 13
+  Underground Caverns, Ice Floe Room:
+    Room Index: 22
+  Underground Caverns, Left Ferryman Route:
+    Room Index: 25
+  Underground Caverns, Loading Room to Abandoned Mine:
+    Room Index: 33
+  Underground Caverns, Loading Room to Castle Entrance:
+    Room Index: 31
+  Underground Caverns, Loading Room to Marble Gallery:
+    Room Index: 32
+  Underground Caverns, Long Drop:
+    Room Index: 0
+  Underground Caverns, Meal Tickets and Moonstone Room:
+    Room Index: 7
+  Underground Caverns, Merman Statue Room:
+    Room Index: 21
+  Underground Caverns, Pentagram Room:
+    Room Index: 14
+  Underground Caverns, Plaque Room With Breakable Wall:
+    Room Index: 8
+  Underground Caverns, Plaque Room With Life Max-Up:
+    Room Index: 4
+  Underground Caverns, Right Ferryman Route:
+    Room Index: 23
+  Underground Caverns, Rising Water Room:
+    Room Index: 29
+  Underground Caverns, Room ID 09:
+    Room Index: 9
+  Underground Caverns, Room ID 10:
+    Room Index: 10
+  Underground Caverns, Room ID 11:
+    Room Index: 11
+  Underground Caverns, Room ID 12:
+    Room Index: 12
+  Underground Caverns, Room ID 18:
+    Room Index: 18
+  Underground Caverns, Room ID 19:
+    Room Index: 19
+  Underground Caverns, Save Room A:
+    Room Index: 34
+  Underground Caverns, Save Room B:
+    Room Index: 35
+  Underground Caverns, Save Room C:
+    Room Index: 36
+  Underground Caverns, Scylla Room:
+    Room Index: 27
+  Underground Caverns, Scylla Wyrm Room:
+    Room Index: 28
+  Underground Caverns, Small Stairwell:
+    Room Index: 5
+  Underground Caverns, Tall Stairwell:
+    Room Index: 3
+  Underground Caverns, Waterfall:
+    Room Index: 26
+  Warp Rooms, Fake Room with Teleporter to Abandoned Mine:
+    Room Index: 14
+  Warp Rooms, Fake Room with Teleporter to Castle Entrance:
+    Room Index: 13
+  Warp Rooms, Fake Room with Teleporter to Castle Keep:
+    Room Index: 10
+  Warp Rooms, Fake Room with Teleporter to Olrox's Quarters:
+    Room Index: 12
+  Warp Rooms, Fake Room with Teleporter to Outer Wall:
+    Room Index: 11
+  Warp Rooms, Loading Room to Abandoned Mine:
+    Room Index: 5
+  Warp Rooms, Loading Room to Castle Entrance:
+    Room Index: 6
+  Warp Rooms, Loading Room to Castle Keep:
+    Room Index: 9
+  Warp Rooms, Loading Room to Olrox's Quarters:
+    Room Index: 7
+  Warp Rooms, Loading Room to Outer Wall:
+    Room Index: 8
+  Warp Rooms, Warp Room to Abandoned Mine:
+    Room Index: 4
+  Warp Rooms, Warp Room to Castle Entrance:
+    Room Index: 3
+  Warp Rooms, Warp Room to Castle Keep:
+    Room Index: 0
+  Warp Rooms, Warp Room to Olrox's Quarters:
+    Room Index: 1
+  Warp Rooms, Warp Room to Outer Wall:
+    Room Index: 2
 Stages:
   Abandoned Mine: 5
   Alchemy Laboratory: 12
