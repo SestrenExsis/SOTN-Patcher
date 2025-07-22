@@ -1,5 +1,6 @@
 # External libraries
 import argparse
+import collections
 import copy
 import json
 import os
@@ -281,24 +282,22 @@ def get_patch(extract, changes, data):
         extract_data = extract['Boss Teleporters']['Data'][extract_id]
         # Boss Teleporter: Patch room X
         room_x = extract_data['Room X']
-        if 'Room X' in boss_teleporter_data:
-            if boss_teleporter_data['Room X'] != room_x:
-                room_x = boss_teleporter_data['Room X']
-                result.patch_value(
-                    room_x,
-                    extract_metadata['Fields']['Room X']['Type'],
-                    sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room X']['Offset']),
-                )
+        if boss_teleporter_data.get('Room X', room_x) != room_x:
+            room_x = boss_teleporter_data['Room X']
+            result.patch_value(
+                room_x,
+                extract_metadata['Fields']['Room X']['Type'],
+                sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room X']['Offset']),
+            )
         # Boss Teleporter: Patch room Y
         room_y = extract_data['Room Y']
-        if 'Room Y' in boss_teleporter_data:
-            if boss_teleporter_data['Room Y'] != room_y:
-                room_y = boss_teleporter_data['Room Y']
-                result.patch_value(
-                    room_y,
-                    extract_metadata['Fields']['Room Y']['Type'],
-                    sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room Y']['Offset']),
-                )
+        if boss_teleporter_data.get('Room Y', room_y) != room_y:
+            room_y = boss_teleporter_data['Room Y']
+            result.patch_value(
+                room_y,
+                extract_metadata['Fields']['Room Y']['Type'],
+                sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room Y']['Offset']),
+            )
     # Option - Enable debug mode
     if changes.get('Options', {}).get('Enable debug mode', False):
         constant_extract = extract['Constants']['Set initial NOCLIP value']
@@ -674,24 +673,6 @@ def get_patch(extract, changes, data):
     #         result.patch_value(value, 'u32', sotn_address.Address(offset))
     # Insert boss stages into stage data prior to stage patching
     if 'Stages' in changes:
-        for element in data['Boss Stages'].values():
-            source_stage_name = element['Source Stage']
-            if source_stage_name not in changes['Stages']:
-                continue
-            source_room_name = element['Source Room']
-            if source_room_name not in changes['Stages'][source_stage_name]['Rooms']:
-                continue
-            target_stage_name = element['Target Stage']
-            if target_stage_name not in changes['Stages']:
-                changes['Stages'][target_stage_name] = {
-                    'Rooms': {},
-                }
-            for (target_room_name, target_room) in element['Target Rooms'].items():
-                source_room = changes['Stages'][source_stage_name]['Rooms'][source_room_name]
-                changes['Stages'][target_stage_name]['Rooms'][target_room_name] = {
-                    'Top': source_room['Top'] + target_room['Top'],
-                    'Left': source_room['Left'] + target_room['Left'],
-                }
         for (address, source_stage_name, source_room_name, offset, edge) in (
             # func_800F1A3C for Underground Caverns
             (0x000E7248 + 0x00, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 5, 'Left'),
@@ -728,7 +709,11 @@ def get_patch(extract, changes, data):
             value = source_room[edge] + offset
             result.patch_value(value, 'u8', sotn_address.Address(address))
     # Patch stage data
+    stages_remaining = collections.deque()
     for stage_id in sorted(changes.get('Stages', {})):
+        stages_remaining.appendleft(stage_id)
+    while len(stages_remaining) > 0:
+        stage_id = stages_remaining.pop()
         stage_data = changes['Stages'][stage_id]
         stage_extract = extract['Stages'][stage_id]
         # Stage: Patch room data
@@ -787,6 +772,21 @@ def get_patch(extract, changes, data):
                         tile_layout_extract['Layout Rect']['Type'],
                         sotn_address.Address(tile_layout_extract['Layout Rect']['Start']),
                     )
+                # Room: Patch dependents
+                for dependent in aliases['Rooms'][room_id].get('Dependents', {}):
+                    if dependent['Type'] == 'Room':
+                        target_stage_name = dependent['Stage']
+                        if target_stage_name not in stages_remaining:
+                            stages_remaining.appendleft(target_stage_name)
+                        target_room_name = dependent['Room']
+                        if target_stage_name not in changes['Stages']:
+                            changes['Stages'][target_stage_name] = {
+                                'Rooms': {},
+                            }
+                        changes['Stages'][target_stage_name]['Rooms'][target_room_name] = {
+                            'Top': top + dependent['Top'],
+                            'Left': left + dependent['Left'],
+                        }
                 # Room: Patch tilemap foreground and background
                 if 'Tiles' in tile_layout_extract and 'Tilemap' in room_data:
                     # Fetch the source tilemap data and start with empty target tilemaps
@@ -1343,14 +1343,12 @@ if __name__ == '__main__':
             with (
                 open(os.path.join(os.path.normpath(args.data), 'aliases.yaml')) as aliases_file,
                 open(os.path.join(os.path.normpath(args.data), 'familiar_events.yaml')) as familiar_events_file,
-                open(os.path.join(os.path.normpath(args.data), 'boss_stages.yaml')) as boss_stages_file,
                 open(os.path.join(os.path.normpath(args.data), 'warp_coordinates.yaml')) as warp_coordinates_file,
                 open(args.changes) as changes_file,
                 open(args.ppf, 'wb') as ppf_file,
             ):
                 data = {
                     'Aliases': yaml.safe_load(aliases_file),
-                    'Boss Stages': yaml.safe_load(boss_stages_file),
                     'Familiar Events': yaml.safe_load(familiar_events_file),
                     'Warp Coordinates': yaml.safe_load(warp_coordinates_file),
                 }

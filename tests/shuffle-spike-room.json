@@ -7,7 +7,7 @@
     "Stages": {
         "Catacombs": {
             "Rooms": {
-                "24": {
+                "Catacombs, Pitch Black Spike Maze": {
                     "Tilemap": [
                         {
                             "Layer": "Foreground and Background",

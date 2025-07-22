@@ -3612,6 +3612,22 @@ Rooms:
     Room Index: 10
   Abandoned Mine, Cerberus Room:
     Room Index: 2
+    Dependents:
+      - Type: Room
+        Stage: Boss - Cerberus
+        Room: Boss - Cerberus, Cerberus Room
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Boss - Cerberus
+        Room: Boss - Cerberus, Fake Room With Teleporter A
+        Top: 0
+        Left: -1
+      - Type: Room
+        Stage: Boss - Cerberus
+        Room: Boss - Cerberus, Fake Room With Teleporter B
+        Top: 0
+        Left: 2
   Abandoned Mine, Crumbling Stairwells With Demon Switch:
     Room Index: 3
   Abandoned Mine, Crumbling Stairwells With Mushrooms:
@@ -3728,6 +3744,22 @@ Rooms:
     Room Index: 8
   Anti-Chapel, Hippogryph Room:
     Room Index: 4
+    Dependents:
+      - Type: Room
+        Stage: Boss - Medusa
+        Room: Boss - Medusa, Hippogryph Room
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Boss - Medusa
+        Room: Boss - Medusa, Fake Room With Teleporter A
+        Top: 0
+        Left: -1
+      - Type: Room
+        Stage: Boss - Medusa
+        Room: Boss - Medusa, Fake Room With Teleporter B
+        Top: 0
+        Left: 2
   Anti-Chapel, Left Tower:
     Room Index: 13
   Anti-Chapel, Loading Room to Alchemy Laboratory:
@@ -4086,6 +4118,12 @@ Rooms:
     Room Index: 3
   Castle Keep, Keep Area:
     Room Index: 2
+    Dependents:
+      - Type: Room
+        Stage: Boss - Richter
+        Room: Boss - Richter, Throne Room
+        Top: 3
+        Left: 3
   Castle Keep, Lion Torch Platform:
     Room Index: 6
   Castle Keep, Loading Room to Clock Tower:
@@ -4114,6 +4152,22 @@ Rooms:
     Room Index: 29
   Catacombs, Granfaloon's Lair:
     Room Index: 3
+    Dependents:
+      - Type: Room
+        Stage: Boss - Granfaloon
+        Room: Boss - Granfaloon, Granfaloon's Lair
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Boss - Granfaloon
+        Room: Boss - Granfaloon, Fake Room With Teleporter A
+        Top: 0
+        Left: 2
+      - Type: Room
+        Stage: Boss - Granfaloon
+        Room: Boss - Granfaloon, Fake Room With Teleporter B
+        Top: 1
+        Left: -1
   Catacombs, Hellfire Beast Room:
     Room Index: 16
   Catacombs, Icebrand Room:
@@ -4166,6 +4220,22 @@ Rooms:
     Room Index: 10
   Cave, Cerberus Room:
     Room Index: 2
+    Dependents:
+      - Type: Room
+        Stage: Boss - Death
+        Room: Boss - Death, Cerberus Room
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Boss - Death
+        Room: Boss - Death, Fake Room With Teleporter A
+        Top: 0
+        Left: -1
+      - Type: Room
+        Stage: Boss - Death
+        Room: Boss - Death, Fake Room With Teleporter B
+        Top: 0
+        Left: 2
   Cave, Crumbling Stairwells With Demon Switch:
     Room Index: 3
   Cave, Crumbling Stairwells With Mushrooms:
@@ -4236,6 +4306,22 @@ Rooms:
     Room Index: 11
   Colosseum, Arena:
     Room Index: 5
+    Dependents:
+      - Type: Room
+        Stage: Boss - Minotaur and Werewolf
+        Room: Boss - Minotaur and Werewolf, Arena
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Boss - Minotaur and Werewolf
+        Room: Boss - Minotaur and Werewolf, Fake Room With Teleporter A
+        Top: 0
+        Left: -1
+      - Type: Room
+        Stage: Boss - Minotaur and Werewolf
+        Room: Boss - Minotaur and Werewolf, Fake Room With Teleporter B
+        Top: 0
+        Left: 2
   Colosseum, Blade Master Room:
     Room Index: 2
   Colosseum, Blood Cloak Room:
@@ -4316,6 +4402,22 @@ Rooms:
     Room Index: 11
   Death Wing's Lair, Olrox's Room:
     Room Index: 12
+    Dependents:
+      - Type: Room
+        Stage: Boss - Akmodan II
+        Room: Boss - Akmodan II, Olrox's Room
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Boss - Akmodan II
+        Room: Boss - Akmodan II, Fake Room With Teleporter A
+        Top: 1
+        Left: -1
+      - Type: Room
+        Stage: Boss - Akmodan II
+        Room: Boss - Akmodan II, Fake Room With Teleporter B
+        Top: 1
+        Left: 2
   Death Wing's Lair, Open Courtyard:
     Room Index: 8
   Death Wing's Lair, Prison:
@@ -4342,6 +4444,22 @@ Rooms:
     Room Index: 29
   Floating Catacombs, Granfaloon's Lair:
     Room Index: 3
+    Dependents:
+      - Type: Room
+        Stage: Boss - Galamoth
+        Room: Boss - Galamoth, Granfaloon's Lair
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Boss - Galamoth
+        Room: Boss - Galamoth, Fake Room With Teleporter A
+        Top: 0
+        Left: 2
+      - Type: Room
+        Stage: Boss - Galamoth
+        Room: Boss - Galamoth, Fake Room With Teleporter B
+        Top: 1
+        Left: -1
   Floating Catacombs, Hellfire Beast Room:
     Room Index: 16
   Floating Catacombs, Icebrand Room:
@@ -4604,6 +4722,27 @@ Rooms:
     Room Index: 8
   Necromancy Laboratory, Slogra and Gaibon Room:
     Room Index: 16
+    Dependents:
+      - Type: Room
+        Stage: Boss - Beelzebub
+        Room: Boss - Beelzebub, Slogra and Gaibon Room
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Boss - Beelzebub
+        Room: Boss - Beelzebub, Fake Room With Teleporter A
+        Top: 0
+        Left: -1
+      - Type: Room
+        Stage: Boss - Beelzebub
+        Room: Boss - Beelzebub, Fake Room With Teleporter B
+        Top: 1
+        Left: -1
+      - Type: Room
+        Stage: Boss - Beelzebub
+        Room: Boss - Beelzebub, Fake Room With Teleporter C
+        Top: 1
+        Left: 4
   Necromancy Laboratory, Sunglasses Room:
     Room Index: 6
   Necromancy Laboratory, Tall Spittlebone Room:
@@ -4648,6 +4787,22 @@ Rooms:
     Room Index: 11
   Olrox's Quarters, Olrox's Room:
     Room Index: 12
+    Dependents:
+      - Type: Room
+        Stage: Boss - Olrox
+        Room: Boss - Olrox, Olrox's Room
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Boss - Olrox
+        Room: Boss - Olrox, Fake Room With Teleporter A
+        Top: 0
+        Left: -1
+      - Type: Room
+        Stage: Boss - Olrox
+        Room: Boss - Olrox, Fake Room With Teleporter B
+        Top: 0
+        Left: 2
   Olrox's Quarters, Open Courtyard:
     Room Index: 8
   Olrox's Quarters, Prison:
@@ -4666,6 +4821,22 @@ Rooms:
     Room Index: 9
   Outer Wall, Doppelganger Room:
     Room Index: 11
+    Dependents:
+      - Type: Room
+        Stage: Boss - Doppelganger 10
+        Room: Boss - Doppelganger 10, Doppelganger Room
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Boss - Doppelganger 10
+        Room: Boss - Doppelganger 10, Fake Room With Teleporter A
+        Top: 0
+        Left: -1
+      - Type: Room
+        Stage: Boss - Doppelganger 10
+        Room: Boss - Doppelganger 10, Fake Room With Teleporter B
+        Top: 0
+        Left: 2
   Outer Wall, Elevator Shaft Room:
     Room Index: 13
   Outer Wall, Exit to Clock Tower:
@@ -4796,6 +4967,22 @@ Rooms:
     Room Index: 27
   Reverse Caverns, Scylla Wyrm Room:
     Room Index: 28
+    Dependents:
+      - Type: Room
+        Stage: Boss - Doppelganger 40
+        Room: Boss - Doppelganger 40, Scylla Wyrm Room
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Boss - Doppelganger 40
+        Room: Boss - Doppelganger 40, Fake Room With Teleporter A
+        Top: 0
+        Left: -1
+      - Type: Room
+        Stage: Boss - Doppelganger 40
+        Room: Boss - Doppelganger 40, Fake Room With Teleporter B
+        Top: 0
+        Left: 1
   Reverse Caverns, Small Stairwell:
     Room Index: 5
   Reverse Caverns, Tall Stairwell:
@@ -4838,6 +5025,22 @@ Rooms:
     Room Index: 11
   Reverse Colosseum, Arena:
     Room Index: 5
+    Dependents:
+      - Type: Room
+        Stage: Boss - Trio
+        Room: Boss - Trio, Arena
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Boss - Trio
+        Room: Boss - Trio, Fake Room With Teleporter A
+        Top: 0
+        Left: -1
+      - Type: Room
+        Stage: Boss - Trio
+        Room: Boss - Trio, Fake Room With Teleporter B
+        Top: 0
+        Left: 2
   Reverse Colosseum, Blade Master Room:
     Room Index: 2
   Reverse Colosseum, Blood Cloak Room:
@@ -4976,6 +5179,22 @@ Rooms:
     Room Index: 9
   Reverse Outer Wall, Doppelganger Room:
     Room Index: 11
+    Dependents:
+      - Type: Room
+        Stage: Boss - Creature
+        Room: Boss - Creature, Doppelganger Room
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Boss - Creature
+        Room: Boss - Creature, Fake Room With Teleporter A
+        Top: 0
+        Left: -1
+      - Type: Room
+        Stage: Boss - Creature
+        Room: Boss - Creature, Fake Room With Teleporter B
+        Top: 0
+        Left: 2
   Reverse Outer Wall, Elevator Shaft Room:
     Room Index: 13
   Reverse Outer Wall, Exit to Clock Tower:
@@ -5066,6 +5285,22 @@ Rooms:
     Room Index: 8
   Royal Chapel, Hippogryph Room:
     Room Index: 4
+    Dependents:
+      - Type: Room
+        Stage: Boss - Hippogryph
+        Room: Boss - Hippogryph, Hippogryph Room
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Boss - Hippogryph
+        Room: Boss - Hippogryph, Fake Room With Teleporter A
+        Top: 0
+        Left: -1
+      - Type: Room
+        Stage: Boss - Hippogryph
+        Room: Boss - Hippogryph, Fake Room With Teleporter B
+        Top: 0
+        Left: 2
   Royal Chapel, Left Tower:
     Room Index: 13
   Royal Chapel, Loading Room to Alchemy Laboratory:
@@ -5178,6 +5413,32 @@ Rooms:
     Room Index: 27
   Underground Caverns, Scylla Wyrm Room:
     Room Index: 28
+    Dependents:
+      - Type: Room
+        Stage: Boss - Scylla
+        Room: Boss - Scylla, Scylla Wyrm Room
+        Top: 0
+        Left: 0
+      - Type: Room
+        Stage: Boss - Scylla
+        Room: Boss - Scylla, Fake Room With Teleporter A
+        Top: 0
+        Left: -1
+      - Type: Room
+        Stage: Boss - Scylla
+        Room: Boss - Scylla, Rising Water Room
+        Top: 0
+        Left: 1
+      - Type: Room
+        Stage: Boss - Scylla
+        Room: Boss - Scylla, Scylla Room
+        Top: -1
+        Left: 1
+      - Type: Room
+        Stage: Boss - Scylla
+        Room: Boss - Scylla, Crystal Cloak Room
+        Top: -1
+        Left: 0
   Underground Caverns, Small Stairwell:
     Room Index: 5
   Underground Caverns, Tall Stairwell:
