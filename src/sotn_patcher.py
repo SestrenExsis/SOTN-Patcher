@@ -803,6 +803,20 @@ def get_patch(extract, changes, data):
                                     array_extract_meta['Start'] + element_index * array_extract_meta['Size']
                                 ),
                             )
+                    elif dependent['Type'] == 'Warp Coordinate':
+                        object_extract = extract[dependent['Array Name']]
+                        object_meta = object_extract['Metadata']
+                        for (element_value, target_field_name) in (
+                            (left, 'Room X'),
+                            (top, 'Room Y'),
+                        ):
+                            result.patch_value(
+                                element_value,
+                                object_extract['Metadata']['Fields'][target_field_name]['Type'],
+                                sotn_address.Address(
+                                    object_meta['Start'] + dependent['Warp Index'] * object_meta['Size'] + object_meta['Fields'][target_field_name]['Offset']
+                                ),
+                            )
                 # Room: Patch tilemap foreground and background
                 if 'Tiles' in tile_layout_extract and 'Tilemap' in room_data:
                     # Fetch the source tilemap data and start with empty target tilemaps
@@ -1040,31 +1054,6 @@ def get_patch(extract, changes, data):
                     extract_metadata['Fields']['Room Y']['Type'],
                     sotn_address.Address(offset),
                 )
-    # Patch warp room coordinates
-    if 'Stages' in changes:
-        for (element_name, element_group) in data['Warp Coordinates'].items():
-            object_extract = extract[element_name]
-            for element in element_group.values():
-                source_stage_name = element['Source Stage']
-                if source_stage_name not in changes['Stages']:
-                    continue
-                source_room_name = element['Source Room']
-                if source_room_name not in changes['Stages'][source_stage_name]['Rooms']:
-                    continue
-                source_room = changes['Stages'][source_stage_name]['Rooms'][source_room_name]
-                for (source_field_name, target_field_name) in (
-                    ('Left', 'Room X'),
-                    ('Top', 'Room Y'),
-                ):
-                    if source_field_name not in source_room:
-                        continue
-                    result.patch_value(
-                        source_room[source_field_name],
-                        object_extract['Metadata']['Fields'][target_field_name]['Type'],
-                        sotn_address.Address(
-                            object_extract['Metadata']['Start'] + element['Index'] * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][target_field_name]['Offset']
-                        ),
-                    )
     object_layouts = {}
     # Option - Assign Power of Wolf relic a unique ID
     power_of_wolf_patch = changes.get('Options', {}).get('Assign Power of Wolf relic a unique ID', False)
@@ -1359,14 +1348,12 @@ if __name__ == '__main__':
             with (
                 open(os.path.join(os.path.normpath(args.data), 'aliases.yaml')) as aliases_file,
                 open(os.path.join(os.path.normpath(args.data), 'familiar_events.yaml')) as familiar_events_file,
-                open(os.path.join(os.path.normpath(args.data), 'warp_coordinates.yaml')) as warp_coordinates_file,
                 open(args.changes) as changes_file,
                 open(args.ppf, 'wb') as ppf_file,
             ):
                 data = {
                     'Aliases': yaml.safe_load(aliases_file),
                     'Familiar Events': yaml.safe_load(familiar_events_file),
-                    'Warp Coordinates': yaml.safe_load(warp_coordinates_file),
                 }
                 changes = json.load(changes_file)
                 if 'Changes' in changes:

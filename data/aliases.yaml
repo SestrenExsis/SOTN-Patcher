@@ -5321,14 +5321,34 @@ Rooms:
     Room Index: 8
   Reverse Warp Rooms, Warp Room to Abandoned Mine:
     Room Index: 4
+    Dependents:
+      - Type: Warp Coordinate
+        Array Name: Reverse Warp Room Coordinates
+        Warp Index: 1
   Reverse Warp Rooms, Warp Room to Castle Entrance:
     Room Index: 3
+    Dependents:
+      - Type: Warp Coordinate
+        Array Name: Reverse Warp Room Coordinates
+        Warp Index: 0
   Reverse Warp Rooms, Warp Room to Castle Keep:
     Room Index: 0
+    Dependents:
+      - Type: Warp Coordinate
+        Array Name: Reverse Warp Room Coordinates
+        Warp Index: 3
   Reverse Warp Rooms, Warp Room to Olrox's Quarters:
     Room Index: 1
+    Dependents:
+      - Type: Warp Coordinate
+        Array Name: Reverse Warp Room Coordinates
+        Warp Index: 4
   Reverse Warp Rooms, Warp Room to Outer Wall:
     Room Index: 2
+    Dependents:
+      - Type: Warp Coordinate
+        Array Name: Reverse Warp Room Coordinates
+        Warp Index: 2
   Royal Chapel, Chapel Staircase:
     Room Index: 11
   Royal Chapel, Confessional Booth:
@@ -5539,14 +5559,34 @@ Rooms:
     Room Index: 8
   Warp Rooms, Warp Room to Abandoned Mine:
     Room Index: 4
+    Dependents:
+      - Type: Warp Coordinate
+        Array Name: Warp Room Coordinates
+        Warp Index: 1
   Warp Rooms, Warp Room to Castle Entrance:
     Room Index: 3
+    Dependents:
+      - Type: Warp Coordinate
+        Array Name: Warp Room Coordinates
+        Warp Index: 0
   Warp Rooms, Warp Room to Castle Keep:
     Room Index: 0
+    Dependents:
+      - Type: Warp Coordinate
+        Array Name: Warp Room Coordinates
+        Warp Index: 3
   Warp Rooms, Warp Room to Olrox's Quarters:
     Room Index: 1
+    Dependents:
+      - Type: Warp Coordinate
+        Array Name: Warp Room Coordinates
+        Warp Index: 4
   Warp Rooms, Warp Room to Outer Wall:
     Room Index: 2
+    Dependents:
+      - Type: Warp Coordinate
+        Array Name: Warp Room Coordinates
+        Warp Index: 2
 Stages:
   Abandoned Mine: 5
   Alchemy Laboratory: 12
