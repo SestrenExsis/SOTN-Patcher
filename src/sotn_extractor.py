@@ -854,6 +854,15 @@ if __name__ == '__main__':
             (0x03285D40, 'RIC - Castle Keep Teleporter, Y Offset', 's16'), # 0x2442F7B1 --> subiu v0, $084F
             (0x03285D90, 'RIC - Reverse Keep Teleporter, X Offset', 's16'), # 0x2463DF40 --> subiu v1, $20C0
             (0X03285DD0, 'RIC - Reverse Keep Teleporter, Y Offset', 's16'), # 0x2442C7B9 --> subiu v0, $3847
+            # func_80115C50 and func_8015BB80 for RIC
+            (0x0010B48C, 'DRA - Castle Keep Teleporter, Slide X 1', 's16'), # 0x2442E0C0 --> addiu $v0, $v0, -$1F40
+            (0x0010B4D0, 'DRA - Castle Keep Teleporter, Slide X 2', 's16'), # 0x2442E0C0 --> addiu $v0, $v0, -$1F40
+            (0x0010B530, 'DRA - Reverse Keep Teleporter, Slide X 1', 's16'), # 0x2442DF40 --> addiu $v0, $v0, -$20C0
+            (0x0010B574, 'DRA - Reverse Keep Teleporter, Slide X 2', 's16'), # 0x2442DF40 --> addiu $v0, $v0, -$20C0
+            (0x0328ABBC, 'RIC - Castle Keep Teleporter, Slide X 1', 's16'), # 0x2442E0C0 --> addiu $v0, $v0, -$1F40
+            (0x0328AC00, 'RIC - Castle Keep Teleporter, Slide X 2', 's16'), # 0x2442E0C0 --> addiu $v0, $v0, -$1F40
+            (0x0328AC60, 'RIC - Reverse Keep Teleporter, Slide X 1', 's16'), # 0x2442DF40 --> addiu $v0, $v0, -$20C0
+            (0x0328ACA4, 'RIC - Reverse Keep Teleporter, Slide X 2', 's16'), # 0x2442DF40 --> addiu $v0, $v0, -$20C0
             # Must be updated so that False Save Room still sends you to Nightmare (Solved by @MottZilla)
             (0x000E7DC8, 'False Save Room, Room X', 'u16'), # 0x2D00 --> 45
             (0x000E7DD0, 'False Save Room, Room Y', 'u16'), # 0x2100 --> 33

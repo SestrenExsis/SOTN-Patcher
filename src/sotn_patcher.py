@@ -1268,6 +1268,14 @@ def get_patch(extract, changes, data):
         ('RIC - Castle Keep Teleporter, X Offset', 'Castle Keep', 'Castle Keep, Keep Area', 'Left', 320),
         ('RIC - Reverse Keep Teleporter, Y Offset', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Top', 1351),
         ('RIC - Reverse Keep Teleporter, X Offset', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Left', 1728),
+        ('DRA - Castle Keep Teleporter, Slide X 1', 'Castle Keep', 'Castle Keep, Keep Area', 'Left', 320),
+        ('DRA - Castle Keep Teleporter, Slide X 2', 'Castle Keep', 'Castle Keep, Keep Area', 'Left', 320),
+        ('DRA - Reverse Keep Teleporter, Slide X 1', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Left', 1728),
+        ('DRA - Reverse Keep Teleporter, Slide X 2', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Left', 1728),
+        ('RIC - Castle Keep Teleporter, Slide X 1', 'Castle Keep', 'Castle Keep, Keep Area', 'Left', 320),
+        ('RIC - Castle Keep Teleporter, Slide X 2', 'Castle Keep', 'Castle Keep, Keep Area', 'Left', 320),
+        ('RIC - Reverse Keep Teleporter, Slide X 1', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Left', 1728),
+        ('RIC - Reverse Keep Teleporter, Slide X 2', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Left', 1728),
         # Adjust the False Save Room trigger, discovered by @MottZilla
         # See https://github.com/Xeeynamo/sotn-decomp/blob/ffce97b0022ab5d4118ad35c93dea86bb18b25cc/src/dra/5087C.c#L1012
         ('False Save Room, Room Y', 'Underground Caverns', 'Underground Caverns, False Save Room', 'Top', None),
