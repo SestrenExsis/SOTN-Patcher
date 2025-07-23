@@ -752,7 +752,7 @@ if __name__ == '__main__':
             boss_teleporters['Data'].append(data)
         # Extract constant data stored as arrays
         constants = {}
-        for (starting_address, data_type, array_size, array_name) in (
+        for (starting_address, data_type, array_count, array_name) in (
             # Unique item drops in First Castle
             (0x03CE01E4, 'u16', 13, 'Unique Item Drops (Abandoned Mine)'),
             (0x049BFBB0, 'u16', 11, 'Unique Item Drops (Alchemy Laboratory)'),
@@ -806,13 +806,17 @@ if __name__ == '__main__':
             (0x03128800, 'rgba32', 16, 'Castle Map Color Palette'),
             # Shop Relic IDs
             (0x03E60CD4, 'u16', 2, 'Shop Relic IDs'),
+            # Secret Map Tile Reveals
+            (0x000983C0, 'u8', 75, 'Secret Map Tile Reveals'),
         ):
             # NOTE(sestren): Only handling specific formats for now
-            assert data_type in ('u16', 's16', 'rgba32')
+            assert data_type in ('u8', 'u16', 's16', 'rgba32')
             cursor = BIN(binary_file, starting_address)
             data = []
-            for index in range(array_size):
-                if data_type == 'u16':
+            for index in range(array_count):
+                if data_type == 'u8':
+                    value = cursor.u8(index)
+                elif data_type == 'u16':
                     value = cursor.u16(2 * index)
                 elif data_type == 's16':
                     value = cursor.s16(2 * index)
@@ -832,8 +836,8 @@ if __name__ == '__main__':
             constants[array_name] = {
                 'Metadata': {
                     'Start': cursor.cursor.address,
-                    'Count': array_size,
-                    'Size': 0x02,
+                    'Count': array_count,
+                    'Size': 0x01 if data_type == 'u8' else 0x02,
                     'Type': data_type,
                 },
                 'Data': data,

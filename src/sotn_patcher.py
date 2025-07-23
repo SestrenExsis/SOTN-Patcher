@@ -787,6 +787,22 @@ def get_patch(extract, changes, data):
                             'Top': top + dependent['Top'],
                             'Left': left + dependent['Left'],
                         }
+                    elif dependent['Type'] == 'Secret Map Tile':
+                        array_extract = extract['Constants']['Secret Map Tile Reveals']
+                        array_extract_meta = array_extract['Metadata']
+                        for (element_index, element_value) in (
+                            (dependent['Index'] + 0, left + dependent['Left']),
+                            (dependent['Index'] + 1, top + dependent['Top']),
+                        ):
+                            if element_value == array_extract['Data'][element_index]:
+                                continue
+                            result.patch_value(
+                                element_value,
+                                array_extract['Metadata']['Type'],
+                                sotn_address.Address(
+                                    array_extract_meta['Start'] + element_index * array_extract_meta['Size']
+                                ),
+                            )
                 # Room: Patch tilemap foreground and background
                 if 'Tiles' in tile_layout_extract and 'Tilemap' in room_data:
                     # Fetch the source tilemap data and start with empty target tilemaps

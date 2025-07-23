@@ -3630,6 +3630,11 @@ Rooms:
         Left: 2
   Abandoned Mine, Crumbling Stairwells With Demon Switch:
     Room Index: 3
+    Dependents:
+      - Type: Secret Map Tile
+        Index: 10
+        Top: 0
+        Left: 0
   Abandoned Mine, Crumbling Stairwells With Mushrooms:
     Room Index: 8
   Abandoned Mine, Demon Card Room:
@@ -3656,6 +3661,11 @@ Rooms:
     Room Index: 15
   Abandoned Mine, Snake Column:
     Room Index: 5
+    Dependents:
+      - Type: Secret Map Tile
+        Index: 15
+        Top: 1
+        Left: 0
   Abandoned Mine, Venus Weed Room:
     Room Index: 4
   Abandoned Mine, Well-Lit Skull Room:
@@ -3724,6 +3734,15 @@ Rooms:
     Room Index: 11
   Alchemy Laboratory, Tall Zig Zag Room:
     Room Index: 14
+    Dependents:
+      - Type: Secret Map Tile
+        Index: 0
+        Top: 2
+        Left: 0
+      - Type: Secret Map Tile
+        Index: 5
+        Top: 2
+        Left: 0
   Alchemy Laboratory, Tetromino Room:
     Room Index: 19
   Anti-Chapel, Chapel Staircase:
@@ -4082,6 +4101,11 @@ Rooms:
     Room Index: 11
   Castle Entrance, Merman Room:
     Room Index: 7
+    Dependents:
+      - Type: Secret Map Tile
+        Index: 30
+        Top: 1
+        Left: 0
   Castle Entrance, Save Room A:
     Room Index: 25
   Castle Entrance, Save Room B:
@@ -4124,6 +4148,10 @@ Rooms:
         Room: Boss - Richter, Throne Room
         Top: 3
         Left: 3
+      - Type: Secret Map Tile
+        Index: 55
+        Top: 3
+        Left: 5
   Castle Keep, Lion Torch Platform:
     Room Index: 6
   Castle Keep, Loading Room to Clock Tower:
@@ -4288,6 +4316,11 @@ Rooms:
     Room Index: 0
   Clock Tower, Left Gear Room:
     Room Index: 6
+    Dependents:
+      - Type: Secret Map Tile
+        Index: 25
+        Top: 0
+        Left: 0
   Clock Tower, Loading Room to Castle Keep:
     Room Index: 14
   Clock Tower, Loading Room to Outer Wall:
@@ -4298,6 +4331,11 @@ Rooms:
     Room Index: 1
   Clock Tower, Pendulum Room:
     Room Index: 3
+    Dependents:
+      - Type: Secret Map Tile
+        Index: 20
+        Top: 1
+        Left: 0
   Clock Tower, Right Gear Room:
     Room Index: 7
   Clock Tower, Spire:
@@ -4324,6 +4362,11 @@ Rooms:
         Left: 2
   Colosseum, Blade Master Room:
     Room Index: 2
+    Dependents:
+      - Type: Secret Map Tile
+        Index: 40
+        Top: 0
+        Left: 2
   Colosseum, Blood Cloak Room:
     Room Index: 10
   Colosseum, Bottom of Elevator Shaft:
@@ -4354,6 +4397,11 @@ Rooms:
     Room Index: 7
   Colosseum, Top of Elevator Shaft:
     Room Index: 6
+    Dependents:
+      - Type: Secret Map Tile
+        Index: 35
+        Top: 0
+        Left: 0
   Colosseum, Top of Left Spiral Staircase:
     Room Index: 1
   Colosseum, Top of Right Spiral Staircase:
@@ -4600,6 +4648,10 @@ Rooms:
         Room: Cutscene - Meeting Maria in Clock Room, Fake Room With Teleporter B
         Top: 0
         Left: 1
+      - Type: Secret Map Tile
+        Index: 70
+        Top: 0
+        Left: 0
   Marble Gallery, Dropoff:
     Room Index: 5
   Marble Gallery, Elevator Room:
@@ -4755,6 +4807,11 @@ Rooms:
     Room Index: 1
   Olrox's Quarters, Catwalk Crypt:
     Room Index: 15
+    Dependents:
+      - Type: Secret Map Tile
+        Index: 50
+        Top: 0
+        Left: 1
   Olrox's Quarters, Echo of Bat Room:
     Room Index: 13
   Olrox's Quarters, Empty Cells:
@@ -4773,6 +4830,11 @@ Rooms:
     Room Index: 10
   Olrox's Quarters, Grand Staircase:
     Room Index: 2
+    Dependents:
+      - Type: Secret Map Tile
+        Index: 45
+        Top: 1
+        Left: 2
   Olrox's Quarters, Hammer and Blade Room:
     Room Index: 4
   Olrox's Quarters, Loading Room to Colosseum:
@@ -5363,6 +5425,11 @@ Rooms:
     Room Index: 37
   Underground Caverns, Hidden Crystal Entrance:
     Room Index: 1
+    Dependents:
+      - Type: Secret Map Tile
+        Index: 60
+        Top: 2
+        Left: 0
   Underground Caverns, Holy Symbol Room:
     Room Index: 13
   Underground Caverns, Ice Floe Room:
@@ -5385,6 +5452,11 @@ Rooms:
     Room Index: 14
   Underground Caverns, Plaque Room With Breakable Wall:
     Room Index: 8
+    Dependents:
+      - Type: Secret Map Tile
+        Index: 65
+        Top: 0
+        Left: 0
   Underground Caverns, Plaque Room With Life Max-Up:
     Room Index: 4
   Underground Caverns, Right Ferryman Route:

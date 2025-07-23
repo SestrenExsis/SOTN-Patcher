@@ -14,6 +14,7 @@ python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/customized-
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/customized-enemy-drops.json" --ppf="build/ppf/customized-enemy-drops.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/disable-clipping-on-one-way-walls.json" --ppf="build/ppf/disable-clipping-on-one-way-walls.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/enable-debug-mode.json" --ppf="build/ppf/enable-debug-mode.ppf" || goto :error
+python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/fix-secret-room-map-pixels.json" --ppf="build/ppf/fix-secret-room-map-pixels.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/normalize-ferryman-gate.json" --ppf="build/ppf/normalize-ferryman-gate.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/preserve-map-exploration.json" --ppf="build/ppf/preserve-map-exploration.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/randomized-items.json" --ppf="build/ppf/randomized-items.ppf" || goto :error
