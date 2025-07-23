@@ -249,28 +249,6 @@ def getID(aliases: dict, path: tuple):
         result = int(result)
     return result
 
-def get_familiar_changes(changes, familiar_events):
-    familiar_changes = {}
-    if 'Stages' in changes:
-        for familiar_event_name in familiar_events:
-            familiar_event = familiar_events[familiar_event_name]
-            stage_name = familiar_event['Stage']
-            if stage_name not in changes['Stages']:
-                continue
-            room_name = familiar_event['Room']
-            if room_name not in changes['Stages'][stage_name]['Rooms']:
-                continue
-            source_room = changes['Stages'][stage_name]['Rooms'][room_name]
-            if 'Left' not in source_room or 'Top' not in source_room:
-                continue
-            sign = -1 if familiar_event['Inverted'] else 1
-            for familiar_event_id in familiar_event['Familiar Event IDs']:
-                familiar_changes[familiar_event_id] = {
-                    'Room Y': source_room['Top'],
-                    'Room X': sign * source_room['Left'],
-                }
-    return familiar_changes
-
 def get_patch(extract, changes, data):
     aliases = data['Aliases']
     result = Patch()
@@ -817,6 +795,43 @@ def get_patch(extract, changes, data):
                                     object_meta['Start'] + dependent['Warp Index'] * object_meta['Size'] + object_meta['Fields'][target_field_name]['Offset']
                                 ),
                             )
+                    elif dependent['Type'] == 'Familiar Event':
+                        # NOTE(sestren): Familiar events exist as a complete copy in 7 different locations, one for each familiar in the code
+                        # TODO(sestren): Replace this hacky way of doing it with a better approach
+                        familiar_event_id = dependent['Familiar Event ID']
+                        copy_offsets = [
+                            0x0392A760, # Possibly for Bat Familiar
+                            0x0394BDB0, # Possibly for Ghost Familiar
+                            0x0396FD2C, # Possibly for Faerie Familiar
+                            0x03990890, # Possibly for Demon Familiar
+                            0x039AF9E4, # Possibly for Sword Familiar
+                            0x039D1D38, # Possibly for Yousei Familiar
+                            0x039F2664, # Possibly for Nose Demon Familiar
+                        ]
+                        object_extract = extract['Familiar Events']
+                        object_meta = object_extract['Metadata']
+                        extract_data = extract['Familiar Events']['Data'][familiar_event_id]
+                        sign = -1 if dependent['Inverted'] else 1
+                        # Familiar event: Patch room X
+                        if (extract_data.get('Room X', sign * left)) != (sign * left):
+                            base_offset = object_meta['Start'] + int(familiar_event_id) * object_meta['Size'] + object_meta['Fields']['Room X']['Offset'] - copy_offsets[0]
+                            for copy_offset in copy_offsets:
+                                offset = base_offset + copy_offset
+                                result.patch_value(
+                                    sign * left,
+                                    object_meta['Fields']['Room X']['Type'],
+                                    sotn_address.Address(offset),
+                                )
+                        # Familiar event: Patch room Y
+                        if extract_data.get('Room Y', top) != top:
+                            base_offset = object_meta['Start'] + int(familiar_event_id) * object_meta['Size'] + object_meta['Fields']['Room Y']['Offset'] - copy_offsets[0]
+                            for copy_offset in copy_offsets:
+                                offset = base_offset + copy_offset
+                                result.patch_value(
+                                    top,
+                                    object_meta['Fields']['Room Y']['Type'],
+                                    sotn_address.Address(offset),
+                                )
                 # Room: Patch tilemap foreground and background
                 if 'Tiles' in tile_layout_extract and 'Tilemap' in room_data:
                     # Fetch the source tilemap data and start with empty target tilemaps
@@ -1015,45 +1030,6 @@ def get_patch(extract, changes, data):
             sotn_address.Address(extract_metadata['Start'] + offset),
         )
         assert offset <= extract_metadata['Footprint']
-    # Patch familiar events
-    # NOTE(sestren): Familiar events exist as a complete copy in 7 different locations, one for each familiar in the code
-    # TODO(sestren): Replace this hacky way of doing it with a better approach
-    copy_offsets = [
-        0x0392A760, # Possibly for Bat Familiar
-        0x0394BDB0, # Possibly for Ghost Familiar
-        0x0396FD2C, # Possibly for Faerie Familiar
-        0x03990890, # Possibly for Demon Familiar
-        0x039AF9E4, # Possibly for Sword Familiar
-        0x039D1D38, # Possibly for Yousei Familiar
-        0x039F2664, # Possibly for Nose Demon Familiar
-    ]
-    familiar_changes = get_familiar_changes(changes, data['Familiar Events'])
-    extract_metadata = extract['Familiar Events']['Metadata']
-    for familiar_event_id in sorted(familiar_changes):
-        familiar_event_data = familiar_changes[familiar_event_id]
-        extract_data = extract['Familiar Events']['Data'][familiar_event_id]
-        # Familiar event: Patch room X
-        room_x = extract_data['Room X']
-        if familiar_event_data.get('Room X', room_x) != room_x:
-            room_x = familiar_event_data['Room X']
-            base_offset = extract_metadata['Start'] + int(familiar_event_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room X']['Offset'] - copy_offsets[0]
-            for copy_offset in copy_offsets:
-                offset = base_offset + copy_offset
-                result.patch_value(room_x,
-                    extract_metadata['Fields']['Room X']['Type'],
-                    sotn_address.Address(offset),
-                )
-        # Familiar event: Patch room Y
-        room_y = extract_data['Room Y']
-        if familiar_event_data.get('Room Y', room_y) != room_y:
-            room_y = familiar_event_data['Room Y']
-            base_offset = extract_metadata['Start'] + int(familiar_event_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room Y']['Offset'] - copy_offsets[0]
-            for copy_offset in copy_offsets:
-                offset = base_offset + copy_offset
-                result.patch_value(room_y,
-                    extract_metadata['Fields']['Room Y']['Type'],
-                    sotn_address.Address(offset),
-                )
     object_layouts = {}
     # Option - Assign Power of Wolf relic a unique ID
     power_of_wolf_patch = changes.get('Options', {}).get('Assign Power of Wolf relic a unique ID', False)
@@ -1347,13 +1323,11 @@ if __name__ == '__main__':
         else:
             with (
                 open(os.path.join(os.path.normpath(args.data), 'aliases.yaml')) as aliases_file,
-                open(os.path.join(os.path.normpath(args.data), 'familiar_events.yaml')) as familiar_events_file,
                 open(args.changes) as changes_file,
                 open(args.ppf, 'wb') as ppf_file,
             ):
                 data = {
                     'Aliases': yaml.safe_load(aliases_file),
-                    'Familiar Events': yaml.safe_load(familiar_events_file),
                 }
                 changes = json.load(changes_file)
                 if 'Changes' in changes:

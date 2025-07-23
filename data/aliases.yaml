@@ -3635,6 +3635,12 @@ Rooms:
         Index: 10
         Top: 0
         Left: 0
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 4
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 9
   Abandoned Mine, Crumbling Stairwells With Mushrooms:
     Room Index: 8
   Abandoned Mine, Demon Card Room:
@@ -3743,6 +3749,18 @@ Rooms:
         Index: 5
         Top: 2
         Left: 0
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 22
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 23
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 38
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 39
   Alchemy Laboratory, Tetromino Room:
     Room Index: 19
   Anti-Chapel, Chapel Staircase:
@@ -4208,6 +4226,34 @@ Rooms:
     Room Index: 1
   Catacombs, Pitch Black Spike Maze:
     Room Index: 24
+    Dependents:
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 1
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 2
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 7
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 12
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 15
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 28
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 31
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 44
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 47
   Catacombs, Right Lava Path:
     Room Index: 12
   Catacombs, Room ID 00:
@@ -4266,6 +4312,13 @@ Rooms:
         Left: 2
   Cave, Crumbling Stairwells With Demon Switch:
     Room Index: 3
+    Dependents:
+      - Type: Familiar Event
+        Inverted: true
+        Familiar Event ID: 6
+      - Type: Familiar Event
+        Inverted: true
+        Familiar Event ID: 11
   Cave, Crumbling Stairwells With Mushrooms:
     Room Index: 8
   Cave, Demon Card Room:
@@ -4321,6 +4374,12 @@ Rooms:
         Index: 25
         Top: 0
         Left: 0
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 26
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 42
   Clock Tower, Loading Room to Castle Keep:
     Room Index: 14
   Clock Tower, Loading Room to Outer Wall:
@@ -4336,6 +4395,12 @@ Rooms:
         Index: 20
         Top: 1
         Left: 0
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 27
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 43
   Clock Tower, Right Gear Room:
     Room Index: 7
   Clock Tower, Spire:
@@ -4402,6 +4467,12 @@ Rooms:
         Index: 35
         Top: 0
         Left: 0
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 16
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 32
   Colosseum, Top of Left Spiral Staircase:
     Room Index: 1
   Colosseum, Top of Right Spiral Staircase:
@@ -4606,6 +4677,13 @@ Rooms:
     Room Index: 2
   Long Library, Lesser Demon Area:
     Room Index: 0
+    Dependents:
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 18
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 34
   Long Library, Loading Room to Outer Wall:
     Room Index: 13
   Long Library, Outside Shop:
@@ -4614,8 +4692,31 @@ Rooms:
     Room Index: 14
   Long Library, Secret Bookcase Room:
     Room Index: 1
+    Dependents:
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 25
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 41
   Long Library, Shop:
     Room Index: 4
+    Dependents:
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 3
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 8
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 13
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 29
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 45
   Long Library, Spellbook Area:
     Room Index: 9
   Long Library, Three Layer Room:
@@ -4835,6 +4936,12 @@ Rooms:
         Index: 45
         Top: 1
         Left: 2
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 24
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 40
   Olrox's Quarters, Hammer and Blade Room:
     Room Index: 4
   Olrox's Quarters, Loading Room to Colosseum:
@@ -4931,6 +5038,13 @@ Rooms:
     Room Index: 0
   Outer Wall, Lower Medusa Room:
     Room Index: 4
+    Dependents:
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 17
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 33
   Outer Wall, Save Room A:
     Room Index: 14
   Outer Wall, Save Room B:
@@ -5353,6 +5467,22 @@ Rooms:
     Room Index: 11
   Royal Chapel, Confessional Booth:
     Room Index: 7
+    Dependents:
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 5
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 10
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 14
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 30
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 46
   Royal Chapel, Empty Room:
     Room Index: 10
   Royal Chapel, Fake Room with Teleporter to Alchemy Laboratory:
@@ -5409,6 +5539,13 @@ Rooms:
     Room Index: 0
   Royal Chapel, Spike Hallway:
     Room Index: 1
+    Dependents:
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 19
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 35
   Royal Chapel, Statue Ledge:
     Room Index: 12
   Royal Chapel, Walkway Between Towers:
@@ -5450,6 +5587,12 @@ Rooms:
         Index: 60
         Top: 2
         Left: 0
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 20
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 36
   Underground Caverns, Holy Symbol Room:
     Room Index: 13
   Underground Caverns, Ice Floe Room:
@@ -5477,6 +5620,12 @@ Rooms:
         Index: 65
         Top: 0
         Left: 0
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 21
+      - Type: Familiar Event
+        Inverted: false
+        Familiar Event ID: 37
   Underground Caverns, Plaque Room With Life Max-Up:
     Room Index: 4
   Underground Caverns, Right Ferryman Route:
