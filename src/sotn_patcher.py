@@ -832,6 +832,24 @@ def get_patch(extract, changes, data):
                                     object_meta['Fields']['Room Y']['Type'],
                                     sotn_address.Address(offset),
                                 )
+                    elif dependent['Type'] == 'Constant':
+                        values = {
+                            'Top': top,
+                            'Left': left,
+                        }
+                        value = values.get(dependent['Property'], 0)
+                        for transformation in dependent.get('Transformations', []):
+                            (mnemonic, operand) = transformation[:-1].split('(')
+                            if mnemonic == 'mul':
+                                value *= int(operand)
+                            elif mnemonic == 'add':
+                                value += int(operand)
+                        print((top, left), (dependent['Address'], dependent['Property']), value)
+                        result.patch_value(
+                            value,
+                            dependent['Data Type'],
+                            sotn_address.Address(dependent['Address']),
+                        )
                 # Room: Patch tilemap foreground and background
                 if 'Tiles' in tile_layout_extract and 'Tilemap' in room_data:
                     # Fetch the source tilemap data and start with empty target tilemaps
@@ -1259,23 +1277,6 @@ def get_patch(extract, changes, data):
                 offset += 1
     # Adjust the target points for the Castle Teleporter and False Save Room locations
     for (constant_id, source_stage, source_room_name, offset_type, offset_amount) in (
-        # Adjust the target point for the Castle Teleporter locations (in both DRA and RIC)
-        ('DRA - Castle Keep Teleporter, Y Offset', 'Castle Keep', 'Castle Keep, Keep Area', 'Top', 847),
-        ('DRA - Castle Keep Teleporter, X Offset', 'Castle Keep', 'Castle Keep, Keep Area', 'Left', 320),
-        ('DRA - Reverse Keep Teleporter, Y Offset', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Top', 1351),
-        ('DRA - Reverse Keep Teleporter, X Offset', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Left', 1728),
-        ('RIC - Castle Keep Teleporter, Y Offset', 'Castle Keep', 'Castle Keep, Keep Area', 'Top', 847),
-        ('RIC - Castle Keep Teleporter, X Offset', 'Castle Keep', 'Castle Keep, Keep Area', 'Left', 320),
-        ('RIC - Reverse Keep Teleporter, Y Offset', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Top', 1351),
-        ('RIC - Reverse Keep Teleporter, X Offset', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Left', 1728),
-        ('DRA - Castle Keep Teleporter, Slide X 1', 'Castle Keep', 'Castle Keep, Keep Area', 'Left', 320),
-        ('DRA - Castle Keep Teleporter, Slide X 2', 'Castle Keep', 'Castle Keep, Keep Area', 'Left', 320),
-        ('DRA - Reverse Keep Teleporter, Slide X 1', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Left', 1728),
-        ('DRA - Reverse Keep Teleporter, Slide X 2', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Left', 1728),
-        ('RIC - Castle Keep Teleporter, Slide X 1', 'Castle Keep', 'Castle Keep, Keep Area', 'Left', 320),
-        ('RIC - Castle Keep Teleporter, Slide X 2', 'Castle Keep', 'Castle Keep, Keep Area', 'Left', 320),
-        ('RIC - Reverse Keep Teleporter, Slide X 1', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Left', 1728),
-        ('RIC - Reverse Keep Teleporter, Slide X 2', 'Reverse Keep', 'Reverse Keep, Keep Area', 'Left', 1728),
         # Adjust the False Save Room trigger, discovered by @MottZilla
         # See https://github.com/Xeeynamo/sotn-decomp/blob/ffce97b0022ab5d4118ad35c93dea86bb18b25cc/src/dra/5087C.c#L1012
         ('False Save Room, Room Y', 'Underground Caverns', 'Underground Caverns, False Save Room', 'Top', None),

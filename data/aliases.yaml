@@ -4160,6 +4160,10 @@ Rooms:
     Room Index: 3
   Castle Keep, Keep Area:
     Room Index: 2
+    Notes:
+      - The functions DRA/GetTeleportToOtherCastle, DRA/func_80115C50, and RIC/func_8015BB80 contain constants that must be updated
+      - The values refer to the location of the Castle Teleporter in the Keep Area
+      - The location of the Teleporter is calculated using the player's global X and Y position, rather than their room-relative position
     Dependents:
       - Type: Room
         Stage: Boss - Richter
@@ -4170,6 +4174,62 @@ Rooms:
         Index: 55
         Top: 3
         Left: 5
+      - Type: Constant
+        Data Type: s16
+        Address: 0x000FFCE4
+        Property: Left
+        Transformations:
+          - mul(-256)
+          - add(-320)
+      - Type: Constant
+        Data Type: s16
+        Address: 0x000FFD18
+        Property: Top
+        Transformations:
+          - mul(-256)
+          - add(-847)
+      - Type: Constant
+        Data Type: s16
+        Address: 0x03285D0C
+        Property: Left
+        Transformations:
+          - mul(-256)
+          - add(-320)
+      - Type: Constant
+        Data Type: s16
+        Address: 0x03285D40
+        Property: Top
+        Transformations:
+          - mul(-256)
+          - add(-847)
+      - Type: Constant
+        Data Type: s16
+        Address: 0x0010B48C
+        Property: Left
+        Transformations:
+          - mul(-256)
+          - add(-320)
+      - Type: Constant
+        Data Type: s16
+        Address: 0x0010B4D0
+        Property: Left
+        Transformations:
+          - mul(-256)
+          - add(-320)
+      - Type: Constant
+        Data Type: s16
+        Address: 0x0328ABBC
+        Property: Left
+        Transformations:
+          - mul(-256)
+          - add(-320)
+      - Type: Constant
+        Data Type: s16
+        Address: 0x0328AC00
+        Property: Left
+        Transformations:
+          - mul(-256)
+          - add(-320)
   Castle Keep, Lion Torch Platform:
     Room Index: 6
   Castle Keep, Loading Room to Clock Tower:
@@ -5335,6 +5395,67 @@ Rooms:
     Room Index: 3
   Reverse Keep, Keep Area:
     Room Index: 2
+    Notes:
+      - The functions DRA/GetTeleportToOtherCastle, DRA/func_80115C50, and RIC/func_8015BB80 contain constants that must be updated
+      - The values refer to the location of the Castle Teleporter in the Keep Area
+      - The location of the Teleporter is calculated using the player's global X and Y position, rather than their room-relative position
+    Dependents:
+      - Type: Constant
+        Data Type: s16
+        Address: 0x000FFD68
+        Property: Left
+        Transformations:
+          - mul(-256)
+          - add(-1728)
+      - Type: Constant
+        Data Type: s16
+        Address: 0x000FFD9C
+        Property: Top
+        Transformations:
+          - mul(-256)
+          - add(-1351)
+      - Type: Constant
+        Data Type: s16
+        Address: 0x03285D90
+        Property: Left
+        Transformations:
+          - mul(-256)
+          - add(-1728)
+      - Type: Constant
+        Data Type: s16
+        Address: 0x03285DD0
+        Property: Top
+        Transformations:
+          - mul(-256)
+          - add(-1351)
+      - Type: Constant
+        Data Type: s16
+        Address: 0x0010B530
+        Property: Left
+        Transformations:
+          - mul(-256)
+          - add(-1728)
+      - Type: Constant
+        Data Type: s16
+        Address: 0x0010B574
+        Property: Left
+        Transformations:
+          - mul(-256)
+          - add(-1728)
+      - Type: Constant
+        Data Type: s16
+        Address: 0x0328AC60
+        Property: Left
+        Transformations:
+          - mul(-256)
+          - add(-1728)
+      - Type: Constant
+        Data Type: s16
+        Address: 0x0328ACA4
+        Property: Left
+        Transformations:
+          - mul(-256)
+          - add(-1728)
   Reverse Keep, Lion Torch Platform:
     Room Index: 6
   Reverse Keep, Loading Room to Clock Tower:
