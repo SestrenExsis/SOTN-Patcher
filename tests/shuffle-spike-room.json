@@ -7,7 +7,7 @@
     "Stages": {
         "Catacombs": {
             "Rooms": {
-                "24": {
+                "Catacombs, Pitch Black Spike Maze": {
                     "Tilemap": [
                         {
                             "Layer": "Foreground and Background",
@@ -53,8 +53,8 @@
             }
         }
     },
-    "Strings": {
-        "10": "Apologies to DerDrach       ",
-        "11": "Alpha Build 74.09.03"
+    "Constants": {
+        "Message - Richter Mode Instructions 1": "Apologies to DerDrach       ",
+        "Message - Richter Mode Instructions 2": "Alpha Build 74.09.03"
     }
 }

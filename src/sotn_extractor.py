@@ -31,7 +31,7 @@ class BIN:
         return result
     
     def indirect(self, offset: int, data_type: str='u8', include_meta: bool=False):
-        assert data_type in ('u8', 's8', 'u16', 's16', 'u32', 's32')
+        assert data_type in ('u8', 's8', 'u16', 's16', 'u32', 's32', 'string', 'shifted-string')
         dispatch = {
             'u8': self.u8,
             's8': self.s8,
@@ -39,6 +39,8 @@ class BIN:
             's16': self.s16,
             'u32': self.u32,
             's32': self.s32,
+            'string': self.string,
+            'shifted-string': self.shifted_string,
         }
         result = dispatch[data_type](offset, include_meta)
         return result
@@ -122,6 +124,90 @@ class BIN:
                 'Value': value,
                 'Start': self.cursor.address + offset,
                 'Type': 's32',
+            }
+        else:
+            result = value
+        return result
+
+    def string(self, offset: int=0, include_meta: bool=False):
+        # Strings in SOTN are null-terminated, Shift JIS-encoded character arrays
+        result = None
+        UNKNOWN_CHAR = '*'
+        value = ''
+        size = 0
+        while True:
+            char_code = self.u8(size)
+            if char_code == 0x00:
+                # Strings must end in a Null character
+                size += 4 - (size % 4)
+                break
+            elif char_code == 0x81:
+                # Shift JIS has some 2-byte characters that start with 0x81
+                size += 1
+                char_code = self.u8(size)
+                if char_code == 0x44:
+                    value += '.'
+                elif char_code == 0x48:
+                    value += '?'
+                elif char_code == 0x66:
+                    value += "'"
+                elif char_code == 0x68:
+                    value += '"'
+                else:
+                    value += UNKNOWN_CHAR
+            elif char_code == 0x82:
+                # Shift JIS has some 2-byte characters that start with 0x82
+                size += 1
+                char_code = self.u8(size)
+                if 0x4F <= char_code <= 0x58:
+                    value += chr(ord('0') + (char_code - 0x4F))
+                else:
+                    value += UNKNOWN_CHAR
+            elif chr(char_code) in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+                value += chr(char_code)
+            elif chr(char_code) in '0123456789':
+                value += chr(char_code)
+            else:
+                value += UNKNOWN_CHAR
+            size += 1
+        if include_meta:
+            result = {
+                'Value': value,
+                'Start': self.cursor.address + offset,
+                'Size': size,
+                'Type': 'string',
+            }
+        else:
+            result = value
+        return result
+
+    def shifted_string(self, offset: int=0, include_meta: bool=False):
+        # Shifted strings in SOTN are terminated with an 0xFF, and every character is shifted smaller by 0x20
+        result = None
+        UNKNOWN_CHAR = '*'
+        value = ''
+        size = 0
+        while True:
+            shifted_char_code = self.u8(size)
+            if shifted_char_code == 0xFF:
+                # Strings must end in a 0xFF character
+                size += 4 - (size % 4)
+                break
+            else:
+                char_code = shifted_char_code + 0x20
+                if chr(char_code) in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+                    value += chr(char_code)
+                elif chr(char_code) in '0123456789':
+                    value += chr(char_code)
+                else:
+                    value += UNKNOWN_CHAR
+            size += 1
+        if include_meta:
+            result = {
+                'Value': value,
+                'Start': self.cursor.address + offset,
+                'Size': size,
+                'Type': 'shifted-string',
             }
         else:
             result = value
@@ -666,7 +752,7 @@ if __name__ == '__main__':
             boss_teleporters['Data'].append(data)
         # Extract constant data stored as arrays
         constants = {}
-        for (starting_address, data_type, array_size, array_name) in (
+        for (starting_address, data_type, array_count, array_name) in (
             # Unique item drops in First Castle
             (0x03CE01E4, 'u16', 13, 'Unique Item Drops (Abandoned Mine)'),
             (0x049BFBB0, 'u16', 11, 'Unique Item Drops (Alchemy Laboratory)'),
@@ -697,8 +783,8 @@ if __name__ == '__main__':
             (0x045EEAE4, 'u16', 8, 'Unique Item Drops (Reverse Outer Wall)'),
             (0x04416D2C, 'u16', 18, 'Unique Item Drops (Anti-Chapel)'),
             (0x047C4E20, 'u16', 27, 'Unique Item Drops (Reverse Caverns)'),
-            # Relic Container Drops
-            (0x049BF79C, 'u16', 4, 'Relic Container Drops'),
+            # Breakable Container Drops
+            (0x049BF79C, 'u16', 4, 'Breakable Container Drops'),
             # Breakable Wall Tiles
             (0x03CE009C, 'u16', 24, 'Demon Switch Wall Tiles (Abandoned Mine)'),
             (0x0439BFEC, 'u16', 24, 'Demon Switch Wall Tiles (Cave)'),
@@ -716,37 +802,48 @@ if __name__ == '__main__':
             # Waterfall Sound Parameters
             (0x04258D9C, 's16', 16, 'Waterfall Sound Parameters (Underground Caverns)'),
             (0x047C4CE8, 's16', 16, 'Waterfall Sound Parameters (Reverse Caverns)'),
+            # Castle Map Color Palette
+            (0x03128800, 'rgba32', 16, 'Castle Map Color Palette'),
+            # Shop Relic IDs
+            (0x03E60CD4, 'u16', 2, 'Shop Relic IDs'),
+            # Secret Map Tile Reveals
+            (0x000983C0, 'u8', 75, 'Secret Map Tile Reveals'),
         ):
-            assert data_type in ('u16', 's16') # NOTE(sestren): Only handling u16s and s16s for now
+            # NOTE(sestren): Only handling specific formats for now
+            assert data_type in ('u8', 'u16', 's16', 'rgba32')
             cursor = BIN(binary_file, starting_address)
             data = []
-            for index in range(array_size):
-                if data_type == 'u16':
+            for index in range(array_count):
+                if data_type == 'u8':
+                    value = cursor.u8(index)
+                elif data_type == 'u16':
                     value = cursor.u16(2 * index)
                 elif data_type == 's16':
                     value = cursor.s16(2 * index)
+                elif data_type == 'rgba32':
+                    value = cursor.u16(2 * index)
+                    (value, red) = divmod(value, 32)
+                    (value, green) = divmod(value, 32)
+                    (value, blue) = divmod(value, 32)
+                    (value, alpha) = divmod(value, 32)
+                    # NOTE(sestren): Multiplying by 8 will cause 0 to map to 0x00 and 31 to map to 0xF8
+                    rr = ('{:02X}').format(int(8 * red))
+                    gg = ('{:02X}').format(int(8 * green))
+                    bb = ('{:02X}').format(int(8 * blue))
+                    aa = 'FF' if alpha == 1 else '7F'
+                    value = '#' + rr + gg + bb + aa
                 data.append(value)
             constants[array_name] = {
                 'Metadata': {
                     'Start': cursor.cursor.address,
-                    'Count': array_size,
-                    'Size': 0x02,
+                    'Count': array_count,
+                    'Size': 0x01 if data_type == 'u8' else 0x02,
                     'Type': data_type,
                 },
                 'Data': data,
             }
         # Extract other constant data
         for (constant_address, constant_name, constant_data_type) in (
-            # Found in the GetTeleportToOtherCastle function of the decomp
-            (0x000FFCE4, 'DRA - Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40
-            (0x000FFD18, 'DRA - Castle Keep Teleporter, Y Offset', 's16'), # 0x2442F7B1 --> subiu v0, $084F
-            (0x000FFD68, 'DRA - Reverse Keep Teleporter, X Offset', 's16'), # 0x2463DF40 --> subiu v1, $20C0
-            (0x000FFD9C, 'DRA - Reverse Keep Teleporter, Y Offset', 's16'), # 0x2442C7B9 --> subiu v0, $3847
-            # NOTE(sestren): An extra copy of the above locations exists in the RIC overlay with a relative offset of approximately 0x03186028
-            (0x03285D0C, 'RIC - Castle Keep Teleporter, X Offset', 's16'), # 0x2442E0C0 --> subiu v0, $1F40
-            (0x03285D40, 'RIC - Castle Keep Teleporter, Y Offset', 's16'), # 0x2442F7B1 --> subiu v0, $084F
-            (0x03285D90, 'RIC - Reverse Keep Teleporter, X Offset', 's16'), # 0x2463DF40 --> subiu v1, $20C0
-            (0X03285DD0, 'RIC - Reverse Keep Teleporter, Y Offset', 's16'), # 0x2442C7B9 --> subiu v0, $3847
             # Must be updated so that False Save Room still sends you to Nightmare (Solved by @MottZilla)
             (0x000E7DC8, 'False Save Room, Room X', 'u16'), # 0x2D00 --> 45
             (0x000E7DD0, 'False Save Room, Room Y', 'u16'), # 0x2100 --> 33
@@ -762,62 +859,13 @@ if __name__ == '__main__':
             # Hard-coded drops from Bone Scimitars in Castle Entrance
             (0x041FD8FC, 'Bone Scimitar Item Drop 1', 'u16'), # 0x0013 --> Item - Short Sword
             (0x041FD900, 'Bone Scimitar Item Drop 2', 'u16'), # 0x001A --> Item - Red Rust
+            # Strings
+            (0x03ACF0B4, 'Message - Richter Mode Instructions 1', 'string'), # 'Input "RICHTER" to play'
+            (0x03ACF0D4, 'Message - Richter Mode Instructions 2', 'string'), # 'as Richter Belmont.'
+            (0x03E8C888, 'Message - Shop Item Name 1', 'shifted-string'), # 'Jewel of Open'
         ):
             cursor = BIN(binary_file, constant_address)
             constants[constant_name] = cursor.indirect(0, constant_data_type, True)
-        # Extract string data
-        cursor = BIN(binary_file, 0x03ACEFD4)
-        strings = {
-            'Metadata': {
-                'Start': cursor.cursor.address,
-                'Count': 27,
-                'Type': 'string',
-                'Note': 'Strings in SOTN are null-terminated, Shift JIS-encoded character arrays',
-            },
-            'Data': {},
-        }
-        offset = 0
-        UNKNOWN_CHAR = '*'
-        for string_id in range(strings['Metadata']['Count']):
-            # Strings are assumed to be 4-byte aligned
-            assert (offset % 4) == 0
-            string = ''
-            while True:
-                char_code = cursor.u8(offset)
-                if char_code == 0x00:
-                    # Strings must end in a Null character
-                    offset += 4 - (offset % 4)
-                    break
-                elif char_code == 0x81:
-                    # Shift JIS has some 2-byte characters that start with 0x81
-                    offset += 1
-                    char_code = cursor.u8(offset)
-                    if char_code == 0x44:
-                        string += '.'
-                    elif char_code == 0x48:
-                        string += '?'
-                    elif char_code == 0x66:
-                        string += "'"
-                    elif char_code == 0x68:
-                        string += '"'
-                    else:
-                        string += UNKNOWN_CHAR
-                elif char_code == 0x82:
-                    # Shift JIS has some 2-byte characters that start with 0x82
-                    offset += 1
-                    char_code = cursor.u8(offset)
-                    if 0x4F <= char_code <= 0x58:
-                        string += chr(ord('0') + (char_code - 0x4F))
-                    else:
-                        string += UNKNOWN_CHAR
-                elif chr(char_code) in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-                    string += chr(char_code)
-                elif chr(char_code) in '0123456789':
-                    string += chr(char_code)
-                else:
-                    string += UNKNOWN_CHAR
-                offset += 1
-            strings['Data'][string_id] = string
         # Extract castle map data
         cursor = BIN(binary_file, 0x001AF800)
         castle_map = {
@@ -872,6 +920,107 @@ if __name__ == '__main__':
             if grid_cursor.u8(0) == 0xFF:
                 castle_map_reveals['Metadata']['Footprint'] += 4 - (castle_map_reveals['Metadata']['Footprint'] % 4)
                 break
+        # Enemy Definitions
+        cursor = BIN(binary_file, 0x0009E100)
+        size = 0x28
+        enemy_definitions = {
+            'Metadata': {
+                'Start': cursor.cursor.address,
+                'Size': size,
+                'Count': 400,
+                'Fields': {
+                    'Name': {
+                        'Offset': 0x00,
+                        'Type': 'u32',
+                        'Secondary Offset': -0x8000A800,
+                        'Secondary Type': 'shifted-string',
+                    },
+                    # 'Hit Points': {
+                    #     'Offset': 0x04,
+                    #     'Type': 's16',
+                    # },
+                    # 'Attack': {
+                    #     'Offset': 0x06,
+                    #     'Type': 's16',
+                    # },
+                    # 'Attack Element': {
+                    #     'Offset': 0x08,
+                    #     'Type': 'u16',
+                    # },
+                    # 'Defense': {
+                    #     'Offset': 0x0A,
+                    #     'Type': 's16',
+                    # },
+                    # 'Hitbox State': {
+                    #     'Offset': 0x0C,
+                    #     'Type': 'u16',
+                    # },
+                    # 'Weaknesses': {
+                    #     'Offset': 0x0E,
+                    #     'Type': 'u16',
+                    # },
+                    # 'Strengths': {
+                    #     'Offset': 0x10,
+                    #     'Type': 'u16',
+                    # },
+                    # 'Immunities': {
+                    #     'Offset': 0x12,
+                    #     'Type': 'u16',
+                    # },
+                    # 'Absorbs': {
+                    #     'Offset': 0x14,
+                    #     'Type': 'u16',
+                    # },
+                    'Level': {
+                        'Offset': 0x16,
+                        'Type': 'u16',
+                    },
+                    # 'Experience': {
+                    #     'Offset': 0x18,
+                    #     'Type': 'u16',
+                    # },
+                    'Rare Item ID': {
+                        'Offset': 0x1A,
+                        'Type': 'u16',
+                    },
+                    'Uncommon Item ID': {
+                        'Offset': 0x1C,
+                        'Type': 'u16',
+                    },
+                    'Rare Item Drop Rate': {
+                        'Offset': 0x1E,
+                        'Type': 'u16',
+                    },
+                    'Uncommon Item Drop Rate': {
+                        'Offset': 0x20,
+                        'Type': 'u16',
+                    },
+                    # 'Hitbox Width': {
+                    #     'Offset': 0x22,
+                    #     'Type': 'u8',
+                    # },
+                    # 'Hitbox Height': {
+                    #     'Offset': 0x23,
+                    #     'Type': 'u8',
+                    # },
+                    # 'Flags': {
+                    #     'Offset': 0x24,
+                    #     'Type': 's32',
+                    # },
+                },
+            },
+            'Data': [],
+        }
+        for enemy_definition_id in range(enemy_definitions['Metadata']['Count']):
+            enemy_def_cursor = cursor.clone(size * enemy_definition_id)
+            data = {}
+            for (field_name, field) in enemy_definitions['Metadata']['Fields'].items():
+                data[field_name] = enemy_def_cursor.indirect(field['Offset'], field['Type'], False)
+                if 'Secondary Type' in field:
+                    secondary_offset = data[field_name] + field.get('Secondary Offset', 0)
+                    secondary_cursor = BIN(binary_file, secondary_offset)
+                    data[field_name] = secondary_cursor.indirect(0, field['Secondary Type'], False)
+            enemy_definitions['Data'].append(data)
         # Extract Warp Room coordinates list
         cursor = BIN(binary_file, 0x04D12E5C)
         warp_room_coordinates = {
@@ -996,10 +1145,10 @@ if __name__ == '__main__':
             'Castle Map': castle_map,
             'Castle Map Reveals': castle_map_reveals,
             'Constants': constants,
+            'Enemy Definitions': enemy_definitions,
             'Familiar Events': familiar_events,
             'Reverse Warp Room Coordinates': reverse_warp_room_coordinates,
             'Stages': stages,
-            'Strings': strings,
             'Teleporters': teleporters,
             'Warp Room Coordinates': warp_room_coordinates,
         }

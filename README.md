@@ -28,6 +28,7 @@ Most of the knowledge present in this project is only possible due to the immens
 - [TalicZealot](https://github.com/taliczealot), for furthering knowledge about the game and making available tons of SOTN-related resources
 - [MainMemory](https://github.com/MainMemory), for their [CastleEditor](https://github.com/MainMemory/SotNCastleEditor) project, which provided key insight into a few addresses as well as extremely helpful visualizations of the castle stages
 - [Mottzilla](https://github.com/MottZilla), for their _StartAnywhere_ script, which dramatically improved turnaround time during playtesting
+- [Fatalis](https://github.com/fatalis), for their Drop Calculator
 - Contributors and maintainers of the [SOTN-Decomp](https://github.com/Xeeynamo/sotn-decomp) project, including:
   - [Xeeynamo](https://github.com/Xeeynamo)
   - [Bismurphy](https://github.com/bismurphy)
