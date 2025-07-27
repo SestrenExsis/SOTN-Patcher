@@ -7,6 +7,7 @@ set EXTRACT="build/extraction.json"
 python src/sotn_extractor.py "build/Castlevania - Symphony of the Night (Track 1).bin" %EXTRACT% || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" || goto :error
 
+python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/allow-items-in-relic-locations.json" --ppf="build/ppf/allow-items-in-relic-locations.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/assign-power-of-wolf-relic-a-unique-id.json" --ppf="build/ppf/assign-power-of-wolf-relic-a-unique-id.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/clock-hands-mod.json" --ppf="build/ppf/clock-hands-mod.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/customized-castle-map-reveals.json" --ppf="build/ppf/customized-castle-map-reveals.ppf" || goto :error

@@ -1054,8 +1054,8 @@ def get_patch(extract, changes, data):
     if power_of_wolf_patch:
         if 'Quest Rewards' not in changes:
             changes['Quest Rewards'] = {}
-        if 'Location - Power of Wolf' not in changes['Quest Rewards']:
-            changes['Quest Rewards']['Location - Power of Wolf'] = 'Relic - Power of Wolf'
+        if 'Location - Castle Entrance, After Drawbridge (Power of Wolf)' not in changes['Quest Rewards']:
+            changes['Quest Rewards']['Location - Castle Entrance, After Drawbridge (Power of Wolf)'] = 'Relic - Power of Wolf'
     # Color Palettes
     if 'Castle Map Color Palette' in changes:
         for (palette_index, rgba32) in enumerate(changes['Castle Map Color Palette']):
@@ -1075,25 +1075,30 @@ def get_patch(extract, changes, data):
     # Quest Rewards - Part 1
     for location_name in sorted(changes.get('Quest Rewards', {})):
         reward_name = changes['Quest Rewards'][location_name]
-        quest_reward = aliases['Quest Rewards'][location_name]
-        if quest_reward['Type'] == 'Object Layout':
-            for location_alias in quest_reward['Data']:
-                stage_name = location_alias['Stage']
-                room_name = location_alias['Room']
+        print((location_name, reward_name))
+        reward_type = reward_name.split(' - ')[0]
+        reward_data = aliases['Quest Rewards'][location_name]
+        for data_element in reward_data[reward_type + ' Data']:
+            if data_element['Type'] == 'Object Layout':
+                stage_name = data_element['Stage']
+                room_name = data_element['Room']
                 if (stage_name, room_name) not in object_layouts:
                     room_id = str(aliases['Rooms'].get(room_name, {}).get('Room Index', None))
                     room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
                     object_extract = room_extract['Object Layout - Horizontal']['Data'][1:-1]
                     object_layouts[(stage_name, room_name)] = copy.deepcopy(object_extract)
-                object_layout_id = location_alias['Object Layout ID']
+                object_layout_id = data_element['Object Layout ID']
                 for (property_key, property_value) in aliases['Entities'].get(reward_name, {}).items():
+                    if property_value is None:
+                        continue
                     object_layouts[(stage_name, room_name)][object_layout_id][property_key] = property_value
-                if power_of_wolf_patch and location_name == 'Location - Power of Wolf':
+                if power_of_wolf_patch and location_name == 'Location - Castle Entrance, After Drawbridge (Power of Wolf)':
                     object_layouts[(stage_name, room_name)][object_layout_id]['Entity Room Index'] = 18
-        elif quest_reward['Type'] == 'Stage Item Drop':
-            for location_alias in quest_reward['Data']:
-                constant_name = location_alias['Constant']
-                item_drop_index = location_alias['Item Drop Index']
+                if 'Params' in data_element:
+                    object_layouts[(stage_name, room_name)][object_layout_id]['Params'] = data_element['Params']
+            elif data_element['Type'] == 'Stage Item Drop':
+                constant_name = data_element['Constant']
+                item_drop_index = data_element['Item Drop Index']
                 array_extract_meta = extract['Constants'][constant_name]['Metadata']
                 item_id = aliases['Items'][reward_name]
                 result.patch_value(
@@ -1103,9 +1108,8 @@ def get_patch(extract, changes, data):
                         array_extract_meta['Start'] + item_drop_index * array_extract_meta['Size']
                     ),
                 )
-        elif quest_reward['Type'] == 'Guaranteed Enemy Drop':
-            for location_alias in quest_reward['Data']:
-                constant_name = location_alias['Constant']
+            elif data_element['Type'] == 'Guaranteed Enemy Drop':
+                constant_name = data_element['Constant']
                 constant_extract = extract['Constants'][constant_name]
                 # NOTE(sestren): Subtract 0x80 since item IDs are offset by 0x80 in aliases
                 # TODO(sestren): Standardize item IDs
@@ -1115,10 +1119,9 @@ def get_patch(extract, changes, data):
                     constant_extract['Type'],
                     sotn_address.Address(constant_extract['Start']),
                 )
-        elif quest_reward['Type'] == 'Enemy Definition':
-            for location_alias in quest_reward['Data']:
-                enemy_def_id = location_alias['Enemy Definition ID']
-                field_name = location_alias['Property']
+            elif data_element['Type'] == 'Enemy Definition':
+                enemy_def_id = data_element['Enemy Definition ID']
+                field_name = data_element['Property']
                 array_extract_meta = extract['Enemy Definitions']['Metadata']
                 field_extract_meta = array_extract_meta['Fields'][field_name]
                 item_id = aliases['Items'][reward_name]
@@ -1129,11 +1132,10 @@ def get_patch(extract, changes, data):
                         array_extract_meta['Start'] + enemy_def_id * array_extract_meta['Size'] + field_extract_meta['Offset']
                     ),
                 )
-        elif quest_reward['Type'] == 'Breakable Container Drop':
-            # TODO(sestren): Combine this with 'Stage Item Drop' above (make it type 'Array' instead?)
-            for location_alias in quest_reward['Data']:
-                constant_name = location_alias['Constant']
-                drop_index = location_alias['Drop Index']
+            elif data_element['Type'] == 'Breakable Container Drop':
+                # TODO(sestren): Combine this with 'Stage Item Drop' above (make it type 'Array' instead?)
+                constant_name = data_element['Constant']
+                drop_index = data_element['Breakable Drop Index']
                 assert 2 <= drop_index <= 3 # NOTE(sestren): Drop indexes outside this range are not relics and should be handled differently
                 array_extract_meta = extract['Constants'][constant_name]['Metadata']
                 relic_id = aliases['Entities'][reward_name]['Params']
@@ -1144,16 +1146,15 @@ def get_patch(extract, changes, data):
                         array_extract_meta['Start'] + drop_index * array_extract_meta['Size']
                     ),
                 )
-        elif quest_reward['Type'] == 'Shop Purchase Option':
-            # Update label on shop item
-            if 'Constants' not in changes:
-                changes['Constants'] = {}
-            constant_name = 'Message - Shop Item Name 1'
-            if constant_name not in changes['Constants']:
-                changes['Constants'][constant_name] = aliases['Entities'][reward_name]['Label']
-            for location_alias in quest_reward['Data']:
-                constant_name = location_alias['Constant']
-                shop_index = location_alias['Shop Index']
+            elif data_element['Type'] == 'Shop Purchase Option':
+                # Update label on shop item
+                if 'Constants' not in changes:
+                    changes['Constants'] = {}
+                label_key = 'Message - Shop Item Name 1'
+                if label_key not in changes['Constants']:
+                    changes['Constants'][label_key] = aliases['Entities'][reward_name]['Label']
+                constant_name = data_element['Constant']
+                shop_index = data_element['Shop Index']
                 relic_id = aliases['Entities'][reward_name]['Params']
                 array_extract_meta = extract['Constants'][constant_name]['Metadata']
                 result.patch_value(

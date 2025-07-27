@@ -2,37 +2,41 @@
 Boss Teleporters:
   Cutscene - Meeting Maria in Clock Room: 0
 Entity Types:
-  Candle:
+  Entity - Candle:
     Global: 40961
-  Enemy - Gremlin:
+  Entity - Enemy (Gremlin):
     Abandoned Mine: 30
     Catacombs: 71
     Necromancy Laboratory: 52
-  Enemy - Nova Skeleton:
+  Entity - Enemy (Nova Skeleton):
     Black Marble Gallery: 46
     Reverse Caverns: 86
     Reverse Entrance: 39
     Reverse Outer Wall: 33
-  Enemy - Salem Witch:
+  Entity - Enemy (Salem Witch):
     Abandoned Mine: 33
     Necromancy Laboratory: 55
-  Enemy - Thornweed:
+  Entity - Enemy (Thornweed):
     Abandoned Mine: 38
     Black Marble Gallery: 39
     Cave: 34
     Long Library: 58
-  Enemy - Venus Weed:
+  Entity - Enemy (Venus Weed):
     Abandoned Mine: 41
-  Foreground:
+  Entity - Foreground:
     Global: 8
-  Stage Name:
+  Entity - Stage Name:
     Global: 9
-  Red Door:
+  Entity - Red Door:
     Global: 5
-  Relic:
+  Entity - Relic Orb:
     Global: 11
-  Unique Item:
+  Entity - Placed Item:
     Global: 12
+  Entity - Breakable Item Orb:
+    Alchemy Laboratory: 53
+  Entity - Breakable Container:
+    Alchemy Laboratory: 55
 Items:
   Item - Pineapple: 162
   Item - Parfait: 169
@@ -278,3215 +282,3413 @@ Items:
   Item - Yasutsuna: 293
   Item - Zircon: 360
   Item - Zwei Hander: 231
-  Subweapon - Axe: 15
+  Item - Subweapon (Axe): 15
 Quest Rewards:
   Enemy - Archer (Rare Drop):
-    Data:
-      - Enemy Definition ID: 305
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 305
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Archer (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 305
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 305
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Armor Lord (Rare Drop):
-    Data:
-      - Enemy Definition ID: 34
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 34
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Armor Lord (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 34
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 34
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Axe Knight, Type A (Rare Drop):
-    Data:
-      - Enemy Definition ID: 246
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 246
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Axe Knight, Type A (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 246
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 246
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Axe Knight, Type B (Rare Drop):
-    Data:
-      - Enemy Definition ID: 6
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 6
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Axe Knight, Type B (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 6
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 6
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Azaghal (Rare Drop):
-    Data:
-      - Enemy Definition ID: 224
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 224
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Azaghal (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 224
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 224
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Bat (Rare Drop):
-    Data:
-      - Enemy Definition ID: 64
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 64
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Bat (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 64
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 64
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Bitterfly (Rare Drop):
-    Data:
-      - Enemy Definition ID: 182
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 182
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Bitterfly (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 182
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 182
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Black Crow (Rare Drop):
-    Data:
-      - Enemy Definition ID: 115
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 115
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Black Crow (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 115
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 115
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Black Panther (Rare Drop):
-    Data:
-      - Enemy Definition ID: 37
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 37
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Black Panther (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 37
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 37
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Blade (Rare Drop):
-    Data:
-      - Enemy Definition ID: 190
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 190
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Blade (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 190
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 190
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Blade Master (Rare Drop):
-    Data:
-      - Enemy Definition ID: 122
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 122
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Blade Master (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 122
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 122
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Blade Soldier (Rare Drop):
-    Data:
-      - Enemy Definition ID: 124
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 124
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Blade Soldier (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 124
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 124
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Bloody Zombie (Rare Drop):
-    Data:
-      - Enemy Definition ID: 13
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 13
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Bloody Zombie (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 13
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 13
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Blue Raven (Rare Drop):
-    Data:
-      - Enemy Definition ID: 114
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 114
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Blue Raven (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 114
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 114
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Blue Venus Weed (Rare Drop):
-    Data:
-      - Enemy Definition ID: 392
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 392
         Property: Rare Item ID
-      - Enemy Definition ID: 393
+      - Type: Enemy Definition
+        Enemy Definition ID: 393
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Blue Venus Weed (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 392
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 392
         Property: Uncommon Item ID
-      - Enemy Definition ID: 393
+      - Type: Enemy Definition
+        Enemy Definition ID: 393
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Bomb Knight (Rare Drop):
-    Data:
-      - Enemy Definition ID: 165
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 165
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Bomb Knight (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 165
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 165
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Bone Archer (Rare Drop):
-    Data:
-      - Enemy Definition ID: 108
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 108
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Bone Archer (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 108
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 108
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Bone Ark (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 45
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 45
         Property: Uncommon Item ID
-      - Enemy Definition ID: 46
+      - Type: Enemy Definition
+        Enemy Definition ID: 46
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Bone Ark (Rare Drop):
-    Data:
-      - Enemy Definition ID: 45
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 45
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Bone Halberd (Rare Drop):
-    Data:
-      - Enemy Definition ID: 118
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 118
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Bone Halberd (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 118
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 118
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Bone Musket (Rare Drop):
-    Data:
-      - Enemy Definition ID: 102
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 102
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Bone Musket (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 102
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 102
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Bone Pillar (Rare Drop):
-    Data:
-      - Enemy Definition ID: 183
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 183
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Bone Pillar (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 183
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 183
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Bone Scimitar, Blue (Rare Drop):
-    Data:
-      - Enemy Definition ID: 105
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 105
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Bone Scimitar, Blue (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 105
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 105
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Bone Scimitar, Copper (Guaranteed Drop):
-    Data:
-      - Constant: Bone Scimitar Item Drop 2
-    Type: Guaranteed Enemy Drop
+    Item Data:
+      - Type: Guaranteed Enemy Drop
+        Constant: Bone Scimitar Item Drop 2
   Enemy - Bone Scimitar, Green (Guaranteed Drop):
-    Data:
-      - Constant: Bone Scimitar Item Drop 1
-    Type: Guaranteed Enemy Drop
+    Item Data:
+      - Type: Guaranteed Enemy Drop
+        Constant: Bone Scimitar Item Drop 1
   Enemy - Cave Troll (Rare Drop):
-    Data:
-      - Enemy Definition ID: 153
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 153
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Cave Troll (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 153
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 153
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Cloaked Knight (Rare Drop):
-    Data:
-      - Enemy Definition ID: 271
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 271
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Cloaked Knight (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 271
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 271
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Corner Guard (Rare Drop):
-    Data:
-      - Enemy Definition ID: 180
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 180
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Corner Guard (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 180
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 180
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Corpseweed (Rare Drop):
-    Data:
-      - Enemy Definition ID: 158
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 158
         Property: Rare Item ID
-      - Enemy Definition ID: 159
+      - Type: Enemy Definition
+        Enemy Definition ID: 159
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Corpseweed (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 158
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 158
         Property: Uncommon Item ID
-      - Enemy Definition ID: 159
+      - Type: Enemy Definition
+        Enemy Definition ID: 159
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Ctulhu (Rare Drop):
-    Data:
-      - Enemy Definition ID: 233
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 233
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Ctulhu (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 233
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 233
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Dark Octopus (Rare Drop):
-    Data:
-      - Enemy Definition ID: 38
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 38
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Dark Octopus (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 38
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 38
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Dhuron (Rare Drop):
-    Data:
-      - Enemy Definition ID: 146
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 146
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Dhuron (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 146
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 146
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Diplocephalus (Rare Drop):
-    Data:
-      - Enemy Definition ID: 16
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 16
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Diplocephalus (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 16
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 16
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Discus Lord (Rare Drop):
-    Data:
-      - Enemy Definition ID: 77
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 77
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Discus Lord (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 77
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 77
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Dodo Bird (Rare Drop):
-    Data:
-      - Enemy Definition ID: 104
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 104
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Dodo Bird (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 104
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 104
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Ectoplasm (Rare Drop):
-    Data:
-      - Enemy Definition ID: 88
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 88
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Ectoplasm (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 88
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 88
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Fire Demon (Rare Drop):
-    Data:
-      - Enemy Definition ID: 79
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 79
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Fire Demon (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 79
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 79
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Fire Warg (Rare Drop):
-    Data:
-      - Enemy Definition ID: 148
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 148
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Fire Warg (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 148
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 148
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Fishhead (Rare Drop):
-    Data:
-      - Enemy Definition ID: 277
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 277
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Fishhead (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 277
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 277
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Flail Guard (Rare Drop):
-    Data:
-      - Enemy Definition ID: 68
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 68
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Flail Guard (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 68
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 68
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Flea Armor (Rare Drop):
-    Data:
-      - Enemy Definition ID: 41
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 41
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Flea Armor (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 41
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 41
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Flea Man (Rare Drop):
-    Data:
-      - Enemy Definition ID: 40
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 40
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Flea Man (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 40
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 40
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Flea Rider (Rare Drop):
-    Data:
-      - Enemy Definition ID: 48
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 48
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Flea Rider (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 48
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 48
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Flying Zombie (Rare Drop):
-    Data:
-      - Enemy Definition ID: 14
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 14
         Property: Rare Item ID
-      - Enemy Definition ID: 15
+      - Type: Enemy Definition
+        Enemy Definition ID: 15
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Flying Zombie (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 14
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 14
         Property: Uncommon Item ID
-      - Enemy Definition ID: 15
+      - Type: Enemy Definition
+        Enemy Definition ID: 15
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Frog (Rare Drop):
-    Data:
-      - Enemy Definition ID: 107
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 107
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Frog (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 107
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 107
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Frozen Half (Rare Drop):
-    Data:
-      - Enemy Definition ID: 217
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 217
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Frozen Half (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 217
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 217
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Frozen Shade (Rare Drop):
-    Data:
-      - Enemy Definition ID: 99
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 99
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Frozen Shade (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 99
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 99
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Ghost (Rare Drop):
-    Data:
-      - Enemy Definition ID: 156
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 156
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Ghost (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 156
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 156
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Ghost Dancer (Rare Drop):
-    Data:
-      - Enemy Definition ID: 216
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 216
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Ghost Dancer (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 216
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 216
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Gorgon (Rare Drop):
-    Data:
-      - Enemy Definition ID: 31
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 31
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Gorgon (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 31
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 31
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Grave Keeper (Rare Drop):
-    Data:
-      - Enemy Definition ID: 111
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 111
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Grave Keeper (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 111
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 111
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Gremlin (Rare Drop):
-    Data:
-      - Enemy Definition ID: 225
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 225
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Gremlin (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 225
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 225
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Guardian (Rare Drop):
-    Data:
-      - Enemy Definition ID: 396
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 396
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Guardian (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 396
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 396
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Gurkha (Rare Drop):
-    Data:
-      - Enemy Definition ID: 188
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 188
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Gurkha (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 188
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 188
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Hammer (Rare Drop):
-    Data:
-      - Enemy Definition ID: 186
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 186
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Hammer (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 186
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 186
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Harpy (Rare Drop):
-    Data:
-      - Enemy Definition ID: 239
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 239
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Harpy (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 239
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 239
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Hellfire Beast (Rare Drop):
-    Data:
-      - Enemy Definition ID: 71
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 71
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Hellfire Beast (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 71
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 71
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Hunting Girl (Rare Drop):
-    Data:
-      - Enemy Definition ID: 227
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 227
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Hunting Girl (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 227
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 227
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Imp (Rare Drop):
-    Data:
-      - Enemy Definition ID: 284
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 284
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Imp (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 284
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 284
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Jack O'Bones (Rare Drop):
-    Data:
-      - Enemy Definition ID: 116
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 116
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Jack O'Bones (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 116
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 116
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Karasuman (Rare Drop):
-    Data:
-      - Enemy Definition ID: 280
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 280
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Karasuman (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 280
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 280
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Killer Fish (Rare Drop):
-    Data:
-      - Enemy Definition ID: 350
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 350
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Killer Fish (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 350
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 350
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Lesser Demon (Rare Drop):
-    Data:
-      - Enemy Definition ID: 23
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 23
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Lesser Demon (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 23
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 23
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Lion (Rare Drop):
-    Data:
-      - Enemy Definition ID: 262
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 262
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Lion (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 262
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 262
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Lossoth (Rare Drop):
-    Data:
-      - Enemy Definition ID: 131
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 131
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Lossoth (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 131
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 131
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Magic Tome (Rare Drop):
-    Data:
-      - Enemy Definition ID: 251
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 251
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Magic Tome (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 251
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 251
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Malachi (Rare Drop):
-    Data:
-      - Enemy Definition ID: 236
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 236
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Malachi (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 236
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 236
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Marionette (Rare Drop):
-    Data:
-      - Enemy Definition ID: 49
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 49
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Marionette (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 49
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 49
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Medusa Head (Rare Drop):
-    Data:
-      - Enemy Definition ID: 303
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 303
         Property: Rare Item ID
-      - Enemy Definition ID: 304
+      - Type: Enemy Definition
+        Enemy Definition ID: 304
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Medusa Head (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 303
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 303
         Property: Uncommon Item ID
-      - Enemy Definition ID: 304
+      - Type: Enemy Definition
+        Enemy Definition ID: 304
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Merman (Rare Drop):
-    Data:
-      - Enemy Definition ID: 27
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 27
         Property: Rare Item ID
-      - Enemy Definition ID: 29
+      - Type: Enemy Definition
+        Enemy Definition ID: 29
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Merman (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 27
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 27
         Property: Uncommon Item ID
-      - Enemy Definition ID: 29
+      - Type: Enemy Definition
+        Enemy Definition ID: 29
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Minotaur (Rare Drop):
-    Data:
-      - Enemy Definition ID: 386
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 386
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Minotaur (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 386
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 386
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Nova Skeleton (Rare Drop):
-    Data:
-      - Enemy Definition ID: 126
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 126
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Nova Skeleton (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 126
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 126
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Orobourous (Rare Drop):
-    Data:
-      - Enemy Definition ID: 141
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 141
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Orobourous (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 141
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 141
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Ouija Table (Rare Drop):
-    Data:
-      - Enemy Definition ID: 193
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 193
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Ouija Table (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 193
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 193
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Owl Knight (Rare Drop):
-    Data:
-      - Enemy Definition ID: 20
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 20
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Owl Knight (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 20
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 20
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Paranthropus (Rare Drop):
-    Data:
-      - Enemy Definition ID: 211
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 211
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Paranthropus (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 211
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 211
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Phantom Skull (Rare Drop):
-    Data:
-      - Enemy Definition ID: 67
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 67
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Phantom Skull (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 67
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 67
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Plate Lord (Rare Drop):
-    Data:
-      - Enemy Definition ID: 97
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 97
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Plate Lord (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 97
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 97
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Poltergeist (Rare Drop):
-    Data:
-      - Enemy Definition ID: 130
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 130
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Poltergeist (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 130
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 130
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Puppet Sword (Rare Drop):
-    Data:
-      - Enemy Definition ID: 137
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 137
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Puppet Sword (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 137
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 137
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Rock Knight (Rare Drop):
-    Data:
-      - Enemy Definition ID: 167
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 167
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Rock Knight (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 167
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 167
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Salem Witch (Rare Drop):
-    Data:
-      - Enemy Definition ID: 221
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 221
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Salem Witch (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 221
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 221
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Salome (Rare Drop):
-    Data:
-      - Enemy Definition ID: 229
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 229
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Salome (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 229
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 229
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Scarecrow (Rare Drop):
-    Data:
-      - Enemy Definition ID: 322
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 322
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Scarecrow (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 322
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 322
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Schmoo (Rare Drop):
-    Data:
-      - Enemy Definition ID: 323
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 323
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Schmoo (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 323
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 323
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Shield (Rare Drop):
-    Data:
-      - Enemy Definition ID: 140
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 140
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Shield (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 140
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 140
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Skelerang (Rare Drop):
-    Data:
-      - Enemy Definition ID: 11
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 11
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Skelerang (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 11
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 11
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Skeleton (Rare Drop):
-    Data:
-      - Enemy Definition ID: 75
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 75
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Skeleton (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 75
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 75
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Skeleton Ape (Rare Drop):
-    Data:
-      - Enemy Definition ID: 83
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 83
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Skeleton Ape (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 83
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 83
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Skull (Rare Drop):
-    Data:
-      - Enemy Definition ID: 121
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 121
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Skull (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 121
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 121
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Skull Lord (Rare Drop):
-    Data:
-      - Enemy Definition ID: 261
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 261
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Skull Lord (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 261
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 261
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Slinger (Rare Drop):
-    Data:
-      - Enemy Definition ID: 178
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 178
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Slinger (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 178
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 178
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Sniper of Goth (Rare Drop):
-    Data:
-      - Enemy Definition ID: 195
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 195
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Sniper of Goth (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 195
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 195
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Spear (Rare Drop):
-    Data:
-      - Enemy Definition ID: 139
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 139
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Spear (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 139
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 139
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Spear Guard (Rare Drop):
-    Data:
-      - Enemy Definition ID: 93
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 93
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Spear Guard (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 93
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 93
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Spectral Sword, Type A (Rare Drop):
-    Data:
-      - Enemy Definition ID: 129
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 129
         Property: Rare Item ID
-      - Enemy Definition ID: 136
+      - Type: Enemy Definition
+        Enemy Definition ID: 136
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Spectral Sword, Type A (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 129
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 129
         Property: Uncommon Item ID
-      - Enemy Definition ID: 136
+      - Type: Enemy Definition
+        Enemy Definition ID: 136
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Spectral Sword, Type B (Rare Drop):
-    Data:
-      - Enemy Definition ID: 138
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 138
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Spectral Sword, Type B (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 138
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 138
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Spellbook (Rare Drop):
-    Data:
-      - Enemy Definition ID: 247
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 247
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Spellbook (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 247
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 247
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Spiked Ball (Rare Drop):
-    Data:
-      - Enemy Definition ID: 185
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 185
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Spiked Ball (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 185
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 185
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Stone Rose (Rare Drop):
-    Data:
-      - Enemy Definition ID: 85
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 85
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Stone Rose (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 85
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 85
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Sword Lord (Rare Drop):
-    Data:
-      - Enemy Definition ID: 9
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 9
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Sword Lord (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 9
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 9
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Thornweed (Rare Drop):
-    Data:
-      - Enemy Definition ID: 157
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 157
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Thornweed (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 157
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 157
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Tin Man (Rare Drop):
-    Data:
-      - Enemy Definition ID: 264
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 264
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Tin Man (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 264
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 264
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Toad (Rare Drop):
-    Data:
-      - Enemy Definition ID: 106
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 106
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Toad (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 106
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 106
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Tombstone (Rare Drop):
-    Data:
-      - Enemy Definition ID: 113
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 113
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Tombstone (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 113
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 113
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Valhalla Knight (Rare Drop):
-    Data:
-      - Enemy Definition ID: 133
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 133
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Valhalla Knight (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 133
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 133
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Vandal Sword (Rare Drop):
-    Data:
-      - Enemy Definition ID: 228
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 228
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Vandal Sword (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 228
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 228
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Venus Weed (Rare Drop):
-    Data:
-      - Enemy Definition ID: 161
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 161
         Property: Rare Item ID
-      - Enemy Definition ID: 162
+      - Type: Enemy Definition
+        Enemy Definition ID: 162
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Venus Weed (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 161
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 161
         Property: Uncommon Item ID
-      - Enemy Definition ID: 162
+      - Type: Enemy Definition
+        Enemy Definition ID: 162
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Wereskeleton (Rare Drop):
-    Data:
-      - Enemy Definition ID: 61
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 61
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Wereskeleton (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 61
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 61
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Werewolf (Rare Drop):
-    Data:
-      - Enemy Definition ID: 389
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 389
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Werewolf (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 389
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 389
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Winged Guard (Rare Drop):
-    Data:
-      - Enemy Definition ID: 128
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 128
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Winged Guard (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 128
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 128
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Yorick (Rare Drop):
-    Data:
-      - Enemy Definition ID: 120
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 120
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Yorick (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 120
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 120
         Property: Uncommon Item ID
-    Type: Enemy Definition
   Enemy - Zombie (Rare Drop):
-    Data:
-      - Enemy Definition ID: 110
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 110
         Property: Rare Item ID
-    Type: Enemy Definition
   Enemy - Zombie (Uncommon Drop):
-    Data:
-      - Enemy Definition ID: 110
+    Item Data:
+      - Type: Enemy Definition
+        Enemy Definition ID: 110
         Property: Uncommon Item ID
-    Type: Enemy Definition
-  Location - Jewel of Open:
-    Type: Shop Purchase Option
-    Data:
-      - Constant: Shop Relic IDs
-        Shop Index: 0
-  Location - Bat Card:
-    Type: Breakable Container Drop
-    Data:
-      - Constant: Breakable Container Drops
-        Drop Index: 2
-  Location - Cube of Zoe:
-    Type: Object Layout
-    Data:
-      - Stage: Castle Entrance
-        Room: Castle Entrance, Cube of Zoe Room
-        Object Layout ID: 5
-      - Stage: Castle Entrance Revisited
-        Room: Castle Entrance Revisited, Cube of Zoe Room
-        Object Layout ID: 4
-  Location - Demon Card:
-    Type: Object Layout
-    Data:
-      - Stage: Abandoned Mine
-        Room: Abandoned Mine, Demon Card Room
-        Object Layout ID: 0
-  Location - Form of Mist:
-    Type: Object Layout
-    Data:
-      - Stage: Colosseum
-        Room: Colosseum, Top of Elevator Shaft
-        Object Layout ID: 6
-  Location - Power of Mist:
-    Type: Object Layout
-    Data:
-      - Stage: Castle Keep
-        Room: Castle Keep, Keep Area
-        Object Layout ID: 11
-  Location - Ghost Card:
-    Type: Object Layout
-    Data:
-      - Stage: Castle Keep
-        Room: Castle Keep, Ghost Card Room
-        Object Layout ID: 5
-  Location - Gravity Boots:
-    Type: Object Layout
-    Data:
-      - Stage: Marble Gallery
-        Room: Marble Gallery, Gravity Boots Room
-        Object Layout ID: 3
-  Location - Leap Stone:
-    Type: Object Layout
-    Data:
-      - Stage: Castle Keep
-        Room: Castle Keep, Keep Area
-        Object Layout ID: 12
-  Location - Fire of Bat:
-    Type: Object Layout
-    Data:
-      - Stage: Clock Tower
-        Room: Clock Tower, Fire of Bat Room
-        Object Layout ID: 1
-  Location - Power of Wolf:
-    Type: Object Layout
-    Data:
-      - Stage: Castle Entrance
-        Room: Castle Entrance, After Drawbridge
-        Object Layout ID: 9
-      - Stage: Castle Entrance Revisited
-        Room: Castle Entrance Revisited, After Drawbridge
-        Object Layout ID: 11
-  Location - Soul of Bat:
-    Type: Object Layout
-    Data:
-      - Stage: Long Library
-        Room: Long Library, Lesser Demon Area
-        Object Layout ID: 30
-        Notes:
-          - If this location is turned into an item, Long Library needs another item slot to store it
-  Location - Faerie Card:
-    Type: Object Layout
-    Data:
-      - Stage: Long Library
-        Room: Long Library, Faerie Card Room
-        Object Layout ID: 0
-  Location - Faerie Scroll:
-    Type: Object Layout
-    Data:
-      - Stage: Long Library
-        Room: Long Library, Spellbook Area
-        Object Layout ID: 38
-  Location - Skill of Wolf:
-    Type: Breakable Container Drop
-    Data:
-      - Constant: Breakable Container Drops
-        Drop Index: 3
-  Location - Soul of Wolf:
-    Type: Object Layout
-    Data:
-      - Stage: Outer Wall
-        Room: Outer Wall, Elevator Shaft Room
-        Object Layout ID: 55
-  Location - Spirit Orb:
-    Type: Object Layout
-    Data:
-      - Stage: Marble Gallery
-        Room: Marble Gallery, Spirit Orb Room
-        Object Layout ID: 8
-  Location - Echo of Bat:
-    Type: Object Layout
-    Data:
-      - Stage: Olrox's Quarters
-        Room: Olrox's Quarters, Echo of Bat Room
-        Object Layout ID: 2
-  Location - Sword Card:
-    Type: Object Layout
-    Data:
-      - Stage: Olrox's Quarters
-        Room: Olrox's Quarters, Sword Card Room
-        Object Layout ID: 0
-  Location - Holy Symbol:
-    Type: Object Layout
-    Data:
-      - Stage: Underground Caverns
-        Room: Underground Caverns, Holy Symbol Room
-        Object Layout ID: 2
-  Location - Merman Statue:
-    Type: Object Layout
-    Data:
-      - Stage: Underground Caverns
-        Room: Underground Caverns, Merman Statue Room
-        Object Layout ID: 0
   Location - Abandoned Mine, Peanuts Room (Power of Sire):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Abandoned Mine)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Abandoned Mine)
         Item Drop Index: 0
   Location - Abandoned Mine, Karma Coin Room (Karma Coin):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Abandoned Mine)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Abandoned Mine)
         Item Drop Index: 1
+  Location - Abandoned Mine, Demon Card Room (Demon Card):
+    Notes:
+      - The Item Drop Index assigned for this location appears to be unused in the vanilla game
+    Relic Data:
+      - Type: Object Layout
+        Stage: Abandoned Mine
+        Room: Abandoned Mine, Demon Card Room
+        Object Layout ID: 0
+    Item Data:
+      - Type: Object Layout
+        Stage: Abandoned Mine
+        Room: Abandoned Mine, Demon Card Room
+        Object Layout ID: 0
+        Params: 2
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Abandoned Mine)
+        Item Drop Index: 2
   Location - Abandoned Mine, Unused Item Slot 0:
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Abandoned Mine)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Abandoned Mine)
         Item Drop Index: 2
   Location - Abandoned Mine, Snake Column (Turkey):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Abandoned Mine)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Abandoned Mine)
         Item Drop Index: 3
   Location - Abandoned Mine, Snake Column (Ring of Ares):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Abandoned Mine)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Abandoned Mine)
         Item Drop Index: 4
   Location - Abandoned Mine, Karma Coin Room (Combat Knife):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Abandoned Mine)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Abandoned Mine)
         Item Drop Index: 5
   Location - Abandoned Mine, Crumbling Stairwells With Mushrooms (Shiitake 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Abandoned Mine)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Abandoned Mine)
         Item Drop Index: 6
   Location - Abandoned Mine, Crumbling Stairwells With Mushrooms (Shiitake 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Abandoned Mine)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Abandoned Mine)
         Item Drop Index: 7
   Location - Abandoned Mine, Peanuts Room (Barley Tea):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Abandoned Mine)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Abandoned Mine)
         Item Drop Index: 8
   Location - Abandoned Mine, Peanuts Room (Peanuts 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Abandoned Mine)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Abandoned Mine)
         Item Drop Index: 9
   Location - Abandoned Mine, Peanuts Room (Peanuts 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Abandoned Mine)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Abandoned Mine)
         Item Drop Index: 10
   Location - Abandoned Mine, Peanuts Room (Peanuts 3):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Abandoned Mine)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Abandoned Mine)
         Item Drop Index: 11
   Location - Abandoned Mine, Peanuts Room (Peanuts 4):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Abandoned Mine)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Abandoned Mine)
         Item Drop Index: 12
+  Location - Alchemy Laboratory, Bat Card Room (Bat Card):
+    Relic Data:
+      - Type: Breakable Container Drop
+        Constant: Breakable Container Drops
+        Breakable Drop Index: 2
+  Location - Alchemy Laboratory, Skill of Wolf Room (Skill of Wolf):
+    Relic Data:
+      - Type: Breakable Container Drop
+        Constant: Breakable Container Drops
+        Breakable Drop Index: 3
   Location - Alchemy Laboratory, Entryway (Hide Cuirass):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Alchemy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 0
   Location - Alchemy Laboratory, Heart Max-Up Room (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Alchemy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 1
   Location - Alchemy Laboratory, Cloth Cape Room (Cloth Cape):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Alchemy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 2
   Location - Alchemy Laboratory, Secret Life Max-Up Room (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Alchemy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 3
   Location - Alchemy Laboratory, Unused Item Slot 0:
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Alchemy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 4
   Location - Alchemy Laboratory, Unused Item Slot 1:
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Alchemy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 5
   Location - Alchemy Laboratory, Sunglasses Room (Sunglasses):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Alchemy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 6
   Location - Alchemy Laboratory, Short Zig Zag Room (Resist Thunder):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Alchemy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 7
   Location - Alchemy Laboratory, Red Skeleton Lift Room (Leather Shield):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Alchemy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 8
   Location - Alchemy Laboratory, Cannon Room (Basilard):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Alchemy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 9
   Location - Alchemy Laboratory, Exit to Marble Gallery (Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Alchemy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Alchemy Laboratory)
         Item Drop Index: 10
   Location - Anti-Chapel, XXX (Unknown Item 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 0
   Location - Anti-Chapel, XXX (Unknown Item 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 1
   Location - Anti-Chapel, XXX (Fire Boomerang):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 2
   Location - Anti-Chapel, XXX (Diamond):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 3
   Location - Anti-Chapel, XXX (Zircon):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 4
   Location - Anti-Chapel, XXX (Heart Max-Up 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 5
   Location - Anti-Chapel, XXX (Shuriken):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 6
   Location - Anti-Chapel, XXX (TNT):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 7
   Location - Anti-Chapel, XXX (Boomerang):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 8
   Location - Anti-Chapel, XXX (Javelin):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 9
   Location - Anti-Chapel, XXX (Manna Prism):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 10
   Location - Anti-Chapel, XXX (Smart Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 11
   Location - Anti-Chapel, XXX (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 12
   Location - Anti-Chapel, XXX (Talwar):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 13
   Location - Anti-Chapel, XXX (Bwaka Knife):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 14
   Location - Anti-Chapel, XXX (Magic Missile):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 15
   Location - Anti-Chapel, XXX (Twilight Cloak):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 16
   Location - Anti-Chapel, XXX (Heart Max-Up 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Anti-Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Anti-Chapel)
         Item Drop Index: 17
   Location - Black Marble Gallery, S-Shaped Hallways (Library Card):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Black Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Black Marble Gallery)
         Item Drop Index: 0
   Location - Black Marble Gallery, Spirit Orb Room (Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Black Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Black Marble Gallery)
         Item Drop Index: 1
   Location - Black Marble Gallery, Spirit Orb Room (Antivenom):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Black Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Black Marble Gallery)
         Item Drop Index: 2
   Location - Black Marble Gallery, Gravity Boots Room (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Black Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Black Marble Gallery)
         Item Drop Index: 3
   Location - Black Marble Gallery, Gravity Boots Room (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Black Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Black Marble Gallery)
         Item Drop Index: 4
   Location - Black Marble Gallery, Alucart Room (Resist Dark):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Black Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Black Marble Gallery)
         Item Drop Index: 5
   Location - Black Marble Gallery, Alucart Room (Resist Holy):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Black Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Black Marble Gallery)
         Item Drop Index: 6
   Location - Black Marble Gallery, Pathway After Right Statue (Resist Thunder):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Black Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Black Marble Gallery)
         Item Drop Index: 7
   Location - Black Marble Gallery, Pathway After Right Statue (Resist Fire):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Black Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Black Marble Gallery)
         Item Drop Index: 8
   Location - Black Marble Gallery, Blue Door Room (Meal Ticket):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Black Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Black Marble Gallery)
         Item Drop Index: 9
   Location - Black Marble Gallery, Beneath Right Trapdoor (Iron Ball):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Black Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Black Marble Gallery)
         Item Drop Index: 10
   Location - Black Marble Gallery, Pathway After Left Statue (Heart Refresh):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Black Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Black Marble Gallery)
         Item Drop Index: 11
+  Location - Castle Entrance, Cube of Zoe Room (Cube of Zoe):
+    Relic Data:
+      - Type: Object Layout
+        Stage: Castle Entrance
+        Room: Castle Entrance, Cube of Zoe Room
+        Object Layout ID: 5
+      - Type: Object Layout
+        Stage: Castle Entrance Revisited
+        Room: Castle Entrance Revisited, Cube of Zoe Room
+        Object Layout ID: 4
   Location - Castle Entrance, Heart Max-Up Room (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance)
         Item Drop Index: 0
-      - Constant: Unique Item Drops (Castle Entrance Revisited)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 0
   Location - Castle Entrance, Life Max-Up Room (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance)
         Item Drop Index: 1
-      - Constant: Unique Item Drops (Castle Entrance Revisited)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 1
   Location - Castle Entrance, Jewel Sword Room (Life Apple):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance)
         Item Drop Index: 2
-      - Constant: Unique Item Drops (Castle Entrance Revisited)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 2
-  Location - Castle Entrance, Unknown Item Drop 3 (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Entrance)
+  Location - Castle Entrance, After Drawbridge (Power of Wolf):
+    Notes:
+      - The Item Drop Index assigned for this location appears to be unused in the vanilla game
+    Relic Data:
+      - Type: Object Layout
+        Stage: Castle Entrance
+        Room: Castle Entrance, After Drawbridge
+        Object Layout ID: 9
+      - Type: Object Layout
+        Stage: Castle Entrance Revisited
+        Room: Castle Entrance Revisited, After Drawbridge
+        Object Layout ID: 11
+    Item Data:
+      - Type: Object Layout
+        Stage: Castle Entrance
+        Room: Castle Entrance, After Drawbridge
+        Object Layout ID: 9
+        Params: 3
+      - Type: Object Layout
+        Stage: Castle Entrance Revisited
+        Room: Castle Entrance Revisited, After Drawbridge
+        Object Layout ID: 11
+        Params: 3
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance)
         Item Drop Index: 3
-      - Constant: Unique Item Drops (Castle Entrance Revisited)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 3
   Location - Castle Entrance, Cube of Zoe Room (Shield Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance)
         Item Drop Index: 4
-      - Constant: Unique Item Drops (Castle Entrance Revisited)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 4
   Location - Castle Entrance, Holy Mail Room (Holy Mail):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance)
         Item Drop Index: 5
-      - Constant: Unique Item Drops (Castle Entrance Revisited)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 5
   Location - Castle Entrance, Shortcut to Underground Caverns (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance)
         Item Drop Index: 6
-      - Constant: Unique Item Drops (Castle Entrance Revisited)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 6
   Location - Castle Entrance, Shortcut to Warp Rooms (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance)
         Item Drop Index: 7
-      - Constant: Unique Item Drops (Castle Entrance Revisited)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 7
   Location - Castle Entrance, After Drawbridge (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance)
         Item Drop Index: 8
-      - Constant: Unique Item Drops (Castle Entrance Revisited)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 8
   Location - Castle Entrance, Jewel Sword Room (Jewel Sword):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance)
         Item Drop Index: 9
-      - Constant: Unique Item Drops (Castle Entrance Revisited)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Entrance Revisited)
         Item Drop Index: 9
+  Location - Castle Keep, Keep Area (Leap Stone):
+    Relic Data:
+      - Type: Object Layout
+        Stage: Castle Keep
+        Room: Castle Keep, Keep Area
+        Object Layout ID: 12
   Location - Castle Keep, Keep Area (Turquoise):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 0
   Location - Castle Keep, Unknown Item Drop 1 (Turkey):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 1
   Location - Castle Keep, Keep Area (Fire Mail):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 2
   Location - Castle Keep, Tyrfing Room (Tyrfing):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 3
   Location - Castle Keep, Upper Attic (Sirloin):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 4
   Location - Castle Keep, Unknown Item Drop 5 (Turkey):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 5
   Location - Castle Keep, Upper Attic (Pot Roast):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 6
   Location - Castle Keep, Upper Attic (Frankfurter):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 7
   Location - Castle Keep, Upper Attic (Resist Stone):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 8
   Location - Castle Keep, Upper Attic (Resist Dark):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 9
   Location - Castle Keep, Upper Attic (Resist Holy):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 10
   Location - Castle Keep, Upper Attic (Platinum Mail):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 11
   Location - Castle Keep, Falchion Room (Falchion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 12
   Location - Castle Keep, Ghost Card Room (Life Max-Up 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 13
   Location - Castle Keep, Ghost Card Room (Life Max-Up 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 14
   Location - Castle Keep, Ghost Card Room (Heart Max-Up 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 15
   Location - Castle Keep, Ghost Card Room (Heart Max-Up 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 16
-  Location - Castle Keep, Unknown Item Drop 17 (Cat-Eye Circlet):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+  Location - Castle Keep, Keep Area (Power of Mist):
+    Notes:
+      - The Item Drop Index assigned for this location appears to be unused in the vanilla game
+    Relic Data:
+      - Type: Object Layout
+        Stage: Castle Keep
+        Room: Castle Keep, Keep Area
+        Object Layout ID: 11
+    Item Data:
+      - Type: Object Layout
+        Stage: Castle Keep
+        Room: Castle Keep, Keep Area
+        Object Layout ID: 11
+        Params: 17
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 17
   Location - Castle Keep, Keep Area (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Castle Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
         Item Drop Index: 18
+  Location - Castle Keep, Ghost Card Room (Ghost Card):
+    Notes:
+      - The Item Drop Index assigned for this location appears to be unused in the vanilla game
+    Relic Data:
+      - Type: Object Layout
+        Stage: Castle Keep
+        Room: Castle Keep, Ghost Card Room
+        Object Layout ID: 5
+    Item Data:
+      - Type: Object Layout
+        Stage: Castle Keep
+        Room: Castle Keep, Ghost Card Room
+        Object Layout ID: 5
+        Params: 19
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Castle Keep)
+        Item Drop Index: 19
   Location - Catacombs, Cat-Eye Circlet Room (Cat-Eye Circlet):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 0
   Location - Catacombs, Icebrand Room (Icebrand):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 1
   Location - Catacombs, Walk Armor Room (Walk Armor):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 2
   Location - Catacombs, Mormegil Room (Mormegil):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 3
   Location - Catacombs, Spike Breaker Room (Library Card):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 4
   Location - Catacombs, Unknown Item Drop 5 (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 5
   Location - Catacombs, Ballroom Mask Room (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 6
   Location - Catacombs, Ballroom Mask Room (Ballroom Mask):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 7
   Location - Catacombs, Cat-Eye Circlet Room (Bloodstone):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 8
   Location - Catacombs, Room ID 19 (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 9
   Location - Catacombs, Room ID 19 (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 10
   Location - Catacombs, Room ID 25 (Cross Shuriken 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 11
   Location - Catacombs, Room ID 25 (Cross Shuriken 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 12
   Location - Catacombs, Room ID 25 (Karma Coin 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 13
   Location - Catacombs, Room ID 25 (Karma Coin 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 14
   Location - Catacombs, Room ID 26 (Pork Bun):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 15
   Location - Catacombs, Spike Breaker Room (Spike Breaker):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Relic Data:
+      - Type: Object Layout
+        Stage: Catacombs
+        Room: Catacombs, Spike Breaker Room
+        Object Layout ID: 1
+    Item Data:
+      - Type: Object Layout
+        Stage: Catacombs
+        Room: Catacombs, Spike Breaker Room
+        Object Layout ID: 1
+        Params: 16
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 16
   Location - Catacombs, Room ID 20 (Monster Vial 3 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 17
   Location - Catacombs, Room ID 20 (Monster Vial 3 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 18
   Location - Catacombs, Room ID 20 (Monster Vial 3 3):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 19
   Location - Catacombs, Room ID 20 (Monster Vial 3 4):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Catacombs)
         Item Drop Index: 20
   Location - Cave, XXX (Power of Sire 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Cave)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Cave)
         Item Drop Index: 0
   Location - Cave, XXX (Life Apple):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Cave)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Cave)
         Item Drop Index: 1
   Location - Cave, XXX (Alucard Sword):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Cave)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Cave)
         Item Drop Index: 2
   Location - Cave, XXX (Green Tea):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Cave)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Cave)
         Item Drop Index: 3
   Location - Cave, XXX (Power of Sire 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Cave)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Cave)
         Item Drop Index: 4
   Location - Cave, XXX (Unknown Item):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Cave)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Cave)
         Item Drop Index: 5
   Location - Cave, XXX (Shiitake 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Cave)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Cave)
         Item Drop Index: 6
   Location - Cave, XXX (Shiitake 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Cave)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Cave)
         Item Drop Index: 7
   Location - Clock Tower, Open Courtyard (Magic Missile):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Clock Tower)
         Item Drop Index: 0
   Location - Clock Tower, Open Courtyard (Pentagram):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Clock Tower)
         Item Drop Index: 1
-  Location - Clock Tower, Unknown Item Drop 2 (Stone Sword):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Clock Tower)
+  Location - Clock Tower, Fire of Bat Room (Fire of Bat):
+    Notes:
+      - The Item Drop Index assigned for this location appears to be unused in the vanilla game
+    Relic Data:
+      - Type: Object Layout
+        Stage: Clock Tower
+        Room: Clock Tower, Fire of Bat Room
+        Object Layout ID: 1
+    Item Data:
+      - Type: Object Layout
+        Stage: Clock Tower
+        Room: Clock Tower, Fire of Bat Room
+        Object Layout ID: 1
+        Params: 2
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Clock Tower)
         Item Drop Index: 2
   Location - Clock Tower, Hidden Armory (Star Flail):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Clock Tower)
         Item Drop Index: 3
   Location - Clock Tower, Hidden Armory (Gold Plate):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Clock Tower)
         Item Drop Index: 4
   Location - Clock Tower, Hidden Armory (Steel Helm):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Clock Tower)
         Item Drop Index: 5
   Location - Clock Tower, Healing Mail Room (Healing Mail):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Clock Tower)
         Item Drop Index: 6
   Location - Clock Tower, Open Courtyard (Bekatowa):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Clock Tower)
         Item Drop Index: 7
   Location - Clock Tower, Open Courtyard (Shaman Shield):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Clock Tower)
         Item Drop Index: 8
   Location - Clock Tower, Open Courtyard (Ice Mail):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Clock Tower)
         Item Drop Index: 9
   Location - Clock Tower, Spire (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Clock Tower)
         Item Drop Index: 10
   Location - Clock Tower, Spire (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Clock Tower)
         Item Drop Index: 11
   Location - Colosseum, Right-Side Armory (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Colosseum)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Colosseum)
         Item Drop Index: 0
   Location - Colosseum, Left-Side Armory (Shield Rod):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Colosseum)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Colosseum)
         Item Drop Index: 1
-  Location - Colosseum, Unknown Item Drop 2 (Moon Rod):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Colosseum)
+  Location - Colosseum, Top of Elevator Shaft (Form of Mist):
+    Notes:
+      - The Item Drop Index assigned for this location appears to be unused in the vanilla game
+    Relic Data:
+      - Type: Object Layout
+        Stage: Colosseum
+        Room: Colosseum, Top of Elevator Shaft
+        Object Layout ID: 6
+    Item Data:
+      - Type: Object Layout
+        Stage: Colosseum
+        Room: Colosseum, Top of Elevator Shaft
+        Object Layout ID: 6
+        Params: 2
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Colosseum)
         Item Drop Index: 2
   Location - Colosseum, Blood Cloak Room (Blood Cloak):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Colosseum)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Colosseum)
         Item Drop Index: 3
   Location - Colosseum, Passageway Between Arena and Royal Chapel (Knight Shield):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Colosseum)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Colosseum)
         Item Drop Index: 4
   Location - Colosseum, Passageway Between Arena and Royal Chapel (Library Card):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Colosseum)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Colosseum)
         Item Drop Index: 5
   Location - Colosseum, Fountain Room (Green Tea):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Colosseum)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Colosseum)
         Item Drop Index: 6
   Location - Colosseum, Holy Sword Room (Holy Sword):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Colosseum)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Colosseum)
         Item Drop Index: 7
   Location - Death Wing's Lair, Secret Onyx Room (Opal):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Death Wing's Lair)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Death Wing's Lair)
         Item Drop Index: 0
   Location - Death Wing's Lair, Secret Onyx Room (Sword of Hador):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Death Wing's Lair)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Death Wing's Lair)
         Item Drop Index: 1
   Location - Death Wing's Lair, Secret Onyx Room (High Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Death Wing's Lair)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Death Wing's Lair)
         Item Drop Index: 2
   Location - Death Wing's Lair, Tall Shaft (Shield Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Death Wing's Lair)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Death Wing's Lair)
         Item Drop Index: 3
   Location - Death Wing's Lair, Tall Shaft (Luck Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Death Wing's Lair)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Death Wing's Lair)
         Item Drop Index: 4
   Location - Death Wing's Lair, Tall Shaft (Manna Prism):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Death Wing's Lair)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Death Wing's Lair)
         Item Drop Index: 5
   Location - Death Wing's Lair, Prison (Aquamarine):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Death Wing's Lair)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Death Wing's Lair)
         Item Drop Index: 6
   Location - Death Wing's Lair, Garnet Room (Alucard Mail):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Death Wing's Lair)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Death Wing's Lair)
         Item Drop Index: 7
   Location - Death Wing's Lair, Catwalk Crypt (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Death Wing's Lair)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Death Wing's Lair)
         Item Drop Index: 8
   Location - Death Wing's Lair, Sword Card Room (Heart Refresh):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Death Wing's Lair)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Death Wing's Lair)
         Item Drop Index: 9
   Location - Death Wing's Lair, Narrow Hallway to Olrox (Shuriken):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Death Wing's Lair)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Death Wing's Lair)
         Item Drop Index: 10
   Location - Death Wing's Lair, Echo of Bat Room (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Death Wing's Lair)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Death Wing's Lair)
         Item Drop Index: 11
   Location - Floating Catacombs, XXX (Magic Missile):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 0
   Location - Floating Catacombs, XXX (Buffalo Star):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 1
   Location - Floating Catacombs, XXX (Resist Thunder):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 2
   Location - Floating Catacombs, XXX (Resist Fire):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 3
   Location - Floating Catacombs, XXX (Karma Coin 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 4
   Location - Floating Catacombs, XXX (Karma Coin 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 5
   Location - Floating Catacombs, XXX (Red Bean Bun):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 6
   Location - Floating Catacombs, XXX (Elixir):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 7
   Location - Floating Catacombs, XXX (Library Card):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 8
   Location - Floating Catacombs, XXX (Life Max-Up 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 9
   Location - Floating Catacombs, XXX (Heart Max-Up 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 10
   Location - Floating Catacombs, XXX (Shield Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 11
   Location - Floating Catacombs, XXX (Attack Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 12
   Location - Floating Catacombs, XXX (Necklace of J):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 13
   Location - Floating Catacombs, XXX (Diamond):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 14
   Location - Floating Catacombs, XXX (Heart Max-Up 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 15
   Location - Floating Catacombs, XXX (Life Max-Up 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 16
   Location - Floating Catacombs, XXX (Ruby Circlet):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Floating Catacombs)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Floating Catacombs)
         Item Drop Index: 17
   Location - Forbidden Library, XXX (Turquoise):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Forbidden Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Forbidden Library)
         Item Drop Index: 0
   Location - Forbidden Library, XXX (Opal):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Forbidden Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Forbidden Library)
         Item Drop Index: 1
   Location - Forbidden Library, XXX (Library Card):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Forbidden Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Forbidden Library)
         Item Drop Index: 2
   Location - Forbidden Library, XXX (Resist Fire):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Forbidden Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Forbidden Library)
         Item Drop Index: 3
   Location - Forbidden Library, XXX (Resist Ice):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Forbidden Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Forbidden Library)
         Item Drop Index: 4
   Location - Forbidden Library, XXX (Resist Stone):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Forbidden Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Forbidden Library)
         Item Drop Index: 5
   Location - Forbidden Library, XXX (Neutron Bomb):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Forbidden Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Forbidden Library)
         Item Drop Index: 6
   Location - Forbidden Library, XXX (Badelaire):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Forbidden Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Forbidden Library)
         Item Drop Index: 7
   Location - Forbidden Library, XXX (Staurolite):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Forbidden Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Forbidden Library)
         Item Drop Index: 8
-  Location - Long Library, Unknown Item Drop 0 (Ankh of Life):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Long Library)
+  Location - Long Library, Shop (Jewel of Open):
+    Relic Data:
+      - Type: Shop Purchase Option
+        Constant: Shop Relic IDs
+        Shop Index: 0
+  Location - Long Library, Lesser Demon Area (Soul of Bat):
+    Notes:
+      - The Item Drop Index assigned for this location appears to be unused in the vanilla game
+    Relic Data:
+      - Type: Object Layout
+        Stage: Long Library
+        Room: Long Library, Lesser Demon Area
+        Object Layout ID: 30
+    Item Data:
+      - Type: Object Layout
+        Stage: Long Library
+        Room: Long Library, Lesser Demon Area
+        Object Layout ID: 30
+        Params: 0
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Long Library)
         Item Drop Index: 0
   Location - Long Library, Secret Bookcase Room (Stone Mask):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Long Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Long Library)
         Item Drop Index: 1
   Location - Long Library, Holy Rod Room (Holy Rod):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Long Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Long Library)
         Item Drop Index: 2
-  Location - Long Library, Unknown Item Drop 3 (Knight Shield):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Long Library)
+  Location - Long Library, Faerie Card Room (Faerie Card):
+    Notes:
+      - The Item Drop Index assigned for this location appears to be unused in the vanilla game
+    Relic Data:
+      - Type: Object Layout
+        Stage: Long Library
+        Room: Long Library, Faerie Card Room
+        Object Layout ID: 0
+    Item Data:
+      - Type: Object Layout
+        Stage: Long Library
+        Room: Long Library, Faerie Card Room
+        Object Layout ID: 0
+        Params: 3
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Long Library)
         Item Drop Index: 3
   Location - Long Library, Shop (Bronze Cuirass):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Long Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Long Library)
         Item Drop Index: 4
   Location - Long Library, Lesser Demon Area (Takemitsu):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Long Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Long Library)
         Item Drop Index: 5
   Location - Long Library, Lesser Demon Area (Onyx):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Long Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Long Library)
         Item Drop Index: 6
   Location - Long Library, Lesser Demon Area (Frankfurter):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Long Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Long Library)
         Item Drop Index: 7
   Location - Long Library, Faerie Card Room (Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Long Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Long Library)
         Item Drop Index: 8
   Location - Long Library, Faerie Card Room (Antivenom):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Long Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Long Library)
         Item Drop Index: 9
   Location - Long Library, Holy Rod Room (Topaz Circlet):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Long Library)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Long Library)
         Item Drop Index: 10
+  Location - Long Library, Spellbook Area (Faerie Scroll):
+    Notes:
+      - The Item Drop Index assigned for this location appears to be unused in the vanilla game
+    Relic Data:
+      - Type: Object Layout
+        Stage: Long Library
+        Room: Long Library, Spellbook Area
+        Object Layout ID: 38
+    Item Data:
+      - Type: Object Layout
+        Stage: Long Library
+        Room: Long Library, Spellbook Area
+        Object Layout ID: 38
+        Params: 11
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Long Library)
+        Item Drop Index: 11
+  Location - Marble Gallery, Gravity Boots Room (Gravity Boots):
+    Relic Data:
+      - Type: Object Layout
+        Stage: Marble Gallery
+        Room: Marble Gallery, Gravity Boots Room
+        Object Layout ID: 3
+  Location - Marble Gallery, Spirit Orb Room (Spirit Orb):
+    Relic Data:
+      - Type: Object Layout
+        Stage: Marble Gallery
+        Room: Marble Gallery, Spirit Orb Room
+        Object Layout ID: 8
   Location - Marble Gallery, Pathway After Left Statue (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 0
   Location - Marble Gallery, Pathway After Right Statue (Alucart Shield):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 1
   Location - Marble Gallery, Pathway After Right Statue (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 2
   Location - Marble Gallery, Gravity Boots Room (Life Apple):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 3
   Location - Marble Gallery, Gravity Boots Room (Hammer):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 4
   Location - Marble Gallery, Gravity Boots Room (Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 5
   Location - Marble Gallery, Alucart Room (Alucart Mail):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 6
   Location - Marble Gallery, Alucart Room (Alucart Sword):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 7
   Location - Marble Gallery, Power-Up Room (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 8
   Location - Marble Gallery, Power-Up Room (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 9
   Location - Marble Gallery, Beneath Right Trapdoor (Library Card):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 10
   Location - Marble Gallery, Beneath Right Trapdoor (Attack Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 11
   Location - Marble Gallery, Spirit Orb Room (Hammer):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 12
   Location - Marble Gallery, Spirit Orb Room (Strength Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Marble Gallery)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Marble Gallery)
         Item Drop Index: 13
   Location - Necromancy Laboratory, XXX (Unknown Item):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Necromancy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Necromancy Laboratory)
         Item Drop Index: 0
   Location - Necromancy Laboratory, XXX (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Necromancy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Necromancy Laboratory)
         Item Drop Index: 1
   Location - Necromancy Laboratory, XXX (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Necromancy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Necromancy Laboratory)
         Item Drop Index: 2
   Location - Necromancy Laboratory, XXX (Goddess Shield):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Necromancy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Necromancy Laboratory)
         Item Drop Index: 3
   Location - Necromancy Laboratory, XXX (Manna Prism):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Necromancy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Necromancy Laboratory)
         Item Drop Index: 4
   Location - Necromancy Laboratory, XXX (Katana):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Necromancy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Necromancy Laboratory)
         Item Drop Index: 5
   Location - Necromancy Laboratory, XXX (High Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Necromancy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Necromancy Laboratory)
         Item Drop Index: 6
   Location - Necromancy Laboratory, XXX (Turquoise):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Necromancy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Necromancy Laboratory)
         Item Drop Index: 7
   Location - Necromancy Laboratory, XXX (Ring of Arcana):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Necromancy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Necromancy Laboratory)
         Item Drop Index: 8
   Location - Necromancy Laboratory, XXX (Resist Dark):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Necromancy Laboratory)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Necromancy Laboratory)
         Item Drop Index: 9
-  Location - Olrox's Quarters, Unknown Item Drop 0 (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Olrox's Quarters)
+  Location - Olrox's Quarters, Echo of Bat Room (Echo of Bat):
+    Notes:
+      - The Item Drop Index assigned for this location appears to be unused in the vanilla game
+    Relic Data:
+      - Type: Object Layout
+        Stage: Olrox's Quarters
+        Room: Olrox's Quarters, Echo of Bat Room
+        Object Layout ID: 2
+    Item Data:
+      - Type: Object Layout
+        Stage: Olrox's Quarters
+        Room: Olrox's Quarters, Echo of Bat Room
+        Object Layout ID: 2
+        Params: 0
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Olrox's Quarters)
         Item Drop Index: 0
   Location - Olrox's Quarters, Catwalk Crypt (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Olrox's Quarters)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Olrox's Quarters)
         Item Drop Index: 1
-  Location - Olrox's Quarters, Unknown Item Drop 2 (Pentagram):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Olrox's Quarters)
+  Location - Olrox's Quarters, Sword Card Room (Sword Card):
+    Notes:
+      - The Item Drop Index assigned for this location appears to be unused in the vanilla game
+    Relic Data:
+      - Type: Object Layout
+        Stage: Olrox's Quarters
+        Room: Olrox's Quarters, Sword Card Room
+        Object Layout ID: 0
+    Item Data:
+      - Type: Object Layout
+        Stage: Olrox's Quarters
+        Room: Olrox's Quarters, Sword Card Room
+        Object Layout ID: 0
+        Params: 2
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Olrox's Quarters)
         Item Drop Index: 2
   Location - Olrox's Quarters, Unknown Item Drop 3 (Goddess Shield):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Olrox's Quarters)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Olrox's Quarters)
         Item Drop Index: 3
   Location - Olrox's Quarters, Secret Onyx Room (Broadsword):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Olrox's Quarters)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Olrox's Quarters)
         Item Drop Index: 4
   Location - Olrox's Quarters, Secret Onyx Room (Onyx):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Olrox's Quarters)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Olrox's Quarters)
         Item Drop Index: 5
   Location - Olrox's Quarters, Secret Onyx Room (Cheese):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Olrox's Quarters)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Olrox's Quarters)
         Item Drop Index: 6
   Location - Olrox's Quarters, Tall Shaft (Manna Prism):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Olrox's Quarters)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Olrox's Quarters)
         Item Drop Index: 7
   Location - Olrox's Quarters, Tall Shaft (Resist Fire):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Olrox's Quarters)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Olrox's Quarters)
         Item Drop Index: 8
   Location - Olrox's Quarters, Tall Shaft (Luck Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Olrox's Quarters)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Olrox's Quarters)
         Item Drop Index: 9
   Location - Olrox's Quarters, Prison (Estoc):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Olrox's Quarters)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Olrox's Quarters)
         Item Drop Index: 10
   Location - Olrox's Quarters, Narrow Hallway to Olrox (Iron Ball):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Olrox's Quarters)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Olrox's Quarters)
         Item Drop Index: 11
   Location - Olrox's Quarters, Garnet Room (Garnet):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Olrox's Quarters)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Olrox's Quarters)
         Item Drop Index: 12
   Location - Outer Wall, Jewel Knuckles Room (Jewel Knuckles):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Outer Wall)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Outer Wall)
         Item Drop Index: 0
   Location - Outer Wall, Jewel Knuckles Room (Mirror Cuirass):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Outer Wall)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Outer Wall)
         Item Drop Index: 1
   Location - Outer Wall, Elevator Shaft Room (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Outer Wall)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Outer Wall)
         Item Drop Index: 2
   Location - Outer Wall, Garnet Vase Room (Garnet):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Outer Wall)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Outer Wall)
         Item Drop Index: 3
   Location - Outer Wall, Gladius Room (Gladius):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Outer Wall)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Outer Wall)
         Item Drop Index: 4
   Location - Outer Wall, Elevator Shaft Room (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Outer Wall)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Outer Wall)
         Item Drop Index: 5
   Location - Outer Wall, Exit to Marble Gallery (Zircon):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Outer Wall)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Outer Wall)
         Item Drop Index: 6
+  Location - Outer Wall, Elevator Shaft Room (Soul of Wolf):
+    Notes:
+      - The Item Drop Index assigned for this location appears to be unused in the vanilla game
+    Relic Data:
+      - Type: Object Layout
+        Stage: Outer Wall
+        Room: Outer Wall, Elevator Shaft Room
+        Object Layout ID: 55
+    Item Data:
+      - Type: Object Layout
+        Stage: Outer Wall
+        Room: Outer Wall, Elevator Shaft Room
+        Object Layout ID: 55
+        Params: 7
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Outer Wall)
+        Item Drop Index: 7
   Location - Reverse Caverns, XXX (Alucard Shield):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 0
   Location - Reverse Caverns, Item Drop 1 (Shiitake):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 1
   Location - Reverse Caverns, XXX (Toadstool):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 2
   Location - Reverse Caverns, Item Drop 3 (Shiitake):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 3
   Location - Reverse Caverns, XXX (Garnet):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 4
   Location - Reverse Caverns, XXX (Bat Pentagram):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 5
   Location - Reverse Caverns, Item Drop 6 (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 6
   Location - Reverse Caverns, Item Drop 7 (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 7
   Location - Reverse Caverns, XXX (Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 8
   Location - Reverse Caverns, Item Drop 9 (Shiitake):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 9
   Location - Reverse Caverns, Item Drop 10 (Shiitake):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 10
   Location - Reverse Caverns, XXX (Opal):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 11
   Location - Reverse Caverns, Item Drop 12 (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 12
   Location - Reverse Caverns, XXX (Diamond):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 13
   Location - Reverse Caverns, Item Drop 14 (Zircon):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 14
   Location - Reverse Caverns, Item Drop 15 (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 15
   Location - Reverse Caverns, Item Drop 16 (Meal Ticket):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 16
   Location - Reverse Caverns, Item Drop 17 (Meal Ticket):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 17
   Location - Reverse Caverns, Item Drop 18 (Meal Ticket):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 18
   Location - Reverse Caverns, Item Drop 19 (Meal Ticket):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 19
   Location - Reverse Caverns, Item Drop 20 (Meal Ticket):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 20
   Location - Reverse Caverns, Item Drop 21 (Zircon):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 21
   Location - Reverse Caverns, XXX (Pot Roast):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 22
   Location - Reverse Caverns, XXX (Dark Blade):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 23
   Location - Reverse Caverns, XXX (Manna Prism):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 24
   Location - Reverse Caverns, XXX (Elixir):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 25
   Location - Reverse Caverns, XXX (Osafune Katana):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Caverns)
         Item Drop Index: 26
   Location - Reverse Clock Tower, XXX (Magic Missile):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Clock Tower)
         Item Drop Index: 0
   Location - Reverse Clock Tower, XXX (Karma Coin):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Clock Tower)
         Item Drop Index: 1
   Location - Reverse Clock Tower, XXX (Strength Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Clock Tower)
         Item Drop Index: 2
   Location - Reverse Clock Tower, XXX (Luminus):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Clock Tower)
         Item Drop Index: 3
   Location - Reverse Clock Tower, XXX (Smart Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Clock Tower)
         Item Drop Index: 4
   Location - Reverse Clock Tower, XXX (Dragon Helm):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Clock Tower)
         Item Drop Index: 5
   Location - Reverse Clock Tower, XXX (Diamond):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Clock Tower)
         Item Drop Index: 6
   Location - Reverse Clock Tower, XXX (Life Apple):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Clock Tower)
         Item Drop Index: 7
   Location - Reverse Clock Tower, XXX (Sunstone):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Clock Tower)
         Item Drop Index: 8
   Location - Reverse Clock Tower, XXX (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Clock Tower)
         Item Drop Index: 9
   Location - Reverse Clock Tower, XXX (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Clock Tower)
         Item Drop Index: 10
   Location - Reverse Clock Tower, XXX (Moon Rod):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Clock Tower)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Clock Tower)
         Item Drop Index: 11
   Location - Reverse Colosseum, XXX (Fury Plate):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Colosseum)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Colosseum)
         Item Drop Index: 0
   Location - Reverse Colosseum, XXX (Zircon):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Colosseum)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Colosseum)
         Item Drop Index: 1
   Location - Reverse Colosseum, XXX (Buffalo Star):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Colosseum)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Colosseum)
         Item Drop Index: 2
   Location - Reverse Colosseum, XXX (Gram):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Colosseum)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Colosseum)
         Item Drop Index: 3
   Location - Reverse Colosseum, XXX (Aquamarine):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Colosseum)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Colosseum)
         Item Drop Index: 4
   Location - Reverse Colosseum, XXX (Heart Max-Up 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Colosseum)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Colosseum)
         Item Drop Index: 5
   Location - Reverse Colosseum, XXX (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Colosseum)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Colosseum)
         Item Drop Index: 6
   Location - Reverse Colosseum, XXX (Heart Max-Up 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Colosseum)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Colosseum)
         Item Drop Index: 7
   Location - Reverse Entrance, After Drawbridge (Hammer):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Entrance)
         Item Drop Index: 0
   Location - Reverse Entrance, After Drawbridge (Antivenom):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Entrance)
         Item Drop Index: 1
   Location - Reverse Entrance, Warg Hallway (High Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Entrance)
         Item Drop Index: 2
   Location - Reverse Entrance, Cube of Zoe Room (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Entrance)
         Item Drop Index: 3
   Location - Reverse Entrance, Jewel Sword Room (Zircon):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Entrance)
         Item Drop Index: 4
   Location - Reverse Entrance, Jewel Sword Room (Opal):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Entrance)
         Item Drop Index: 5
   Location - Reverse Entrance, Jewel Sword Room (Beryl Circlet):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Entrance)
         Item Drop Index: 6
   Location - Reverse Entrance, Holy Mail Room (Fire Boomerang):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Entrance)
         Item Drop Index: 7
   Location - Reverse Entrance, Heart Max-Up Room (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Entrance)
         Item Drop Index: 8
   Location - Reverse Entrance, Life Max-Up Room (Talisman):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Entrance)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Entrance)
         Item Drop Index: 9
   Location - Reverse Keep, XXX (Sword of Dawn):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 0
   Location - Reverse Keep, XXX (Iron Ball):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 1
   Location - Reverse Keep, XXX (Zircon):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 2
   Location - Reverse Keep, XXX (Unknown Item 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 3
   Location - Reverse Keep, XXX (Bastard Sword):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 4
   Location - Reverse Keep, XXX (Life Max-Up 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 5
   Location - Reverse Keep, XXX (Heart Max-Up 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 6
   Location - Reverse Keep, XXX (Life Max-Up 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 7
   Location - Reverse Keep, XXX (Heart Max-Up 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 8
   Location - Reverse Keep, XXX (Life Max-Up 3):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 9
   Location - Reverse Keep, XXX (Heart Max-Up 3):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 10
   Location - Reverse Keep, XXX (Royal Cloak):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 11
   Location - Reverse Keep, XXX (Unknown Item 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 12
   Location - Reverse Keep, XXX (Unknown Item 3):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 13
   Location - Reverse Keep, XXX (Unknown Item 4):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 14
   Location - Reverse Keep, XXX (Unknown Item 5):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 15
   Location - Reverse Keep, XXX (Unknown Item 6):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 16
   Location - Reverse Keep, XXX (Resist Fire):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 17
   Location - Reverse Keep, XXX (Resist Ice):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 18
   Location - Reverse Keep, XXX (Resist Thunder):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 19
   Location - Reverse Keep, XXX (Resist Stone):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 20
   Location - Reverse Keep, XXX (High Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 21
   Location - Reverse Keep, XXX (Garnet):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 22
   Location - Reverse Keep, XXX (Lightning Mail):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 23
   Location - Reverse Keep, XXX (Library Card):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Keep)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Keep)
         Item Drop Index: 24
   Location - Reverse Outer Wall, Lower Medusa Room (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Outer Wall)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Outer Wall)
         Item Drop Index: 0
   Location - Reverse Outer Wall, Jewel Knuckles Room (Shotel):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Outer Wall)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Outer Wall)
         Item Drop Index: 1
   Location - Reverse Outer Wall, Jewel Knuckles Room (Hammer):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Outer Wall)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Outer Wall)
         Item Drop Index: 2
   Location - Reverse Outer Wall, Exit to Marble Gallery (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Outer Wall)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Outer Wall)
         Item Drop Index: 3
   Location - Reverse Outer Wall, Garnet Vase Room (Luck Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Outer Wall)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Outer Wall)
         Item Drop Index: 4
   Location - Reverse Outer Wall, Gladius Room (Shield Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Outer Wall)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Outer Wall)
         Item Drop Index: 5
   Location - Reverse Outer Wall, Elevator Shaft Room (High Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Outer Wall)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Outer Wall)
         Item Drop Index: 6
   Location - Reverse Outer Wall, Elevator Shaft Room (Garnet):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Reverse Outer Wall)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Reverse Outer Wall)
         Item Drop Index: 7
   Location - Royal Chapel, Chapel Staircase (Ankh of Life):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 0
   Location - Royal Chapel, Chapel Staircase (Morningstar):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 1
   Location - Royal Chapel, Silver Ring Room (Silver Ring):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Relic Data:
+      - Type: Object Layout
+        Stage: Royal Chapel
+        Room: Royal Chapel, Silver Ring Room
+        Object Layout ID: 0
+    Item Data:
+      - Type: Object Layout
+        Stage: Royal Chapel
+        Room: Royal Chapel, Silver Ring Room
+        Object Layout ID: 0
+        Params: 2
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 2
   Location - Royal Chapel, Chapel Staircase (Aquamarine):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 3
   Location - Royal Chapel, Chapel Staircase (Mystic Pendant):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 4
   Location - Royal Chapel, Chapel Staircase (Magic Missile):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 5
   Location - Royal Chapel, Chapel Staircase (Shuriken):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 6
   Location - Royal Chapel, Chapel Staircase (TNT):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 7
   Location - Royal Chapel, Chapel Staircase (Boomerang):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 8
   Location - Royal Chapel, Goggles Room (Goggles):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 9
   Location - Royal Chapel, Left Tower (Silver Plate):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 10
   Location - Royal Chapel, Left Tower (Strength Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 11
   Location - Royal Chapel, Left Tower (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 12
   Location - Royal Chapel, Middle Tower (Zircon):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 13
   Location - Royal Chapel, Right Tower (Cutlass):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 14
   Location - Royal Chapel, Right Tower (Potion):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Royal Chapel)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Royal Chapel)
         Item Drop Index: 15
   Location - Underground Caverns, Plaque Room With Breakable Wall and Left Ferryman Route (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 0
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 0
   Location - Underground Caverns, Plaque Room With Life Max-Up (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 1
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 1
   Location - Underground Caverns, Crystal Cloak Room (Crystal Cloak):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 2
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 2
-  Location - Underground Caverns, Unknown Item Drop 3 (Unknown Item):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+  Location - Underground Caverns, Holy Symbol Room (Holy Symbol):
+    Relic Data:
+      - Type: Object Layout
+        Stage: Underground Caverns
+        Room: Underground Caverns, Holy Symbol Room
+        Object Layout ID: 2
+    Item Data:
+      - Type: Object Layout
+        Stage: Underground Caverns
+        Room: Underground Caverns, Holy Symbol Room
+        Object Layout ID: 2
+        Params: 3
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 3
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 3
   Location - Underground Caverns, Ice Floe Room (Antivenom):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 4
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 4
   Location - Underground Caverns, Ice Floe Room (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 5
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 5
   Location - Underground Caverns, Room ID 18 (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 6
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 6
   Location - Underground Caverns, DK Button (Herald Shield):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 7
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 7
-  Location - Underground Caverns, Unknown Item Drop 8 (Unknown Item):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+  Location - Underground Caverns, Merman Statue Room (Merman Statue):
+    Relic Data:
+      - Type: Object Layout
+        Stage: Underground Caverns
+        Room: Underground Caverns, Merman Statue Room
+        Object Layout ID: 0
+    Item Data:
+      - Type: Object Layout
+        Stage: Underground Caverns
+        Room: Underground Caverns, Merman Statue Room
+        Object Layout ID: 0
+        Params: 8
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 8
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 8
   Location - Underground Caverns, Long Drop (Zircon):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 9
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 9
   Location - Underground Caverns, False Save Room (Gold Ring):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 10
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 10
   Location - Underground Caverns, Bandanna Room (Bandanna):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 11
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 11
   Location - Underground Caverns, Tall Stairwell (Shiitake):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 12
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 12
   Location - Underground Caverns, Claymore Stairwell (Claymore):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 13
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 13
   Location - Underground Caverns, Meal Tickets and Moonstone Room (Meal Ticket 1):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 14
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 14
   Location - Underground Caverns, Meal Tickets and Moonstone Room (Meal Ticket 2):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 15
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 15
   Location - Underground Caverns, Meal Tickets and Moonstone Room (Meal Ticket 3):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 16
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 16
   Location - Underground Caverns, Meal Tickets and Moonstone Room (Meal Ticket 4):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 17
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 17
   Location - Underground Caverns, Meal Tickets and Moonstone Room (Moonstone):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 18
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 18
   Location - Underground Caverns, Rising Water Room (Scimitar):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 19
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 19
   Location - Underground Caverns, Rising Water Room (Resist Ice):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 20
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 20
   Location - Underground Caverns, Scylla Room (Pot Roast):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 21
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 21
   Location - Underground Caverns, Right Ferryman Route (Onyx):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 22
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 22
   Location - Underground Caverns, Right Ferryman Route (Knuckle Duster):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 23
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 23
   Location - Underground Caverns, Right Ferryman Route (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 24
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 24
   Location - Underground Caverns, Right Ferryman Route (Elixir):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 25
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 25
   Location - Underground Caverns, Ice Floe Room (Shiitake):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 26
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 26
   Location - Underground Caverns, Ice Floe Room (Toadstool):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Underground Caverns)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
+        Item Drop Index: 27
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 27
   Location - Underground Caverns, DK Bridge (Life Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 28
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 28
   Location - Underground Caverns, DK Bridge (Heart Max-Up):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 29
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 29
   Location - Underground Caverns, Pentagram Room (Pentagram):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 30
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 30
   Location - Underground Caverns, Waterfall (Secret Boots):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 31
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 31
   Location - Underground Caverns, Waterfall (Toadstool):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 32
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 32
   Location - Underground Caverns, Waterfall (Shiitake):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 33
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 33
   Location - Underground Caverns, Unknown Item Drop 34 (Unknown Item):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 34
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 34
   Location - Underground Caverns, Exit to Castle Entrance (Shiitake):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 35
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 35
   Location - Underground Caverns, Ice Floe Room (Nunchaku):
-    Type: Stage Item Drop
-    Data:
-      - Constant: Unique Item Drops (Boss - Scylla)
+    Item Data:
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Boss - Scylla)
         Item Drop Index: 36
-      - Constant: Unique Item Drops (Underground Caverns)
+      - Type: Stage Item Drop
+        Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 36
 Entities:
+  Item - Spike Breaker:
+    Entity Type ID: 12
+    Label: Spike Breaker
+  Item - Silver Ring:
+    Entity Type ID: 12
+    Label: Silver Ring
+  Item - Gold Ring:
+    Entity Type ID: 12
+    Label: Gold Ring
   Relic - Soul of Bat:
     Entity Type ID: 11
     Params: 0
