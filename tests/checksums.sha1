@@ -1,4 +1,3 @@
-cd19a19dcf0d00a2ed1f81b187413b4c1f2afc49 *build/ppf/allow-items-in-relic-locations.ppf
 0da2a4807f7913796585e9eed393925bb6353740 *build/ppf/assign-power-of-wolf-relic-a-unique-id.ppf
 15d410ef25bec8941099be0aa33a9e4dc1da3e0e *build/ppf/clock-hands-mod.ppf
 4bed16166ab695d3a9d584735e3e50af0931736a *build/ppf/customized-castle-map-reveals.ppf
@@ -6,13 +5,14 @@ acffe21a5576c6d448088299dce6f9c450740e4c *build/ppf/customized-color-palettes.pp
 86273332910759b6db2ff29d10587639c5c39fe1 *build/ppf/customized-enemy-drops.ppf
 1b4e959023df1a446ed025a6aa577055face0067 *build/ppf/disable-clipping-on-one-way-walls.ppf
 cc27ae98f9fe9bf8231da2eb3081224085b63206 *build/ppf/enable-debug-mode.ppf
-bf800518a2d8baa69c92795271860656d3629514 *build/ppf/fix-secret-room-map-pixels.ppf
+87d5418170699927c4c6290f5ca4006051319568 *build/ppf/fix-secret-room-map-pixels.ppf
+bb2edc1f7e08662b4df7e3e726067d8924341e23 *build/ppf/mix-items-and-relics.ppf
 28188d6d4d07775e11d29101d4150c911b13cb49 *build/ppf/monochrome-castle-map.ppf
 858ede9278769d531886ef66798ffdaad9c71c95 *build/ppf/normalize-ferryman-gate.ppf
 25aa3e5e94f425cb5014e98d3b693172a36201ce *build/ppf/preserve-map-exploration.ppf
 6f025191bfd7928400369a06a9bf7dd79241619f *build/ppf/randomized-items.ppf
 29ab1a198cd8ce17d75f0bc58a8db1a760dda4f2 *build/ppf/randomized-relics.ppf
-4423ba310187aa33c7e122b1f22d6bff14c674f3 *build/ppf/sample-randomized-map.ppf
+41397e9091a3f4dbac39e20b02d63367a787f1da *build/ppf/sample-randomized-map.ppf
 0a52d52ed1d6c329d084f047918db748ec598316 *build/ppf/shop-relic-name.ppf
 5cad450299828d41629acc3034725fac76bece05 *build/ppf/shuffle-spike-room.ppf
 c96689a0b764fd1c5eca85100bcf1291d89aef53 *build/ppf/softlock-in-alchemy-lab-maria-cutscene.ppf

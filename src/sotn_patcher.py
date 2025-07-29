@@ -832,7 +832,7 @@ def get_patch(extract, changes, data):
                                     object_meta['Fields']['Room Y']['Type'],
                                     sotn_address.Address(offset),
                                 )
-                    elif dependent['Type'] == 'Constant':
+                    elif dependent['Type'] == 'Direct Write':
                         values = {
                             'Top': top,
                             'Left': left,
@@ -844,7 +844,6 @@ def get_patch(extract, changes, data):
                                 value *= int(operand)
                             elif mnemonic == 'add':
                                 value += int(operand)
-                        print((top, left), (dependent['Address'], dependent['Property']), value)
                         result.patch_value(
                             value,
                             dependent['Data Type'],
@@ -1166,6 +1165,16 @@ def get_patch(extract, changes, data):
                 )
                 # https://github.com/Xeeynamo/sotn-decomp/blob/3e18d5e8654cdfd77fbebeabefebb7333c1da98f/src/st/lib/e_shop.c#L1899
                 result.patch_value(0x64 + relic_id, 'u8', sotn_address.Address(0x03E92308))
+            elif data_element['Type'] == 'Direct Write':
+                values = {
+                    'Entity Type ID': aliases['Entities'][reward_name]['Entity Type ID'],
+                    'Params': aliases['Entities'][reward_name]['Params'],
+                }
+                result.patch_value(
+                    values.get(data_element['Property'], 0),
+                    data_element['Data Type'],
+                    sotn_address.Address(data_element['Address']),
+                )
     # Quest Rewards - Part 2
     for ((stage_name, room_name), object_layout) in object_layouts.items():
         horizontal_object_layout = list(sorted(object_layout,

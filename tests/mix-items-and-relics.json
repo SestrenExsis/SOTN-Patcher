@@ -3,21 +3,21 @@
         "Enable debug mode": true
     },
     "Quest Rewards": {
-        "Location - Underground Caverns, False Save Room (Gold Ring)": "Item - Silver Ring",
+        "Location - Underground Caverns, False Save Room (Gold Ring)": "Relic - Demon Card",
         "Location - Royal Chapel, Silver Ring Room (Silver Ring)": "Relic - Spirit Orb",
         "Location - Catacombs, Spike Breaker Room (Spike Breaker)": "Relic - Form of Mist",
         "Location - Abandoned Mine, Demon Card Room (Demon Card)": "Relic - Soul of Wolf",
-        "Location - Castle Entrance, Cube of Zoe Room (Cube of Zoe)": "Relic - Skill of Wolf",
-        "Location - Castle Entrance, After Drawbridge (Power of Wolf)": "Item - Gold Ring",
+        "Location - Castle Entrance, Cube of Zoe Room (Cube of Zoe)": "Relic - Leap Stone",
+        "Location - Castle Entrance, After Drawbridge (Power of Wolf)": "Item - Spike Breaker",
         "Location - Castle Keep, Keep Area (Leap Stone)": "Relic - Jewel of Open",
-        "Location - Colosseum, Top of Elevator Shaft (Form of Mist)": "Item - Spike Breaker",
-        "Location - Long Library, Lesser Demon Area (Soul of Bat)": "Relic - Demon Card",
-        "Location - Marble Gallery, Gravity Boots Room (Gravity Boots)": "Relic - Leap Stone",
+        "Location - Colosseum, Top of Elevator Shaft (Form of Mist)": "Item - Gold Ring",
+        "Location - Long Library, Lesser Demon Area (Soul of Bat)": "Item - Silver Ring",
+        "Location - Marble Gallery, Gravity Boots Room (Gravity Boots)": "Relic - Skill of Wolf",
         "Location - Marble Gallery, Spirit Orb Room (Spirit Orb)": "Relic - Cube of Zoe",
         "Location - Alchemy Laboratory, Skill of Wolf Room (Skill of Wolf)": "Relic - Gravity Boots",
         "Location - Alchemy Laboratory, Bat Card Room (Bat Card)": "Relic - Power of Wolf",
-        "Location - Outer Wall, Elevator Shaft Room (Soul of Wolf)": "Relic - Bat Card",
-        "Location - Long Library, Shop (Jewel of Open)": "Relic - Soul of Bat"
+        "Location - Outer Wall, Elevator Shaft Room (Soul of Wolf)": "Relic - Soul of Bat",
+        "Location - Long Library, Shop (Jewel of Open)": "Relic - Bat Card"
     },
     "Constants": {
         "Message - Richter Mode Instructions 1": "Mix items and relics        ",
