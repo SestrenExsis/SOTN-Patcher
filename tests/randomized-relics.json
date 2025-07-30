@@ -3,18 +3,18 @@
         "Enable debug mode": true
     },
     "Quest Rewards": {
-        "Location - Demon Card": "Relic - Spirit Orb",
-        "Location - Cube of Zoe": "Relic - Jewel of Open",
-        "Location - Power of Wolf": "Relic - Demon Card",
-        "Location - Leap Stone": "Relic - Soul of Wolf",
-        "Location - Form of Mist": "Relic - Power of Wolf",
-        "Location - Soul of Bat": "Relic - Skill of Wolf",
-        "Location - Gravity Boots": "Relic - Leap Stone",
-        "Location - Spirit Orb": "Relic - Cube of Zoe",
-        "Location - Skill of Wolf": "Relic - Gravity Boots",
-        "Location - Bat Card": "Relic - Form of Mist",
-        "Location - Soul of Wolf": "Relic - Bat Card",
-        "Location - Jewel of Open": "Relic - Soul of Bat"
+        "Location - Abandoned Mine, Demon Card Room (Demon Card)": "Relic - Spirit Orb",
+        "Location - Castle Entrance, Cube of Zoe Room (Cube of Zoe)": "Relic - Jewel of Open",
+        "Location - Castle Entrance, After Drawbridge (Power of Wolf)": "Relic - Demon Card",
+        "Location - Castle Keep, Keep Area (Leap Stone)": "Relic - Soul of Wolf",
+        "Location - Colosseum, Top of Elevator Shaft (Form of Mist)": "Relic - Power of Wolf",
+        "Location - Long Library, Lesser Demon Area (Soul of Bat)": "Relic - Skill of Wolf",
+        "Location - Marble Gallery, Gravity Boots Room (Gravity Boots)": "Relic - Leap Stone",
+        "Location - Marble Gallery, Spirit Orb Room (Spirit Orb)": "Relic - Cube of Zoe",
+        "Location - Alchemy Laboratory, Skill of Wolf Room (Skill of Wolf)": "Relic - Gravity Boots",
+        "Location - Alchemy Laboratory, Bat Card Room (Bat Card)": "Relic - Form of Mist",
+        "Location - Outer Wall, Elevator Shaft Room (Soul of Wolf)": "Relic - Bat Card",
+        "Location - Long Library, Shop (Jewel of Open)": "Relic - Soul of Bat"
     },
     "Constants": {
         "Message - Richter Mode Instructions 1": "Randomized relics           ",
