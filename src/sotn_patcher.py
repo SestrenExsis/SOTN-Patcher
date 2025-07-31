@@ -1157,8 +1157,8 @@ def get_patch(extract, changes, data):
             elif data_element['Type'] == 'Direct Write':
                 values = {}
                 if location_name in (
-                    'Enemy - Bone Scimitar, Copper (Guaranteed Drop)',
-                    'Enemy - Bone Scimitar, Green (Guaranteed Drop)',
+                    'Special - Guaranteed Drop (Bone Scimitar, Copper)',
+                    'Special - Guaranteed Drop (Bone Scimitar, Green)',
                 ):
                     drop_id = aliases['Items'][reward_name]
                     assert drop_id >= 0x80 # NOTE(sestren): Only handling equippable items for now
