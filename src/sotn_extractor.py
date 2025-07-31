@@ -856,9 +856,6 @@ if __name__ == '__main__':
             # (0x0009840C, 'Castle map reveal boundary', 'u32') # 0x06082600 --> {0, 26, 8, 6} # Change to 0x40400000???
             # (0x049F761C, 'Stun player when meeting Maria in Alchemy Lab', 'u32'), # 0x34100001 --> ori s0,0,$1 # Change to 0x36100000 --> ori s0,$0
             (0x049F66EC, 'Should skip Maria Alchemy Laboratory', 'u32'), # 0x144002DA --> bne v0,0,$801B8A58 # Change to 0x0806E296 --> j $801B8A58
-            # Hard-coded drops from Bone Scimitars in Castle Entrance
-            (0x041FD8FC, 'Bone Scimitar Item Drop 1', 'u16'), # 0x0013 --> Item - Short Sword
-            (0x041FD900, 'Bone Scimitar Item Drop 2', 'u16'), # 0x001A --> Item - Red Rust
             # Strings
             (0x03ACF0B4, 'Message - Richter Mode Instructions 1', 'string'), # 'Input "RICHTER" to play'
             (0x03ACF0D4, 'Message - Richter Mode Instructions 2', 'string'), # 'as Richter Belmont.'

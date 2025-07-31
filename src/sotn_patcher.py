@@ -1107,17 +1107,6 @@ def get_patch(extract, changes, data):
                         array_extract_meta['Start'] + item_drop_index * array_extract_meta['Size']
                     ),
                 )
-            elif data_element['Type'] == 'Guaranteed Enemy Drop':
-                constant_name = data_element['Constant']
-                constant_extract = extract['Constants'][constant_name]
-                # NOTE(sestren): Subtract 0x80 since item IDs are offset by 0x80 in aliases
-                # TODO(sestren): Standardize item IDs
-                item_id = aliases['Items'][reward_name] - 0x80
-                result.patch_value(
-                    item_id,
-                    constant_extract['Type'],
-                    sotn_address.Address(constant_extract['Start']),
-                )
             elif data_element['Type'] == 'Enemy Definition':
                 enemy_def_id = data_element['Enemy Definition ID']
                 field_name = data_element['Property']
@@ -1166,15 +1155,23 @@ def get_patch(extract, changes, data):
                 # https://github.com/Xeeynamo/sotn-decomp/blob/3e18d5e8654cdfd77fbebeabefebb7333c1da98f/src/st/lib/e_shop.c#L1899
                 result.patch_value(0x64 + relic_id, 'u8', sotn_address.Address(0x03E92308))
             elif data_element['Type'] == 'Direct Write':
-                values = {
-                    'Entity Type ID': aliases['Entities'][reward_name]['Entity Type ID'],
-                    'Params': aliases['Entities'][reward_name]['Params'],
-                }
+                values = {}
+                if location_name in (
+                    'Special - Guaranteed Drop (Bone Scimitar, Copper)',
+                    'Special - Guaranteed Drop (Bone Scimitar, Green)',
+                ):
+                    drop_id = aliases['Items'][reward_name]
+                    assert drop_id >= 0x80 # NOTE(sestren): Only handling equippable items for now
+                    values['Params'] = drop_id - 0x80
+                else:
+                    values['Entity Type ID'] = aliases['Entities'][reward_name]['Entity Type ID']
+                    values['Params'] = aliases['Entities'][reward_name]['Params']
                 result.patch_value(
                     values.get(data_element['Property'], 0),
                     data_element['Data Type'],
                     sotn_address.Address(data_element['Address']),
                 )
+    # TODO(sestren): Instead of checksums for tests, output the address writes for comparison
     # Quest Rewards - Part 2
     for ((stage_name, room_name), object_layout) in object_layouts.items():
         horizontal_object_layout = list(sorted(object_layout,

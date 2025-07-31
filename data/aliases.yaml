@@ -23,12 +23,16 @@ Entity Types:
     Long Library: 58
   Entity - Enemy (Venus Weed):
     Abandoned Mine: 41
+  Entity - Prize Drop:
+    Global: 3
   Entity - Foreground:
     Global: 8
   Entity - Stage Name:
     Global: 9
   Entity - Red Door:
     Global: 5
+  Entity - Equippable Item:
+    Global: 10
   Entity - Relic Orb:
     Global: 11
   Entity - Placed Item:
@@ -513,14 +517,6 @@ Quest Rewards:
       - Type: Enemy Definition
         Enemy Definition ID: 105
         Property: Uncommon Item ID
-  Enemy - Bone Scimitar, Copper (Guaranteed Drop):
-    Item Data:
-      - Type: Guaranteed Enemy Drop
-        Constant: Bone Scimitar Item Drop 2
-  Enemy - Bone Scimitar, Green (Guaranteed Drop):
-    Item Data:
-      - Type: Guaranteed Enemy Drop
-        Constant: Bone Scimitar Item Drop 1
   Enemy - Cave Troll (Rare Drop):
     Item Data:
       - Type: Enemy Definition
@@ -3688,6 +3684,18 @@ Quest Rewards:
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Underground Caverns)
         Item Drop Index: 36
+  Special - Guaranteed Drop (Bone Scimitar, Copper):
+    Item Data:
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x041FD900
+        Property: Params
+  Special - Guaranteed Drop (Bone Scimitar, Green):
+    Item Data:
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x041FD8FC
+        Property: Params
 Entities:
   Item - Spike Breaker:
     Entity Type ID: 12
