@@ -249,6 +249,16 @@ def getID(aliases: dict, path: tuple):
         result = int(result)
     return result
 
+def transformed_value(value, transformations):
+    result = value
+    for transformation in transformations:
+        (mnemonic, operand) = transformation[:-1].split('(')
+        if mnemonic == 'mul':
+            result *= int(operand)
+        elif mnemonic == 'add':
+            result += int(operand)
+    return result
+
 def get_patch(extract, changes, data):
     aliases = data['Aliases']
     result = Patch()
@@ -837,13 +847,10 @@ def get_patch(extract, changes, data):
                             'Top': top,
                             'Left': left,
                         }
-                        value = values.get(dependent['Property'], 0)
-                        for transformation in dependent.get('Transformations', []):
-                            (mnemonic, operand) = transformation[:-1].split('(')
-                            if mnemonic == 'mul':
-                                value *= int(operand)
-                            elif mnemonic == 'add':
-                                value += int(operand)
+                        value = transformed_value(
+                            values.get(dependent['Property'], 0),
+                            dependent.get('Transformations', [])
+                        )
                         result.patch_value(
                             value,
                             dependent['Data Type'],
@@ -1155,19 +1162,15 @@ def get_patch(extract, changes, data):
                 # https://github.com/Xeeynamo/sotn-decomp/blob/3e18d5e8654cdfd77fbebeabefebb7333c1da98f/src/st/lib/e_shop.c#L1899
                 result.patch_value(0x64 + relic_id, 'u8', sotn_address.Address(0x03E92308))
             elif data_element['Type'] == 'Direct Write':
-                values = {}
-                if location_name in (
-                    'Special - Guaranteed Drop (Bone Scimitar, Copper)',
-                    'Special - Guaranteed Drop (Bone Scimitar, Green)',
-                ):
-                    drop_id = aliases['Items'][reward_name]
-                    assert drop_id >= 0x80 # NOTE(sestren): Only handling equippable items for now
-                    values['Params'] = drop_id - 0x80
+                value = 0
+                if data_element['Property'] == 'Item ID':
+                    value = aliases['Items'][reward_name]
                 else:
-                    values['Entity Type ID'] = aliases['Entities'][reward_name]['Entity Type ID']
-                    values['Params'] = aliases['Entities'][reward_name]['Params']
+                    value = aliases['Entities'][reward_name][data_element['Property']]
+                value = transformed_value(value, data_element.get('Transformations', []))
+                assert value >= 0
                 result.patch_value(
-                    values.get(data_element['Property'], 0),
+                    value,
                     data_element['Data Type'],
                     sotn_address.Address(data_element['Address']),
                 )

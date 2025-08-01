@@ -808,6 +808,9 @@ if __name__ == '__main__':
             (0x03E60CD4, 'u16', 2, 'Shop Relic IDs'),
             # Secret Map Tile Reveals
             (0x000983C0, 'u8', 75, 'Secret Map Tile Reveals'),
+            # Death Stolen Items
+            # NOTE(sestren): Unused for now, using direct writes instead
+            # (0x041A92D4, 'u16', 6, 'Death Stolen Items'),
         ):
             # NOTE(sestren): Only handling specific formats for now
             assert data_type in ('u8', 'u16', 's16', 'rgba32')

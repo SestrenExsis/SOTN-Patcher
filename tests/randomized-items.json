@@ -3,8 +3,8 @@
         "Enable debug mode": true
     },
     "Quest Rewards": {
-        "Enemy - Bone Scimitar, Copper (Guaranteed Drop)": "Item - Leather Shield",
-        "Enemy - Bone Scimitar, Green (Guaranteed Drop)": "Item - Holy Mail",
+        "Special - Guaranteed Drop (Bone Scimitar, Copper)": "Item - Leather Shield",
+        "Special - Guaranteed Drop (Bone Scimitar, Green)": "Item - Holy Mail",
         "Location - Castle Entrance, After Drawbridge (Life Max-Up)": "Item - Leather Shield",
         "Location - Castle Entrance, Cube of Zoe Room (Shield Potion)": "Item - Leather Shield",
         "Location - Castle Entrance, Heart Max-Up Room (Heart Max-Up)": "Item - Leather Shield",

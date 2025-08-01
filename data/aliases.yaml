@@ -113,6 +113,7 @@ Items:
   Item - Dragon Helm: 342
   Item - Dynamite: 266
   Item - Elixir: 289
+  Item - Elven Cloak: 348
   Item - Estoc: 223
   Item - Falchion: 218
   Item - Felt Hat: 327
@@ -279,6 +280,7 @@ Items:
   Item - Twilight Cloak: 353
   Item - Tyrfing: 211
   Item - Uncurse: 273
+  Item - Velvet Hat: 328
   Item - Vorpal Blade: 291
   Item - Walk Armor: 316
   Item - Were Bane: 150
@@ -3689,13 +3691,179 @@ Quest Rewards:
       - Type: Direct Write
         Data Type: s16
         Address: 0x041FD900
-        Property: Params
+        Property: Item ID
+        Transformations:
+          - add(-128)
   Special - Guaranteed Drop (Bone Scimitar, Green):
     Item Data:
       - Type: Direct Write
         Data Type: s16
         Address: 0x041FD8FC
-        Property: Params
+        Property: Item ID
+        Transformations:
+          - add(-128)
+  Special - Starting Equipment (Alucard Sword):
+    Notes:
+      - Function containing the target for these writes starts at 0x000F4FB8
+    Item Data:
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F5000
+        Property: Item ID
+        Transformations:
+          - add(-128)
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F59A8
+        Property: Item ID
+        Transformations:
+          - add(-128)
+      - Type: Direct Write
+        Data Type: u16
+        Address: 0x041A92D4
+        Property: Item ID
+        Transformations:
+          - add(-128)
+  Special - Starting Equipment (Alucard Shield):
+    Item Data:
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F5060
+        Property: Item ID
+        Transformations:
+          - add(-128)
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F59B4
+        Property: Item ID
+        Transformations:
+          - add(-128)
+      - Type: Direct Write
+        Data Type: u16
+        Address: 0x041A92D6
+        Property: Item ID
+        Transformations:
+          - add(-128)
+  Special - Starting Equipment (Dragon Helm):
+    Item Data:
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F50C0
+        Property: Item ID
+        Transformations:
+          - add(-297)
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F59C0
+        Property: Item ID
+        Transformations:
+          - add(-297)
+      - Type: Direct Write
+        Data Type: u16
+        Address: 0x041A92DA
+        Property: Item ID
+        Transformations:
+          - add(-128)
+  Special - Starting Equipment (Alucard Mail):
+    Item Data:
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F50FC
+        Property: Item ID
+        Transformations:
+          - add(-297)
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F59CC
+        Property: Item ID
+        Transformations:
+          - add(-297)
+      - Type: Direct Write
+        Data Type: u16
+        Address: 0x041A92D8
+        Property: Item ID
+        Transformations:
+          - add(-128)
+  Special - Starting Equipment (Twilight Cloak):
+    Item Data:
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F5138
+        Property: Item ID
+        Transformations:
+          - add(-297)
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F59D8
+        Property: Item ID
+        Transformations:
+          - add(-297)
+      - Type: Direct Write
+        Data Type: u16
+        Address: 0x041A92DC
+        Property: Item ID
+        Transformations:
+          - add(-128)
+  Special - Starting Equipment (Necklace of J):
+    Item Data:
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F517C
+        Property: Item ID
+        Transformations:
+          - add(-297)
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F59E4
+        Property: Item ID
+        Transformations:
+          - add(-297)
+      - Type: Direct Write
+        Data Type: u16
+        Address: 0x041A92DE
+        Property: Item ID
+        Transformations:
+          - add(-128)
+  Special - Prologue Bonus Equipment (Potion):
+    Item Data:
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F55C0
+        Property: Item ID
+        Transformations:
+          - add(-128)
+  Special - Prologue Bonus Equipment (Heart Refresh):
+    Item Data:
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F56AC
+        Property: Item ID
+        Transformations:
+          - add(-128)
+  Special - Prologue Bonus Equipment (Neutron Bomb):
+    Item Data:
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F5708
+        Property: Item ID
+        Transformations:
+          - add(-128)
+  Special - Name Code Bonus Equipment (Lapis Lazuli):
+    Item Data:
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F5A70
+        Property: Item ID
+        Transformations:
+          - add(-297)
+  Special - Name Code Bonus Equipment (Axe Lord Armor):
+    Item Data:
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000F5B08
+        Property: Item ID
+        Transformations:
+          - add(-297)
 Entities:
   Item - Spike Breaker:
     Entity Type ID: 12

@@ -3,8 +3,8 @@
         "Enable debug mode": true
     },
     "Quest Rewards": {
-        "Enemy - Bone Scimitar, Copper (Guaranteed Drop)": "Item - Leather Shield",
-        "Enemy - Bone Scimitar, Green (Guaranteed Drop)": "Item - Holy Mail",
+        "Special - Guaranteed Drop (Bone Scimitar, Copper)": "Item - Leather Shield",
+        "Special - Guaranteed Drop (Bone Scimitar, Green)": "Item - Holy Mail",
         "Enemy - Bone Scimitar, Blue (Rare Drop)": "Item - Fire Boomerang",
         "Enemy - Bone Scimitar, Blue (Uncommon Drop)": "Item - Boomerang",
         "Enemy - Zombie (Rare Drop)": "Item - Turquoise",
