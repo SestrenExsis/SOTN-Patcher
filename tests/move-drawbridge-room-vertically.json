@@ -6,24 +6,132 @@
         "Castle Entrance": {
             "Rooms": {
                 "Castle Entrance, After Drawbridge": {
-                    "Left": 2,
-                    "Top": 16
+                    "Left": 37,
+                    "Top": 29
+                },
+                "Castle Entrance, Attic Entrance": {
+                    "Left": 46,
+                    "Top": 30
+                },
+                "Castle Entrance, Attic Hallway": {
+                    "Left": 42,
+                    "Top": 32
+                },
+                "Castle Entrance, Attic Staircase": {
+                    "Left": 38,
+                    "Top": 33
+                },
+                "Castle Entrance, Cube of Zoe Room": {
+                    "Left": 47,
+                    "Top": 27
                 },
                 "Castle Entrance, Drop Under Portcullis": {
-                    "Left": 2,
-                    "Top": 19
+                    "Left": 37,
+                    "Top": 32
+                },
+                "Castle Entrance, Fake Room with Teleporter to Alchemy Laboratory": {
+                    "Left": 45,
+                    "Top": 27
+                },
+                "Castle Entrance, Fake Room with Teleporter to Marble Gallery": {
+                    "Left": 50,
+                    "Top": 27
+                },
+                "Castle Entrance, Fake Room with Teleporter to Underground Caverns": {
+                    "Left": 41,
+                    "Top": 34
+                },
+                "Castle Entrance, Fake Room with Teleporter to Warp Rooms": {
+                    "Left": 44,
+                    "Top": 29
                 },
                 "Castle Entrance, Forest Cutscene": {
-                    "Left": 10,
+                    "Left": 0,
                     "Top": 53
                 },
+                "Castle Entrance, Gargoyle Room": {
+                    "Left": 49,
+                    "Top": 29
+                },
+                "Castle Entrance, Heart Max-Up Room": {
+                    "Left": 45,
+                    "Top": 30
+                },
+                "Castle Entrance, Holy Mail Room": {
+                    "Left": 46,
+                    "Top": 28
+                },
+                "Castle Entrance, Jewel Sword Room": {
+                    "Left": 37,
+                    "Top": 34
+                },
+                "Castle Entrance, Life Max-Up Room": {
+                    "Left": 55,
+                    "Top": 32
+                },
+                "Castle Entrance, Loading Room to Alchemy Laboratory": {
+                    "Left": 46,
+                    "Top": 27
+                },
+                "Castle Entrance, Loading Room to Marble Gallery": {
+                    "Left": 49,
+                    "Top": 27
+                },
+                "Castle Entrance, Loading Room to Underground Caverns": {
+                    "Left": 40,
+                    "Top": 34
+                },
+                "Castle Entrance, Loading Room to Warp Rooms": {
+                    "Left": 45,
+                    "Top": 29
+                },
+                "Castle Entrance, Meeting Room With Death": {
+                    "Left": 49,
+                    "Top": 30
+                },
+                "Castle Entrance, Merman Room": {
+                    "Left": 46,
+                    "Top": 31
+                },
+                "Castle Entrance, Save Room A": {
+                    "Left": 49,
+                    "Top": 28
+                },
+                "Castle Entrance, Save Room B": {
+                    "Left": 48,
+                    "Top": 30
+                },
+                "Castle Entrance, Save Room C": {
+                    "Left": 41,
+                    "Top": 32
+                },
+                "Castle Entrance, Shortcut to Underground Caverns": {
+                    "Left": 39,
+                    "Top": 34
+                },
+                "Castle Entrance, Shortcut to Warp Rooms": {
+                    "Left": 46,
+                    "Top": 29
+                },
+                "Castle Entrance, Stairwell After Death": {
+                    "Left": 50,
+                    "Top": 29
+                },
                 "Castle Entrance, Unknown Room 19": {
-                    "Left": 28,
+                    "Left": 18,
                     "Top": 53
                 },
                 "Castle Entrance, Unknown Room 20": {
-                    "Left": 1,
-                    "Top": 18
+                    "Left": 36,
+                    "Top": 31
+                },
+                "Castle Entrance, Warg Hallway": {
+                    "Left": 49,
+                    "Top": 32
+                },
+                "Castle Entrance, Zombie Hallway": {
+                    "Left": 39,
+                    "Top": 31
                 }
             }
         }
