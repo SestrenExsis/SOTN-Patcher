@@ -856,6 +856,18 @@ def get_patch(extract, changes, data):
                             dependent['Data Type'],
                             sotn_address.Address(dependent['Address']),
                         )
+                    elif dependent['Type'] == 'Tile Layout':
+                        for (dependent_property_name, dependent_value) in (
+                            ('Z Priority', left + dependent['Left']),
+                            ('Flags', top + dependent['Top']),
+                        ):
+                            dependent_room_id = getID(aliases, ('Rooms', dependent['Room'], 'Room Index'))
+                            dependent_extract = extract['Stages'][dependent['Stage']]['Rooms'][str(dependent_room_id)]['Tile Layout'][dependent_property_name]
+                            result.patch_value(
+                                dependent_value,
+                                dependent_extract['Type'],
+                                sotn_address.Address(dependent_extract['Start']),
+                            )
                 # Room: Patch tilemap foreground and background
                 if 'Tiles' in tile_layout_extract and 'Tilemap' in room_data:
                     # Fetch the source tilemap data and start with empty target tilemaps

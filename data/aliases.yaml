@@ -4525,8 +4525,20 @@ Rooms:
     Room Index: 12
   Castle Entrance, Unknown Room 19:
     Room Index: 19
+    Dependents:
+      - Type: Tile Layout
+        Stage: Castle Entrance
+        Room: Castle Entrance, Unknown Room 20
+        Top: 0
+        Left: 1
   Castle Entrance, Unknown Room 20:
     Room Index: 20
+    Dependents:
+      - Type: Tile Layout
+        Stage: Castle Entrance
+        Room: Castle Entrance, Unknown Room 19
+        Top: 0
+        Left: -1
   Castle Entrance, Warg Hallway:
     Room Index: 9
   Castle Entrance, Zombie Hallway:

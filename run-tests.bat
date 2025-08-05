@@ -7,7 +7,6 @@ set EXTRACT="build/extraction.json"
 python src/sotn_extractor.py "build/Castlevania - Symphony of the Night (Track 1).bin" %EXTRACT% || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" || goto :error
 
-
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/assign-power-of-wolf-relic-a-unique-id.json" --ppf="build/ppf/assign-power-of-wolf-relic-a-unique-id.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/clock-hands-mod.json" --ppf="build/ppf/clock-hands-mod.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/customized-castle-map-reveals.json" --ppf="build/ppf/customized-castle-map-reveals.ppf" || goto :error
@@ -17,6 +16,7 @@ python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/disable-cli
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/enable-debug-mode.json" --ppf="build/ppf/enable-debug-mode.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/fix-secret-room-map-pixels.json" --ppf="build/ppf/fix-secret-room-map-pixels.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/mix-items-and-relics.json" --ppf="build/ppf/mix-items-and-relics.ppf" || goto :error
+python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/move-drawbridge-room-vertically.json" --ppf="build/ppf/move-drawbridge-room-vertically.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/normalize-ferryman-gate.json" --ppf="build/ppf/normalize-ferryman-gate.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/preserve-map-exploration.json" --ppf="build/ppf/preserve-map-exploration.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/randomized-items.json" --ppf="build/ppf/randomized-items.ppf" || goto :error

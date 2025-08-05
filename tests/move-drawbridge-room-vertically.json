@@ -1,0 +1,35 @@
+{
+    "Options": {
+        "Enable debug mode": true
+    },
+    "Stages": {
+        "Castle Entrance": {
+            "Rooms": {
+                "Castle Entrance, After Drawbridge": {
+                    "Left": 2,
+                    "Top": 16
+                },
+                "Castle Entrance, Drop Under Portcullis": {
+                    "Left": 2,
+                    "Top": 19
+                },
+                "Castle Entrance, Forest Cutscene": {
+                    "Left": 10,
+                    "Top": 53
+                },
+                "Castle Entrance, Unknown Room 19": {
+                    "Left": 28,
+                    "Top": 53
+                },
+                "Castle Entrance, Unknown Room 20": {
+                    "Left": 1,
+                    "Top": 18
+                }
+            }
+        }
+    },
+    "Strings": {
+        "10": "Move Drawbridge Room      ",
+        "11": "Beta Release 6      "
+    }
+}
