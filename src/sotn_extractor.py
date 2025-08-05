@@ -463,6 +463,12 @@ if __name__ == '__main__':
                     'Size': 356452,
                 },
             },
+            'Prologue': {
+                'Stage': {
+                    'Start': 0x0487C800,
+                    'Size': 271812,
+                },
+            },
             'Reverse Caverns': {
                 'Stage': {
                     'Start': 0x047C3800,
