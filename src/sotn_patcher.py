@@ -10,7 +10,8 @@ import yaml
 import sotn_address
 
 class PPF:
-    def __init__(self, description, patch):
+    def __init__(self, description, patch, debug: bool=False):
+        self.debug = debug
         self.description = (description + 50 * ' ')[:50]
         self.bytes = bytearray()
         self.write_string('PPF30')
@@ -33,9 +34,13 @@ class PPF:
                 size = 1 + (right - left)
                 self.write_u64(disc_address)
                 self.write_byte(size)
+                values = []
                 for low in range(left, right + 1):
                     value = patch.writes[high][low]
                     self.write_byte(value)
+                    values.append(value)
+                if self.debug:
+                    print(disc_address, size, values)
     
     def write_byte(self, byte):
         assert 0x00 <= byte < 0x100
@@ -338,6 +343,22 @@ def get_patch(extract, changes, data):
                 metadata['Type'],
                 sotn_address.Address(metadata['Start'] + index * metadata['Size'])
             )
+    # Option - Prevent softlocks related to Death cutscene in Castle Entrance
+    # (Solved by @MottZilla)
+    if changes.get('Options', {}).get('Prevent softlocks related to Death cutscene in Castle Entrance', False):
+        for (offset, data_type, value) in (
+            (0x041E77B0, 'u32', 0x34020000),
+            (0x041E77B4, 'u32', 0xAE22B98C),
+            (0x041E77B8, 'u8', 0x00),
+            (0x041E77B9, 'u8', 0x00),
+            (0x041E77BA, 'u8', 0x02),
+            (0x041E77BB, 'u8', 0x34),
+            (0x041E77BC, 'u8', 0x8C),
+            (0x041E77BD, 'u8', 0xB9),
+            (0x041E77BE, 'u8', 0x22),
+            (0x041E77BF, 'u8', 0xAE),
+        ):
+            result.patch_value(value, data_type, sotn_address.Address(offset))
     # Option - Disable clipping on screen edge of Tall Zig Zag Room Wall
     if changes.get('Options', {}).get('Disable clipping on screen edge of Tall Zig Zag Room Wall', False):
         for (constant_name, index, value) in (
@@ -1093,7 +1114,7 @@ def get_patch(extract, changes, data):
     # Quest Rewards - Part 1
     for location_name in sorted(changes.get('Quest Rewards', {})):
         reward_name = changes['Quest Rewards'][location_name]
-        print((location_name, reward_name))
+        # print((location_name, reward_name))
         reward_type = reward_name.split(' - ')[0]
         reward_data = aliases['Quest Rewards'][location_name]
         for data_element in reward_data[reward_type + ' Data']:
@@ -1365,5 +1386,5 @@ if __name__ == '__main__':
                     changes = changes['Changes']
                 validate_changes(changes)
                 patch = get_patch(extract, changes, data)
-                ppf = PPF(DESCRIPTION, patch)
+                ppf = PPF(DESCRIPTION, patch, True)
                 ppf_file.write(ppf.bytes)
