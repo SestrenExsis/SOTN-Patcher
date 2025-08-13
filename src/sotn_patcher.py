@@ -301,12 +301,150 @@ def get_patch(extract, changes, data):
         )
     # Option - Skip Maria cutscene in Alchemy Laboratory
     if changes.get('Options', {}).get('Skip Maria cutscene in Alchemy Laboratory', False):
-        constant_extract = extract['Constants']['Should skip Maria Alchemy Laboratory']
-        result.patch_value(
-            0x0806E296,
-            constant_extract['Type'],
-            sotn_address.Address(constant_extract['Start']),
-        )
+        # 0x801B8E0C - func_801B8E0C
+        # ------------------------------------------
+        # Equivalent to the following C code
+        # ------------------------------------------
+        # switch (self->step) {
+        # case 0:
+        #     InitializeEntity(g_EInitSpawner);
+        #     g_PauseAllowed = false;
+        #     g_unkGraphicsStruct.pauseEnemies = 1;
+        #     g_Player.demo_timer = 1;
+        #     break;
+        # case 1:
+        #     if (PLAYER.posX.i.hi < 180) {
+        #         g_Player.padSim = PAD_RIGHT;
+        #     } else {
+        #         g_Player.padSim = 0;
+        #         self->step++;
+        #     }
+        #     g_Player.demo_timer = 1;
+        #     break;
+        # case 2:
+        #     if (g_CutsceneFlags & 0x2000) {
+        #         g_PauseAllowed = true;
+        #         g_unkGraphicsStruct.pauseEnemies = 0;
+        #         DestroyEntity(self);
+        #     }
+        #     if (PLAYER.posX.i.hi >= 176) {
+        #         g_Player.padSim = PAD_LEFT;
+        #     } else {
+        #         g_Player.padSim = 0;
+        #     }
+        #     g_Player.demo_timer = 1;
+        #     break;
+        # }
+        # if (g_Player.status & PLAYER_STATUS_WOLF_FORM) {
+        #     if (g_Timer & 1) {
+        #         g_Player.padSim |= PAD_R2;
+        #     }
+        # }
+        # ------------------------------------------
+        for (base, description) in (
+            (0x049F760C, 'Alchemy Laboratory - func_801B8E0C'),
+        ):
+            for (offset, value) in (
+                (0x000, 0x27BDFFE8), # addiu   sp,sp,-0x18       
+                (0x004, 0xAFBF0014), # sw      ra,0x14(sp)       
+                (0x008, 0xAFB00010), # sw      s0,0x10(sp)       
+                (0x00c, 0x9483002C), # lhu     v1,0x2c(a0)       
+                (0x010, 0x34100001), # li      s0,0x1            
+                (0x014, 0x10700018), # beq     v1,s0,$801B8E84 ~>
+                (0x018, 0x28620002), # slti    v0,v1,2           
+                (0x01c, 0x10400005), # beqz    v0,$801B8E40 ~>   
+                (0x020, 0x00000000), # nop                       
+                (0x024, 0x10600008), # beqz    v1,$801B8E54 ~>   
+                (0x028, 0x00000000), # nop                       
+                (0x02c, 0x0806E3CD), # j       $801B8F34 ~>      
+                (0x030, 0x00000000), # nop                       
+                (0x034, 0x34020002), # li      v0,0x2            
+                (0x038, 0x10620020), # beq     v1,v0,$801B8EC8 ~>
+                (0x03c, 0x00000000), # nop                       
+                (0x040, 0x0806E3CD), # j       $801B8F34 ~>      
+                (0x044, 0x00000000), # nop                       
+                (0x048, 0x3C048018), # lui     a0,$8018          
+                (0x04c, 0x24840BEC), # addiu   a0,a0,$0BEC       
+                (0x050, 0x0C06F57F), # jal     $801BD5FC         
+                (0x054, 0x00000000), # nop                       
+                (0x058, 0x3C018004), # lui     at,$8004          
+                (0x05c, 0xAC20C8B8), # sw      zero,-$3748(at)   
+                (0x060, 0x3C018009), # lui     at,$8009          
+                (0x064, 0xAC307400), # sw      s0,$7400(at)      
+                (0x068, 0x3C018007), # lui     at,$8007          
+                (0x06c, 0xAC302EFC), # sw      s0,$2EFC(at)      
+                (0x070, 0x0806E3CD), # j       $801B8F34 ~>      
+                (0x074, 0x00000000), # nop                       
+                (0x078, 0x3C028007), # lui     v0,$8007          
+                (0x07c, 0x844233DA), # lh      v0,$33DA(v0)      
+                (0x080, 0x00000000), # nop                       
+                (0x084, 0x284200B4), # slti    v0,v0,0xb4        
+                (0x088, 0x10400005), # beqz    v0,$801B8EAC ~>   
+                (0x08c, 0x34022000), # li      v0,0x2000         
+                (0x090, 0x3C018007), # lui     at,$8007          
+                (0x094, 0xAC222EF4), # sw      v0,$2EF4(at)      
+                (0x098, 0x0806E3CB), # j       $801B8F2C ~>      
+                (0x09c, 0x34020001), # li      v0,0x1            
+                (0x0a0, 0x3C018007), # lui     at,$8007          
+                (0x0a4, 0xAC202EF4), # sw      zero,$2EF4(at)    
+                (0x0a8, 0x9482002C), # lhu     v0,0x2c(a0)       
+                (0x0ac, 0x00000000), # nop                       
+                (0x0b0, 0x24420001), # addiu   v0,v0,1           
+                (0x0b4, 0x0806E3CA), # j       $801B8F28 ~>      
+                (0x0b8, 0xA482002C), # sh      v0,0x2c(a0)       
+                (0x0bc, 0x3C02801D), # lui     v0,$801D          
+                (0x0c0, 0x8C42B734), # lw      v0,-$48CC(v0)     
+                (0x0c4, 0x00000000), # nop                       
+                (0x0c8, 0x30422000), # andi    v0,v0,0x2000      
+                (0x0cc, 0x10400007), # beqz    v0,$801B8EF8 ~>   
+                (0x0d0, 0x00000000), # nop                       
+                (0x0d4, 0x3C018004), # lui     at,$8004          
+                (0x0d8, 0xAC30C8B8), # sw      s0,-$3748(at)     
+                (0x0dc, 0x3C018009), # lui     at,$8009          
+                (0x0e0, 0xAC207400), # sw      zero,$7400(at)    
+                (0x0e4, 0x0C06F23B), # jal     $801BC8EC         
+                (0x0e8, 0x00000000), # nop                       
+                (0x0ec, 0x3C028007), # lui     v0,$8007          
+                (0x0f0, 0x844233DA), # lh      v0,$33DA(v0)      
+                (0x0f4, 0x00000000), # nop                       
+                (0x0f8, 0x284200B0), # slti    v0,v0,0xb0        
+                (0x0fc, 0x14400005), # bnez    v0,$801B8F20 ~>   
+                (0x100, 0x34028000), # li      v0,0x8000         
+                (0x104, 0x3C018007), # lui     at,$8007          
+                (0x108, 0xAC222EF4), # sw      v0,$2EF4(at)      
+                (0x10c, 0x0806E3CB), # j       $801B8F2C ~>      
+                (0x110, 0x34020001), # li      v0,0x1            
+                (0x114, 0x3C018007), # lui     at,$8007          
+                (0x118, 0xAC202EF4), # sw      zero,$2EF4(at)    
+                (0x11c, 0x34020001), # li      v0,0x1            
+                (0x120, 0x3C018007), # lui     at,$8007          
+                (0x124, 0xAC222EFC), # sw      v0,$2EFC(at)      
+                (0x128, 0x3C028007), # lui     v0,$8007          
+                (0x12c, 0x8C422F2C), # lw      v0,$2F2C(v0)      
+                (0x130, 0x00000000), # nop                       
+                (0x134, 0x30420004), # andi    v0,v0,0x4         
+                (0x138, 0x1040000D), # beqz    v0,$801B8F7C ~>   
+                (0x13c, 0x00000000), # nop                       
+                (0x140, 0x3C028004), # lui     v0,$8004          
+                (0x144, 0x8C42C998), # lw      v0,-$3668(v0)     
+                (0x148, 0x00000000), # nop                       
+                (0x14c, 0x30420001), # andi    v0,v0,0x1         
+                (0x150, 0x10400007), # beqz    v0,$801B8F7C ~>   
+                (0x154, 0x00000000), # nop                       
+                (0x158, 0x3C028007), # lui     v0,$8007          
+                (0x15c, 0x8C422EF4), # lw      v0,$2EF4(v0)      
+                (0x160, 0x00000000), # nop                       
+                (0x164, 0x34420002), # ori     v0,v0,0x2         
+                (0x168, 0x3C018007), # lui     at,$8007          
+                (0x16c, 0xAC222EF4), # sw      v0,$2EF4(at)      
+                (0x170, 0x8FBF0014), # lw      ra,0x14(sp)       
+                (0x174, 0x8FB00010), # lw      s0,0x10(sp)       
+                (0x178, 0x27BD0018), # addiu   sp,sp,0x18        
+                (0x17c, 0x03E00008), # jr      ra                
+                (0x180, 0x00000000), # nop                       
+                (0x184, 0x00000000), # nop
+            ):
+                result.patch_value(value, 'u32', sotn_address.Address(base + offset))
     # Option - Disable clipping on screen edge of Demon Switch Wall
     if changes.get('Options', {}).get('Disable clipping on screen edge of Demon Switch Wall', False):
         for (constant_name, index, value) in (
@@ -1357,6 +1495,7 @@ if __name__ == '__main__':
     parser.add_argument('--changes', help='Input an optional (required if data argument is given) filepath to the changes JSON file', type=str)
     parser.add_argument('--template', help='Input an optional filepath to the output template file, if one is generated', type=str)
     parser.add_argument('--ppf', help='Input an optional filepath to the output PPF file', type=str)
+    parser.add_argument('--show-ppf-writes', help='Require matching node types', dest='show_ppf_writes', action='store_true')
     args = parser.parse_args()
     with open(args.extract_file) as extract_file:
         extract = json.load(extract_file)
@@ -1386,5 +1525,5 @@ if __name__ == '__main__':
                     changes = changes['Changes']
                 validate_changes(changes)
                 patch = get_patch(extract, changes, data)
-                ppf = PPF(DESCRIPTION, patch, True)
+                ppf = PPF(DESCRIPTION, patch, args.show_ppf_writes)
                 ppf_file.write(ppf.bytes)
