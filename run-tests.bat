@@ -15,6 +15,7 @@ python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/customized-
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/disable-clipping-on-one-way-walls.json" --ppf="build/ppf/disable-clipping-on-one-way-walls.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/enable-debug-mode.json" --ppf="build/ppf/enable-debug-mode.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/fix-secret-room-map-pixels.json" --ppf="build/ppf/fix-secret-room-map-pixels.ppf" || goto :error
+python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/improve-normalized-room-visuals.json" --ppf="build/ppf/improve-normalized-room-visuals.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/mix-items-and-relics.json" --ppf="build/ppf/mix-items-and-relics.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/move-drawbridge-room-vertically.json" --ppf="build/ppf/move-drawbridge-room-vertically.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/normalize-ferryman-gate.json" --ppf="build/ppf/normalize-ferryman-gate.ppf" || goto :error

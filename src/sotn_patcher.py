@@ -716,8 +716,6 @@ def get_patch(extract, changes, data):
             ):
                 result.patch_value(value, data_type, sotn_address.Address(base + offset))
         for (base_fg, base_bg, description) in (
-            # Castle Entrance, Merman Room: 0x041C4638, 0x041C5238
-            # Castle Entrance Revisited, Merman Room: 0x049356F4, 0x049362F4
             (0x041C4638, 0x041C5238, 'Castle Entrance, Merman Room'),
             (0x049356F4, 0x049362F4, 'Castle Entrance Revisited, Merman Room'),
         ):
@@ -736,6 +734,29 @@ def get_patch(extract, changes, data):
                 (21 + 3, 1, 0x0309, 0x0351), # Row 3
                 (21 + 4, 1, 0x053E, 0x0330), # Row 4
                 (21 + 5, 1, 0x053F, 0x0000), # Row 5
+            ):
+                tiles_per_row = 16 * 3
+                offset = 2 * (tiles_per_row * row + col)
+                result.patch_value(value_fg, 'u16', sotn_address.Address(base_fg + offset))
+                result.patch_value(value_bg, 'u16', sotn_address.Address(base_bg + offset))
+        for (base_fg, base_bg, description) in (
+            (0x04733488, 0x04734088, 'Reverse Entrance, Merman Room'),
+        ):
+            for (row, col, value_fg, value_bg) in (
+                # Column 0
+                (5 + 0, 46, 0x053F, 0x0000), # Row 0
+                (5 + 1, 46, 0x053E, 0x0330), # Row 1
+                (5 + 2, 46, 0x0309, 0x0351), # Row 2
+                (5 + 3, 46, 0x0308, 0x033A), # Row 3
+                (5 + 4, 46, 0x0536, 0x034F), # Row 4
+                (5 + 5, 46, 0x0535, 0x034F), # Row 5
+                # Column 1
+                (5 + 0, 47, 0x0320, 0x0000), # Row 0
+                (5 + 1, 47, 0x0000, 0x032F), # Row 1
+                (5 + 2, 47, 0x0000, 0x0350), # Row 2
+                (5 + 3, 47, 0x0000, 0x0339), # Row 3
+                (5 + 4, 47, 0x0532, 0x034E), # Row 4
+                (5 + 5, 47, 0x052D, 0x034E), # Row 5
             ):
                 tiles_per_row = 16 * 3
                 offset = 2 * (tiles_per_row * row + col)
@@ -1447,5 +1468,5 @@ if __name__ == '__main__':
                     changes = changes['Changes']
                 validate_changes(changes)
                 patch = get_patch(extract, changes, data)
-                ppf = PPF(DESCRIPTION, patch, True)
+                ppf = PPF(DESCRIPTION, patch, False)
                 ppf_file.write(ppf.bytes)
