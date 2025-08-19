@@ -1,0 +1,10 @@
+{
+    "Options": {
+        "Enable debug mode": true,
+        "Normalize room connections": true
+    },
+    "Constants": {
+        "Message - Richter Mode Instructions 1": "Improve Normalized Rooms    ",
+        "Message - Richter Mode Instructions 2": "Beta Release 6      "
+    }
+}

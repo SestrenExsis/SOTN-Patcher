@@ -672,14 +672,96 @@ def get_patch(extract, changes, data):
             ):
                 result.patch_value(value, 'u32', sotn_address.Address(base + offset))
     # Room shuffler - Normalize room connections
-    # if changes.get('Options', {}).get('Normalize room connections', False):
-    #     for (offset, value) in (
-    #         # Shift the breakable floor in Underground Caverns to the right 3 tiles
-    #         # https://github.com/SestrenExsis/SOTN-Shuffler/issues/82
-    #         (0x0429FF64, 0x340802D6), # ori t0,zero,$2D6
-    #         (0x042A006C, 0x340802D6), # ori t0,zero,$2D6
-    #     ):
-    #         result.patch_value(value, 'u32', sotn_address.Address(offset))
+    if changes.get('Options', {}).get('Normalize room connections', False):
+        # Eliminate left-most column of passage to Jewel Sword Room in Merman Room
+        # TODO(sestren): Figure out how to patch the entity and array in Reverse Entrance
+        for (base, description) in (
+            (0x041E23E8, 'Castle Entrance?, Merman Room (EntityJewelSwordDoor)'),
+            # (0x047FFFFF, 'Reverse Entrance, Merman Room (EntityJewelSwordDoor)'), 
+            (0x0494FC88, 'Castle Entrance Revisited?, Merman Room (EntityJewelSwordDoor)'),
+        ):
+            for (offset, data_type, value) in (
+                (0x0A8, 's16', 0x3F0), # addiu a2,t0,$3F0
+                (0x0D0, 's16', 0x006), # slti v0,a1,$6
+                (0x0E8, 's16', 0x3F0), # addiu a2,t0,$3F0
+            ):
+                result.patch_value(value, data_type, sotn_address.Address(base + offset))
+        for (base, description) in (
+            (0x041A8AAC, 'Castle Entrance?, Merman Room (rockTiles3)'),
+            # (0x0471F020, 'Reverse Entrance, Merman Room (rockTiles3)'),
+            (0x0491B974, 'Castle Entrance Revisited?, Merman Room (rockTiles3)'),
+        ):
+            for (offset, data_type, value) in (
+                # Column 0
+                (0x036, 'u16', 0x030B), # Row 0
+                (0x038, 'u16', 0x030E), # Row 1
+                (0x03A, 'u16', 0x0000), # Row 2
+                (0x03C, 'u16', 0x0000), # Row 3
+                (0x03E, 'u16', 0x06BD), # Row 4
+                (0x040, 'u16', 0x06BF), # Row 5
+                # Column 1
+                (0x042, 'u16', 0x030C), # Row 0
+                (0x044, 'u16', 0x030F), # Row 1
+                (0x046, 'u16', 0x0000), # Row 2
+                (0x048, 'u16', 0x0000), # Row 3
+                (0x04A, 'u16', 0x06BE), # Row 4
+                (0x04C, 'u16', 0x06C0), # Row 5
+                # Column 2
+                (0x04E, 'u16', 0x054F), # Row 0
+                (0x050, 'u16', 0x0000), # Row 1
+                (0x052, 'u16', 0x0000), # Row 2
+                (0x054, 'u16', 0x0000), # Row 3
+                (0x056, 'u16', 0x06BD), # Row 4
+                (0x058, 'u16', 0x06C1), # Row 5
+            ):
+                result.patch_value(value, data_type, sotn_address.Address(base + offset))
+        for (base_fg, base_bg, description) in (
+            (0x041C4638, 0x041C5238, 'Castle Entrance, Merman Room'),
+            (0x049356F4, 0x049362F4, 'Castle Entrance Revisited, Merman Room'),
+        ):
+            for (row, col, value_fg, value_bg) in (
+                # Column 0
+                (21 + 0, 0, 0x052D, 0x034E), # Row 0
+                (21 + 1, 0, 0x0532, 0x034E), # Row 1
+                (21 + 2, 0, 0x0000, 0x0339), # Row 2
+                (21 + 3, 0, 0x0000, 0x0350), # Row 3
+                (21 + 4, 0, 0x0000, 0x032F), # Row 4
+                (21 + 5, 0, 0x0320, 0x0000), # Row 5
+                # Column 1
+                (21 + 0, 1, 0x0535, 0x034F), # Row 0
+                (21 + 1, 1, 0x0536, 0x034F), # Row 1
+                (21 + 2, 1, 0x0308, 0x033A), # Row 2
+                (21 + 3, 1, 0x0309, 0x0351), # Row 3
+                (21 + 4, 1, 0x053E, 0x0330), # Row 4
+                (21 + 5, 1, 0x053F, 0x0000), # Row 5
+            ):
+                tiles_per_row = 16 * 3
+                offset = 2 * (tiles_per_row * row + col)
+                result.patch_value(value_fg, 'u16', sotn_address.Address(base_fg + offset))
+                result.patch_value(value_bg, 'u16', sotn_address.Address(base_bg + offset))
+        for (base_fg, base_bg, description) in (
+            (0x04733488, 0x04734088, 'Reverse Entrance, Merman Room'),
+        ):
+            for (row, col, value_fg, value_bg) in (
+                # Column 0
+                (5 + 0, 46, 0x053F, 0x0000), # Row 0
+                (5 + 1, 46, 0x053E, 0x0330), # Row 1
+                (5 + 2, 46, 0x0309, 0x0351), # Row 2
+                (5 + 3, 46, 0x0308, 0x033A), # Row 3
+                (5 + 4, 46, 0x0536, 0x034F), # Row 4
+                (5 + 5, 46, 0x0535, 0x034F), # Row 5
+                # Column 1
+                (5 + 0, 47, 0x0320, 0x0000), # Row 0
+                (5 + 1, 47, 0x0000, 0x032F), # Row 1
+                (5 + 2, 47, 0x0000, 0x0350), # Row 2
+                (5 + 3, 47, 0x0000, 0x0339), # Row 3
+                (5 + 4, 47, 0x0532, 0x034E), # Row 4
+                (5 + 5, 47, 0x052D, 0x034E), # Row 5
+            ):
+                tiles_per_row = 16 * 3
+                offset = 2 * (tiles_per_row * row + col)
+                result.patch_value(value_fg, 'u16', sotn_address.Address(base_fg + offset))
+                result.patch_value(value_bg, 'u16', sotn_address.Address(base_bg + offset))
     # Insert boss stages into stage data prior to stage patching
     if 'Stages' in changes:
         for (address, source_stage_name, source_room_name, offset, edge) in (
@@ -1386,5 +1468,5 @@ if __name__ == '__main__':
                     changes = changes['Changes']
                 validate_changes(changes)
                 patch = get_patch(extract, changes, data)
-                ppf = PPF(DESCRIPTION, patch, True)
+                ppf = PPF(DESCRIPTION, patch, False)
                 ppf_file.write(ppf.bytes)
