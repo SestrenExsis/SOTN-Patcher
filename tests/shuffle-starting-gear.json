@@ -1,0 +1,22 @@
+{
+    "Options": {
+        "Enable debug mode": true
+    },
+    "Quest Rewards": {
+        "Special - Starting Equipment (Alucard Sword)": "Item - Short Sword",
+        "Special - Starting Equipment (Alucard Shield)": "Item - Leather Shield",
+        "Special - Starting Equipment (Dragon Helm)": "Item - Velvet Hat",
+        "Special - Starting Equipment (Alucard Mail)": "Item - Hide Cuirass",
+        "Special - Starting Equipment (Twilight Cloak)": "Item - Elven Cloak",
+        "Special - Starting Equipment (Necklace of J)": "Item - Medal",
+        "Special - Prologue Bonus Equipment (Potion)": "Item - Manna Prism",
+        "Special - Prologue Bonus Equipment (Heart Refresh)": "Item - Meal Ticket",
+        "Special - Prologue Bonus Equipment (Neutron Bomb)": "Item - Karma Coin",
+        "Special - Name Code Bonus Equipment (Lapis Lazuli)": "Item - Secret Boots",
+        "Special - Name Code Bonus Equipment (Axe Lord Armor)": "Item - Walk Armor"
+    },
+    "Constants": {
+        "Message - Richter Mode Instructions 1": "Shuffle starting gear       ",
+        "Message - Richter Mode Instructions 2": "Beta Release 5      "
+    }
+}

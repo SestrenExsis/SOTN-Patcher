@@ -15,14 +15,18 @@ python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/customized-
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/disable-clipping-on-one-way-walls.json" --ppf="build/ppf/disable-clipping-on-one-way-walls.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/enable-debug-mode.json" --ppf="build/ppf/enable-debug-mode.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/fix-secret-room-map-pixels.json" --ppf="build/ppf/fix-secret-room-map-pixels.ppf" || goto :error
+python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/improve-normalized-room-visuals.json" --ppf="build/ppf/improve-normalized-room-visuals.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/mix-items-and-relics.json" --ppf="build/ppf/mix-items-and-relics.ppf" || goto :error
+python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/move-drawbridge-room-vertically.json" --ppf="build/ppf/move-drawbridge-room-vertically.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/normalize-ferryman-gate.json" --ppf="build/ppf/normalize-ferryman-gate.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/preserve-map-exploration.json" --ppf="build/ppf/preserve-map-exploration.ppf" || goto :error
+python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/prevent-death-meeting-softlocks.json" --ppf="build/ppf/prevent-death-meeting-softlocks.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/randomized-items.json" --ppf="build/ppf/randomized-items.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/randomized-relics.json" --ppf="build/ppf/randomized-relics.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/sample-randomized-map.json" --ppf="build/ppf/sample-randomized-map.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/shop-relic-name.json" --ppf="build/ppf/shop-relic-name.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/shuffle-spike-room.json" --ppf="build/ppf/shuffle-spike-room.ppf" || goto :error
+python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/shuffle-starting-gear.json" --ppf="build/ppf/shuffle-starting-gear.ppf" || goto :error
 python src/sotn_patcher.py %EXTRACT% --data="data/" --changes="tests/softlock-in-alchemy-lab-maria-cutscene.json" --ppf="build/ppf/softlock-in-alchemy-lab-maria-cutscene.ppf" || goto :error
 
 sha1sum -c tests/checksums.sha1

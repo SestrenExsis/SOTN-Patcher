@@ -1,0 +1,6 @@
+{
+    "Options": {
+        "Enable debug mode": true,
+        "Prevent softlocks related to Death cutscene in Castle Entrance": true
+    }
+}

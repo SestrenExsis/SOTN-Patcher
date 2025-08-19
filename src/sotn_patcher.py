@@ -10,7 +10,8 @@ import yaml
 import sotn_address
 
 class PPF:
-    def __init__(self, description, patch):
+    def __init__(self, description, patch, debug: bool=False):
+        self.debug = debug
         self.description = (description + 50 * ' ')[:50]
         self.bytes = bytearray()
         self.write_string('PPF30')
@@ -33,9 +34,13 @@ class PPF:
                 size = 1 + (right - left)
                 self.write_u64(disc_address)
                 self.write_byte(size)
+                values = []
                 for low in range(left, right + 1):
                     value = patch.writes[high][low]
                     self.write_byte(value)
+                    values.append(value)
+                if self.debug:
+                    print(disc_address, size, values)
     
     def write_byte(self, byte):
         assert 0x00 <= byte < 0x100
@@ -249,6 +254,16 @@ def getID(aliases: dict, path: tuple):
         result = int(result)
     return result
 
+def transformed_value(value, transformations):
+    result = value
+    for transformation in transformations:
+        (mnemonic, operand) = transformation[:-1].split('(')
+        if mnemonic == 'mul':
+            result *= int(operand)
+        elif mnemonic == 'add':
+            result += int(operand)
+    return result
+
 def get_patch(extract, changes, data):
     aliases = data['Aliases']
     result = Patch()
@@ -328,6 +343,22 @@ def get_patch(extract, changes, data):
                 metadata['Type'],
                 sotn_address.Address(metadata['Start'] + index * metadata['Size'])
             )
+    # Option - Prevent softlocks related to Death cutscene in Castle Entrance
+    # (Solved by @MottZilla)
+    if changes.get('Options', {}).get('Prevent softlocks related to Death cutscene in Castle Entrance', False):
+        for (offset, data_type, value) in (
+            (0x041E77B0, 'u32', 0x34020000),
+            (0x041E77B4, 'u32', 0xAE22B98C),
+            (0x041E77B8, 'u8', 0x00),
+            (0x041E77B9, 'u8', 0x00),
+            (0x041E77BA, 'u8', 0x02),
+            (0x041E77BB, 'u8', 0x34),
+            (0x041E77BC, 'u8', 0x8C),
+            (0x041E77BD, 'u8', 0xB9),
+            (0x041E77BE, 'u8', 0x22),
+            (0x041E77BF, 'u8', 0xAE),
+        ):
+            result.patch_value(value, data_type, sotn_address.Address(offset))
     # Option - Disable clipping on screen edge of Tall Zig Zag Room Wall
     if changes.get('Options', {}).get('Disable clipping on screen edge of Tall Zig Zag Room Wall', False):
         for (constant_name, index, value) in (
@@ -641,14 +672,96 @@ def get_patch(extract, changes, data):
             ):
                 result.patch_value(value, 'u32', sotn_address.Address(base + offset))
     # Room shuffler - Normalize room connections
-    # if changes.get('Options', {}).get('Normalize room connections', False):
-    #     for (offset, value) in (
-    #         # Shift the breakable floor in Underground Caverns to the right 3 tiles
-    #         # https://github.com/SestrenExsis/SOTN-Shuffler/issues/82
-    #         (0x0429FF64, 0x340802D6), # ori t0,zero,$2D6
-    #         (0x042A006C, 0x340802D6), # ori t0,zero,$2D6
-    #     ):
-    #         result.patch_value(value, 'u32', sotn_address.Address(offset))
+    if changes.get('Options', {}).get('Normalize room connections', False):
+        # Eliminate left-most column of passage to Jewel Sword Room in Merman Room
+        # TODO(sestren): Figure out how to patch the entity and array in Reverse Entrance
+        for (base, description) in (
+            (0x041E23E8, 'Castle Entrance?, Merman Room (EntityJewelSwordDoor)'),
+            # (0x047FFFFF, 'Reverse Entrance, Merman Room (EntityJewelSwordDoor)'), 
+            (0x0494FC88, 'Castle Entrance Revisited?, Merman Room (EntityJewelSwordDoor)'),
+        ):
+            for (offset, data_type, value) in (
+                (0x0A8, 's16', 0x3F0), # addiu a2,t0,$3F0
+                (0x0D0, 's16', 0x006), # slti v0,a1,$6
+                (0x0E8, 's16', 0x3F0), # addiu a2,t0,$3F0
+            ):
+                result.patch_value(value, data_type, sotn_address.Address(base + offset))
+        for (base, description) in (
+            (0x041A8AAC, 'Castle Entrance?, Merman Room (rockTiles3)'),
+            # (0x0471F020, 'Reverse Entrance, Merman Room (rockTiles3)'),
+            (0x0491B974, 'Castle Entrance Revisited?, Merman Room (rockTiles3)'),
+        ):
+            for (offset, data_type, value) in (
+                # Column 0
+                (0x036, 'u16', 0x030B), # Row 0
+                (0x038, 'u16', 0x030E), # Row 1
+                (0x03A, 'u16', 0x0000), # Row 2
+                (0x03C, 'u16', 0x0000), # Row 3
+                (0x03E, 'u16', 0x06BD), # Row 4
+                (0x040, 'u16', 0x06BF), # Row 5
+                # Column 1
+                (0x042, 'u16', 0x030C), # Row 0
+                (0x044, 'u16', 0x030F), # Row 1
+                (0x046, 'u16', 0x0000), # Row 2
+                (0x048, 'u16', 0x0000), # Row 3
+                (0x04A, 'u16', 0x06BE), # Row 4
+                (0x04C, 'u16', 0x06C0), # Row 5
+                # Column 2
+                (0x04E, 'u16', 0x054F), # Row 0
+                (0x050, 'u16', 0x0000), # Row 1
+                (0x052, 'u16', 0x0000), # Row 2
+                (0x054, 'u16', 0x0000), # Row 3
+                (0x056, 'u16', 0x06BD), # Row 4
+                (0x058, 'u16', 0x06C1), # Row 5
+            ):
+                result.patch_value(value, data_type, sotn_address.Address(base + offset))
+        for (base_fg, base_bg, description) in (
+            (0x041C4638, 0x041C5238, 'Castle Entrance, Merman Room'),
+            (0x049356F4, 0x049362F4, 'Castle Entrance Revisited, Merman Room'),
+        ):
+            for (row, col, value_fg, value_bg) in (
+                # Column 0
+                (21 + 0, 0, 0x052D, 0x034E), # Row 0
+                (21 + 1, 0, 0x0532, 0x034E), # Row 1
+                (21 + 2, 0, 0x0000, 0x0339), # Row 2
+                (21 + 3, 0, 0x0000, 0x0350), # Row 3
+                (21 + 4, 0, 0x0000, 0x032F), # Row 4
+                (21 + 5, 0, 0x0320, 0x0000), # Row 5
+                # Column 1
+                (21 + 0, 1, 0x0535, 0x034F), # Row 0
+                (21 + 1, 1, 0x0536, 0x034F), # Row 1
+                (21 + 2, 1, 0x0308, 0x033A), # Row 2
+                (21 + 3, 1, 0x0309, 0x0351), # Row 3
+                (21 + 4, 1, 0x053E, 0x0330), # Row 4
+                (21 + 5, 1, 0x053F, 0x0000), # Row 5
+            ):
+                tiles_per_row = 16 * 3
+                offset = 2 * (tiles_per_row * row + col)
+                result.patch_value(value_fg, 'u16', sotn_address.Address(base_fg + offset))
+                result.patch_value(value_bg, 'u16', sotn_address.Address(base_bg + offset))
+        for (base_fg, base_bg, description) in (
+            (0x04733488, 0x04734088, 'Reverse Entrance, Merman Room'),
+        ):
+            for (row, col, value_fg, value_bg) in (
+                # Column 0
+                (5 + 0, 46, 0x053F, 0x0000), # Row 0
+                (5 + 1, 46, 0x053E, 0x0330), # Row 1
+                (5 + 2, 46, 0x0309, 0x0351), # Row 2
+                (5 + 3, 46, 0x0308, 0x033A), # Row 3
+                (5 + 4, 46, 0x0536, 0x034F), # Row 4
+                (5 + 5, 46, 0x0535, 0x034F), # Row 5
+                # Column 1
+                (5 + 0, 47, 0x0320, 0x0000), # Row 0
+                (5 + 1, 47, 0x0000, 0x032F), # Row 1
+                (5 + 2, 47, 0x0000, 0x0350), # Row 2
+                (5 + 3, 47, 0x0000, 0x0339), # Row 3
+                (5 + 4, 47, 0x0532, 0x034E), # Row 4
+                (5 + 5, 47, 0x052D, 0x034E), # Row 5
+            ):
+                tiles_per_row = 16 * 3
+                offset = 2 * (tiles_per_row * row + col)
+                result.patch_value(value_fg, 'u16', sotn_address.Address(base_fg + offset))
+                result.patch_value(value_bg, 'u16', sotn_address.Address(base_bg + offset))
     # Insert boss stages into stage data prior to stage patching
     if 'Stages' in changes:
         for (address, source_stage_name, source_room_name, offset, edge) in (
@@ -837,18 +950,27 @@ def get_patch(extract, changes, data):
                             'Top': top,
                             'Left': left,
                         }
-                        value = values.get(dependent['Property'], 0)
-                        for transformation in dependent.get('Transformations', []):
-                            (mnemonic, operand) = transformation[:-1].split('(')
-                            if mnemonic == 'mul':
-                                value *= int(operand)
-                            elif mnemonic == 'add':
-                                value += int(operand)
+                        value = transformed_value(
+                            values.get(dependent['Property'], 0),
+                            dependent.get('Transformations', [])
+                        )
                         result.patch_value(
                             value,
                             dependent['Data Type'],
                             sotn_address.Address(dependent['Address']),
                         )
+                    elif dependent['Type'] == 'Tile Layout':
+                        for (dependent_property_name, dependent_value) in (
+                            ('Z Priority', left + dependent['Left']),
+                            ('Flags', top + dependent['Top']),
+                        ):
+                            dependent_room_id = getID(aliases, ('Rooms', dependent['Room'], 'Room Index'))
+                            dependent_extract = extract['Stages'][dependent['Stage']]['Rooms'][str(dependent_room_id)]['Tile Layout'][dependent_property_name]
+                            result.patch_value(
+                                dependent_value,
+                                dependent_extract['Type'],
+                                sotn_address.Address(dependent_extract['Start']),
+                            )
                 # Room: Patch tilemap foreground and background
                 if 'Tiles' in tile_layout_extract and 'Tilemap' in room_data:
                     # Fetch the source tilemap data and start with empty target tilemaps
@@ -1074,7 +1196,7 @@ def get_patch(extract, changes, data):
     # Quest Rewards - Part 1
     for location_name in sorted(changes.get('Quest Rewards', {})):
         reward_name = changes['Quest Rewards'][location_name]
-        print((location_name, reward_name))
+        # print((location_name, reward_name))
         reward_type = reward_name.split(' - ')[0]
         reward_data = aliases['Quest Rewards'][location_name]
         for data_element in reward_data[reward_type + ' Data']:
@@ -1155,19 +1277,15 @@ def get_patch(extract, changes, data):
                 # https://github.com/Xeeynamo/sotn-decomp/blob/3e18d5e8654cdfd77fbebeabefebb7333c1da98f/src/st/lib/e_shop.c#L1899
                 result.patch_value(0x64 + relic_id, 'u8', sotn_address.Address(0x03E92308))
             elif data_element['Type'] == 'Direct Write':
-                values = {}
-                if location_name in (
-                    'Special - Guaranteed Drop (Bone Scimitar, Copper)',
-                    'Special - Guaranteed Drop (Bone Scimitar, Green)',
-                ):
-                    drop_id = aliases['Items'][reward_name]
-                    assert drop_id >= 0x80 # NOTE(sestren): Only handling equippable items for now
-                    values['Params'] = drop_id - 0x80
+                value = 0
+                if data_element['Property'] == 'Item ID':
+                    value = aliases['Items'][reward_name]
                 else:
-                    values['Entity Type ID'] = aliases['Entities'][reward_name]['Entity Type ID']
-                    values['Params'] = aliases['Entities'][reward_name]['Params']
+                    value = aliases['Entities'][reward_name][data_element['Property']]
+                value = transformed_value(value, data_element.get('Transformations', []))
+                assert value >= 0
                 result.patch_value(
-                    values.get(data_element['Property'], 0),
+                    value,
                     data_element['Data Type'],
                     sotn_address.Address(data_element['Address']),
                 )
@@ -1350,5 +1468,5 @@ if __name__ == '__main__':
                     changes = changes['Changes']
                 validate_changes(changes)
                 patch = get_patch(extract, changes, data)
-                ppf = PPF(DESCRIPTION, patch)
+                ppf = PPF(DESCRIPTION, patch, False)
                 ppf_file.write(ppf.bytes)
