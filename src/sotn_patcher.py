@@ -349,14 +349,6 @@ def get_patch(extract, changes, data):
         for (offset, data_type, value) in (
             (0x041E77B0, 'u32', 0x34020000),
             (0x041E77B4, 'u32', 0xAE22B98C),
-            (0x041E77B8, 'u8', 0x00),
-            (0x041E77B9, 'u8', 0x00),
-            (0x041E77BA, 'u8', 0x02),
-            (0x041E77BB, 'u8', 0x34),
-            (0x041E77BC, 'u8', 0x8C),
-            (0x041E77BD, 'u8', 0xB9),
-            (0x041E77BE, 'u8', 0x22),
-            (0x041E77BF, 'u8', 0xAE),
         ):
             result.patch_value(value, data_type, sotn_address.Address(offset))
     # Option - Disable clipping on screen edge of Tall Zig Zag Room Wall
