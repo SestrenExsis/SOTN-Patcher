@@ -293,20 +293,14 @@ def get_patch(extract, changes, data):
             )
     # Option - Enable debug mode
     if changes.get('Options', {}).get('Enable debug mode', False):
-        constant_extract = extract['Constants']['Set initial NOCLIP value']
-        result.patch_value(
-            0xAC258850,
-            constant_extract['Type'],
-            sotn_address.Address(constant_extract['Start']),
-        )
+        # Original value: 0xAC208850 --> sw 0, -$77B0(at)
+        # Modified value: 0xAC258850 --> sw a1, -$77B0(at)
+        result.patch_value(0xAC258850, 'u32', sotn_address.Address(0x000D9364))
     # Option - Skip Maria cutscene in Alchemy Laboratory
     if changes.get('Options', {}).get('Skip Maria cutscene in Alchemy Laboratory', False):
-        constant_extract = extract['Constants']['Should skip Maria Alchemy Laboratory']
-        result.patch_value(
-            0x0806E296,
-            constant_extract['Type'],
-            sotn_address.Address(constant_extract['Start']),
-        )
+        # Original value: 0x144002DA --> bne v0,0,$801B8A58
+        # Modified value: 0x0806E296 --> j $801B8A58
+        result.patch_value(0x0806E296, 'u32', sotn_address.Address(0x049F66EC))
     # Option - Disable clipping on screen edge of Demon Switch Wall
     if changes.get('Options', {}).get('Disable clipping on screen edge of Demon Switch Wall', False):
         for (constant_name, index, value) in (
