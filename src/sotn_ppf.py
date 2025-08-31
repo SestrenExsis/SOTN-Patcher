@@ -869,10 +869,10 @@ def get_patch(extract, changes, data):
                         'Target Foreground': [],
                     }
                     for row_data in room_extract['Tilemap Foreground']['Data']:
-                        tilemaps['Source Foreground'].append(list(map(lambda x: int(x, 16), row_data.split(' '))))
+                        tilemaps['Source Foreground'].append(list(map(lambda x: get_value(x), row_data.split(' '))))
                         tilemaps['Target Foreground'].append([None] * len(tilemaps['Source Foreground'][-1]))
                     for row_data in room_extract['Tilemap Background']['Data']:
-                        tilemaps['Source Background'].append(list(map(lambda x: int(x, 16), row_data.split(' '))))
+                        tilemaps['Source Background'].append(list(map(lambda x: get_value(x), row_data.split(' '))))
                         tilemaps['Target Background'].append([None] * len(tilemaps['Source Background'][-1]))
                     for edit in room_data['Tilemap']:
                         layers = edit['Layer'].split(' and ')
@@ -957,7 +957,7 @@ def get_patch(extract, changes, data):
                             extract_metadata = room_extract['Tilemap ' + layer]['Metadata']
                             offset = 0
                             for (tile_row, tiles) in enumerate(tilemaps['Target ' + layer]):
-                                extract_row_data = list(map(lambda x: int(x, 16), extract_data[tile_row].split(' ')))
+                                extract_row_data = list(map(lambda x: get_value(x), extract_data[tile_row].split(' ')))
                                 for (tile_col, tile) in enumerate(tiles):
                                     extract_value = extract_row_data[tile_col]
                                     if tile == extract_value:
@@ -1058,10 +1058,10 @@ def get_patch(extract, changes, data):
             changes['Quest Rewards']['Location - Castle Entrance, After Drawbridge (Power of Wolf)'] = 'Relic - Power of Wolf'
     # Color Palettes
     for (palette_index, rgba32) in enumerate(changes.get('Castle Map Color Palette', [])):
-        red = int(rgba32[1:3], 16) // 8
-        green = int(rgba32[3:5], 16) // 8
-        blue = int(rgba32[5:7], 16) // 8
-        alpha = int(rgba32[7:9], 16) // 128
+        red = get_value(rgba32[1:3]) // 8
+        green = get_value(rgba32[3:5]) // 8
+        blue = get_value(rgba32[5:7]) // 8
+        alpha = get_value(rgba32[7:9]) // 128
         value = (alpha << 15) + (blue << 10) + (green << 5) + red
         array_extract_meta = extract['Constants']['Castle Map Color Palette']['Metadata']
         result.patch_value(value, 'u16', array_extract_meta['Start'] + palette_index * array_extract_meta['Size'])
