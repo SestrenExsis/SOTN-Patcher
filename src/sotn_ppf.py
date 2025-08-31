@@ -111,22 +111,22 @@ class Patch:
             self.write_byte(byte)
             self.cursor.address += 1
     
-    def patch_value(self, value: int, type: str, game_address: int):
+    def patch_value(self, value: int, data_type: str, game_address: int):
         self.cursor.address = game_address
-        if type == 'u8':
+        if data_type == 'u8':
             self.write_u8(value)
-        elif type == 's8':
+        elif data_type == 's8':
             self.write_s8(value)
-        elif type == 'u16':
+        elif data_type == 'u16':
             self.write_u16(value)
-        elif type == 's16':
+        elif data_type == 's16':
             self.write_s16(value)
-        elif type == 'u32':
+        elif data_type == 'u32':
             self.write_u32(value)
-        elif type == 's32':
+        elif data_type == 's32':
             self.write_s32(value)
         else:
-            raise Exception('Incorrect type for patch_value:', (value, type, game_address))
+            raise Exception('Incorrect type for patch_value:', (value, data_type, game_address))
 
 def get_changes_template_file(extract, aliases):
     result = {
@@ -263,16 +263,16 @@ def get_patch(extract, changes, data):
     aliases = data['Aliases']
     result = Patch()
     # Apply common patches
-    for (option_name, patch_file_name) in {
-        'Clock hands show minutes and seconds instead of hours and minutes': 'clock-hands-display-minutes-and-seconds',
-        'Disable clipping on screen edge of Demon Switch Wall': 'prevent-softlocks-at-demon-switch-wall',
-        'Enable debug mode': 'enable-debug-mode',
-        'Prevent softlocks related to Death cutscene in Castle Entrance': 'prevent-softlocks-when-meeting-death',
-        'Skip Maria cutscene in Alchemy Laboratory': 'skip-maria-cutscene-in-alchemy-laboratory',
-    }:
+    for (option_name, patch_file_name) in (
+        ('Clock hands show minutes and seconds instead of hours and minutes', 'clock-hands-display-minutes-and-seconds'),
+        ('Disable clipping on screen edge of Demon Switch Wall', 'prevent-softlocks-at-demon-switch-wall'),
+        ('Enable debug mode', 'enable-debug-mode'),
+        ('Prevent softlocks related to Death cutscene in Castle Entrance', 'prevent-softlocks-when-meeting-death'),
+        ('Skip Maria cutscene in Alchemy Laboratory', 'skip-maria-cutscene-in-alchemy-laboratory'),
+    ):
         if not changes.get('Options', {}).get(option_name, False):
             continue
-        with open(os.path.join('build', 'patches', patch_file_name)) as patch_file:
+        with open(os.path.join('build', 'patches', patch_file_name + '.json')) as patch_file:
             patch = json.load(patch_file)
             patch_changes = patch.get('Changes', {})
             # New pokes are added to the end of the poke list
@@ -516,7 +516,6 @@ def get_patch(extract, changes, data):
                 (0x47C, 0x00000000), # 801C60F8 nop     
                 (0x480, 0x00000000), # 801C60FC nop     
             ):
-                # value = a_value if type == 'A' else b_value
                 result.patch_value(value, 'u32', base + offset)
     # Option - Preserve unsaved map data
     if changes.get('Options', {}).get('Preserve unsaved map data', 'None') != 'None':
@@ -538,7 +537,7 @@ def get_patch(extract, changes, data):
         # }
         # ------------------------------------------
         revelation_ind = (preservation_method == 'Revelation')
-        for (base, type) in (
+        for (base, option) in (
             (0x000DFA70, 'A'), # SEL or DRA?
             (0x03AE0C8C, 'B'), # SEL or DRA?
         ):
@@ -1200,16 +1199,17 @@ def get_patch(extract, changes, data):
     NULL_CHAR_SHIFTED = 0xFF
     for constant_name in changes.get('Constants', {}):
         constant_extract = extract['Constants'][constant_name]
-        data_element = changes['Constants'][constant_name]
         if 'Metadata' in constant_extract:
+            data_elements = changes['Constants'][constant_name]
             array_extract_meta = extract['Constants'][constant_name]['Metadata']
-            result.patch_value(
-                data_element['Value'],
-                array_extract_meta['Type'],
-                array_extract_meta['Start'] + data_element['Index'] * array_extract_meta['Size'],
-            )
-            pass
+            for data_element in data_elements:
+                result.patch_value(
+                    get_value(data_element['Value']),
+                    array_extract_meta['Type'],
+                    array_extract_meta['Start'] + data_element['Index'] * array_extract_meta['Size'],
+                )
         elif constant_extract['Type'] == 'string':
+            data_element = changes['Constants'][constant_name]
             offset = 0
             # Strings in SOTN are null-terminated, Shift JIS-encoded character arrays
             for char in data_element:
@@ -1240,6 +1240,7 @@ def get_patch(extract, changes, data):
                 result.patch_value(NULL_CHAR, 'u8', constant_extract['Start'] + offset)
                 offset += 1
         elif constant_extract['Type'] == 'shifted-string':
+            data_element = changes['Constants'][constant_name]
             offset = 0
             # Shifted strings in SOTN are terminated with an 0xFF, and every character is shifted smaller by 0x20
             for char in data_element:
@@ -1279,13 +1280,17 @@ def get_patch(extract, changes, data):
             result.patch_value(change_value, constant_extract['Type'], constant_extract['Start'])
     # Patch pokes or direct writes
     for poke in changes.get('Pokes', []):
-        value = None
-        if type(poke['Value']) == int:
-            value = poke['Value']
-        elif type(poke['Value']) == str:
-            value = int(poke['Value'], 16)
-        assert value != None
-        result.patch_value(value, poke['Data Type'], poke['Gamedata Address'])
+        result.patch_value(get_value(poke['Value']), poke['Data Type'], get_value(poke['Gamedata Address']))
+    return result
+
+# Intended for hex-strings or integers
+def get_value(value: (str | int)) -> int:
+    result = None
+    if type(value) == int:
+        result = value
+    elif type(value) == str:
+        result = int(value, 16)
+    assert result is not None
     return result
 
 if __name__ == '__main__':
