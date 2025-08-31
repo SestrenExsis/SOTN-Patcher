@@ -271,6 +271,7 @@ def get_patch(extract, changes, data):
         ('Disable clipping on screen edge of Tall Zig Zag Room Wall', 'prevent-softlocks-at-tall-zig-zag-room-wall'),
         ('Enable debug mode', 'enable-debug-mode'),
         ('Prevent softlocks related to Death cutscene in Castle Entrance', 'prevent-softlocks-when-meeting-death'),
+        ('Shift wall in Plaque Room With Breakable Wall away from screen edge', 'prevent-softlocks-at-plaque-room-wall'),
         ('Skip Maria cutscene in Alchemy Laboratory', 'skip-maria-cutscene-in-alchemy-laboratory'),
     ):
         if not changes.get('Options', {}).get(option_name, False):
@@ -289,53 +290,6 @@ def get_patch(extract, changes, data):
                     changes['Constants'] = {}
                 changes['Constants'][constant_key] = constant_value
             # NOTE(sestren): For the moment, only 'Pokes' and 'Constants' in the patch file's changes are being handled
-    # Option - Shift wall in Plaque Room With Breakable Wall away from screen edge
-    if changes.get('Options', {}).get('Shift wall in Plaque Room With Breakable Wall away from screen edge', False):
-        for (constant_name, index, value) in (
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 0, 0x030F),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 1, 0x030E),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 2, 0x0334),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 3, 0x0766),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 4, 0x0327),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 5, 0x076B),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 6, 0x0351),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 7, 0x0323),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 8, 0x030F),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 9, 0x076D),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 10, 0x0334),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 11, 0x076E),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 12, 0x0327),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 13, 0x076F),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 14, 0x0351),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 15, 0x0770),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 16, 0x030F),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 17, 0x0771),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 18, 0x0334),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 19, 0x0772),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 20, 0x0327),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 21, 0x0773),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 22, 0x0351),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 23, 0x0774),
-        ):
-            metadata = extract['Constants'][constant_name]['Metadata']
-            result.patch_value(value, metadata['Type'], metadata['Start'] + index * metadata['Size'])
-        # NOTE(sestren): The entity responsible for the breakable wall works differently in the Inverted Castle
-        # https://github.com/SestrenExsis/SOTN-Shuffler/issues/92
-        # Shift the starting point left 1 tile
-        for (offset, value) in (
-            (0x0480D210, 0x3406009E), # ori a2,zero,$9E
-            (0x0480D2B0, 0x3406009E), # ori a2,zero,$9E
-        ):
-            result.patch_value(value, 'u32', offset)
-        # Rewrite the original location directly on the tilemap
-        # TODO(sestren): Edit this like any other tilemap instead of directly overwriting
-        for (offset, value) in (
-            (0x047DB702, 0x0351),
-            (0x047DB722, 0x0327),
-            (0x047DB742, 0x0334),
-            (0x047DB762, 0x030F),
-        ):
-            result.patch_value(value, 'u16', offset)
     # Option - Disable clipping on screen edge of Left Gear Room Wall
     if changes.get('Options', {}).get('Disable clipping on screen edge of Left Gear Room Wall', False):
         for (constant_name, index, value) in (

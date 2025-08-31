@@ -158,6 +158,73 @@ def get_prevent_softlocks_at_tall_zig_zag_room_wall_patch():
     result = patch
     return result
 
+def get_prevent_softlocks_at_plaque_room_wall_patch():
+    patch = {
+        'Description': 'Prevent softlocks at Plaque Room Wall',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Constants': {},
+            'Pokes': [],
+        },
+    }
+    for stage_name in (
+        'Underground Caverns',
+    ):
+        constant_key = f'Plaque Room With Breakable Wall Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in (
+            (0, 0x030F),
+            (1, 0x030E),
+            (2, 0x0334),
+            (3, 0x0766),
+            (4, 0x0327),
+            (5, 0x076B),
+            (6, 0x0351),
+            (7, 0x0323),
+            (8, 0x030F),
+            (9, 0x076D),
+            (10, 0x0334),
+            (11, 0x076E),
+            (12, 0x0327),
+            (13, 0x076F),
+            (14, 0x0351),
+            (15, 0x0770),
+            (16, 0x030F),
+            (17, 0x0771),
+            (18, 0x0334),
+            (19, 0x0772),
+            (20, 0x0327),
+            (21, 0x0773),
+            (22, 0x0351),
+            (23, 0x0774),
+        ):
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    for (offset, data_type, value) in (
+        # NOTE(sestren): The entity responsible for the breakable wall works differently in the Inverted Castle
+        # https://github.com/SestrenExsis/SOTN-Shuffler/issues/92
+        # Shift the starting point left 1 tile
+        (0x0480D210, 'u32', 0x3406009E), # ori a2,zero,$9E
+        (0x0480D2B0, 'u32', 0x3406009E), # ori a2,zero,$9E
+        # Rewrite the original location directly on the tilemap
+        # TODO(sestren): Edit this like any other tilemap instead of directly overwriting
+        (0x047DB702, 'u16', 0x0351),
+        (0x047DB722, 'u16', 0x0327),
+        (0x047DB742, 'u16', 0x0334),
+        (0x047DB762, 'u16', 0x030F),
+    ):
+        patch['Changes']['Pokes'].append({
+            'Gamedata Address': '{:08X}'.format(offset),
+            'Data Type': data_type,
+            'Value': '{:08X}'.format(value),
+        })
+    result = patch
+    return result
+
 def get_prevent_softlocks_at_pendulum_room_wall_patch():
     patch = {
         'Description': 'Prevent softlocks at Pendulum Room Wall',
@@ -232,6 +299,7 @@ if __name__ == '__main__':
         ])),
         ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
         ('prevent-softlocks-at-pendulum-room-wall', get_prevent_softlocks_at_pendulum_room_wall_patch()),
+        ('prevent-softlocks-at-plaque-room-wall', get_prevent_softlocks_at_plaque_room_wall_patch()),
         ('prevent-softlocks-at-snake-column-wall', get_prevent_softlocks_at_snake_column_wall_patch()),
         ('prevent-softlocks-at-tall-zig-zag-room-wall', get_prevent_softlocks_at_tall_zig_zag_room_wall_patch()),
         ('prevent-softlocks-when-meeting-death', get_prevent_softlocks_when_meeting_death_patch()),
@@ -241,53 +309,6 @@ if __name__ == '__main__':
     ):
         with open(os.path.join('build', 'patches', file_name + '.json'), 'w') as patch_file:
             json.dump(patch, patch_file, indent='    ', sort_keys=True)
-    # # Option - Shift wall in Plaque Room With Breakable Wall away from screen edge
-    # if changes.get('Options', {}).get('Shift wall in Plaque Room With Breakable Wall away from screen edge', False):
-    #     for (constant_name, index, value) in (
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 0, 0x030F),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 1, 0x030E),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 2, 0x0334),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 3, 0x0766),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 4, 0x0327),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 5, 0x076B),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 6, 0x0351),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 7, 0x0323),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 8, 0x030F),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 9, 0x076D),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 10, 0x0334),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 11, 0x076E),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 12, 0x0327),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 13, 0x076F),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 14, 0x0351),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 15, 0x0770),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 16, 0x030F),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 17, 0x0771),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 18, 0x0334),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 19, 0x0772),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 20, 0x0327),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 21, 0x0773),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 22, 0x0351),
-    #         ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 23, 0x0774),
-    #     ):
-    #         metadata = extract['Constants'][constant_name]['Metadata']
-    #         result.patch_value(value, metadata['Type'], metadata['Start'] + index * metadata['Size'])
-    #     # NOTE(sestren): The entity responsible for the breakable wall works differently in the Inverted Castle
-    #     # https://github.com/SestrenExsis/SOTN-Shuffler/issues/92
-    #     # Shift the starting point left 1 tile
-    #     for (offset, value) in (
-    #         (0x0480D210, 0x3406009E), # ori a2,zero,$9E
-    #         (0x0480D2B0, 0x3406009E), # ori a2,zero,$9E
-    #     ):
-    #         result.patch_value(value, 'u32', offset)
-    #     # Rewrite the original location directly on the tilemap
-    #     # TODO(sestren): Edit this like any other tilemap instead of directly overwriting
-    #     for (offset, value) in (
-    #         (0x047DB702, 0x0351),
-    #         (0x047DB722, 0x0327),
-    #         (0x047DB742, 0x0334),
-    #         (0x047DB762, 0x030F),
-    #     ):
-    #         result.patch_value(value, 'u16', offset)
     # # Option - Disable clipping on screen edge of Left Gear Room Wall
     # if changes.get('Options', {}).get('Disable clipping on screen edge of Left Gear Room Wall', False):
     #     for (constant_name, index, value) in (

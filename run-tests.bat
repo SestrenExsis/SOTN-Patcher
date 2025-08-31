@@ -24,6 +24,7 @@ python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/preserve-map-ex
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/prevent-death-meeting-softlocks.json" --ppf="build/ppf/prevent-death-meeting-softlocks.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/prevent-softlocks-at-demon-switch-wall.json" --ppf="build/ppf/prevent-softlocks-at-demon-switch-wall.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/prevent-softlocks-at-pendulum-room-wall.json" --ppf="build/ppf/prevent-softlocks-at-pendulum-room-wall.ppf" || goto :error
+python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/prevent-softlocks-at-plaque-room-wall.json" --ppf="build/ppf/prevent-softlocks-at-plaque-room-wall.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/prevent-softlocks-at-snake-column-wall.json" --ppf="build/ppf/prevent-softlocks-at-snake-column-wall.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/prevent-softlocks-at-tall-zig-zag-room-wall.json" --ppf="build/ppf/prevent-softlocks-at-tall-zig-zag-room-wall.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/randomized-items.json" --ppf="build/ppf/randomized-items.ppf" || goto :error
