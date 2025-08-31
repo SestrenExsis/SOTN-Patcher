@@ -266,6 +266,7 @@ def get_patch(extract, changes, data):
     for (option_name, patch_file_name) in (
         ('Clock hands show minutes and seconds instead of hours and minutes', 'clock-hands-display-minutes-and-seconds'),
         ('Disable clipping on screen edge of Demon Switch Wall', 'prevent-softlocks-at-demon-switch-wall'),
+        ('Disable clipping on screen edge of Snake Column Wall', 'prevent-softlocks-at-snake-column-wall'),
         ('Enable debug mode', 'enable-debug-mode'),
         ('Prevent softlocks related to Death cutscene in Castle Entrance', 'prevent-softlocks-when-meeting-death'),
         ('Skip Maria cutscene in Alchemy Laboratory', 'skip-maria-cutscene-in-alchemy-laboratory'),
@@ -286,20 +287,6 @@ def get_patch(extract, changes, data):
                     changes['Constants'] = {}
                 changes['Constants'][constant_key] = constant_value
             # NOTE(sestren): For the moment, only 'Pokes' and 'Constants' in the patch file's changes are being handled
-    # Option - Disable clipping on screen edge of Snake Column Wall
-    if changes.get('Options', {}).get('Disable clipping on screen edge of Snake Column Wall', False):
-        for (constant_name, index, value) in (
-            ('Snake Column Wall Tiles (Abandoned Mine)', 0, 0x0000),
-            ('Snake Column Wall Tiles (Abandoned Mine)', 1, 0x0000),
-            ('Snake Column Wall Tiles (Abandoned Mine)', 2, 0x0000),
-            ('Snake Column Wall Tiles (Abandoned Mine)', 3, 0x0000),
-            ('Snake Column Wall Tiles (Cave)', 0, 0x0000),
-            ('Snake Column Wall Tiles (Cave)', 1, 0x0000),
-            ('Snake Column Wall Tiles (Cave)', 2, 0x0000),
-            ('Snake Column Wall Tiles (Cave)', 3, 0x0000),
-        ):
-            metadata = extract['Constants'][constant_name]['Metadata']
-            result.patch_value(value, metadata['Type'], metadata['Start'] + index * metadata['Size'])
     # Option - Disable clipping on screen edge of Tall Zig Zag Room Wall
     if changes.get('Options', {}).get('Disable clipping on screen edge of Tall Zig Zag Room Wall', False):
         for (constant_name, index, value) in (

@@ -63,6 +63,35 @@ def get_prevent_softlocks_when_meeting_death_patch():
     result = patch
     return result
 
+def get_prevent_softlocks_at_snake_column_wall_patch():
+    patch = {
+        'Description': 'Prevent softlocks at Snake Column Wall',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Constants': {},
+        },
+    }
+    for stage_name in (
+        'Abandoned Mine',
+        'Cave',
+    ):
+        constant_key = f'Snake Column Wall Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in (
+            (0, 0x0000),
+            (1, 0x0000),
+            (2, 0x0000),
+            (3, 0x0000),
+        ):
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    result = patch
+    return result
+
 def get_prevent_softlocks_at_demon_switch_wall_patch():
     patch = {
         'Description': 'Prevent softlocks at Demon Switch Wall',
@@ -125,6 +154,7 @@ if __name__ == '__main__':
     for (file_name, patch) in (
         ('clock-hands-display-minutes-and-seconds', get_clock_hands_patch()),
         ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
+        ('prevent-softlocks-at-snake-column-wall', get_prevent_softlocks_at_snake_column_wall_patch()),
         ('enable-debug-mode', get_simple_patch("Enables the game's hidden debug mode", [
             (0x000D9364, 'u32', 0xAC258850, 'sw a1, -$77B0(at)'), # Original instruction was sw 0, -$77B0(at)
         ])),
@@ -135,20 +165,6 @@ if __name__ == '__main__':
     ):
         with open(os.path.join('build', 'patches', file_name + '.json'), 'w') as patch_file:
             json.dump(patch, patch_file, indent='    ', sort_keys=True)
-    # # Option - Disable clipping on screen edge of Snake Column Wall
-    # if changes.get('Options', {}).get('Disable clipping on screen edge of Snake Column Wall', False):
-    #     for (constant_name, index, value) in (
-    #         ('Snake Column Wall Tiles (Abandoned Mine)', 0, 0x0000),
-    #         ('Snake Column Wall Tiles (Abandoned Mine)', 1, 0x0000),
-    #         ('Snake Column Wall Tiles (Abandoned Mine)', 2, 0x0000),
-    #         ('Snake Column Wall Tiles (Abandoned Mine)', 3, 0x0000),
-    #         ('Snake Column Wall Tiles (Cave)', 0, 0x0000),
-    #         ('Snake Column Wall Tiles (Cave)', 1, 0x0000),
-    #         ('Snake Column Wall Tiles (Cave)', 2, 0x0000),
-    #         ('Snake Column Wall Tiles (Cave)', 3, 0x0000),
-    #     ):
-    #         metadata = extract['Constants'][constant_name]['Metadata']
-    #         result.patch_value(value, metadata['Type'], metadata['Start'] + index * metadata['Size'])
     # # Option - Disable clipping on screen edge of Tall Zig Zag Room Wall
     # if changes.get('Options', {}).get('Disable clipping on screen edge of Tall Zig Zag Room Wall', False):
     #     for (constant_name, index, value) in (
