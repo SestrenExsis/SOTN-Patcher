@@ -158,6 +158,43 @@ def get_prevent_softlocks_at_tall_zig_zag_room_wall_patch():
     result = patch
     return result
 
+def get_prevent_softlocks_at_pendulum_room_wall_patch():
+    patch = {
+        'Description': 'Prevent softlocks at Pendulum Room Wall',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Constants': {},
+        },
+    }
+    for stage_name in (
+        'Clock Tower',
+        'Reverse Clock Tower',
+    ):
+        constant_key = f'Pendulum Room Wall Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in (
+            (0, 0x0561),
+            (2, 0x0000),
+            (4, 0x0000),
+            (6, 0x0563),
+            (8, 0x0561),
+            (10, 0x0000),
+            (12, 0x0000),
+            (14, 0x0563),
+            (16, 0x0561),
+            (18, 0x0000),
+            (20, 0x0000),
+            (22, 0x0563),
+        ):
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    result = patch
+    return result
+
 def get_simple_patch(description, pokes):
     patch = {
         'Description': description,
@@ -194,6 +231,7 @@ if __name__ == '__main__':
             (0x000D9364, 'u32', 0xAC258850, 'sw a1, -$77B0(at)'), # Original instruction was sw 0, -$77B0(at)
         ])),
         ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
+        ('prevent-softlocks-at-pendulum-room-wall', get_prevent_softlocks_at_pendulum_room_wall_patch()),
         ('prevent-softlocks-at-snake-column-wall', get_prevent_softlocks_at_snake_column_wall_patch()),
         ('prevent-softlocks-at-tall-zig-zag-room-wall', get_prevent_softlocks_at_tall_zig_zag_room_wall_patch()),
         ('prevent-softlocks-when-meeting-death', get_prevent_softlocks_when_meeting_death_patch()),
@@ -203,36 +241,6 @@ if __name__ == '__main__':
     ):
         with open(os.path.join('build', 'patches', file_name + '.json'), 'w') as patch_file:
             json.dump(patch, patch_file, indent='    ', sort_keys=True)
-    # # Option - Disable clipping on screen edge of Pendulum Room Wall
-    # if changes.get('Options', {}).get('Disable clipping on screen edge of Pendulum Room Wall', False):
-    #     for (constant_name, index, value) in (
-    #         ('Pendulum Room Wall Tiles (Clock Tower)', 0, 0x0561),
-    #         ('Pendulum Room Wall Tiles (Clock Tower)', 2, 0x0000),
-    #         ('Pendulum Room Wall Tiles (Clock Tower)', 4, 0x0000),
-    #         ('Pendulum Room Wall Tiles (Clock Tower)', 6, 0x0563),
-    #         ('Pendulum Room Wall Tiles (Clock Tower)', 8, 0x0561),
-    #         ('Pendulum Room Wall Tiles (Clock Tower)', 10, 0x0000),
-    #         ('Pendulum Room Wall Tiles (Clock Tower)', 12, 0x0000),
-    #         ('Pendulum Room Wall Tiles (Clock Tower)', 14, 0x0563),
-    #         ('Pendulum Room Wall Tiles (Clock Tower)', 16, 0x0561),
-    #         ('Pendulum Room Wall Tiles (Clock Tower)', 18, 0x0000),
-    #         ('Pendulum Room Wall Tiles (Clock Tower)', 20, 0x0000),
-    #         ('Pendulum Room Wall Tiles (Clock Tower)', 22, 0x0563),
-    #         ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 0, 0x0561),
-    #         ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 2, 0x0000),
-    #         ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 4, 0x0000),
-    #         ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 6, 0x0563),
-    #         ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 8, 0x0561),
-    #         ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 10, 0x0000),
-    #         ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 12, 0x0000),
-    #         ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 14, 0x0563),
-    #         ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 16, 0x0561),
-    #         ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 18, 0x0000),
-    #         ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 20, 0x0000),
-    #         ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 22, 0x0563),
-    #     ):
-    #         metadata = extract['Constants'][constant_name]['Metadata']
-    #         result.patch_value(value, metadata['Type'], metadata['Start'] + index * metadata['Size'])
     # # Option - Shift wall in Plaque Room With Breakable Wall away from screen edge
     # if changes.get('Options', {}).get('Shift wall in Plaque Room With Breakable Wall away from screen edge', False):
     #     for (constant_name, index, value) in (

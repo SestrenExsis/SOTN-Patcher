@@ -13,6 +13,7 @@ bb2edc1f7e08662b4df7e3e726067d8924341e23 *build/ppf/mix-items-and-relics.ppf
 25aa3e5e94f425cb5014e98d3b693172a36201ce *build/ppf/preserve-map-exploration.ppf
 ac26ea1238f47895fc3c57ccb192d0727c9162ab *build/ppf/prevent-death-meeting-softlocks.ppf
 be8b7395ae64e1730a3c806628cfd38bda46c34b *build/ppf/prevent-softlocks-at-demon-switch-wall.ppf
+d9283aad7bbdffdbaecd011ec57b0091f8dc05c8 *build/ppf/prevent-softlocks-at-pendulum-room-wall.ppf
 7bfd4bc648b4ddf551a23e0e062e9877a26d9a6a *build/ppf/prevent-softlocks-at-snake-column-wall.ppf
 2cdef6db99dbd3b788247c2b3a504bdedf6e0c56 *build/ppf/prevent-softlocks-at-tall-zig-zag-room-wall.ppf
 6f025191bfd7928400369a06a9bf7dd79241619f *build/ppf/randomized-items.ppf
