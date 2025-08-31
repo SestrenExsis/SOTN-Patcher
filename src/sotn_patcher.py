@@ -224,18 +224,13 @@ def validate_changes(changes):
     if 'Boss Teleporters' in changes:
         # TODO(sestren): Validate boss teleporters
         pass
-    if 'Stages' in changes:
-        for (stage_id, stage_data) in changes['Stages'].items():
-            if 'Rooms' in stage_data:
-                for (room_id, room_data) in stage_data['Rooms'].items():
-                    if 'Top' in room_data:
-                        # assert 0 <= room_data['Top'] <= 58
-                        assert 0 <= room_data['Top'] <= 63
-                    if 'Left' in room_data:
-                        assert 0 <= room_data['Left'] <= 63
-                    if 'Object Layout - Horizontal' in room_data:
-                        # TODO(sestren): Validate changes to object layouts
-                        pass
+    for (stage_id, stage_data) in changes.get('Stages', {}).items():
+        for (room_id, room_data) in stage_data.get('Rooms', {}).items():
+            assert 0 <= room_data.get('Top', 0) <= 63 # Should it be 58 instead of 63?
+            assert 0 <= room_data.get('Left', 0) <= 63
+            if 'Object Layout - Horizontal' in room_data:
+                # TODO(sestren): Validate changes to object layouts
+                pass
     if 'Teleporters' in changes:
         # TODO(sestren): Validate teleporters
         pass
@@ -1091,19 +1086,14 @@ def get_patch(extract, changes, data):
         if 'Location - Castle Entrance, After Drawbridge (Power of Wolf)' not in changes['Quest Rewards']:
             changes['Quest Rewards']['Location - Castle Entrance, After Drawbridge (Power of Wolf)'] = 'Relic - Power of Wolf'
     # Color Palettes
-    if 'Castle Map Color Palette' in changes:
-        for (palette_index, rgba32) in enumerate(changes['Castle Map Color Palette']):
-            red = int(rgba32[1:3], 16) // 8
-            green = int(rgba32[3:5], 16) // 8
-            blue = int(rgba32[5:7], 16) // 8
-            alpha = int(rgba32[7:9], 16) // 128
-            value = (alpha << 15) + (blue << 10) + (green << 5) + red
-            array_extract_meta = extract['Constants']['Castle Map Color Palette']['Metadata']
-            result.patch_value(
-                value,
-                'u16',
-                array_extract_meta['Start'] + palette_index * array_extract_meta['Size'],
-            )
+    for (palette_index, rgba32) in enumerate(changes.get('Castle Map Color Palette', [])):
+        red = int(rgba32[1:3], 16) // 8
+        green = int(rgba32[3:5], 16) // 8
+        blue = int(rgba32[5:7], 16) // 8
+        alpha = int(rgba32[7:9], 16) // 128
+        value = (alpha << 15) + (blue << 10) + (green << 5) + red
+        array_extract_meta = extract['Constants']['Castle Map Color Palette']['Metadata']
+        result.patch_value(value, 'u16', array_extract_meta['Start'] + palette_index * array_extract_meta['Size'])
     # Quest Rewards - Part 1
     for location_name in sorted(changes.get('Quest Rewards', {})):
         reward_name = changes['Quest Rewards'][location_name]
