@@ -267,6 +267,7 @@ def get_patch(extract, changes, data):
         ('Clock hands show minutes and seconds instead of hours and minutes', 'clock-hands-display-minutes-and-seconds'),
         ('Disable clipping on screen edge of Demon Switch Wall', 'prevent-softlocks-at-demon-switch-wall'),
         ('Disable clipping on screen edge of Snake Column Wall', 'prevent-softlocks-at-snake-column-wall'),
+        ('Disable clipping on screen edge of Tall Zig Zag Room Wall', 'prevent-softlocks-at-tall-zig-zag-room-wall'),
         ('Enable debug mode', 'enable-debug-mode'),
         ('Prevent softlocks related to Death cutscene in Castle Entrance', 'prevent-softlocks-when-meeting-death'),
         ('Skip Maria cutscene in Alchemy Laboratory', 'skip-maria-cutscene-in-alchemy-laboratory'),
@@ -287,36 +288,6 @@ def get_patch(extract, changes, data):
                     changes['Constants'] = {}
                 changes['Constants'][constant_key] = constant_value
             # NOTE(sestren): For the moment, only 'Pokes' and 'Constants' in the patch file's changes are being handled
-    # Option - Disable clipping on screen edge of Tall Zig Zag Room Wall
-    if changes.get('Options', {}).get('Disable clipping on screen edge of Tall Zig Zag Room Wall', False):
-        for (constant_name, index, value) in (
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 0, 0x05C6),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 2, 0x05CE),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 4, 0x05D6),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 6, 0x05DE),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 8, 0x05C6),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 10, 0x05CE),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 12, 0x05D6),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 14, 0x05DE),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 16, 0x05C6),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 18, 0x05CE),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 20, 0x05D6),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 22, 0x05DE),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 0, 0x05C6),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 2, 0x05CE),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 4, 0x05D6),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 6, 0x05DE),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 8, 0x05C6),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 10, 0x05CE),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 12, 0x05D6),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 14, 0x05DE),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 16, 0x05C6),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 18, 0x05CE),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 20, 0x05D6),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 22, 0x05DE),
-        ):
-            metadata = extract['Constants'][constant_name]['Metadata']
-            result.patch_value(value, metadata['Type'], metadata['Start'] + index * metadata['Size'])
     # Option - Disable clipping on screen edge of Pendulum Room Wall
     if changes.get('Options', {}).get('Disable clipping on screen edge of Pendulum Room Wall', False):
         for (constant_name, index, value) in (
