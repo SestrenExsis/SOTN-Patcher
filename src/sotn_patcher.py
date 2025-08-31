@@ -130,7 +130,7 @@ if __name__ == '__main__':
         ])),
         ('prevent-softlocks-when-meeting-death', get_prevent_softlocks_when_meeting_death_patch()),
         ('skip-maria-cutscene-in-alchemy-laboratory', get_simple_patch('Skip Maria cutscene in Alchemy Laboratory', [
-            (0x0806E296, 'u32', 0x144002DA, 'bne v0,0,$801B8A58'), # Original instruction was bne v0,0,$801B8A58
+            (0x049F66EC, 'u32', 0x0806E296, 'bne v0,0,$801B8A58'), # Original instruction was bne v0,0,$801B8A58
         ])),
     ):
         with open(os.path.join('build', 'patches', file_name + '.json'), 'w') as patch_file:

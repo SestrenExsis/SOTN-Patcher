@@ -22,13 +22,14 @@ python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/move-drawbridge
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/normalize-ferryman-gate.json" --ppf="build/ppf/normalize-ferryman-gate.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/preserve-map-exploration.json" --ppf="build/ppf/preserve-map-exploration.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/prevent-death-meeting-softlocks.json" --ppf="build/ppf/prevent-death-meeting-softlocks.ppf" || goto :error
+python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/prevent-softlocks-at-demon-switch-wall.json" --ppf="build/ppf/prevent-softlocks-at-demon-switch-wall.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/randomized-items.json" --ppf="build/ppf/randomized-items.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/randomized-relics.json" --ppf="build/ppf/randomized-relics.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/sample-randomized-map.json" --ppf="build/ppf/sample-randomized-map.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/shop-relic-name.json" --ppf="build/ppf/shop-relic-name.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/shuffle-spike-room.json" --ppf="build/ppf/shuffle-spike-room.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/shuffle-starting-gear.json" --ppf="build/ppf/shuffle-starting-gear.ppf" || goto :error
-python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/softlock-in-alchemy-lab-maria-cutscene.json" --ppf="build/ppf/softlock-in-alchemy-lab-maria-cutscene.ppf" || goto :error
+python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/skip-maria-cutscene-in-alchemy-laboratory.json" --ppf="build/ppf/skip-maria-cutscene-in-alchemy-laboratory.ppf" || goto :error
 
 sha1sum -c tests/checksums.sha1
 

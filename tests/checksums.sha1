@@ -12,10 +12,11 @@ bb2edc1f7e08662b4df7e3e726067d8924341e23 *build/ppf/mix-items-and-relics.ppf
 858ede9278769d531886ef66798ffdaad9c71c95 *build/ppf/normalize-ferryman-gate.ppf
 25aa3e5e94f425cb5014e98d3b693172a36201ce *build/ppf/preserve-map-exploration.ppf
 ac26ea1238f47895fc3c57ccb192d0727c9162ab *build/ppf/prevent-death-meeting-softlocks.ppf
+be8b7395ae64e1730a3c806628cfd38bda46c34b *build/ppf/prevent-softlocks-at-demon-switch-wall.ppf
 6f025191bfd7928400369a06a9bf7dd79241619f *build/ppf/randomized-items.ppf
 29ab1a198cd8ce17d75f0bc58a8db1a760dda4f2 *build/ppf/randomized-relics.ppf
 3ac139df8f088aeb2499f95e837f4837a1612f7c *build/ppf/sample-randomized-map.ppf
 0a52d52ed1d6c329d084f047918db748ec598316 *build/ppf/shop-relic-name.ppf
 5cad450299828d41629acc3034725fac76bece05 *build/ppf/shuffle-spike-room.ppf
 0c18b44bbab522502ed75164605332692509be01 *build/ppf/shuffle-starting-gear.ppf
-c96689a0b764fd1c5eca85100bcf1291d89aef53 *build/ppf/softlock-in-alchemy-lab-maria-cutscene.ppf
+3473c9804f080213028169a95032ca9e88399bf0 *build/ppf/skip-maria-cutscene-in-alchemy-laboratory.ppf
