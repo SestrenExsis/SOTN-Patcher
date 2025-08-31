@@ -335,6 +335,63 @@ if __name__ == '__main__':
         ('enable-debug-mode', get_simple_patch("Enables the game's hidden debug mode", [
             (0x000D9364, 'u32', 0xAC258850, 'sw a1, -$77B0(at)'), # Original instruction was sw 0, -$77B0(at)
         ])),
+        ('normalize-ferryman-gate', get_simple_patch('Normalize Ferryman Gate', [
+            # 0x801C5C7C - EntityFerrymanController
+            # ------------------------------------------
+            # Equivalent to the following C code
+            # ------------------------------------------
+            # offset = self->posX.i.hi + g_Tilemap.scrollX.i.hi;
+            # if (self->facingLeft) {
+            #     if (offset > 3040) {
+            #         self->step++;
+            #     }
+            #     else if (offset > 2720) {
+            #         g_CastleFlags[0xC2] = true;
+            #     }
+            # } else {
+            #     if (offset < 288) {
+            #         self->step++;
+            #     }
+            #     else if (offset < 3104) {
+            #         g_CastleFlags[0xC2] = true;
+            #     }
+            # }
+            (0x0429D47C + 0x3F8, 'u32', 0x96040014, 'lhu     a0,0x14(s0)'),   # 801C6074
+            (0x0429D47C + 0x3FC, 'u32', 0x00000000, 'nop'),                   # 801C6078
+            (0x0429D47C + 0x400, 'u32', 0x1080000E, 'beqz    a0,$801C60B8'),  # 801C607C
+            (0x0429D47C + 0x404, 'u32', 0x00431021, 'addu    v0,v0,v1'),      # 801C6080
+            (0x0429D47C + 0x408, 'u32', 0x00021400, 'sll     v0,v0,0x10'),    # 801C6084
+            (0x0429D47C + 0x40C, 'u32', 0x00021C03, 'sra     v1,v0,0x10'),    # 801C6088
+            (0x0429D47C + 0x410, 'u32', 0x28620BE1, 'slti    v0,v1,0xBE1'),   # 801C608C
+            (0x0429D47C + 0x414, 'u32', 0x14400004, 'bnez    v0,$801C60A4'),  # 801C6090
+            (0x0429D47C + 0x418, 'u32', 0x00000000, 'nop'),                   # 801C6094
+            (0x0429D47C + 0x41C, 'u32', 0x9602002C, 'lhu     v0,0x2c(s0)'),   # 801C6098
+            (0x0429D47C + 0x420, 'u32', 0x0807185A, 'j       $801C6168'),     # 801C609C
+            (0x0429D47C + 0x424, 'u32', 0x24420001, 'addiu   v0,v0,1'),       # 801C60A0
+            (0x0429D47C + 0x428, 'u32', 0x28620AA1, 'slti    v0,v1,0xaa1'),   # 801C60A4
+            (0x0429D47C + 0x42C, 'u32', 0x14400030, 'bnez    v0,$801C616C'),  # 801C60A8
+            (0x0429D47C + 0x430, 'u32', 0x34020001, 'li      v0,0x1'),        # 801C60AC
+            (0x0429D47C + 0x434, 'u32', 0x08071839, 'j       $801C60E4'),     # 801C60B0
+            (0x0429D47C + 0x438, 'u32', 0x00000000, 'nop'),                   # 801C60B4
+            (0x0429D47C + 0x43C, 'u32', 0x00021400, 'sll     v0,v0,0x10'),    # 801C60B8
+            (0x0429D47C + 0x440, 'u32', 0x00021C03, 'sra     v1,v0,0x10'),    # 801C60BC
+            (0x0429D47C + 0x444, 'u32', 0x28620120, 'slti    v0,v1,0x120'),   # 801C60C0
+            (0x0429D47C + 0x448, 'u32', 0x10400004, 'beqz    v0,$801C60D8'),  # 801C60C4
+            (0x0429D47C + 0x44C, 'u32', 0x00000000, 'nop'),                   # 801C60C8
+            (0x0429D47C + 0x450, 'u32', 0x9602002C, 'lhu     v0,0x2c(s0)'),   # 801C60CC
+            (0x0429D47C + 0x454, 'u32', 0x0807185A, 'j       $801C6168'),     # 801C60D0
+            (0x0429D47C + 0x458, 'u32', 0x24420001, 'addiu   v0,v0,1'),       # 801C60D4
+            (0x0429D47C + 0x45C, 'u32', 0x28620C20, 'slti    v0,v1,0xc20'),   # 801C60D8
+            (0x0429D47C + 0x460, 'u32', 0x10400023, 'beqz    v0,$801C616C'),  # 801C60DC
+            (0x0429D47C + 0x464, 'u32', 0x34020001, 'li      v0,0x1'),        # 801C60E0
+            (0x0429D47C + 0x468, 'u32', 0x3C018004, 'lui     at,$8004'),      # 801C60E4
+            (0x0429D47C + 0x46C, 'u32', 0xA022BEAE, 'sb      v0,-$4152(at)'), # 801C60E8
+            (0x0429D47C + 0x470, 'u32', 0x0807185B, 'j       $801C616C'),     # 801C60EC
+            (0x0429D47C + 0x474, 'u32', 0x00000000, 'nop'),                   # 801C60F0
+            (0x0429D47C + 0x478, 'u32', 0x00000000, 'nop'),                   # 801C60F4
+            (0x0429D47C + 0x47C, 'u32', 0x00000000, 'nop'),                   # 801C60F8
+            (0x0429D47C + 0x480, 'u32', 0x00000000, 'nop'),                   # 801C60FC
+        ])),
         ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
         ('prevent-softlocks-at-left-gear-room-wall', get_prevent_softlocks_at_left_gear_room_wall_patch()),
         ('prevent-softlocks-at-pendulum-room-wall', get_prevent_softlocks_at_pendulum_room_wall_patch()),
@@ -348,70 +405,6 @@ if __name__ == '__main__':
     ):
         with open(os.path.join('build', 'patches', file_name + '.json'), 'w') as patch_file:
             json.dump(patch, patch_file, indent='    ', sort_keys=True)
-    # # Option - Normalize Ferryman Gate
-    # if changes.get('Options', {}).get('Normalize Ferryman Gate', False):
-    #     # 0x801C5C7C - EntityFerrymanController
-    #     # ------------------------------------------
-    #     # Equivalent to the following C code
-    #     # ------------------------------------------
-    #     # offset = self->posX.i.hi + g_Tilemap.scrollX.i.hi;
-    #     # if (self->facingLeft) {
-    #     #     if (offset > 3040) {
-    #     #         self->step++;
-    #     #     }
-    #     #     else if (offset > 2720) {
-    #     #         g_CastleFlags[0xC2] = true;
-    #     #     }
-    #     # } else {
-    #     #     if (offset < 288) {
-    #     #         self->step++;
-    #     #     }
-    #     #     else if (offset < 3104) {
-    #     #         g_CastleFlags[0xC2] = true;
-    #     #     }
-    #     # }
-    #     for (base, description) in (
-    #         (0x0429D47C, 'Underground Caverns'),
-    #     ):
-    #         for (offset, value) in (
-    #             (0x3F8, 0x96040014), # 801C6074 lhu     a0,0x14(s0)
-    #             (0x3FC, 0x00000000), # 801C6078 nop     
-    #             (0x400, 0x1080000E), # 801C607C beqz    a0,$801C60B8
-    #             (0x404, 0x00431021), # 801C6080 addu    v0,v0,v1
-    #             (0x408, 0x00021400), # 801C6084 sll     v0,v0,0x10
-    #             (0x40C, 0x00021C03), # 801C6088 sra     v1,v0,0x10
-    #             (0x410, 0x28620BE1), # 801C608C slti    v0,v1,0xbe1
-    #             (0x414, 0x14400004), # 801C6090 bnez    v0,$801C60A4
-    #             (0x418, 0x00000000), # 801C6094 nop     
-    #             (0x41C, 0x9602002C), # 801C6098 lhu     v0,0x2c(s0)
-    #             (0x420, 0x0807185A), # 801C609C j       $801C6168
-    #             (0x424, 0x24420001), # 801C60A0 addiu   v0,v0,1
-    #             (0x428, 0x28620AA1), # 801C60A4 slti    v0,v1,0xaa1
-    #             (0x42C, 0x14400030), # 801C60A8 bnez    v0,$801C616C
-    #             (0x430, 0x34020001), # 801C60AC li      v0,0x1
-    #             (0x434, 0x08071839), # 801C60B0 j       $801C60E4
-    #             (0x438, 0x00000000), # 801C60B4 nop     
-    #             (0x43C, 0x00021400), # 801C60B8 sll     v0,v0,0x10
-    #             (0x440, 0x00021C03), # 801C60BC sra     v1,v0,0x10
-    #             (0x444, 0x28620120), # 801C60C0 slti    v0,v1,0x120
-    #             (0x448, 0x10400004), # 801C60C4 beqz    v0,$801C60D8
-    #             (0x44C, 0x00000000), # 801C60C8 nop     
-    #             (0x450, 0x9602002C), # 801C60CC lhu     v0,0x2c(s0)
-    #             (0x454, 0x0807185A), # 801C60D0 j       $801C6168
-    #             (0x458, 0x24420001), # 801C60D4 addiu   v0,v0,1
-    #             (0x45C, 0x28620C20), # 801C60D8 slti    v0,v1,0xc20
-    #             (0x460, 0x10400023), # 801C60DC beqz    v0,$801C616C
-    #             (0x464, 0x34020001), # 801C60E0 li      v0,0x1
-    #             (0x468, 0x3C018004), # 801C60E4 lui     at,$8004
-    #             (0x46C, 0xA022BEAE), # 801C60E8 sb      v0,-$4152(at)
-    #             (0x470, 0x0807185B), # 801C60EC j       $801C616C
-    #             (0x474, 0x00000000), # 801C60F0 nop     
-    #             (0x478, 0x00000000), # 801C60F4 nop     
-    #             (0x47C, 0x00000000), # 801C60F8 nop     
-    #             (0x480, 0x00000000), # 801C60FC nop     
-    #         ):
-    #             # value = a_value if type == 'A' else b_value
-    #             result.patch_value(value, 'u32', base + offset)
     # # Option - Preserve unsaved map data
     # if changes.get('Options', {}).get('Preserve unsaved map data', 'None') != 'None':
     #     preservation_method = changes['Options']['Preserve unsaved map data']

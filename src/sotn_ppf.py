@@ -271,6 +271,7 @@ def get_patch(extract, changes, data):
         ('Disable clipping on screen edge of Snake Column Wall', 'prevent-softlocks-at-snake-column-wall'),
         ('Disable clipping on screen edge of Tall Zig Zag Room Wall', 'prevent-softlocks-at-tall-zig-zag-room-wall'),
         ('Enable debug mode', 'enable-debug-mode'),
+        ('Normalize Ferryman Gate', 'normalize-ferryman-gate'),
         ('Prevent softlocks related to Death cutscene in Castle Entrance', 'prevent-softlocks-when-meeting-death'),
         ('Shift wall in Plaque Room With Breakable Wall away from screen edge', 'prevent-softlocks-at-plaque-room-wall'),
         ('Skip Maria cutscene in Alchemy Laboratory', 'skip-maria-cutscene-in-alchemy-laboratory'),
@@ -291,69 +292,6 @@ def get_patch(extract, changes, data):
                     changes['Constants'] = {}
                 changes['Constants'][constant_key] = constant_value
             # NOTE(sestren): For the moment, only 'Pokes' and 'Constants' in the patch file's changes are being handled
-    # Option - Normalize Ferryman Gate
-    if changes.get('Options', {}).get('Normalize Ferryman Gate', False):
-        # 0x801C5C7C - EntityFerrymanController
-        # ------------------------------------------
-        # Equivalent to the following C code
-        # ------------------------------------------
-        # offset = self->posX.i.hi + g_Tilemap.scrollX.i.hi;
-        # if (self->facingLeft) {
-        #     if (offset > 3040) {
-        #         self->step++;
-        #     }
-        #     else if (offset > 2720) {
-        #         g_CastleFlags[0xC2] = true;
-        #     }
-        # } else {
-        #     if (offset < 288) {
-        #         self->step++;
-        #     }
-        #     else if (offset < 3104) {
-        #         g_CastleFlags[0xC2] = true;
-        #     }
-        # }
-        for (base, description) in (
-            (0x0429D47C, 'Underground Caverns'),
-        ):
-            for (offset, value) in (
-                (0x3F8, 0x96040014), # 801C6074 lhu     a0,0x14(s0)
-                (0x3FC, 0x00000000), # 801C6078 nop     
-                (0x400, 0x1080000E), # 801C607C beqz    a0,$801C60B8
-                (0x404, 0x00431021), # 801C6080 addu    v0,v0,v1
-                (0x408, 0x00021400), # 801C6084 sll     v0,v0,0x10
-                (0x40C, 0x00021C03), # 801C6088 sra     v1,v0,0x10
-                (0x410, 0x28620BE1), # 801C608C slti    v0,v1,0xbe1
-                (0x414, 0x14400004), # 801C6090 bnez    v0,$801C60A4
-                (0x418, 0x00000000), # 801C6094 nop     
-                (0x41C, 0x9602002C), # 801C6098 lhu     v0,0x2c(s0)
-                (0x420, 0x0807185A), # 801C609C j       $801C6168
-                (0x424, 0x24420001), # 801C60A0 addiu   v0,v0,1
-                (0x428, 0x28620AA1), # 801C60A4 slti    v0,v1,0xaa1
-                (0x42C, 0x14400030), # 801C60A8 bnez    v0,$801C616C
-                (0x430, 0x34020001), # 801C60AC li      v0,0x1
-                (0x434, 0x08071839), # 801C60B0 j       $801C60E4
-                (0x438, 0x00000000), # 801C60B4 nop     
-                (0x43C, 0x00021400), # 801C60B8 sll     v0,v0,0x10
-                (0x440, 0x00021C03), # 801C60BC sra     v1,v0,0x10
-                (0x444, 0x28620120), # 801C60C0 slti    v0,v1,0x120
-                (0x448, 0x10400004), # 801C60C4 beqz    v0,$801C60D8
-                (0x44C, 0x00000000), # 801C60C8 nop     
-                (0x450, 0x9602002C), # 801C60CC lhu     v0,0x2c(s0)
-                (0x454, 0x0807185A), # 801C60D0 j       $801C6168
-                (0x458, 0x24420001), # 801C60D4 addiu   v0,v0,1
-                (0x45C, 0x28620C20), # 801C60D8 slti    v0,v1,0xc20
-                (0x460, 0x10400023), # 801C60DC beqz    v0,$801C616C
-                (0x464, 0x34020001), # 801C60E0 li      v0,0x1
-                (0x468, 0x3C018004), # 801C60E4 lui     at,$8004
-                (0x46C, 0xA022BEAE), # 801C60E8 sb      v0,-$4152(at)
-                (0x470, 0x0807185B), # 801C60EC j       $801C616C
-                (0x474, 0x00000000), # 801C60F0 nop     
-                (0x478, 0x00000000), # 801C60F4 nop     
-                (0x47C, 0x00000000), # 801C60F8 nop     
-                (0x480, 0x00000000), # 801C60FC nop     
-            ):
-                result.patch_value(value, 'u32', base + offset)
     # Option - Preserve unsaved map data
     if changes.get('Options', {}).get('Preserve unsaved map data', 'None') != 'None':
         preservation_method = changes['Options']['Preserve unsaved map data']

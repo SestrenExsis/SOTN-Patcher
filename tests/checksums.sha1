@@ -9,7 +9,7 @@ cc27ae98f9fe9bf8231da2eb3081224085b63206 *build/ppf/enable-debug-mode.ppf
 090eb42c4df5b7b6db7df2946fa807f081e98df1 *build/ppf/improve-normalized-room-visuals.ppf
 bb2edc1f7e08662b4df7e3e726067d8924341e23 *build/ppf/mix-items-and-relics.ppf
 0636a5b8e8c3e8bcb4e24773f54d7327b1d8d4c8 *build/ppf/move-drawbridge-room-vertically.ppf
-858ede9278769d531886ef66798ffdaad9c71c95 *build/ppf/normalize-ferryman-gate.ppf
+21f24f3f8c3741097be288c08e0e7f2e34a4c53e *build/ppf/normalize-ferryman-gate.ppf
 25aa3e5e94f425cb5014e98d3b693172a36201ce *build/ppf/preserve-map-exploration.ppf
 ac26ea1238f47895fc3c57ccb192d0727c9162ab *build/ppf/prevent-death-meeting-softlocks.ppf
 be8b7395ae64e1730a3c806628cfd38bda46c34b *build/ppf/prevent-softlocks-at-demon-switch-wall.ppf
