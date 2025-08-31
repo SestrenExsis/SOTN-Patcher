@@ -262,6 +262,44 @@ def get_prevent_softlocks_at_pendulum_room_wall_patch():
     result = patch
     return result
 
+def get_prevent_softlocks_at_left_gear_room_wall_patch():
+    patch = {
+        'Description': 'Prevent softlocks at Left Gear Room Wall',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Constants': {},
+            'Pokes': [],
+        },
+    }
+    for stage_name in (
+        'Clock Tower',
+        'Reverse Clock Tower',
+    ):
+        constant_key = f'Left Gear Room Wall Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in (
+            (1, 0x0565),
+            (3, 0x056D),
+            (5, 0x0575),
+            (7, 0x057D),
+            (9, 0x0565),
+            (11, 0x056D),
+            (13, 0x0575),
+            (15, 0x057D),
+            (17, 0x0565),
+            (19, 0x056D),
+            (21, 0x0575),
+            (23, 0x057D),
+        ):
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    result = patch
+    return result
+
 def get_simple_patch(description, pokes):
     patch = {
         'Description': description,
@@ -298,6 +336,7 @@ if __name__ == '__main__':
             (0x000D9364, 'u32', 0xAC258850, 'sw a1, -$77B0(at)'), # Original instruction was sw 0, -$77B0(at)
         ])),
         ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
+        ('prevent-softlocks-at-left-gear-room-wall', get_prevent_softlocks_at_left_gear_room_wall_patch()),
         ('prevent-softlocks-at-pendulum-room-wall', get_prevent_softlocks_at_pendulum_room_wall_patch()),
         ('prevent-softlocks-at-plaque-room-wall', get_prevent_softlocks_at_plaque_room_wall_patch()),
         ('prevent-softlocks-at-snake-column-wall', get_prevent_softlocks_at_snake_column_wall_patch()),
@@ -309,53 +348,6 @@ if __name__ == '__main__':
     ):
         with open(os.path.join('build', 'patches', file_name + '.json'), 'w') as patch_file:
             json.dump(patch, patch_file, indent='    ', sort_keys=True)
-    # # Option - Disable clipping on screen edge of Left Gear Room Wall
-    # if changes.get('Options', {}).get('Disable clipping on screen edge of Left Gear Room Wall', False):
-    #     for (constant_name, index, value) in (
-    #         ('Left Gear Room Wall Tiles (Clock Tower)', 1, 0x0565),
-    #         ('Left Gear Room Wall Tiles (Clock Tower)', 3, 0x056D),
-    #         ('Left Gear Room Wall Tiles (Clock Tower)', 5, 0x0575),
-    #         ('Left Gear Room Wall Tiles (Clock Tower)', 7, 0x057D),
-    #         ('Left Gear Room Wall Tiles (Clock Tower)', 9, 0x0565),
-    #         ('Left Gear Room Wall Tiles (Clock Tower)', 11, 0x056D),
-    #         ('Left Gear Room Wall Tiles (Clock Tower)', 13, 0x0575),
-    #         ('Left Gear Room Wall Tiles (Clock Tower)', 15, 0x057D),
-    #         ('Left Gear Room Wall Tiles (Clock Tower)', 17, 0x0565),
-    #         ('Left Gear Room Wall Tiles (Clock Tower)', 19, 0x056D),
-    #         ('Left Gear Room Wall Tiles (Clock Tower)', 21, 0x0575),
-    #         ('Left Gear Room Wall Tiles (Clock Tower)', 23, 0x057D),
-    #         ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 1, 0x0565),
-    #         ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 3, 0x056D),
-    #         ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 5, 0x0575),
-    #         ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 7, 0x057D),
-    #         ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 9, 0x0565),
-    #         ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 11, 0x056D),
-    #         ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 13, 0x0575),
-    #         ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 15, 0x057D),
-    #         ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 17, 0x0565),
-    #         ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 19, 0x056D),
-    #         ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 21, 0x0575),
-    #         ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 23, 0x057D),
-    #     ):
-    #         metadata = extract['Constants'][constant_name]['Metadata']
-    #         result.patch_value(value, metadata['Type'], metadata['Start'] + index * metadata['Size'])
-    #     # NOTE(sestren): The entity responsible for the breakable wall works differently
-    #     # https://github.com/SestrenExsis/SOTN-Shuffler/issues/92
-    #     # Shift the starting point left 1 tile
-    #     for (offset, value) in (
-    #         (0x0480D210, 0x3406009E), # ori a2,zero,$9E
-    #         (0x0480D2B0, 0x3406009E), # ori a2,zero,$9E
-    #     ):
-    #         result.patch_value(value, 'u32', offset)
-    #     # Rewrite the original location directly on the tilemap
-    #     # TODO(sestren): Edit this like any other tilemap instead of directly overwriting
-    #     for (offset, value) in (
-    #         (0x047DB702, 0x0351),
-    #         (0x047DB722, 0x0327),
-    #         (0x047DB742, 0x0334),
-    #         (0x047DB762, 0x030F),
-    #     ):
-    #         result.patch_value(value, 'u16', offset)
     # # Option - Normalize Ferryman Gate
     # if changes.get('Options', {}).get('Normalize Ferryman Gate', False):
     #     # 0x801C5C7C - EntityFerrymanController

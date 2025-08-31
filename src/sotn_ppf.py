@@ -266,6 +266,7 @@ def get_patch(extract, changes, data):
     for (option_name, patch_file_name) in (
         ('Clock hands show minutes and seconds instead of hours and minutes', 'clock-hands-display-minutes-and-seconds'),
         ('Disable clipping on screen edge of Demon Switch Wall', 'prevent-softlocks-at-demon-switch-wall'),
+        ('Disable clipping on screen edge of Left Gear Room Wall', 'prevent-softlocks-at-left-gear-room-wall'),
         ('Disable clipping on screen edge of Pendulum Room Wall', 'prevent-softlocks-at-pendulum-room-wall'),
         ('Disable clipping on screen edge of Snake Column Wall', 'prevent-softlocks-at-snake-column-wall'),
         ('Disable clipping on screen edge of Tall Zig Zag Room Wall', 'prevent-softlocks-at-tall-zig-zag-room-wall'),
@@ -290,53 +291,6 @@ def get_patch(extract, changes, data):
                     changes['Constants'] = {}
                 changes['Constants'][constant_key] = constant_value
             # NOTE(sestren): For the moment, only 'Pokes' and 'Constants' in the patch file's changes are being handled
-    # Option - Disable clipping on screen edge of Left Gear Room Wall
-    if changes.get('Options', {}).get('Disable clipping on screen edge of Left Gear Room Wall', False):
-        for (constant_name, index, value) in (
-            ('Left Gear Room Wall Tiles (Clock Tower)', 1, 0x0565),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 3, 0x056D),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 5, 0x0575),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 7, 0x057D),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 9, 0x0565),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 11, 0x056D),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 13, 0x0575),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 15, 0x057D),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 17, 0x0565),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 19, 0x056D),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 21, 0x0575),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 23, 0x057D),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 1, 0x0565),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 3, 0x056D),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 5, 0x0575),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 7, 0x057D),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 9, 0x0565),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 11, 0x056D),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 13, 0x0575),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 15, 0x057D),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 17, 0x0565),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 19, 0x056D),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 21, 0x0575),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 23, 0x057D),
-        ):
-            metadata = extract['Constants'][constant_name]['Metadata']
-            result.patch_value(value, metadata['Type'], metadata['Start'] + index * metadata['Size'])
-        # NOTE(sestren): The entity responsible for the breakable wall works differently
-        # https://github.com/SestrenExsis/SOTN-Shuffler/issues/92
-        # Shift the starting point left 1 tile
-        for (offset, value) in (
-            (0x0480D210, 0x3406009E), # ori a2,zero,$9E
-            (0x0480D2B0, 0x3406009E), # ori a2,zero,$9E
-        ):
-            result.patch_value(value, 'u32', offset)
-        # Rewrite the original location directly on the tilemap
-        # TODO(sestren): Edit this like any other tilemap instead of directly overwriting
-        for (offset, value) in (
-            (0x047DB702, 0x0351),
-            (0x047DB722, 0x0327),
-            (0x047DB742, 0x0334),
-            (0x047DB762, 0x030F),
-        ):
-            result.patch_value(value, 'u16', offset)
     # Option - Normalize Ferryman Gate
     if changes.get('Options', {}).get('Normalize Ferryman Gate', False):
         # 0x801C5C7C - EntityFerrymanController

@@ -23,6 +23,7 @@ python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/normalize-ferry
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/preserve-map-exploration.json" --ppf="build/ppf/preserve-map-exploration.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/prevent-death-meeting-softlocks.json" --ppf="build/ppf/prevent-death-meeting-softlocks.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/prevent-softlocks-at-demon-switch-wall.json" --ppf="build/ppf/prevent-softlocks-at-demon-switch-wall.ppf" || goto :error
+python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/prevent-softlocks-at-left-gear-room-wall.json" --ppf="build/ppf/prevent-softlocks-at-left-gear-room-wall.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/prevent-softlocks-at-pendulum-room-wall.json" --ppf="build/ppf/prevent-softlocks-at-pendulum-room-wall.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/prevent-softlocks-at-plaque-room-wall.json" --ppf="build/ppf/prevent-softlocks-at-plaque-room-wall.ppf" || goto :error
 python src/sotn_ppf.py %EXTRACT% --data="data/" --changes="tests/prevent-softlocks-at-snake-column-wall.json" --ppf="build/ppf/prevent-softlocks-at-snake-column-wall.ppf" || goto :error
