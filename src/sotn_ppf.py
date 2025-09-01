@@ -981,7 +981,7 @@ def get_value(value: (str | int)) -> int:
 if __name__ == '__main__':
     '''
     Usage
-    python sotn_ppf.py EXTRACTION_JSON --data= --changes=CHANGES_JSON --ppf=OUTPUT_PPF
+    python sotn_ppf.py EXTRACTION_JSON --data=PATCHES_DIR --changes=CHANGES_JSON --ppf=OUTPUT_PPF
     '''
     DESCRIPTION = 'Designed to work with SOTN Shuffler'
     parser = argparse.ArgumentParser()

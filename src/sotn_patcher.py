@@ -1,4 +1,5 @@
 # External libraries
+import argparse
 import json
 import os
 
@@ -467,6 +468,9 @@ if __name__ == '__main__':
     Usage
     python sotn_patcher.py
     '''
+    parser = argparse.ArgumentParser()
+    parser.add_argument('patch_dir', help='Input a filepath to a folder that will contain the generated patch files', type=str)
+    args = parser.parse_args()
     for (file_name, patch) in (
         ('clock-hands-display-minutes-and-seconds', get_clock_hands_patch()),
         ('enable-debug-mode', get_simple_patch("Enables the game's hidden debug mode", [
@@ -541,7 +545,7 @@ if __name__ == '__main__':
             (0x049F66EC, 'u32', 0x0806E296, 'bne v0,0,$801B8A58'), # Original instruction was bne v0,0,$801B8A58
         ])),
     ):
-        with open(os.path.join('build', 'patches', file_name + '.json'), 'w') as patch_file:
+        with open(os.path.join(os.path.normpath(args.patch_dir), file_name + '.json'), 'w') as patch_file:
             json.dump(patch, patch_file, indent='    ', sort_keys=True)
     # # Option - Preserve unsaved map data
     # if changes.get('Options', {}).get('Preserve unsaved map data', 'None') != 'None':
