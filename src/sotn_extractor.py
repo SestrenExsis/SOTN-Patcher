@@ -1,6 +1,7 @@
 # External libraries
 import argparse
 import json
+import os
 
 # Local libraries
 import sotn_address
@@ -223,7 +224,7 @@ if __name__ == '__main__':
     OFFSET = 0x80180000
     parser = argparse.ArgumentParser()
     parser.add_argument('binary_filepath', help='Input a filepath to the input BIN file', type=str)
-    parser.add_argument('json_filepath', help='Input a filepath for creating the output JSON file', type=str)
+    parser.add_argument('build_dir', help='Input a filepath to the folder that will contain all the build files', type=str)
     args = parser.parse_args()
     with (
         open(args.binary_filepath, 'br') as binary_file,
@@ -1155,5 +1156,5 @@ if __name__ == '__main__':
             'Teleporters': teleporters,
             'Warp Room Coordinates': warp_room_coordinates,
         }
-        with open(args.json_filepath, 'w') as extraction_json:
+        with open(os.path.join(os.path.normpath(args.build_dir), 'extraction.json'), 'w') as extraction_json:
             json.dump(extraction, extraction_json, indent='  ', sort_keys=True)

@@ -259,7 +259,7 @@ def transformed_value(value, transformations):
             result += int(operand)
     return result
 
-def get_patch(extract, changes, data):
+def get_patch(args, extract, changes, data):
     aliases = data['Aliases']
     result = Patch()
     # Apply common patches
@@ -279,7 +279,7 @@ def get_patch(extract, changes, data):
     ):
         if not changes.get('Options', {}).get(option_name, False):
             continue
-        with open(os.path.join('build', 'patches', patch_file_name + '.json')) as patch_file:
+        with open(os.path.join(os.path.normpath(args.build_dir), 'patches', patch_file_name + '.json')) as patch_file:
             patch = json.load(patch_file)
             patch_changes = patch.get('Changes', {})
             # New pokes are added to the end of the poke list
@@ -981,25 +981,23 @@ def get_value(value: (str | int)) -> int:
 if __name__ == '__main__':
     '''
     Usage
-    python sotn_ppf.py EXTRACTION_JSON --data=PATCHES_DIR --changes=CHANGES_JSON --ppf=OUTPUT_PPF
+    python sotn_ppf.py EXTRACTION_JSON --build_dir=BUILD_DIR --data=DATA_DIR --changes=CHANGES_JSON --ppf=OUTPUT_PPF
     '''
     DESCRIPTION = 'Designed to work with SOTN Shuffler'
     parser = argparse.ArgumentParser()
-    parser.add_argument('extract_file', help='Input a filepath to the extract JSON file', type=str)
+    # parser.add_argument('extract_file', help='Input a filepath to the extract JSON file', type=str)
+    parser.add_argument('build_dir', help='Input a filepath to the folder that will contain all the build files', type=str)
     parser.add_argument('--data', help='Input an optional (required if changes argument is given) filepath to a folder containing various data dependency files', type=str)
     parser.add_argument('--changes', help='Input an optional (required if data argument is given) filepath to the changes JSON file', type=str)
-    parser.add_argument('--template', help='Input an optional filepath to the output template file, if one is generated', type=str)
     parser.add_argument('--ppf', help='Input an optional filepath to the output PPF file', type=str)
     args = parser.parse_args()
-    with open(args.extract_file) as extract_file:
+    with open(os.path.join(os.path.normpath(args.build_dir), 'extraction.json')) as extract_file:
         extract = json.load(extract_file)
         if 'Extract' in extract:
             extract = extract['Extract']
         if args.changes is None:
-            if args.template is None:
-                args.template = "build/vanilla-changes.json"
             with (
-                open(os.path.join(os.path.normpath(args.template)), 'w') as changes_file,
+                open(os.path.join(os.path.normpath(args.build_dir), 'vanilla-changes.json'), 'w') as changes_file,
                 open(os.path.join(os.path.normpath(args.data), 'aliases.yaml')) as aliases_file,
             ):
                 aliases = yaml.safe_load(aliases_file)
@@ -1018,6 +1016,6 @@ if __name__ == '__main__':
                 if 'Changes' in changes:
                     changes = changes['Changes']
                 validate_changes(changes)
-                patch = get_patch(extract, changes, data)
+                patch = get_patch(args, extract, changes, data)
                 ppf = PPF(DESCRIPTION, patch, False)
                 ppf_file.write(ppf.bytes)
