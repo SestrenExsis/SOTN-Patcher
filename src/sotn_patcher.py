@@ -72,6 +72,9 @@ def get_prevent_softlocks_at_snake_column_wall_patch():
         'Changes': {
             'Constants': {},
         },
+        # 'Logic': {
+        #     'Modification - Disable clipping on screen edge of Snake Column Wall': True,
+        # },
     }
     for stage_name in (
         'Abandoned Mine',
@@ -101,6 +104,9 @@ def get_prevent_softlocks_at_demon_switch_wall_patch():
         'Changes': {
             'Constants': {},
         },
+        # 'Logic': {
+        #     'Modification - Disable clipping on screen edge of Demon Switch Wall': True,
+        # }
     }
     for stage_name in (
         'Abandoned Mine',
@@ -130,6 +136,24 @@ def get_prevent_softlocks_at_tall_zig_zag_room_wall_patch():
         'Changes': {
             'Constants': {},
         },
+        # 'Logic': {
+        #     'Commands': {
+        #         'Alchemy Laboratory, Tall Zig Zag Room': {
+        #             'Action - Break Wall': {
+        #                 'Requirements': {
+        #                     'Secret Wall - Default': {
+        #                         'Section': 'Secret Wall',
+        #                         'Status - Breakable Wall in Tall Zig Zag Room Broken': False,
+        #                         'Modification - Disable clipping on screen edge of Tall Zig Zag Room Wall': True,
+        #                     },
+        #                 },
+        #             },
+        #         },
+        #     },
+        #     'State': {
+        #         'Modification - Disable clipping on screen edge of Tall Zig Zag Room Wall': True,
+        #     },
+        # },
     }
     for stage_name in (
         'Alchemy Laboratory',
