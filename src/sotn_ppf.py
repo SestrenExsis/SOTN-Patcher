@@ -351,10 +351,13 @@ def get_patch(args, extract, changes, data):
                 (0x01F0, 0x24C60001), # addiu   a2,a2,1           
             ):
                 result.patch_value(value, 'u32', base + offset)
-    # Insert boss stages into stage data prior to stage patching
+    # Update repaintMapTilesOnCastleBlueprint, the function responsible for repainting the castle blueprint when switching castles:
+    # - In the Underground Caverns, there is a vertical asymmetry in what tiles are expected to be revealed by normal player movement in certain rooms.
+    # - Because of this asymmetry, the contours of the revealed map won't exactly match between both castles.
+    # - To rectify this, certain map tiles are repainted on the castle blueprint to match the expected reveals for that version of the castle.
     if 'Stages' in changes:
         for (address, source_stage_name, source_room_name, offset, edge) in (
-            # func_800F1A3C for Underground Caverns
+            # Underground Caverns
             (0x000E7248 + 0x00, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 5, 'Left'),
             (0x000E7248 + 0x08, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 1, 'Top'),
             (0x000E7248 + 0x0C, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 7, 'Left'),
@@ -367,7 +370,7 @@ def get_patch(args, extract, changes, data):
             (0x000E7248 + 0x38, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
             (0x000E7248 + 0x3C, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 8, 'Left'),
             (0x000E7248 + 0x44, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
-            # func_800F1A3C for Reverse Caverns
+            # Reverse Caverns
             (0x000E7248 + 0x50, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 5, 'Left'),
             (0x000E7248 + 0x54, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 1, 'Top'),
             (0x000E7248 + 0x60, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 7, 'Left'),
