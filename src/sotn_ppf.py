@@ -653,6 +653,21 @@ def get_patch(args, extract, changes, data):
                                         continue
                                     result.patch_value(tile, 'u16', extract_metadata['Start'] + offset)
                                     offset += 2
+    # Patch tilemaps (newer method)
+    for tilemap_changes in changes.get('Tilemaps', {}):
+        assert tilemap_changes['Type'] == 'Tile ID-Based'
+        extract_id = getID(aliases, ('Rooms', tilemap_changes['Room'], 'Room Index'))
+        room_extract = extract['Stages'][tilemap_changes['Stage']]['Rooms'][str(extract_id)]
+        extract_metadata = room_extract['Tilemap ' + tilemap_changes['Layer']]['Metadata']
+        for (row_offset, row_data) in enumerate(tilemap_changes['Tiles']):
+            tile_data = list(map(lambda x: get_value(x), row_data.split(' ')))
+            for (col_offset, tile) in enumerate(tile_data):
+                if tile is None:
+                    continue
+                row = tilemap_changes['Top'] + row_offset
+                col = tilemap_changes['Left'] + col_offset
+                offset = 2 * (row * extract_metadata['Columns'] + col)
+                result.patch_value(tile, 'u16', extract_metadata['Start'] + offset)
     # Patch teleporters
     extract_metadata = extract['Teleporters']['Metadata']
     for teleporter_name in sorted(changes.get('Teleporters', {})):
@@ -956,6 +971,9 @@ def get_value(value: (str | int)) -> int:
     if type(value) == int:
         result = value
     elif type(value) == str:
+        # All dots indicates an intentional NULL value
+        if value == '.' * len(value):
+            return None
         result = int(value, 16)
     assert result is not None
     return result
