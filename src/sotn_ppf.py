@@ -263,42 +263,67 @@ def get_patch(args, extract, changes, data):
     aliases = data['Aliases']
     result = Patch()
     # Apply common patches
-    for (option_name, patch_file_name) in (
-        ('Clock hands show minutes and seconds instead of hours and minutes', 'clock-hands-display-minutes-and-seconds'),
-        ('Disable clipping on screen edge of Demon Switch Wall', 'prevent-softlocks-at-demon-switch-wall'),
-        ('Disable clipping on screen edge of Left Gear Room Wall', 'prevent-softlocks-at-left-gear-room-wall'),
-        ('Disable clipping on screen edge of Pendulum Room Wall', 'prevent-softlocks-at-pendulum-room-wall'),
-        ('Disable clipping on screen edge of Snake Column Wall', 'prevent-softlocks-at-snake-column-wall'),
-        ('Disable clipping on screen edge of Tall Zig Zag Room Wall', 'prevent-softlocks-at-tall-zig-zag-room-wall'),
-        ('Enable debug mode', 'enable-debug-mode'),
-        ('Normalize Ferryman Gate', 'normalize-ferryman-gate'),
-        ('Normalize room connections', 'normalize-jewel-sword-passageway'),
-        ('Normalize Secret Bookcase Room and Holy Rod Room', 'normalize-secret-bookcase-rooms'),
-        ('Prevent softlocks related to Death cutscene in Castle Entrance', 'prevent-softlocks-when-meeting-death'),
-        ('Shift wall in Plaque Room With Breakable Wall away from screen edge', 'prevent-softlocks-at-plaque-room-wall'),
-        ('Skip Maria cutscene in Alchemy Laboratory', 'skip-maria-cutscene-in-alchemy-laboratory'),
+    for (option_name, patch_file_names) in (
+        ('Clock hands show minutes and seconds instead of hours and minutes', (
+            'clock-hands-display-minutes-and-seconds',
+        )),
+        ('Disable clipping on screen edge of Demon Switch Wall', (
+            'prevent-softlocks-at-demon-switch-wall',
+        )),
+        ('Disable clipping on screen edge of Left Gear Room Wall', (
+            'prevent-softlocks-at-left-gear-room-wall',
+        )),
+        ('Disable clipping on screen edge of Pendulum Room Wall', (
+            'prevent-softlocks-at-pendulum-room-wall',
+        )),
+        ('Disable clipping on screen edge of Snake Column Wall', (
+            'prevent-softlocks-at-snake-column-wall',
+        )),
+        ('Disable clipping on screen edge of Tall Zig Zag Room Wall', (
+            'prevent-softlocks-at-tall-zig-zag-room-wall',
+        )),
+        ('Enable debug mode', (
+            'enable-debug-mode',
+        )),
+        ('Normalize Ferryman Gate', (
+            'normalize-ferryman-gate',
+        )),
+        ('Normalize room connections', (
+            'normalize-jewel-sword-passageway',
+            'normalize-secret-bookcase-rooms',
+        )),
+        ('Prevent softlocks related to Death cutscene in Castle Entrance', (
+            'prevent-softlocks-when-meeting-death',
+        )),
+        ('Shift wall in Plaque Room With Breakable Wall away from screen edge', (
+            'prevent-softlocks-at-plaque-room-wall',
+        )),
+        ('Skip Maria cutscene in Alchemy Laboratory', (
+            'skip-maria-cutscene-in-alchemy-laboratory',
+        )),
     ):
         if not changes.get('Options', {}).get(option_name, False):
             continue
-        with open(os.path.join(os.path.normpath(args.build_dir), 'patches', patch_file_name + '.json')) as patch_file:
-            patch = json.load(patch_file)
-            patch_changes = patch.get('Changes', {})
-            # New pokes are added to the end of the poke list
-            for poke in patch_changes.get('Pokes', []):
-                if 'Pokes' not in changes:
-                    changes['Pokes'] = []
-                changes['Pokes'].append(poke)
-            # New tilemaps are added to the end of the tilemaps list
-            for tilemap in patch_changes.get('Tilemaps', []):
-                if 'Tilemaps' not in changes:
-                    changes['Tilemaps'] = []
-                changes['Tilemaps'].append(tilemap)
-            # New constants overwrite previous constants
-            for (constant_key, constant_value) in patch_changes.get('Constants', {}).items():
-                if 'Constants' not in changes:
-                    changes['Constants'] = {}
-                changes['Constants'][constant_key] = constant_value
-            # NOTE(sestren): For the moment, only 'Pokes', 'Tilemaps', and 'Constants' in the patch file's changes are being handled
+        for patch_file_name in patch_file_names:
+            with open(os.path.join(os.path.normpath(args.build_dir), 'patches', patch_file_name + '.json')) as patch_file:
+                patch = json.load(patch_file)
+                patch_changes = patch.get('Changes', {})
+                # New pokes are added to the end of the poke list
+                for poke in patch_changes.get('Pokes', []):
+                    if 'Pokes' not in changes:
+                        changes['Pokes'] = []
+                    changes['Pokes'].append(poke)
+                # New tilemaps are added to the end of the tilemaps list
+                for tilemap in patch_changes.get('Tilemaps', []):
+                    if 'Tilemaps' not in changes:
+                        changes['Tilemaps'] = []
+                    changes['Tilemaps'].append(tilemap)
+                # New constants overwrite previous constants
+                for (constant_key, constant_value) in patch_changes.get('Constants', {}).items():
+                    if 'Constants' not in changes:
+                        changes['Constants'] = {}
+                    changes['Constants'][constant_key] = constant_value
+                # NOTE(sestren): For the moment, only 'Pokes', 'Tilemaps', and 'Constants' in the patch file's changes are being handled
     # Option - Preserve unsaved map data
     if changes.get('Options', {}).get('Preserve unsaved map data', 'None') != 'None':
         preservation_method = changes['Options']['Preserve unsaved map data']
