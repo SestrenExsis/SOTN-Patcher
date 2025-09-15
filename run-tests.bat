@@ -21,6 +21,7 @@ python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/mix-items-and-rel
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/move-drawbridge-room-vertically.json" --ppf="build/ppf/move-drawbridge-room-vertically.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/normalize-ferryman-gate.json" --ppf="build/ppf/normalize-ferryman-gate.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/normalize-jewel-sword-passageway.json" --ppf="build/ppf/normalize-jewel-sword-passageway.ppf" || goto :error
+python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/normalize-secret-bookcase-and-holy-rod-room.json" --ppf="build/ppf/normalize-secret-bookcase-and-holy-rod-room.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/preserve-map-exploration.json" --ppf="build/ppf/preserve-map-exploration.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/prevent-death-meeting-softlocks.json" --ppf="build/ppf/prevent-death-meeting-softlocks.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/prevent-softlocks-at-demon-switch-wall.json" --ppf="build/ppf/prevent-softlocks-at-demon-switch-wall.ppf" || goto :error

@@ -11,6 +11,7 @@ bb2edc1f7e08662b4df7e3e726067d8924341e23 *build/ppf/mix-items-and-relics.ppf
 0636a5b8e8c3e8bcb4e24773f54d7327b1d8d4c8 *build/ppf/move-drawbridge-room-vertically.ppf
 21f24f3f8c3741097be288c08e0e7f2e34a4c53e *build/ppf/normalize-ferryman-gate.ppf
 48d0a62de45dfcf15e40e646d092f9f708de7e75 *build/ppf/normalize-jewel-sword-passageway.ppf
+f81c29772a436b0b79c5666f2205e8676d3c33bd *build/ppf/normalize-secret-bookcase-and-holy-rod-room.ppf
 25aa3e5e94f425cb5014e98d3b693172a36201ce *build/ppf/preserve-map-exploration.ppf
 ac26ea1238f47895fc3c57ccb192d0727c9162ab *build/ppf/prevent-death-meeting-softlocks.ppf
 be8b7395ae64e1730a3c806628cfd38bda46c34b *build/ppf/prevent-softlocks-at-demon-switch-wall.ppf

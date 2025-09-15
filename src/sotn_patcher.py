@@ -438,6 +438,94 @@ def get_normalize_jewel_sword_passageway_patch():
     result = patch
     return result
 
+def get_normalize_secret_bookcase_rooms():
+    patch = {
+        'Description': 'Normalize Secret Bookcase rooms',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Long Library',
+                    'Room': 'Long Library, Holy Rod Room',
+                    'Layer': 'Foreground',
+                    'Top': 3,
+                    'Left': 0,
+                    'Tiles': [
+                        '028C 028D 028E',
+                        '0294 028C 028E',
+                        '029F 029E 029B',
+                        '0339 0339 035E',
+                        '.... .... ....',
+                        '.... .... ....',
+                        '.... .... ....',
+                        '0285 0284 028B',
+                        '028D 028C 028E',
+                    ],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Long Library',
+                    'Room': 'Long Library, Secret Bookcase Room',
+                    'Layer': 'Foreground',
+                    'Top': 4,
+                    'Left': 15,
+                    'Tiles': [
+                        '02A4',
+                        '02A3',
+                        '....',
+                        '....',
+                        '....',
+                        '....',
+                        '0451',
+                        '02A9',
+                    ],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Forbidden Library',
+                    'Room': 'Forbidden Library, Holy Rod Room',
+                    'Layer': 'Foreground',
+                    'Top': 4,
+                    'Left': 13,
+                    'Tiles': [
+                        '028E 028C 028D',
+                        '028B 0284 0285',
+                        '.... .... ....',
+                        '.... .... ....',
+                        '.... .... ....',
+                        '035E 0339 0339',
+                        '029B 029E 029F',
+                        '028E 0296 0297',
+                        '028E 028D 028C',
+                    ],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Forbidden Library',
+                    'Room': 'Forbidden Library, Secret Bookcase Room',
+                    'Layer': 'Foreground',
+                    'Top': 4,
+                    'Left': 0,
+                    'Tiles': [
+                        '02A9',
+                        '0451',
+                        '....',
+                        '....',
+                        '....',
+                        '....',
+                        '02A3',
+                        '02A4',
+                    ],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
 def get_simple_patch(description, pokes):
     patch = {
         'Description': description,
@@ -534,6 +622,7 @@ if __name__ == '__main__':
             (0x0429D47C + 0x480, 'u32', 0x00000000, 'nop'),                   # 801C60FC
         ])),
         ('normalize-jewel-sword-passageway', get_normalize_jewel_sword_passageway_patch()),
+        ('normalize-secret-bookcase-rooms', get_normalize_secret_bookcase_rooms()),
         ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
         ('prevent-softlocks-at-left-gear-room-wall', get_prevent_softlocks_at_left_gear_room_wall_patch()),
         ('prevent-softlocks-at-pendulum-room-wall', get_prevent_softlocks_at_pendulum_room_wall_patch()),

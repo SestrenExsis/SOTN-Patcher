@@ -273,6 +273,7 @@ def get_patch(args, extract, changes, data):
         ('Enable debug mode', 'enable-debug-mode'),
         ('Normalize Ferryman Gate', 'normalize-ferryman-gate'),
         ('Normalize room connections', 'normalize-jewel-sword-passageway'),
+        ('Normalize Secret Bookcase Room and Holy Rod Room', 'normalize-secret-bookcase-rooms'),
         ('Prevent softlocks related to Death cutscene in Castle Entrance', 'prevent-softlocks-when-meeting-death'),
         ('Shift wall in Plaque Room With Breakable Wall away from screen edge', 'prevent-softlocks-at-plaque-room-wall'),
         ('Skip Maria cutscene in Alchemy Laboratory', 'skip-maria-cutscene-in-alchemy-laboratory'),
@@ -287,12 +288,17 @@ def get_patch(args, extract, changes, data):
                 if 'Pokes' not in changes:
                     changes['Pokes'] = []
                 changes['Pokes'].append(poke)
+            # New tilemaps are added to the end of the tilemaps list
+            for tilemap in patch_changes.get('Tilemaps', []):
+                if 'Tilemaps' not in changes:
+                    changes['Tilemaps'] = []
+                changes['Tilemaps'].append(tilemap)
             # New constants overwrite previous constants
             for (constant_key, constant_value) in patch_changes.get('Constants', {}).items():
                 if 'Constants' not in changes:
                     changes['Constants'] = {}
                 changes['Constants'][constant_key] = constant_value
-            # NOTE(sestren): For the moment, only 'Pokes' and 'Constants' in the patch file's changes are being handled
+            # NOTE(sestren): For the moment, only 'Pokes', 'Tilemaps', and 'Constants' in the patch file's changes are being handled
     # Option - Preserve unsaved map data
     if changes.get('Options', {}).get('Preserve unsaved map data', 'None') != 'None':
         preservation_method = changes['Options']['Preserve unsaved map data']
