@@ -438,12 +438,146 @@ def get_normalize_jewel_sword_passageway_patch():
     result = patch
     return result
 
+def get_normalize_long_drop_bottom_passage():
+    patch = {
+        'Description': 'Normalize Long Drop, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Long Drop': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######'
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Long Drop',
+                    'Layer': 'Foreground',
+                    'Top': 170,
+                    'Left': 0,
+                    'Tiles': [
+                        '.... .... 01A5 01A1 01A4 .... .... .... .... .... .... .... 01A8 01A9 01AA ....',
+                        '.... .... 0180 01A5 01A3 01A4 .... .... .... .... 01A8 01A9 01A7 01AA 0180 ....',
+                        '.... .... .... 0180 01A1 010E .... .... .... .... 0110 01A7 01AA 0180 .... ....',
+                        '.... .... .... 0180 0181 0182 .... .... .... .... 019F 01A0 0180 0180 .... ....',
+                        '.... .... .... 0180 01A1 01A2 .... .... .... .... 01A6 01A7 0180 0180 .... ....',
+                        '.... .... .... .... .... 0001 .... .... .... .... 0001 0001 .... .... .... ....',
+                    ],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Long Drop',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': [
+                        '.... .... .... .... 0001 0001 .... .... .... .... 0001 .... .... .... .... ....',
+                        '.... .... 0180 0180 01A7 01A6 .... .... .... .... 01A2 01A1 0180 .... .... ....',
+                        '.... .... 0180 0180 01A0 019F .... .... .... .... 0182 0181 0180 .... .... ....',
+                        '.... .... 0180 01AA 01A7 0110 .... .... .... .... 010E 01A1 0180 .... .... ....',
+                        '.... 0180 01AA 01A7 01A9 01A8 .... .... .... .... 01A4 01A3 01A5 0180 .... ....',
+                        '.... 01AA 01A9 01A8 .... .... .... .... .... .... .... 01A4 01A1 01A5 .... ....',
+                    ],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_hidden_crystal_entrance_top_passage():
+    patch = {
+        'Description': 'Normalize Hidden Crystal Entrance, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Hidden Crystal Entrance': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######'
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Hidden Crystal Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': [
+                        '.... ..... .... .... .... 0001 .... .... .... .... 0001 0001 .... .... .... ....',
+                        '.... ..... .... 0181 0181 0182 .... .... .... .... 019F 01A0 0180 0180 .... ....',
+                        '.... ..... .... .... 0180 0542 .... .... .... .... 019F 01A7 0180 0180 .... ....',
+                        '.... ..... .... .... 0180 0A74 .... .... .... .... 03BB 0397 0180 0180 .... ....',
+                        '.... ..... .... 0180 037B 0372 .... .... .... .... 0A73 03A2 0180 0180 .... ....',
+                        '.... ..... .... 0A75 0372 .... .... .... .... .... 037F 03BC 0370 03BC .... ....',
+                        '.... ..... .... 0375 .... .... .... .... .... .... .... 03BD 0374 03BD .... ....',
+                    ],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Hidden Crystal Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 41,
+                    'Left': 0,
+                    'Tiles': [
+                        '.... .... 03BD 0374 03BD .... .... .... .... .... .... .... 0375 .... ..... ....',
+                        '.... .... 03BC 0370 03BC 037F .... .... .... .... .... 0372 0A75 .... ..... ....',
+                        '.... .... 0180 0180 03A2 0A73 .... .... .... .... 0372 037B 0180 .... ..... ....',
+                        '.... .... 0180 0180 0397 03BB .... .... .... .... 0A74 0180 .... .... ..... ....',
+                        '.... .... 0180 0180 01A7 019F .... .... .... .... 0542 0180 .... .... ..... ....',
+                        '.... .... 0180 0180 01A0 019F .... .... .... .... 0182 0181 0181 .... ..... ....',
+                        '.... .... .... .... 0001 0001 .... .... .... .... 0001 .... .... .... ..... ....',
+                    ],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
 def get_normalize_secret_bookcase_rooms():
     patch = {
         'Description': 'Normalize Secret Bookcase rooms',
         'Authors': [
             'Sestren',
         ],
+        'Mapper': {
+            'Rooms': {
+                'Long Library, Holy Rod Room': {
+                    'Nodes': {
+                        'Left Passage': {
+                            'Type': '######....######'
+                        },
+                    },
+                },
+                'Long Library, Secret Bookcase Room': {
+                    'Nodes': {
+                        'Right Passage': {
+                            'Type': '######....######'
+                        },
+                    },
+                },
+            },
+        },
         'Changes': {
             'Tilemaps': [
                 {
@@ -622,6 +756,8 @@ if __name__ == '__main__':
             (0x0429D47C + 0x480, 'u32', 0x00000000, 'nop'),                   # 801C60FC
         ])),
         ('normalize-jewel-sword-passageway', get_normalize_jewel_sword_passageway_patch()),
+        ('normalize-hidden-crystal-entrance-top-passage', get_normalize_hidden_crystal_entrance_top_passage()),
+        ('normalize-long-drop-bottom-passage', get_normalize_long_drop_bottom_passage()),
         ('normalize-secret-bookcase-rooms', get_normalize_secret_bookcase_rooms()),
         ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
         ('prevent-softlocks-at-left-gear-room-wall', get_prevent_softlocks_at_left_gear_room_wall_patch()),
