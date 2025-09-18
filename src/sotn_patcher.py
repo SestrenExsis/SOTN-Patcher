@@ -438,6 +438,139 @@ def get_normalize_jewel_sword_passageway_patch():
     result = patch
     return result
 
+def get_normalize_tall_stairwell_bottom_passage():
+    tilemap = [
+        '.... .... 0234 0235 0000 .... .... .... .... .... .... .... .... .... .... ....',
+        '.... .... 0177 011B 0239 023A .... .... .... .... 0248 024A .... .... .... ....',
+        '.... .... .... 017B 0A7F 0164 .... .... .... 0155 0155 0123 .... .... .... ....',
+        '.... .... .... 01A5 01A3 01A4 016D 016D .... 0183 01A8 01A9 .... .... .... ....',
+        '.... .... .... .... 01A1 010E 0155 0155 0164 0164 0110 01A7 .... .... .... ....',
+        '.... .... .... .... 0001 0001 0000 0000 0000 0000 0001 0001 .... .... .... ....',
+    ]
+    reverse_tilemap = []
+    for row_data in reversed(tilemap):
+        flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+        reverse_tilemap.append(flipped_row_data)
+    patch = {
+        'Description': 'Normalize Tall Stairwell, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Tall Stairwell': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Tall Stairwell',
+                    'Layer': 'Foreground',
+                    'Top': 138,
+                    'Left': 0,
+                    'Tiles': tilemap,
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Tall Stairwell',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemap,
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_ice_floe_room_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... 0001 0000 .... .... 0000 0001 .... .... .... .... ....',
+            '.... .... .... .... .... 03B0 0000 .... .... 0000 03B5 .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0183 .... .... 0146 .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize Ice Floe Room, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Ice Floe Room': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Ice Floe Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 128,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Ice Floe Room',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 128,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Ice Floe Room',
+                    'Layer': 'Foreground',
+                    'Top': 30,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Ice Floe Room',
+                    'Layer': 'Background',
+                    'Top': 30,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
 def get_normalize_long_drop_bottom_passage():
     tilemap = [
         '.... .... 01A5 01A1 01A4 .... .... .... .... .... .... .... 01A8 01A9 01AA ....',
@@ -461,7 +594,7 @@ def get_normalize_long_drop_bottom_passage():
                 'Underground Caverns, Long Drop': {
                     'Nodes': {
                         'Bottom Passage': {
-                            'Type': '######....######'
+                            'Type': '######....######',
                         },
                     },
                 },
@@ -752,8 +885,10 @@ if __name__ == '__main__':
         ])),
         ('normalize-jewel-sword-passageway', get_normalize_jewel_sword_passageway_patch()),
         ('normalize-hidden-crystal-entrance-top-passage', get_normalize_hidden_crystal_entrance_top_passage()),
+        ('normalize-ice-floe-room-top-passage', get_normalize_ice_floe_room_top_passage()),
         ('normalize-long-drop-bottom-passage', get_normalize_long_drop_bottom_passage()),
         ('normalize-secret-bookcase-rooms', get_normalize_secret_bookcase_rooms()),
+        ('normalize-tall-stairwell-bottom-passage', get_normalize_tall_stairwell_bottom_passage()),
         ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
         ('prevent-softlocks-at-left-gear-room-wall', get_prevent_softlocks_at_left_gear_room_wall_patch()),
         ('prevent-softlocks-at-pendulum-room-wall', get_prevent_softlocks_at_pendulum_room_wall_patch()),
