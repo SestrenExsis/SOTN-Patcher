@@ -1278,6 +1278,151 @@ def get_normalize_underground_caverns_exit_to_abandoned_mine_top_passage():
     result = patch
     return result
 
+def get_normalize_underground_caverns_small_stairwell_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... 0000 0000 0000 0000 0001 0001 0001 .... .... ....',
+            '.... .... .... .... .... 0090 0065 0066 0066 0066 0099 0023 0023 0023 .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... 0337 0338 0339 0000 0000 .... .... ....',
+            '.... .... .... .... .... .... .... .... 033A 033B 033C 0000 0000 .... .... ....',
+            '.... .... .... .... .... .... .... .... 033D 033E 033F 0000 0000 .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... 031C .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... 0320 .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize Small Stairwell, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Small Stairwell': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Small Stairwell',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Small Stairwell',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Small Stairwell',
+                    'Layer': 'Foreground',
+                    'Top': 26,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Small Stairwell',
+                    'Layer': 'Background',
+                    'Top': 26,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_underground_caverns_plaque_room_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... 0023 00E1 0328 001E 001F 0020 0021 0036 003E 003F 0040 01BE .... .... ....',
+            '000F 0329 032A 00E4 032B 0019 001A 001B 0036 0037 0038 0039 0101 .... .... ....',
+            '0016 032C 032D 032A 00E4 032E 0020 0014 002E 002F 0030 0031 0101 .... .... ....',
+            '.... .... .... .... .... 0090 0065 0066 0066 0066 0099 0023 0023 .... .... ....',
+            '.... .... .... .... .... .... 0000 0000 0000 0000 0001 0001 0001 .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize Plaque Room, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Plaque Room With Life Max-Up': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Plaque Room With Life Max-Up',
+                    'Layer': 'Foreground',
+                    'Top': 11,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Plaque Room With Life Max-Up',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
 def get_simple_patch(description, pokes):
     patch = {
         'Description': description,
@@ -1380,11 +1525,13 @@ if __name__ == '__main__':
         ('normalize-long-drop-bottom-passage', get_normalize_long_drop_bottom_passage()),
         ('normalize-secret-bookcase-rooms', get_normalize_secret_bookcase_rooms()),
         ('normalize-tall-stairwell-bottom-passage', get_normalize_tall_stairwell_bottom_passage()),
+        ('normalize-underground-caverns-exit-to-abandoned-mine-top-passage', get_normalize_underground_caverns_exit_to_abandoned_mine_top_passage()),
         ('normalize-underground-caverns-exit-to-castle-entrance', get_normalize_underground_caverns_exit_to_castle_entrance()),
         ('normalize-underground-caverns-left-ferryman-route-top-passage', get_normalize_underground_caverns_left_ferryman_route_top_passage()),
+        ('normalize-underground-caverns-plaque-room-bottom-passage', get_normalize_underground_caverns_plaque_room_bottom_passage()),
         ('normalize-underground-caverns-room-id-09-bottom-passage', get_normalize_underground_caverns_room_id_09_bottom_passage()),
         ('normalize-underground-caverns-room-id-10-top-passage', get_normalize_underground_caverns_room_id_10_top_passage()),
-        ('normalize-underground-caverns-exit-to-abandoned-mine-top-passage', get_normalize_underground_caverns_exit_to_abandoned_mine_top_passage()),
+        ('normalize-underground-caverns-small-stairwell-top-passage', get_normalize_underground_caverns_small_stairwell_top_passage()),
         ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
         ('prevent-softlocks-at-left-gear-room-wall', get_prevent_softlocks_at_left_gear_room_wall_patch()),
         ('prevent-softlocks-at-pendulum-room-wall', get_prevent_softlocks_at_pendulum_room_wall_patch()),
