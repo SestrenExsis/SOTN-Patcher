@@ -1113,6 +1113,171 @@ def get_normalize_underground_caverns_room_id_10_top_passage():
     result = patch
     return result
 
+def get_normalize_dk_bridge_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... 039A 03BF 03CA 0000 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0000 .... .... .... .... .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... 04E1 .... .... .... .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize DK Bridge, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, DK Bridge': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, DK Bridge',
+                    'Layer': 'Foreground',
+                    'Top': 14,
+                    'Left': 48,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, DK Bridge',
+                    'Layer': 'Background',
+                    'Top': 14,
+                    'Left': 48,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, DK Bridge',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, DK Bridge',
+                    'Layer': 'Background',
+                    'Top': 1,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_underground_caverns_exit_to_abandoned_mine_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... 0000 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... 03CF 0000 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... 037A 03E7 0000 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... 037D 037E 0383 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... 03AB 0A74 038A 03BA .... .... .... .... .... .... .... ....',
+            '.... .... .... 0370 03AC 0372 0AD0 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... 0374 0375 0000 .... .... .... .... .... .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0400 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 040E .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 03F7 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 03FB .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... 03FF .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize UC-AM, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Exit to Abandoned Mine': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Exit to Abandoned Mine',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Exit to Abandoned Mine',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Exit to Abandoned Mine',
+                    'Layer': 'Foreground',
+                    'Top': 9,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Exit to Abandoned Mine',
+                    'Layer': 'Background',
+                    'Top': 9,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
 def get_simple_patch(description, pokes):
     patch = {
         'Description': description,
@@ -1151,6 +1316,7 @@ if __name__ == '__main__':
         ('enable-debug-mode', get_simple_patch("Enables the game's hidden debug mode", [
             (0x000D9364, 'u32', 0xAC258850, 'sw a1, -$77B0(at)'), # Original instruction was sw 0, -$77B0(at)
         ])),
+        ('normalize-dk-bridge-bottom-passage', get_normalize_dk_bridge_bottom_passage()),
         ('normalize-ferryman-gate', get_simple_patch('Normalize Ferryman Gate', [
             # 0x801C5C7C - EntityFerrymanController
             # ------------------------------------------
@@ -1218,6 +1384,7 @@ if __name__ == '__main__':
         ('normalize-underground-caverns-left-ferryman-route-top-passage', get_normalize_underground_caverns_left_ferryman_route_top_passage()),
         ('normalize-underground-caverns-room-id-09-bottom-passage', get_normalize_underground_caverns_room_id_09_bottom_passage()),
         ('normalize-underground-caverns-room-id-10-top-passage', get_normalize_underground_caverns_room_id_10_top_passage()),
+        ('normalize-underground-caverns-exit-to-abandoned-mine-top-passage', get_normalize_underground_caverns_exit_to_abandoned_mine_top_passage()),
         ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
         ('prevent-softlocks-at-left-gear-room-wall', get_prevent_softlocks_at_left_gear_room_wall_patch()),
         ('prevent-softlocks-at-pendulum-room-wall', get_prevent_softlocks_at_pendulum_room_wall_patch()),
