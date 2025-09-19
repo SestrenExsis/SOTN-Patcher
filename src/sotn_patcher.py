@@ -1006,7 +1006,7 @@ def get_normalize_underground_caverns_room_id_09_bottom_passage():
                     'Stage': 'Underground Caverns',
                     'Room': 'Underground Caverns, Room ID 09',
                     'Layer': 'Foreground',
-                    'Top': 0,
+                    'Top': 10,
                     'Left': 0,
                     'Tiles': tilemaps['Foreground'],
                 },
@@ -1015,7 +1015,7 @@ def get_normalize_underground_caverns_room_id_09_bottom_passage():
                     'Stage': 'Reverse Caverns',
                     'Room': 'Reverse Caverns, Room ID 09',
                     'Layer': 'Foreground',
-                    'Top': 10,
+                    'Top': 00,
                     'Left': 16,
                     'Tiles': reverse_tilemaps['Foreground'],
                 },
@@ -1043,7 +1043,7 @@ def get_normalize_underground_caverns_room_id_10_top_passage():
             '.... .... .... .... 0319 .... 0331 .... .... .... .... .... .... .... .... ....',
             '.... .... .... .... .... 0319 0319 031A .... .... .... .... .... .... .... ....',
             '.... .... .... .... .... .... 0319 0319 0314 .... .... .... .... .... .... ....',
-            '.... .... .... .... .... .... .... 0319 FFFF 0313 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... 0319 0319 0313 .... .... .... .... .... ....',
         ],
     }
     reverse_tilemaps = {}
