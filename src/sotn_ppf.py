@@ -295,6 +295,8 @@ def get_patch(args, extract, changes, data):
             'normalize-long-drop-bottom-passage',
             'normalize-secret-bookcase-rooms',
             'normalize-tall-stairwell-bottom-passage',
+            'normalize-underground-caverns-exit-to-castle-entrance',
+            'normalize-underground-caverns-left-ferryman-route-top-passage',
         )),
         ('Prevent softlocks related to Death cutscene in Castle Entrance', (
             'prevent-softlocks-when-meeting-death',

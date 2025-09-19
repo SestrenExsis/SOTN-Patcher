@@ -626,6 +626,183 @@ def get_normalize_long_drop_bottom_passage():
     result = patch
     return result
 
+def get_normalize_underground_caverns_exit_to_castle_entrance():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... .... .... .... .... .... 0000 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... 0000 038C .... .... .... ....',
+            '.... .... .... 03BE 0000 .... .... .... 0000 0000 0386 03C8 .... .... .... ....',
+            '.... .... 039A 03BF 0391 0392 .... .... 0000 0000 039C 03D1 .... .... .... ....',
+            '.... .... 039F 037D 0393 0A80 0ABC .... 0000 0000 03ED 0180 .... .... .... ....',
+            '.... .... .... .... 0001 0001 0000 .... 0000 0000 0001 0001 .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... 03FC .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 03FD 03FF 0000 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 040F 0402 0569 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 03F8 0408 0A6B .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 03FC 03FA 03FC .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 03FD 03FF 0A6D .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 040F 0402 0571 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 03F8 0408 06DB .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 03FC 03FA 0000 .... .... .... ....',
+            '.... .... .... .... .... .... 0400 03FD 03FE 0A6C 0000 0000 .... .... .... ....',
+            '.... .... .... .... .... .... 0564 040F .... 0573 0000 0000 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize UC-CE Exit, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Exit to Castle Entrance': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Exit to Castle Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 10,
+                    'Left': 16,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Exit to Castle Entrance',
+                    'Layer': 'Background',
+                    'Top': 4,
+                    'Left': 16,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Exit to Castle Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Exit to Castle Entrance',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_underground_caverns_left_ferryman_route_top_passage():
+    tilemaps = {
+        'Foreground': [
+            ".... .... .... .... 0001 0001 .... .... 0000 0000 .... .... .... .... .... ....",
+            ".... .... 03AB 0180 03AB 03CF 0000 0000 0000 0000 .... .... .... .... .... ....",
+            ".... .... 07E2 036F 07E2 03F4 0000 0000 0000 03BA .... .... .... .... .... ....",
+            ".... .... 0375 0373 0375 03F5 .... .... 0000 0000 .... .... .... .... .... ....",
+        ],
+        'Background': [
+            ".... .... .... .... .... .... .... 0000 0000 0000 .... .... .... .... .... ....",
+            ".... .... .... .... .... .... .... 06E5 057E 0000 .... .... .... .... .... ....",
+            ".... .... .... .... .... .... .... 06DD 057E 0512 .... .... .... .... .... ....",
+            ".... .... .... .... .... .... .... 06E3 05B5 05B1 .... .... .... .... .... ....",
+            ".... .... .... .... .... .... .... 06E4 05B1 057E .... .... .... .... .... ....",
+            ".... .... .... .... .... .... .... 06E5 057E 05B5 .... .... .... .... .... ....",
+            ".... .... .... .... .... .... .... .... 05B5 05B7 .... .... .... .... .... ....",
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize Left Ferryman Route, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Left Ferryman Route': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Left Ferryman Route',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 128,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Left Ferryman Route',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 128,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Left Ferryman Route',
+                    'Layer': 'Foreground',
+                    'Top': 28,
+                    'Left': 64,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Left Ferryman Route',
+                    'Layer': 'Background',
+                    'Top': 25,
+                    'Left': 64,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
 def get_normalize_hidden_crystal_entrance_top_passage():
     tilemap = [
         '.... ..... .... .... .... 0001 .... .... .... .... 0001 0001 .... .... .... ....',
@@ -889,6 +1066,8 @@ if __name__ == '__main__':
         ('normalize-long-drop-bottom-passage', get_normalize_long_drop_bottom_passage()),
         ('normalize-secret-bookcase-rooms', get_normalize_secret_bookcase_rooms()),
         ('normalize-tall-stairwell-bottom-passage', get_normalize_tall_stairwell_bottom_passage()),
+        ('normalize-underground-caverns-exit-to-castle-entrance', get_normalize_underground_caverns_exit_to_castle_entrance()),
+        ('normalize-underground-caverns-left-ferryman-route-top-passage', get_normalize_underground_caverns_left_ferryman_route_top_passage()),
         ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
         ('prevent-softlocks-at-left-gear-room-wall', get_prevent_softlocks_at_left_gear_room_wall_patch()),
         ('prevent-softlocks-at-pendulum-room-wall', get_prevent_softlocks_at_pendulum_room_wall_patch()),
