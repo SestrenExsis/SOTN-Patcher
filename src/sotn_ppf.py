@@ -298,6 +298,7 @@ def get_patch(args, extract, changes, data):
             'normalize-tall-stairwell-bottom-passage',
             'normalize-underground-caverns-exit-to-abandoned-mine-top-passage',
             'normalize-underground-caverns-exit-to-castle-entrance',
+            'normalize-underground-caverns-hidden-crystal-entrance-bottom-passage',
             'normalize-underground-caverns-left-ferryman-route-top-passage',
             'normalize-underground-caverns-plaque-room-bottom-passage',
             'normalize-underground-caverns-room-id-09-bottom-passage',

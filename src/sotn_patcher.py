@@ -1445,6 +1445,142 @@ def get_simple_patch(description, pokes):
     result = patch
     return result
 
+def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
+    # (0x04259080, 'u16', 24, 'Crystal Floor Tiles (Underground Caverns)'),
+    # (0x047C4EBC, 'u16', 24, 'Crystal Floor Tiles (Reverse Caverns)'),
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... 0549 0000 .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... 0A84 0A81 059D .... .... .... 0557 038C .... .... .... ....',
+            '.... .... .... .... 0551 0552 05F0 05F1 0739 073C 055A 038D .... .... .... ....',
+            '.... .... .... .... 06F8 06FA 060C 060D 073A 0591 055D 0180 .... .... .... ....',
+            '.... .... .... .... 0543 06F9 0000 0000 0000 0000 0180 .... .... .... .... ....',
+            '.... .... .... .... 0001 0001 0000 0000 0000 0000 .... .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... 03FD 03FE 03FF .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 040E 040F 0401 0402 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize Hidden Crystal Entrance, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Hidden Crystal Entrance': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Hidden Crystal Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 42,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Hidden Crystal Entrance',
+                    'Layer': 'Background',
+                    'Top': 42,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Hidden Crystal Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Hidden Crystal Entrance',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Constants'] = {}
+    for stage_name in (
+        'Underground Caverns',
+        'Reverse Caverns',
+    ):
+        constant_key = f'Crystal Floor Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in enumerate((
+            # Phase 0
+            0x05F0, 0x054D, 0x054E,
+            0x060C, 0x0000, 0x0000,
+            # Phase 1
+            0x05F0, 0x0740, 0x0748,
+            0x060C, 0x0000, 0x0000,
+            # Phase 2
+            0x05F0, 0x074D, 0x074E,
+            0x060C, 0x0000, 0x0000,
+            # Phase 3
+            0x05F0, 0x0000, 0x0000,
+            0x060C, 0x0000, 0x0000,
+        )):
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    patch['Changes']['Pokes'] = []
+    for (offset, data_type, value) in (
+        (0x0429FF64, 's16', 0x02C6),
+        (0x042A006C, 's16', 0x02C6),
+        (0x0480CF1C, 's16', 0x0039),
+        (0x0480D02C, 's16', 0x0039),
+    ):
+        patch['Changes']['Pokes'].append({
+            'Gamedata Address': '{:08X}'.format(offset),
+            'Data Type': data_type,
+            'Value': '{:08X}'.format(value),
+        })
+    result = patch
+    return result
+
+# Hidden Crystal Entrance
+# '.... .... .... .... .... .... 05E8 05E9 .... 05E8 .... .... .... .... .... ....',
+# '.... .... .... .... .... .... 05F1 0739 0739 05F1 .... .... .... .... .... ....',
+# '.... .... .... .... .... .... 060D 073A 073A 060D .... .... .... .... .... ....',
+# '.... .... .... .... 0001 0001 0000 0000 0000 0000 .... .... .... .... .... ....',
+
+# '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+# '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+# '.... .... .... .... .... .... 040E 040F 0401 0402 .... .... .... .... .... ....',
+# '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+
 if __name__ == '__main__':
     '''
     Some patches play nice with other patches, some don't.
@@ -1527,6 +1663,7 @@ if __name__ == '__main__':
         ('normalize-tall-stairwell-bottom-passage', get_normalize_tall_stairwell_bottom_passage()),
         ('normalize-underground-caverns-exit-to-abandoned-mine-top-passage', get_normalize_underground_caverns_exit_to_abandoned_mine_top_passage()),
         ('normalize-underground-caverns-exit-to-castle-entrance', get_normalize_underground_caverns_exit_to_castle_entrance()),
+        ('normalize-underground-caverns-hidden-crystal-entrance-bottom-passage', get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage()),
         ('normalize-underground-caverns-left-ferryman-route-top-passage', get_normalize_underground_caverns_left_ferryman_route_top_passage()),
         ('normalize-underground-caverns-plaque-room-bottom-passage', get_normalize_underground_caverns_plaque_room_bottom_passage()),
         ('normalize-underground-caverns-room-id-09-bottom-passage', get_normalize_underground_caverns_room_id_09_bottom_passage()),
