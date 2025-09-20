@@ -797,6 +797,8 @@ if __name__ == '__main__':
             (0x0439BFEC, 'u16', 24, 'Demon Switch Wall Tiles (Cave)'),
             (0x03CE00CC, 'u16', 24, 'Snake Column Wall Tiles (Abandoned Mine)'),
             (0x0439C01C, 'u16', 24, 'Snake Column Wall Tiles (Cave)'),
+            (0x04259080, 'u16', 24, 'Crystal Floor Tiles (Underground Caverns)'),
+            (0x047C4EBC, 'u16', 24, 'Crystal Floor Tiles (Reverse Caverns)'),
             # NOTE(sestren): Snake Column Wall C Tile ID was found at 0x0596D620, maybe that's for Boss - Death?
             (0x049BF654, 'u16', 32, 'Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)'),
             (0x04D81C68, 'u16', 32, 'Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)'),
