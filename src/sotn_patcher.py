@@ -1557,6 +1557,7 @@ def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
     for (offset, data_type, value) in (
         (0x0429FF64, 's16', 0x02C6),
         (0x042A006C, 's16', 0x02C6),
+        (0x042A0080, 's16', 0x0003), # In Underground Caverns, only require 1 hit to destroy the floor
         (0x0480CF1C, 's16', 0x0039),
         (0x0480D02C, 's16', 0x0039),
     ):
