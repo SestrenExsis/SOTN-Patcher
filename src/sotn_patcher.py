@@ -1446,8 +1446,6 @@ def get_simple_patch(description, pokes):
     return result
 
 def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
-    # (0x04259080, 'u16', 24, 'Crystal Floor Tiles (Underground Caverns)'),
-    # (0x047C4EBC, 'u16', 24, 'Crystal Floor Tiles (Reverse Caverns)'),
     tilemaps = {
         'Foreground': [
             '.... .... .... .... 0549 0000 .... .... .... .... .... .... .... .... .... ....',
@@ -1567,19 +1565,118 @@ def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
             'Data Type': data_type,
             'Value': '{:08X}'.format(value),
         })
+    patch['Changes']['Object Layouts'] = [
+        {
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Hidden Crystal Entrance',
+            'Object Layout ID': 0,
+            'Properties': {
+                'X': 128,
+                'Y': 720,
+            },
+        },
+        {
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Hidden Crystal Entrance',
+            'Object Layout ID': 5,
+            'Properties': {
+                'X': 128,
+                'Y': 48,
+            },
+        },
+    ]
     result = patch
     return result
 
-# Hidden Crystal Entrance
-# '.... .... .... .... .... .... 05E8 05E9 .... 05E8 .... .... .... .... .... ....',
-# '.... .... .... .... .... .... 05F1 0739 0739 05F1 .... .... .... .... .... ....',
-# '.... .... .... .... .... .... 060D 073A 073A 060D .... .... .... .... .... ....',
-# '.... .... .... .... 0001 0001 0000 0000 0000 0000 .... .... .... .... .... ....',
-
-# '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
-# '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
-# '.... .... .... .... .... .... 040E 040F 0401 0402 .... .... .... .... .... ....',
-# '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+def get_normalize_underground_caverns_crystal_bend_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... 0001 0001 0000 0000 0000 0000 .... .... .... .... .... ....',
+            '.... .... 0180 0589 058A 058A 0000 0000 0000 0000 0588 .... .... .... .... ....',
+            '.... .... 0180 0180 058D 0A7A 0000 0000 0000 0000 058B 058C .... .... .... ....',
+            '.... .... 0180 0180 058F 0590 0000 0000 03BA 03BA 0A79 058E .... .... .... ....',
+            '.... .... 0180 058F 0590 .... 0000 0000 0000 0000 05A0 05A1 .... .... .... ....',
+            '.... .... 058F 0590 .... .... .... 0000 0000 0000 0588 .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... 0000 0000 .... .... .... 03BA 03BA .... .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... 05BE 05B1 05B2 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... 0581 057E 057F .... .... .... .... .... ....',
+            '.... .... .... .... .... 0623 0582 05B9 05BB 05BC .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... 05BA 05B7 05B8 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... 05B1 05B2 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... 057E 057F .... .... .... .... .... ....',
+            '.... .... .... 05B9 05B5 .... .... .... 05BB 05BC .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize Crystal Bend, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Crystal Bend': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Crystal Bend',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Crystal Bend',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Crystal Bend',
+                    'Layer': 'Foreground',
+                    'Top': 24,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Crystal Bend',
+                    'Layer': 'Background',
+                    'Top': 24,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
 
 if __name__ == '__main__':
     '''
@@ -1661,6 +1758,7 @@ if __name__ == '__main__':
         ('normalize-long-drop-bottom-passage', get_normalize_long_drop_bottom_passage()),
         ('normalize-secret-bookcase-rooms', get_normalize_secret_bookcase_rooms()),
         ('normalize-tall-stairwell-bottom-passage', get_normalize_tall_stairwell_bottom_passage()),
+        ('normalize-underground-caverns-crystal-bend-top-passage', get_normalize_underground_caverns_crystal_bend_top_passage()),
         ('normalize-underground-caverns-exit-to-abandoned-mine-top-passage', get_normalize_underground_caverns_exit_to_abandoned_mine_top_passage()),
         ('normalize-underground-caverns-exit-to-castle-entrance', get_normalize_underground_caverns_exit_to_castle_entrance()),
         ('normalize-underground-caverns-hidden-crystal-entrance-bottom-passage', get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage()),

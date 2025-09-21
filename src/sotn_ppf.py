@@ -296,6 +296,7 @@ def get_patch(args, extract, changes, data):
             'normalize-long-drop-bottom-passage',
             'normalize-secret-bookcase-rooms',
             'normalize-tall-stairwell-bottom-passage',
+            'normalize-underground-caverns-crystal-bend-top-passage',
             'normalize-underground-caverns-exit-to-abandoned-mine-top-passage',
             'normalize-underground-caverns-exit-to-castle-entrance',
             'normalize-underground-caverns-hidden-crystal-entrance-bottom-passage',
@@ -331,12 +332,17 @@ def get_patch(args, extract, changes, data):
                     if 'Tilemaps' not in changes:
                         changes['Tilemaps'] = []
                     changes['Tilemaps'].append(tilemap)
+                # New object layouts are added to the end of the object layouts list
+                for object_layout in patch_changes.get('Object Layouts', []):
+                    if 'Object Layouts' not in changes:
+                        changes['Object Layouts'] = []
+                    changes['Object Layouts'].append(object_layout)
                 # New constants overwrite previous constants
                 for (constant_key, constant_value) in patch_changes.get('Constants', {}).items():
                     if 'Constants' not in changes:
                         changes['Constants'] = {}
                     changes['Constants'][constant_key] = constant_value
-                # NOTE(sestren): For the moment, only 'Pokes', 'Tilemaps', and 'Constants' in the patch file's changes are being handled
+                # NOTE(sestren): For the moment, only 'Pokes', 'Tilemaps', 'Object Layouts', and 'Constants' in the patch file's changes are being handled
     # Option - Preserve unsaved map data
     if changes.get('Options', {}).get('Preserve unsaved map data', 'None') != 'None':
         preservation_method = changes['Options']['Preserve unsaved map data']
@@ -795,7 +801,19 @@ def get_patch(args, extract, changes, data):
                     offset += 1
         result.patch_value(0xFF, 'u8', extract_metadata['Start'] + offset)
         assert offset <= extract_metadata['Footprint']
+    # Patch object layouts
     object_layouts = {}
+    for object_layout in changes.get('Object Layouts', {}):
+        stage_name = object_layout['Stage']
+        room_name = object_layout['Room']
+        if (stage_name, room_name) not in object_layouts:
+            room_id = str(aliases['Rooms'].get(room_name, {}).get('Room Index', None))
+            room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
+            object_extract = room_extract['Object Layout - Horizontal']['Data'][1:-1]
+            object_layouts[(stage_name, room_name)] = copy.deepcopy(object_extract)
+        object_layout_id = object_layout['Object Layout ID']
+        for (property_key, property_value) in object_layout.get('Properties', {}).items():
+            object_layouts[(stage_name, room_name)][object_layout_id][property_key] = property_value
     # Option - Assign Power of Wolf relic a unique ID
     power_of_wolf_patch = changes.get('Options', {}).get('Assign Power of Wolf relic a unique ID', False)
     if power_of_wolf_patch:
