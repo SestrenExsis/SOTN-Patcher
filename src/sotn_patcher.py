@@ -1589,6 +1589,127 @@ def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
     result = patch
     return result
 
+def get_normalize_alchemy_laboratory_entryway_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... .... .... .... 0000 004C 0050 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 0031 0032 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 0004 0005 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0676 000B 000C .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 0011 0012 .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize Alchemy Lab Entryway, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Alchemy Laboratory, Entryway': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Alchemy Laboratory',
+                    'Room': 'Alchemy Laboratory, Entryway',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 16,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Necromancy Laboratory',
+                    'Room': 'Necromancy Laboratory, Entryway',
+                    'Layer': 'Foreground',
+                    'Top': 11,
+                    'Left': 16,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_alchemy_laboratory_red_skeleton_lift_room_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... .... .... .... 0000 0048 0045 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 0049 0046 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 0048 003D .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 004D 0041 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 004A 002F .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 001B 0002 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 001C 0009 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 001E 001F .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize Red Skeleton Lift Room, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Alchemy Laboratory, Red Skeleton Lift Room': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Alchemy Laboratory',
+                    'Room': 'Alchemy Laboratory, Red Skeleton Lift Room',
+                    'Layer': 'Foreground',
+                    'Top': 24,
+                    'Left': 32,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Necromancy Laboratory',
+                    'Room': 'Necromancy Laboratory, Red Skeleton Lift Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
 def get_normalize_underground_caverns_crystal_bend_top_passage():
     tilemaps = {
         'Foreground': [
@@ -1753,6 +1874,8 @@ if __name__ == '__main__':
             (0x0429D47C + 0x47C, 'u32', 0x00000000, 'nop'),                   # 801C60F8
             (0x0429D47C + 0x480, 'u32', 0x00000000, 'nop'),                   # 801C60FC
         ])),
+        ('normalize-alchemy-laboratory-entryway-top-passage', get_normalize_alchemy_laboratory_entryway_top_passage()),
+        ('normalize-alchemy-laboratory-red-skeleton-lift-room-bottom-passage', get_normalize_alchemy_laboratory_red_skeleton_lift_room_bottom_passage()),
         ('normalize-jewel-sword-passageway', get_normalize_jewel_sword_passageway_patch()),
         ('normalize-hidden-crystal-entrance-top-passage', get_normalize_hidden_crystal_entrance_top_passage()),
         ('normalize-ice-floe-room-top-passage', get_normalize_ice_floe_room_top_passage()),
