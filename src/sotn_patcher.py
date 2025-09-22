@@ -104,6 +104,17 @@ def get_prevent_softlocks_at_demon_switch_wall_patch():
         ],
         'Changes': {
             'Constants': {},
+            'Familiar Events': [
+                # NOTE(sestren): Changing the camera Y from 772 to 767 allows the Demon to see the switch from either side of the wall
+                {
+                    'Familiar Event ID': 6,
+                    'Camera Y': 767,
+                },
+                {
+                    'Familiar Event ID': 11,
+                    'Camera Y': 767,
+                },
+            ],
         },
         # 'Logic': {
         #     'Modification - Disable clipping on screen edge of Demon Switch Wall': True,

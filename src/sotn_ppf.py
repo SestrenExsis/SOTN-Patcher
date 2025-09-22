@@ -339,6 +339,11 @@ def get_patch(args, extract, changes, data):
                     if 'Object Layouts' not in changes:
                         changes['Object Layouts'] = []
                     changes['Object Layouts'].append(object_layout)
+                # New familiar events are added to the end of the familiar events list
+                for familiar_event in patch_changes.get('Familiar Events', []):
+                    if 'Familiar Events' not in changes:
+                        changes['Familiar Events'] = []
+                    changes['Familiar Events'].append(familiar_event)
                 # New constants overwrite previous constants
                 for (constant_key, constant_value) in patch_changes.get('Constants', {}).items():
                     if 'Constants' not in changes:
@@ -556,31 +561,15 @@ def get_patch(args, extract, changes, data):
                         # NOTE(sestren): Familiar events exist as a complete copy in 7 different locations, one for each familiar in the code
                         # TODO(sestren): Replace this hacky way of doing it with a better approach
                         familiar_event_id = dependent['Familiar Event ID']
-                        copy_offsets = [
-                            0x0392A760, # Possibly for Bat Familiar
-                            0x0394BDB0, # Possibly for Ghost Familiar
-                            0x0396FD2C, # Possibly for Faerie Familiar
-                            0x03990890, # Possibly for Demon Familiar
-                            0x039AF9E4, # Possibly for Sword Familiar
-                            0x039D1D38, # Possibly for Yousei Familiar
-                            0x039F2664, # Possibly for Nose Demon Familiar
-                        ]
-                        object_extract = extract['Familiar Events']
-                        object_meta = object_extract['Metadata']
-                        extract_data = extract['Familiar Events']['Data'][familiar_event_id]
                         sign = -1 if dependent['Inverted'] else 1
-                        # Familiar event: Patch room X
-                        if (extract_data.get('Room X', sign * left)) != (sign * left):
-                            base_offset = object_meta['Start'] + int(familiar_event_id) * object_meta['Size'] + object_meta['Fields']['Room X']['Offset'] - copy_offsets[0]
-                            for copy_offset in copy_offsets:
-                                offset = base_offset + copy_offset
-                                result.patch_value(sign * left, object_meta['Fields']['Room X']['Type'], offset)
-                        # Familiar event: Patch room Y
-                        if extract_data.get('Room Y', top) != top:
-                            base_offset = object_meta['Start'] + int(familiar_event_id) * object_meta['Size'] + object_meta['Fields']['Room Y']['Offset'] - copy_offsets[0]
-                            for copy_offset in copy_offsets:
-                                offset = base_offset + copy_offset
-                                result.patch_value(top, object_meta['Fields']['Room Y']['Type'], offset)
+                        if 'Familiar Events' not in changes:
+                            changes['Familiar Events'] = []
+                        familiar_event = {
+                            'Familiar Event ID': familiar_event_id,
+                            'Room X': sign * left,
+                            'Room Y': top,
+                        }
+                        changes['Familiar Events'].append(familiar_event)
                     elif dependent['Type'] == 'Direct Write':
                         values = {
                             'Top': top,
@@ -953,6 +942,37 @@ def get_patch(args, extract, changes, data):
                         object_extract['Metadata']['Fields'][field_name]['Type'],
                         object_extract['Metadata']['Start'] + extract_id * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset'],
                     )
+    # Familiar events
+    for familiar_event in changes.get('Familiar Events', {}):
+        # NOTE(sestren): Familiar events exist as a complete copy in 7 different locations, one for each familiar in the code
+        # TODO(sestren): Replace this hacky way of doing it with a better approach
+        familiar_event_id = familiar_event['Familiar Event ID']
+        copy_offsets = [
+            0x0392A760, # Possibly for Bat Familiar
+            0x0394BDB0, # Possibly for Ghost Familiar
+            0x0396FD2C, # Possibly for Faerie Familiar
+            0x03990890, # Possibly for Demon Familiar
+            0x039AF9E4, # Possibly for Sword Familiar
+            0x039D1D38, # Possibly for Yousei Familiar
+            0x039F2664, # Possibly for Nose Demon Familiar
+        ]
+        object_extract = extract['Familiar Events']
+        object_meta = object_extract['Metadata']
+        extract_data = extract['Familiar Events']['Data'][familiar_event_id]
+        for property_name in (
+            'Room X',
+            'Room Y',
+            'Camera X',
+            'Camera Y',
+        ):
+            if property_name not in familiar_event:
+                continue
+            value = familiar_event[property_name]
+            if (extract_data.get(property_name, value)) != value:
+                base_offset = object_meta['Start'] + int(familiar_event_id) * object_meta['Size'] + object_meta['Fields'][property_name]['Offset'] - copy_offsets[0]
+                for copy_offset in copy_offsets:
+                    offset = base_offset + copy_offset
+                    result.patch_value(value, object_meta['Fields'][property_name]['Type'], offset)
     # Patch strings
     # NOTE(sestren): For now, there is nothing preventing strings from overflowing their boundaries
     # TODO(sestren): Ensure strings fit by truncating strings that are too long
