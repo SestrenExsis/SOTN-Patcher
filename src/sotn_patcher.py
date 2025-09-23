@@ -1659,6 +1659,185 @@ def get_normalize_alchemy_laboratory_entryway_top_passage():
     result = patch
     return result
 
+def get_normalize_alchemy_laboratory_glass_vats_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+              "0034 0020 0033 0034 004C 0050 0031 0032 0005 0006 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 004C 0050 0033 0034",
+              "0024 0025 0023 0024 0031 0032 0004 0005 000C 0007 0008 0009 000A 000B 000C 0007 0008 0009 000A 000B 000C 0007 0008 0009 000A 001D 0014 0007 0031 0032 0023 0024",
+              "0029 002A 0028 0029 0004 0005 0026 0027 0012 000D 0019 000F 0010 0011 0012 000D 000E 000F 0010 0011 0012 000D 0019 001F 0010 0016 0017 0018 0004 0005 0028 0029",
+              "0005 0006 0004 0005 0026 0027 0011 0012 0126 0127 0288 0289 028A 028B 028A 028A 028A 028A 028A 012A 0122 0123 0124 0125 0126 0127 0288 0289 0026 0027 0004 0005",
+              "0027 002B 0026 0027 0011 0012 0000 01DC 06A0 06A4 0298 0299 01D4 0128 00DA 028A 028A 028A 012B 0147 014C 01D5 01D8 01DC 06A0 06A4 0298 0299 0011 0012 0026 0027",
+              "0052 0053 0051 0052 0000 059C 059D 0000 0000 0000 0296 0297 029F 02A0 028C 028D 028E 028A 020E 0210 0236 0000 0000 0000 0000 0000 0296 0297 05AD 05AE 0011 0012",
+              "0034 0020 0033 0034 05A3 05A4 05A5 05A6 0000 0000 028F 0290 0291 0292 0293 00D8 00D9 00DB 029D 029E 0105 0000 0000 0000 0000 0000 028F 0290 05AA 0000 059C 059D",
+              "0024 0025 0023 0024 05AB 05AC 05AD 05AE 0000 0000 0000 0000 00DC 0689 068A 068D 068E 0287 0100 0000 0000 0000 0101 0294 0295 0000 0000 0000 059E 05A3 05A4 05A5",
+              "0029 002A 0028 0029 0000 05A9 05AA 0000 0000 0000 0000 0000 029A 029B 0691 0692 0695 0696 0155 0000 0000 0156 0159 015E 0162 0000 06A8 0000 05A7 05AB 05AC 05AD",
+              "0005 0006 0004 0005 059D 0000 0000 0000 0000 0000 0000 0000 0108 0109 010A 010B 010C 010D 016A 0000 0000 0000 0000 0183 0184 0187 06A7 0000 013F 0000 05A9 05AA",
+              "0027 002B 0026 0027 05A5 05A6 0000 0000 0000 0000 0000 05B0 010E 010F 0110 0111 0112 0113 0189 018A 0000 0000 018B 018C 01A5 01B3 0000 059E 003F 0038 003B 003F",
+              "0052 0053 0051 0052 05AD 05AE 0000 0000 0000 0000 0000 05B1 0114 0115 0116 0117 0118 0119 01B4 01CA 0000 0000 01CB 01CC 01CD 0000 0000 05A7 0023 0024 0025 0023",
+              "0034 0020 0033 0034 05AA 0000 0000 0000 0000 0000 011A 011B 011C 011D 011E 011F 0120 0121 01CE 01CF 01D0 0000 01D1 01D2 01D3 0000 003F 0038 0028 0029 002A 0028",
+              "0024 0025 0023 0024 0037 0045 0000 0000 0000 0000 0048 0043 003E 0044 003A 0039 0037 0043 003E 0044 003A 0039 003C 003D 003E 003F 0023 0024 0004 0005 0006 0004",
+              "0029 002A 0028 0029 0040 0046 0000 0000 0000 0000 0049 0041 0042 0023 0024 0025 0040 0041 0042 0023 0024 0025 0040 0041 0042 0023 0028 0029 0026 0027 002B 0026",
+              "0005 0006 0004 0005 002E 0047 0000 0000 0000 0000 004A 002F 002D 0028 0029 002A 002E 002F 002D 0028 0029 002A 002E 002F 002D 0028 004C 0050 0051 0052 0053 0051"
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize Glass Vats, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Alchemy Laboratory, Glass Vats': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Alchemy Laboratory',
+                    'Room': 'Alchemy Laboratory, Glass Vats',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Necromancy Laboratory',
+                    'Room': 'Necromancy Laboratory, Glass Vats',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Object Layouts'] = [
+        {
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Glass Vats',
+            'Object Layout ID': 0,
+            'Properties': {
+                'X': 192,
+            },
+        },
+        {
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Glass Vats',
+            'Object Layout ID': 1,
+            'Properties': {
+                'X': 240,
+            },
+        },
+        {
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Glass Vats',
+            'Object Layout ID': 2,
+            'Properties': {
+                'X': 288,
+            },
+        },
+        {
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Glass Vats',
+            'Object Layout ID': 3,
+            'Properties': {
+                'X': 336,
+            },
+        },
+        {
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Glass Vats',
+            'Object Layout ID': 4,
+            'Properties': {
+                'X': 384,
+            },
+        },
+    ]
+    result = patch
+    return result
+
+def get_normalize_alchemy_laboratory_red_skeleton_lift_room_top_passage():
+    tilemaps = {
+        'Foreground': [
+            ".... 0020 0033 0034 0001 0013 0000 0000 0000 0000 001B 0002 0006 0001 0002 0003 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 0004 0005 0006 0033 0034 0020 0033 0034 0020 0033 0034 0020 0033 0034",
+            ".... 0025 0023 0024 0008 0046 0000 0000 0000 0000 001C 0009 0007 0008 0009 000A 0008 0009 000A 000B 000C 0007 0008 0009 000A 001D 0014 0007 0008 0009 000A 000B 000C 0007 000B 000C 0007 0023 0024 0025 0023 0024 0025 0023 0024 0025 0023 0024",
+            ".... 002A 0028 0029 000E 001A 0000 0000 0000 0000 001E 001F 000D 0019 001F 0010 000E 000F 0010 0011 0012 000D 0019 001F 0010 0016 0017 0018 000E 000F 0010 0011 0012 000D 0011 0012 000D 0028 0029 002A 0028 0029 002A 0028 0029 002A 0028 0029",
+            "0006 0004 0005 0000 0000 0598 0126 0127 0288 0289 028A 028B 028A 028A 028A 028A 028A 012A 0122 0123 0124 0125 0126 0127 0288 0289 028A 028B 028A 028A 028A 028A 028A 012A 0122 0123 0124 0004 0005 0006 0004 0005 0006 0004 0005 0006 0004 0005",
+            "002B 0026 0027 0000 0000 059A 06A0 06A4 0298 0299 01D4 0128 00DA 028A 028A 028A 012B 0147 014C 01D5 01D8 01DC 06A0 06A4 0298 0299 01D4 0128 00DA 028A 028A 028A 012B 0147 014C 01D5 01D8 0026 0027 002B 0026 0027 002B 0026 0027 002B 0026 0027",
+            "0018 0011 0012 0000 0000 0000 0000 0000 0296 0297 029F 02A0 028C 028D 028E 028A 020E 0210 0236 0000 0000 0000 0000 0000 0296 0297 029F 02A0 028C 028D 028E 028A 020E 0210 0236 0000 0000 0011 0012 0018 0011 0012 0018 0011 0012 0018 0011 0012",
+            "0000 059C 05AD 05AE 0000 0000 0000 0000 028F 0290 0291 0292 0293 00D8 00D9 00DB 029D 029E 0105 0000 0000 0000 0000 0000 028F 0290 0291 0292 0293 00D8 00D9 00DB 029D 029E 0105 0000 0000 0000 004A 0047 0286 029C 0000 0172 0000 0000 0000 0000",
+            "05A3 05A4 05AA 0000 0000 0000 0000 0000 0000 0000 00DC 0689 068A 068D 068E 0287 0100 0000 0000 0000 0101 0294 0295 0000 0000 0000 00DC 0689 068A 068D 068E 0287 0100 0000 0000 0000 0000 0000 001B 0013 0000 0000 0000 05A7 0000 0000 0000 0000",
+            "05AB 05AC 059D 0000 0000 0000 0000 0000 0000 0000 029A 029B 0691 0692 0695 0696 0155 0000 0000 0156 0159 015E 0162 0000 06A8 0000 029A 029B 0691 0692 0695 0696 0155 0000 0000 0000 0000 0000 0049 0046 0000 0000 0000 059B 0000 059E 0000 0000",
+            "0000 05A9 05A5 05A6 0000 0000 059E 0000 0000 0000 0108 0109 010A 010B 010C 010D 016A 0000 0000 0000 0000 0183 0184 0187 06A7 0000 0108 0109 010A 010B 010C 010D 016A 0000 0000 0000 0000 0000 004A 0047 0000 0000 0000 0000 0000 05A7 0000 0000",
+            "0038 004B 003F 0038 0000 0000 05A7 0000 0000 05B0 010E 010F 0110 0111 0112 0113 0189 018A 0000 0000 018B 018C 01A5 01B3 0000 05B0 010E 010F 0110 0111 0112 0113 0189 018A 0000 0000 0000 0000 001B 0013 0000 0000 0048 003D 003E 003F 0038 0039",
+            "0024 0025 0023 0024 0678 0679 013F 0000 0000 05B1 0114 0115 0116 0117 0118 0119 01B4 01CA 0000 0000 01CB 01CC 01CD 0000 0000 05B1 0114 0115 0116 0117 0118 0119 01B4 01CA 0000 0000 0000 0000 004D 0046 0000 0000 004D 0106 0107 0023 0024 0025",
+            "0029 002A 0028 0029 059B 0000 013F 0000 011A 011B 011C 011D 011E 011F 0120 0121 01CE 01CF 01D0 0000 01D1 01D2 01D3 0000 011A 011B 011C 011D 011E 011F 0120 0121 01CE 01CF 01D0 0000 0000 0000 001E 001A 0000 0000 001E 001F 0010 0028 0029 002A"
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize Red Skeleton Lift Room, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Alchemy Laboratory, Red Skeleton Lift Room': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Alchemy Laboratory',
+                    'Room': 'Alchemy Laboratory, Red Skeleton Lift Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Necromancy Laboratory',
+                    'Room': 'Necromancy Laboratory, Red Skeleton Lift Room',
+                    'Layer': 'Foreground',
+                    'Top': 29,
+                    'Left': 32,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
 def get_normalize_alchemy_laboratory_red_skeleton_lift_room_bottom_passage():
     tilemaps = {
         'Foreground': [
@@ -1886,7 +2065,9 @@ if __name__ == '__main__':
             (0x0429D47C + 0x480, 'u32', 0x00000000, 'nop'),                   # 801C60FC
         ])),
         ('normalize-alchemy-laboratory-entryway-top-passage', get_normalize_alchemy_laboratory_entryway_top_passage()),
+        ('normalize-alchemy-laboratory-glass-vats-bottom-passage', get_normalize_alchemy_laboratory_glass_vats_bottom_passage()),
         ('normalize-alchemy-laboratory-red-skeleton-lift-room-bottom-passage', get_normalize_alchemy_laboratory_red_skeleton_lift_room_bottom_passage()),
+        ('normalize-alchemy-laboratory-red-skeleton-lift-room-top-passage', get_normalize_alchemy_laboratory_red_skeleton_lift_room_top_passage()),
         ('normalize-jewel-sword-passageway', get_normalize_jewel_sword_passageway_patch()),
         ('normalize-hidden-crystal-entrance-top-passage', get_normalize_hidden_crystal_entrance_top_passage()),
         ('normalize-ice-floe-room-top-passage', get_normalize_ice_floe_room_top_passage()),

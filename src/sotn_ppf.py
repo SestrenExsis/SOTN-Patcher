@@ -290,7 +290,9 @@ def get_patch(args, extract, changes, data):
         )),
         ('Normalize room connections', (
             'normalize-alchemy-laboratory-entryway-top-passage',
+            'normalize-alchemy-laboratory-glass-vats-bottom-passage',
             'normalize-alchemy-laboratory-red-skeleton-lift-room-bottom-passage',
+            'normalize-alchemy-laboratory-red-skeleton-lift-room-top-passage',
             'normalize-dk-bridge-bottom-passage',
             'normalize-hidden-crystal-entrance-top-passage',
             'normalize-ice-floe-room-top-passage',
