@@ -1688,7 +1688,7 @@ def get_normalize_alchemy_laboratory_glass_vats_bottom_passage():
             reverse_tilemap.append(flipped_row_data)
         reverse_tilemaps[layer] = reverse_tilemap
     patch = {
-        'Description': 'Normalize Glass Vats, Bottom Passage',
+        'Description': 'Normalize Glass Vats, Left-Bottom Passage',
         'Authors': [
             'Sestren',
         ],
@@ -1696,7 +1696,7 @@ def get_normalize_alchemy_laboratory_glass_vats_bottom_passage():
             'Rooms': {
                 'Alchemy Laboratory, Glass Vats': {
                     'Nodes': {
-                        'Bottom Passage': {
+                        'Left-Bottom Passage': {
                             'Type': '######....######',
                         },
                     },
@@ -1990,6 +1990,158 @@ def get_normalize_underground_caverns_crystal_bend_top_passage():
     result = patch
     return result
 
+def get_normalize_alchemy_laboratory_tall_zig_zag_room_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... 003B 05B8 05B8 003B .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0025 05B9 05B9 0025 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 014F 0150 0250 06B5 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 06A9 06A1 06B6 06B7 .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize Tall Zig Zag Room, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Alchemy Laboratory, Tall Zig Zag Room': {
+                    'Nodes': {
+                        'Lower Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Alchemy Laboratory',
+                    'Room': 'Alchemy Laboratory, Tall Zig Zag Room',
+                    'Layer': 'Foreground',
+                    'Top': 44,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Necromancy Laboratory',
+                    'Room': 'Necromancy Laboratory, Tall Zig Zag Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Pokes'] = []
+    for (offset, data_type, value) in (
+        (0x049EFFD8, 's16', 0x02C7), # Alchemy Laboratory - 0x02E7 -> 0x02C7
+        (0x049F008C, 's16', 0x02C7), # Alchemy Laboratory - 0x02E7 -> 0x02C7
+        (0x049F00A0, 's16', 0x0003), # Alchemy Laboratory - only require 1 hit to destroy the floor
+        (0x04DACB0C, 's16', 0x0038), # Necromancy Laboratory - 0x0018 -> 0x02C7
+        (0x04DACBCC, 's16', 0x0038), # Necromancy Laboratory - 0x0018 -> 0x02C7
+    ):
+        patch['Changes']['Pokes'].append({
+            'Gamedata Address': '{:08X}'.format(offset),
+            'Data Type': data_type,
+            'Value': '{:08X}'.format(value),
+        })
+    patch['Changes']['Object Layouts'] = [
+        {
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Tall Zig Zag Room',
+            'Object Layout ID': 4,
+            'Properties': {
+                'X': 128,
+                'Y': 720,
+            },
+        },
+        {
+            'Stage': 'Necromancy Laboratory',
+            'Room': 'Necromancy Laboratory, Tall Zig Zag Room',
+            'Object Layout ID': 5,
+            'Properties': {
+                'X': 128,
+                'Y': 48,
+            },
+        },
+    ]
+    # Laboratory Floor Tiles ()
+    # 0x05B8, 0x05B8, 0x05B9, 0x05B9, 0x05B2, 0x05B3, 0x05BA, 0x05BB,
+    # 0x05B4, 0x05B5, 0x05BC, 0x05BD, 0x05B6, 0x05B7, 0x05BE, 0x05BF
+    result = patch
+    return result
+
+def get_normalize_alchemy_laboratory_secret_life_max_up_room_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... 026C .... .... 0276 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 026F .... .... 027B 0011 0012 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0249 024A .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 024D 01BC .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize Secret Life Max-Up Room, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Alchemy Laboratory, Secret Life Max-Up Room': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Alchemy Laboratory',
+                    'Room': 'Alchemy Laboratory, Secret Life Max-Up Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Necromancy Laboratory',
+                    'Room': 'Necromancy Laboratory, Secret Life Max-Up Room',
+                    'Layer': 'Foreground',
+                    'Top': 28,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
 if __name__ == '__main__':
     '''
     Some patches play nice with other patches, some don't.
@@ -2068,6 +2220,8 @@ if __name__ == '__main__':
         ('normalize-alchemy-laboratory-glass-vats-bottom-passage', get_normalize_alchemy_laboratory_glass_vats_bottom_passage()),
         ('normalize-alchemy-laboratory-red-skeleton-lift-room-bottom-passage', get_normalize_alchemy_laboratory_red_skeleton_lift_room_bottom_passage()),
         ('normalize-alchemy-laboratory-red-skeleton-lift-room-top-passage', get_normalize_alchemy_laboratory_red_skeleton_lift_room_top_passage()),
+        ('normalize-alchemy-laboratory-secret-life-max-up-room-top-passage', get_normalize_alchemy_laboratory_secret_life_max_up_room_top_passage()),
+        ('normalize-alchemy-laboratory-tall-zig-zag-room-bottom-passage', get_normalize_alchemy_laboratory_tall_zig_zag_room_bottom_passage()),
         ('normalize-jewel-sword-passageway', get_normalize_jewel_sword_passageway_patch()),
         ('normalize-hidden-crystal-entrance-top-passage', get_normalize_hidden_crystal_entrance_top_passage()),
         ('normalize-ice-floe-room-top-passage', get_normalize_ice_floe_room_top_passage()),

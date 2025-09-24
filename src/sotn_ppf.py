@@ -293,6 +293,8 @@ def get_patch(args, extract, changes, data):
             'normalize-alchemy-laboratory-glass-vats-bottom-passage',
             'normalize-alchemy-laboratory-red-skeleton-lift-room-bottom-passage',
             'normalize-alchemy-laboratory-red-skeleton-lift-room-top-passage',
+            'normalize-alchemy-laboratory-secret-life-max-up-room-top-passage',
+            'normalize-alchemy-laboratory-tall-zig-zag-room-bottom-passage',
             'normalize-dk-bridge-bottom-passage',
             'normalize-hidden-crystal-entrance-top-passage',
             'normalize-ice-floe-room-top-passage',
