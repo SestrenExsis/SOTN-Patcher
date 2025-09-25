@@ -2005,8 +2005,8 @@ def get_normalize_alchemy_laboratory_tall_zig_zag_room_bottom_passage():
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... 003B 05B8 05B8 003B .... .... .... .... .... ....',
-            '.... .... .... .... .... .... 0025 05B9 05B9 0025 .... .... .... .... .... ....',
-            '.... .... .... .... .... .... 014F 0150 0250 06B5 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0271 05B9 05B9 027F .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0272 0230 0256 0280 .... .... .... .... .... ....',
             '.... .... .... .... .... .... 06A9 06A1 06B6 06B7 .... .... .... .... .... ....',
         ],
     }
@@ -2089,9 +2089,23 @@ def get_normalize_alchemy_laboratory_tall_zig_zag_room_bottom_passage():
             },
         },
     ]
-    # Laboratory Floor Tiles ()
-    # 0x05B8, 0x05B8, 0x05B9, 0x05B9, 0x05B2, 0x05B3, 0x05BA, 0x05BB,
-    # 0x05B4, 0x05B5, 0x05BC, 0x05BD, 0x05B6, 0x05B7, 0x05BE, 0x05BF
+    patch['Changes']['Constants'] = {}
+    for stage_name in (
+        'Alchemy Laboratory',
+        'Necromancy Laboratory',
+    ):
+        constant_key = f'Laboratory Floor Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in (
+            (12, 0x0224),
+            (13, 0x024C),
+            (14, 0x022A),
+            (15, 0x0250),
+        ):
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
     result = patch
     return result
 
