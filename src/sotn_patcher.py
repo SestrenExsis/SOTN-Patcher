@@ -105,7 +105,7 @@ def get_prevent_softlocks_at_demon_switch_wall_patch():
         'Changes': {
             'Constants': {},
             'Familiar Events': [
-                # NOTE(sestren): Changing the camera Y from 772 to 767 allows the Demon to see the switch from either side of the wall
+                # NOTE(sestren): Changing the camera Y from 772 to 767 allows the Demon to "see" the switch from either side of the wall
                 {
                     'Familiar Event ID': 6,
                     'Camera Y': 767,
@@ -120,6 +120,17 @@ def get_prevent_softlocks_at_demon_switch_wall_patch():
         #     'Modification - Disable clipping on screen edge of Demon Switch Wall': True,
         # }
     }
+    patch['Changes']['Object Layouts'] = [
+        {
+            'Stage': 'Cave',
+            'Room': 'Cave, Crumbling Stairwells With Demon Switch',
+            'Object Layout ID': 2,
+            'Properties': {
+                # NOTE(sestren): Changing the Y position from 977 to 972 allows the Demon to hit the switch correctly in Inverted Castle
+                'Y': 972,
+            },
+        },
+    ]
     for stage_name in (
         'Abandoned Mine',
         'Cave',
