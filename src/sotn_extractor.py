@@ -792,6 +792,9 @@ if __name__ == '__main__':
             (0x047C4E20, 'u16', 27, 'Unique Item Drops (Reverse Caverns)'),
             # Breakable Container Drops
             (0x049BF79C, 'u16', 4, 'Breakable Container Drops'),
+            # Marble Gallery
+            (0x03F8BFF0, 'u16', 4, 'Trapdoor Offsets (Marble Gallery)'), # D_us_80180FF0 in the decomp
+            (0x03F8BFF8, 'u16', 24, 'Trapdoor Tiles (Marble Gallery)'), # D_us_80180FF8 in the decomp
             # Breakable Wall Tiles
             (0x03CE009C, 'u16', 24, 'Demon Switch Wall Tiles (Abandoned Mine)'),
             (0x0439BFEC, 'u16', 24, 'Demon Switch Wall Tiles (Cave)'),
