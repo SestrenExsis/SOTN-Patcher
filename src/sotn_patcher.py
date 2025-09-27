@@ -2203,6 +2203,20 @@ def get_normalize_marble_gallery_stopwatch_room_bottom_passage():
                     'Left': 16,
                     'Tiles': tilemaps['Foreground'],
                 },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Black Marble Gallery',
+                    'Room': 'Black Marble Gallery, Stopwatch Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 16,
+                    'Tiles': [
+                        '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+                        '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+                        '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+                        '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+                    ],
+                },
             ],
         },
     }
@@ -2215,34 +2229,6 @@ def get_normalize_marble_gallery_stopwatch_room_bottom_passage():
             'Data Type': data_type,
             'Value': '{:08X}'.format(value),
         })
-    # patch['Changes']['Object Layouts'] = [
-    #     {
-    #         'Stage': 'Alchemy Laboratory',
-    #         'Room': 'Alchemy Laboratory, Tall Zig Zag Room',
-    #         'Object Layout ID': 4,
-    #         'Properties': {
-    #             'X': 128,
-    #             'Y': 720,
-    #         },
-    #     },
-    # ]
-    # patch['Changes']['Constants'] = {}
-    # constant_key = f'Trapdoor Tiles (Marble Gallery)'
-    # patch['Changes']['Constants'][constant_key] = []
-    # for (index, value) in enumerate((
-    #     # Phase 0
-    #     0x000, 0x000, 0x000, 0x000,
-    #     0x000, 0x000, 0x000, 0x000,
-    #     0x597, 0x597, 0x000, 0x000,
-    #     # Phase 1
-    #     0x000, 0x000, 0x000, 0x000,
-    #     0x000, 0x000, 0x000, 0x000,
-    #     0x000, 0x000, 0x597, 0x597
-    # )):
-    #     patch['Changes']['Constants'][constant_key].append({
-    #         'Index': index,
-    #         'Value': '{:04X}'.format(value),
-    #     })
     result = patch
     return result
 
@@ -2285,57 +2271,6 @@ def get_normalize_marble_gallery_beneath_left_trapdoor_top_passage():
     }
     result = patch
     return result
-
-# def get_normalize_marble_gallery_slinger_staircase_right_bottom_passage():
-#     tilemaps = {
-#         'Foreground': [
-#             '.... .... .... .... .... .... 0597 0597 0597 0597 .... .... .... .... .... ....',
-#             '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
-#             '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
-#             '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
-#         ],
-#     }
-#     patch = {
-#         'Description': 'Normalize Marble Gallery Stopwatch Room',
-#         'Authors': [
-#             'Sestren',
-#         ],
-#         'Mapper': {
-#             'Rooms': {
-#                 'Marble Gallery, Stopwatch Room': {
-#                     'Nodes': {
-#                         'Bottom Passage': {
-#                             'Type': '######....######',
-#                         },
-#                     },
-#                 },
-#             },
-#         },
-#         'Changes': {
-#             'Tilemaps': [
-#                 {
-#                     'Type': 'Tile ID-Based',
-#                     'Stage': 'Marble Gallery',
-#                     'Room': 'Marble Gallery, Stopwatch Room',
-#                     'Layer': 'Foreground',
-#                     'Top': 12,
-#                     'Left': 16,
-#                     'Tiles': tilemaps['Foreground'],
-#                 },
-#             ],
-#         },
-#     }
-#     patch['Changes']['Pokes'] = []
-#     for (offset, data_type, value) in (
-#         (0x03FCE06C, 's16', 0x0001), # Marble Gallery - 0x0003 -> 0x0001
-#     ):
-#         patch['Changes']['Pokes'].append({
-#             'Gamedata Address': '{:08X}'.format(offset),
-#             'Data Type': data_type,
-#             'Value': '{:08X}'.format(value),
-#         })
-#     result = patch
-#     return result
 
 def get_normalize_marble_gallery_beneath_right_trapdoor_top_passage():
     tilemaps = {
@@ -2414,7 +2349,7 @@ def get_normalize_marble_gallery_beneath_right_trapdoor_top_passage():
                     'Type': 'Tile ID-Based',
                     'Stage': 'Black Marble Gallery',
                     'Room': 'Black Marble Gallery, Beneath Right Trapdoor',
-                    'Layer': 'Foreground',
+                    'Layer': 'Background',
                     'Top': 9,
                     'Left': 0,
                     'Tiles': reverse_tilemaps['Background'],
@@ -2422,6 +2357,125 @@ def get_normalize_marble_gallery_beneath_right_trapdoor_top_passage():
             ],
         },
     }
+    patch['Changes']['Object Layouts'] = [
+        {
+            'Stage': 'Marble Gallery',
+            'Room': 'Marble Gallery, Beneath Right Trapdoor',
+            'Object Layout ID': 1,
+            'Properties': {
+                'X': 129 + 32,
+                'Y': 8,
+            },
+        },
+        {
+            'Stage': 'Black Marble Gallery',
+            'Room': 'Black Marble Gallery, Beneath Right Trapdoor',
+            'Object Layout ID': 99,
+            'Properties': {
+                'X': 999,
+                'Y': 999,
+            },
+        },
+    ]
+    result = patch
+    return result
+
+def get_normalize_marble_gallery_slinger_staircase_right_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... 02EE 02EE 031A 031B .... .... 0000 0000 031B .... .... .... .... ....',
+            '.... .... .... 02F0 02F0 031C .... .... 0000 0000 031C .... .... .... .... ....',
+            '.... .... .... .... 02F3 02F3 .... .... 0597 0597 .... .... .... .... .... ....',
+            '.... .... .... .... 02F7 02F8 .... .... 0000 0000 .... .... .... .... .... ....',
+            '.... .... .... .... 0319 02E1 0000 0000 0000 0000 .... .... .... .... .... ....',
+            '.... .... .... .... 0597 0597 0000 0000 0000 0000 .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize Marble Gallery Slinger Staircase',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Marble Gallery, Slinger Staircase': {
+                    'Nodes': {
+                        'Right-Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Marble Gallery',
+                    'Room': 'Marble Gallery, Slinger Staircase',
+                    'Layer': 'Foreground',
+                    'Top': 16 + 10,
+                    'Left': 32,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Black Marble Gallery',
+                    'Room': 'Black Marble Gallery, Slinger Staircase',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Pokes'] = []
+    for (offset, data_type, value) in (
+        (0x03FCE06C, 's16', 0x0001), # Marble Gallery - 0x0003 -> 0x0001
+    ):
+        patch['Changes']['Pokes'].append({
+            'Gamedata Address': '{:08X}'.format(offset),
+            'Data Type': data_type,
+            'Value': '{:08X}'.format(value),
+        })
+    patch['Changes']['Object Layouts'] = [
+        {
+            'Stage': 'Marble Gallery',
+            'Room': 'Marble Gallery, Slinger Staircase',
+            'Object Layout ID': 11,
+            'Properties': {
+                'X': 608 + 32,
+                'Y': 476,
+            },
+        },
+        {
+            'Stage': 'Black Marble Gallery',
+            'Room': 'Black Marble Gallery, Slinger Staircase',
+            'Object Layout ID': 5,
+            'Properties': {
+                'X': 160,
+                'Y': 36,
+            },
+        },
+    ]
+    patch['Changes']['Constants'] = {}
+    constant_key = f'Trapdoor Offsets (Marble Gallery)'
+    patch['Changes']['Constants'][constant_key] = []
+    for (index, value) in (
+        (2, 0x0566),
+       ):
+        patch['Changes']['Constants'][constant_key].append({
+            'Index': index,
+            'Value': '{:04X}'.format(value),
+        })
     result = patch
     return result
 
@@ -2509,10 +2563,10 @@ if __name__ == '__main__':
         ('normalize-ice-floe-room-top-passage', get_normalize_ice_floe_room_top_passage()),
         ('normalize-jewel-sword-passageway', get_normalize_jewel_sword_passageway_patch()),
         ('normalize-long-drop-bottom-passage', get_normalize_long_drop_bottom_passage()),
-        ('normalize-marble-gallery-stopwatch-room-bottom-passage', get_normalize_marble_gallery_stopwatch_room_bottom_passage()),
         ('normalize-marble-gallery-beneath-left-trapdoor-top-passage', get_normalize_marble_gallery_beneath_left_trapdoor_top_passage()),
         ('normalize-marble-gallery-beneath-right-trapdoor-top-passage', get_normalize_marble_gallery_beneath_right_trapdoor_top_passage()),
-        # ('normalize-marble-gallery-slinger-staircase-right-bottom-passage', get_normalize_marble_gallery_slinger_staircase_right_bottom_passage()),
+        ('normalize-marble-gallery-slinger-staircase-right-bottom-passage', get_normalize_marble_gallery_slinger_staircase_right_bottom_passage()),
+        ('normalize-marble-gallery-stopwatch-room-bottom-passage', get_normalize_marble_gallery_stopwatch_room_bottom_passage()),
         ('normalize-secret-bookcase-rooms', get_normalize_secret_bookcase_rooms()),
         ('normalize-tall-stairwell-bottom-passage', get_normalize_tall_stairwell_bottom_passage()),
         ('normalize-underground-caverns-crystal-bend-top-passage', get_normalize_underground_caverns_crystal_bend_top_passage()),

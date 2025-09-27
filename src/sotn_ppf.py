@@ -302,6 +302,7 @@ def get_patch(args, extract, changes, data):
             'normalize-long-drop-bottom-passage',
             'normalize-marble-gallery-beneath-left-trapdoor-top-passage',
             'normalize-marble-gallery-beneath-right-trapdoor-top-passage',
+            'normalize-marble-gallery-slinger-staircase-right-bottom-passage',
             'normalize-marble-gallery-stopwatch-room-bottom-passage',
             'normalize-secret-bookcase-rooms',
             'normalize-tall-stairwell-bottom-passage',
