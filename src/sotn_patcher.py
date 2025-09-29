@@ -3383,6 +3383,262 @@ def get_normalize_castle_entrance_drop_under_portcullis_top_passage():
     result = patch
     return result
 
+def get_normalize_castle_entrance_attic_entrance_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 0420 0421',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 0423 0425',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 041A 041B',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 041D 041E',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 0420 0421',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 0423 0425',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 041A 041B',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 041D 041E',
+            '.... .... .... .... .... .... .... .... 0000 0000 0000 0000 0447 0448 0420 0421',
+            '.... .... .... .... .... .... .... .... 0000 0000 0000 044C 044D 0434 0423 0425',
+            '.... .... .... .... .... .... .... .... 0000 0000 044C 0450 0451 04FA 041A 041B',
+            '.... .... .... .... .... .... .... .... 0000 0000 0505 0465 0464 0465 041D 041E',
+            '.... .... .... .... .... .... .... .... 0000 0000 04FA 04FA 04FA 04FA 04FA 04FA',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0474 .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 047D .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0483 .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0489 .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 047B .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0489 .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 047B .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0489 .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... 0488 0487 0000 .... ....',
+            '.... .... .... .... .... .... .... .... .... .... 0481 0482 0000 0000 .... ....',
+            '.... .... .... .... .... .... .... 0488 0487 0488 0481 0473 047B 047B .... ....',
+            '.... .... .... .... .... .... .... 048A 0487 0487 048A 0000 0000 0000 .... ....',
+            '.... .... .... .... .... .... .... 0000 0000 0000 0000 0000 0000 0000 .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': "Normalize Castle Entrance Attic Entrance Bottom",
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Castle Entrance, Attic Entrance': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+                'Castle Entrance Revisited, Attic Entrance': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance',
+                    'Room': 'Castle Entrance, Attic Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance',
+                    'Room': 'Castle Entrance, Attic Entrance',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance Revisited',
+                    'Room': 'Castle Entrance Revisited, Attic Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance Revisited',
+                    'Room': 'Castle Entrance Revisited, Attic Entrance',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Reverse Entrance",
+                    'Room': 'Reverse Entrance, Attic Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Reverse Entrance",
+                    'Room': 'Reverse Entrance, Attic Entrance',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_castle_entrance_merman_room_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... .... .... 0000 0000 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... 0000 0000 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... 0000 0000 .... .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... 0323 0323 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... 0323 0323 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... 0323 0323 .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': "Normalize Castle Entrance Merman Room Top",
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Castle Entrance, Merman Room': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+                'Castle Entrance Revisited, Merman Room': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance',
+                    'Room': 'Castle Entrance, Merman Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance',
+                    'Room': 'Castle Entrance, Merman Room',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance Revisited',
+                    'Room': 'Castle Entrance Revisited, Merman Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance Revisited',
+                    'Room': 'Castle Entrance Revisited, Merman Room',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Reverse Entrance",
+                    'Room': 'Reverse Entrance, Merman Room',
+                    'Layer': 'Foreground',
+                    'Top': 16 + 13,
+                    'Left': 32,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Reverse Entrance",
+                    'Room': 'Reverse Entrance, Merman Room',
+                    'Layer': 'Background',
+                    'Top': 16 + 13,
+                    'Left': 32,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Object Layouts'] = [
+        {
+            'Stage': 'Castle Entrance',
+            'Room': 'Castle Entrance, Merman Room',
+            'Object Layout ID': 7,
+            'Properties': {
+                'X': 144 + 24,
+                'Y': 56,
+            },
+        },
+        {
+            'Stage': 'Castle Entrance Revisited',
+            'Room': 'Castle Entrance Revisited, Merman Room',
+            'Object Layout ID': 6,
+            'Properties': {
+                'X': 144 + 24,
+                'Y': 56,
+            },
+        },
+    ]
+    result = patch
+    return result
+
 if __name__ == '__main__':
     '''
     Some patches play nice with other patches, some don't.
@@ -3464,7 +3720,9 @@ if __name__ == '__main__':
         ('normalize-alchemy-laboratory-secret-life-max-up-room-top-passage', get_normalize_alchemy_laboratory_secret_life_max_up_room_top_passage()),
         ('normalize-alchemy-laboratory-tall-zig-zag-room-bottom-passage', get_normalize_alchemy_laboratory_tall_zig_zag_room_bottom_passage()),
         ('normalize-castle-entrance-after-drawbridge-bottom-passage', get_normalize_castle_entrance_after_drawbridge_bottom_passage()),
+        ('normalize-castle-entrance-attic-entrance-bottom-passage', get_normalize_castle_entrance_attic_entrance_bottom_passage()),
         ('normalize-castle-entrance-drop-under-portcullis-top-passage', get_normalize_castle_entrance_drop_under_portcullis_top_passage()),
+        ('normalize-castle-entrance-merman-room-top-passage', get_normalize_castle_entrance_merman_room_top_passage()),
         ('normalize-hidden-crystal-entrance-top-passage', get_normalize_hidden_crystal_entrance_top_passage()),
         ('normalize-ice-floe-room-top-passage', get_normalize_ice_floe_room_top_passage()),
         ('normalize-jewel-sword-passageway', get_normalize_jewel_sword_passageway_patch()),
