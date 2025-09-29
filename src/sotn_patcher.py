@@ -3639,6 +3639,145 @@ def get_normalize_castle_entrance_merman_room_top_passage():
     result = patch
     return result
 
+def get_normalize_marble_gallery_three_paths_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... 068A 0000 .... .... 0000 0689 .... .... .... .... ....',
+            '.... .... .... .... .... 0688 0000 .... .... 0000 0687 .... .... .... .... ....',
+            '.... .... .... .... .... 0685 0000 .... .... 0000 0686 .... .... .... .... ....',
+            '.... .... .... .... .... 068C 0000 .... .... 0000 068B .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... 06B9 06B3 06BC 06C0 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 06B6 06B7 06BE 06BF .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 06B9 06B3 06BC 06C0 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 06B6 06B7 06BE 06BF .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize Marble Gallery Three Paths Top',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Marble Gallery, Three Paths': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Marble Gallery',
+                    'Room': 'Marble Gallery, Three Paths',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Marble Gallery',
+                    'Room': 'Marble Gallery, Three Paths',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Black Marble Gallery',
+                    'Room': 'Black Marble Gallery, Three Paths',
+                    'Layer': 'Foreground',
+                    'Top': 16 + 12,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Black Marble Gallery',
+                    'Room': 'Black Marble Gallery, Three Paths',
+                    'Layer': 'Background',
+                    'Top': 16 + 12,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_marble_gallery_gravity_boots_room_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... 06C6 0520 .... .... 0520 06CB .... .... .... .... ....',
+            '.... .... .... .... .... 0541 0520 .... .... 0520 053B .... .... .... .... ....',
+            '.... .... .... .... .... .... 0520 .... .... 0520 .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': 'Normalize Marble Gallery Gravity Boots Bottom',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Marble Gallery, Gravity Boots Room': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Marble Gallery',
+                    'Room': 'Marble Gallery, Gravity Boots Room',
+                    'Layer': 'Foreground',
+                    'Top': 13,
+                    'Left': 32,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Black Marble Gallery',
+                    'Room': 'Black Marble Gallery, Gravity Boots Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 32,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
 if __name__ == '__main__':
     '''
     Some patches play nice with other patches, some don't.
@@ -3729,8 +3868,10 @@ if __name__ == '__main__':
         ('normalize-long-drop-bottom-passage', get_normalize_long_drop_bottom_passage()),
         ('normalize-marble-gallery-beneath-left-trapdoor-top-passage', get_normalize_marble_gallery_beneath_left_trapdoor_top_passage()),
         ('normalize-marble-gallery-beneath-right-trapdoor-top-passage', get_normalize_marble_gallery_beneath_right_trapdoor_top_passage()),
+        ('normalize-marble-gallery-gravity-boots-room-bottom-passage', get_normalize_marble_gallery_gravity_boots_room_bottom_passage()),
         ('normalize-marble-gallery-slinger-staircase-right-bottom-passage', get_normalize_marble_gallery_slinger_staircase_right_bottom_passage()),
         ('normalize-marble-gallery-stopwatch-room-bottom-passage', get_normalize_marble_gallery_stopwatch_room_bottom_passage()),
+        ('normalize-marble-gallery-three-paths-top-passage', get_normalize_marble_gallery_three_paths_top_passage()),
         ('normalize-olroxs-quarters-catwalk-crypt-left-top-passage', get_normalize_olroxs_quarters_catwalk_crypt_left_top_passage()),
         ('normalize-olroxs-quarters-open-courtyard-top-passage', get_normalize_olroxs_quarters_open_courtyard_top_passage()),
         ('normalize-olroxs-quarters-prison-left-bottom-passage', get_normalize_olroxs_quarters_prison_left_bottom_passage()),
