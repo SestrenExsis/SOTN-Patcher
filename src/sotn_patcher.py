@@ -3047,6 +3047,141 @@ def get_normalize_olroxs_quarters_open_courtyard_top_passage():
     result = patch
     return result
 
+def get_normalize_olroxs_quarters_catwalk_crypt_left_top_passage():
+    # NOTE(sestren): In Death Wing's Lair, it is possible to clip through the barrier when flying upward from underneath
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0027 0027 002A 002B .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0021 0022 0049 004A .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': "Normalize Olrox's Quarters Catwalk Crypt Left Top",
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                "Olrox's Quarters, Catwalk Crypt": {
+                    'Nodes': {
+                        'Left-Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Olrox's Quarters",
+                    'Room': "Olrox's Quarters, Catwalk Crypt",
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 16,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Death Wing's Lair",
+                    'Room': "Death Wing's Lair, Catwalk Crypt",
+                    'Layer': 'Foreground',
+                    'Top': 13,
+                    'Left': 80,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Constants'] = {}
+    for stage_name in (
+        "Olrox's Quarters",
+        "Death Wing's Lair",
+    ):
+        constant_key = f'Breakable Ceiling Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in enumerate((
+            # Closed
+            0x0027, 0x0027, 0x002A, 0x002B,
+            0x000F, 0x000D, 0x000E, 0x000D,
+            # Open
+            0x0027, 0x0027, 0x002A, 0x002B,
+            0x0021, 0x0022, 0x0049, 0x004A,
+        )):
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    result = patch
+    return result
+
+def get_normalize_olroxs_quarters_sword_card_room_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... 03C1 03C1 04EA 04ED .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 04DF 04E0 04EB 04EC .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 04EE 04EF 04F8 04F9 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0000 .... .... 0000 .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = {}
+    for layer in sorted(tilemaps.keys()):
+        reverse_tilemap = []
+        for row_data in reversed(tilemaps[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reverse_tilemap.append(flipped_row_data)
+        reverse_tilemaps[layer] = reverse_tilemap
+    patch = {
+        'Description': "Normalize Olrox's Quarters Sword Card Room Bottom",
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                "Olrox's Quarters, Sword Card Room": {
+                    'Nodes': {
+                        'Left-Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Olrox's Quarters",
+                    'Room': "Olrox's Quarters, Sword Card Room",
+                    'Layer': 'Foreground',
+                    'Top': 12,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Death Wing's Lair",
+                    'Room': "Death Wing's Lair, Sword Card Room",
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 16,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
 if __name__ == '__main__':
     '''
     Some patches play nice with other patches, some don't.
@@ -3135,9 +3270,11 @@ if __name__ == '__main__':
         ('normalize-marble-gallery-beneath-right-trapdoor-top-passage', get_normalize_marble_gallery_beneath_right_trapdoor_top_passage()),
         ('normalize-marble-gallery-slinger-staircase-right-bottom-passage', get_normalize_marble_gallery_slinger_staircase_right_bottom_passage()),
         ('normalize-marble-gallery-stopwatch-room-bottom-passage', get_normalize_marble_gallery_stopwatch_room_bottom_passage()),
+        ('normalize-olroxs-quarters-catwalk-crypt-left-top-passage', get_normalize_olroxs_quarters_catwalk_crypt_left_top_passage()),
         ('normalize-olroxs-quarters-open-courtyard-top-passage', get_normalize_olroxs_quarters_open_courtyard_top_passage()),
         ('normalize-olroxs-quarters-prison-left-bottom-passage', get_normalize_olroxs_quarters_prison_left_bottom_passage()),
         ('normalize-olroxs-quarters-prison-right-bottom-passage', get_normalize_olroxs_quarters_prison_right_bottom_passage()),
+        ('normalize-olroxs-quarters-sword-card-room-bottom-passage', get_normalize_olroxs_quarters_sword_card_room_bottom_passage()),
         ('normalize-olroxs-quarters-tall-shaft-top-passage', get_normalize_olroxs_quarters_tall_shaft_top_passage()),
         ('normalize-secret-bookcase-rooms', get_normalize_secret_bookcase_rooms()),
         ('normalize-tall-stairwell-bottom-passage', get_normalize_tall_stairwell_bottom_passage()),
