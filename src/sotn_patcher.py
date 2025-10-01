@@ -3,6 +3,17 @@ import argparse
 import json
 import os
 
+def reverse_tilemap_changes(tilemap_changes: dict) -> dict:
+    reversed_tilemap_changes = {}
+    for layer in sorted(tilemap_changes.keys()):
+        reversed_tilemap_change = []
+        for row_data in reversed(tilemap_changes[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reversed_tilemap_change.append(flipped_row_data)
+        reversed_tilemap_changes[layer] = reversed_tilemap_change
+    result = reversed_tilemap_changes
+    return result
+
 def get_clock_hands_patch():
     patch = {
         'Description': 'Clock hands display minutes and seconds',
@@ -348,13 +359,143 @@ def get_prevent_softlocks_at_left_gear_room_wall_patch():
     return result
 
 def get_normalize_jewel_sword_passageway_patch():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '052D 0535 .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0532 0536 .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0000 0308 .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0000 0309 .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0000 053E .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0320 053F .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '034E 034F .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '034E 034F .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0339 033A .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0350 0351 .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '032F 0330 .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0000 0000 .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Jewel Sword passageway',
         'Authors': [
             'Sestren',
         ],
-        'Changes': {},
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance',
+                    'Room': 'Castle Entrance, Merman Room',
+                    'Layer': 'Foreground',
+                    'Top': 16,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance',
+                    'Room': 'Castle Entrance, Merman Room',
+                    'Layer': 'Background',
+                    'Top': 16,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance Revisited',
+                    'Room': 'Castle Entrance Revisited, Merman Room',
+                    'Layer': 'Foreground',
+                    'Top': 16,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance Revisited',
+                    'Room': 'Castle Entrance Revisited, Merman Room',
+                    'Layer': 'Background',
+                    'Top': 16,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Entrance',
+                    'Room': 'Reverse Entrance, Merman Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 32,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Entrance',
+                    'Room': 'Reverse Entrance, Merman Room',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 32,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
     }
+    patch['Changes']['Constants'] = {}
+    for stage_name in (
+        'Castle Entrance',
+        'Castle Entrance Revisited',
+    ):
+        constant_key = f'Breakable Wall in Merman Room ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in (
+            # Column 0
+            (27, 0x030B),
+            (28, 0x030E),
+            (29, 0x0000),
+            (30, 0x0000),
+            (31, 0x06BD),
+            (32, 0x06BF),
+            # Column 1
+            (33, 0x030C),
+            (34, 0x030F),
+            (35, 0x0000),
+            (36, 0x0000),
+            (37, 0x06BE),
+            (38, 0x06C0),
+            # Column 2
+            (39, 0x054F),
+            (40, 0x0000),
+            (41, 0x0000),
+            (42, 0x0000),
+            (43, 0x06BD),
+            (44, 0x06C1),
+        ):
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
     pokes = []
     # Eliminate left-most column of passage to Jewel Sword Room in Merman Room
     # TODO(sestren): Figure out how to patch the entity and array in Reverse Entrance
@@ -369,82 +510,6 @@ def get_normalize_jewel_sword_passageway_patch():
             (0x0E8, 's16', 0x3F0, 'addiu a2,t0,$3F0'),
         ):
             pokes.append((value, data_type, base + offset, [context, note]))
-    for (base, context) in (
-        (0x041A8AAC, 'Castle Entrance, Merman Room (rockTiles3)'),
-        # (0x0471F020, 'Reverse Entrance, Merman Room (rockTiles3)'),
-        (0x0491B974, 'Castle Entrance Revisited, Merman Room (rockTiles3)'),
-    ):
-        for (offset, data_type, value, note) in (
-            # Column 0
-            (0x036, 'u16', 0x030B, 'Column 0, Row 0'),
-            (0x038, 'u16', 0x030E, 'Column 0, Row 1'),
-            (0x03A, 'u16', 0x0000, 'Column 0, Row 2'),
-            (0x03C, 'u16', 0x0000, 'Column 0, Row 3'),
-            (0x03E, 'u16', 0x06BD, 'Column 0, Row 4'),
-            (0x040, 'u16', 0x06BF, 'Column 0, Row 5'),
-            # Column 1
-            (0x042, 'u16', 0x030C, 'Column 1, Row 0'),
-            (0x044, 'u16', 0x030F, 'Column 1, Row 1'),
-            (0x046, 'u16', 0x0000, 'Column 1, Row 2'),
-            (0x048, 'u16', 0x0000, 'Column 1, Row 3'),
-            (0x04A, 'u16', 0x06BE, 'Column 1, Row 4'),
-            (0x04C, 'u16', 0x06C0, 'Column 1, Row 5'),
-            # Column 2
-            (0x04E, 'u16', 0x054F, 'Column 2, Row 0'),
-            (0x050, 'u16', 0x0000, 'Column 2, Row 1'),
-            (0x052, 'u16', 0x0000, 'Column 2, Row 2'),
-            (0x054, 'u16', 0x0000, 'Column 2, Row 3'),
-            (0x056, 'u16', 0x06BD, 'Column 2, Row 4'),
-            (0x058, 'u16', 0x06C1, 'Column 2, Row 5'),
-        ):
-            pokes.append((value, data_type, base + offset, [context, note]))
-    for (base_fg, base_bg, context) in (
-        (0x041C4638, 0x041C5238, 'Castle Entrance, Merman Room'),
-        (0x049356F4, 0x049362F4, 'Castle Entrance Revisited, Merman Room'),
-    ):
-        for (row, col, value_fg, value_bg, note) in (
-            # Column 0
-            (21 + 0, 0, 0x052D, 0x034E, 'Column 0, Row 0'),
-            (21 + 1, 0, 0x0532, 0x034E, 'Column 0, Row 1'),
-            (21 + 2, 0, 0x0000, 0x0339, 'Column 0, Row 2'),
-            (21 + 3, 0, 0x0000, 0x0350, 'Column 0, Row 3'),
-            (21 + 4, 0, 0x0000, 0x032F, 'Column 0, Row 4'),
-            (21 + 5, 0, 0x0320, 0x0000, 'Column 0, Row 5'),
-            # Column 1
-            (21 + 0, 1, 0x0535, 0x034F, 'Column 1, Row 0'),
-            (21 + 1, 1, 0x0536, 0x034F, 'Column 1, Row 1'),
-            (21 + 2, 1, 0x0308, 0x033A, 'Column 1, Row 2'),
-            (21 + 3, 1, 0x0309, 0x0351, 'Column 1, Row 3'),
-            (21 + 4, 1, 0x053E, 0x0330, 'Column 1, Row 4'),
-            (21 + 5, 1, 0x053F, 0x0000, 'Column 1, Row 5'),
-        ):
-            tiles_per_row = 16 * 3
-            offset = 2 * (tiles_per_row * row + col)
-            pokes.append((value_fg, 'u16', base_fg + offset, [context, note + ', Foreground Layer']))
-            pokes.append((value_bg, 'u16', base_bg + offset, [context, note + ', Background Layer']))
-    for (base_fg, base_bg, context) in (
-        (0x04733488, 0x04734088, 'Reverse Entrance, Merman Room'),
-    ):
-        for (row, col, value_fg, value_bg, note) in (
-            # Column 0
-            (5 + 0, 46, 0x053F, 0x0000, 'Column 0, Row 0'),
-            (5 + 1, 46, 0x053E, 0x0330, 'Column 0, Row 1'),
-            (5 + 2, 46, 0x0309, 0x0351, 'Column 0, Row 2'),
-            (5 + 3, 46, 0x0308, 0x033A, 'Column 0, Row 3'),
-            (5 + 4, 46, 0x0536, 0x034F, 'Column 0, Row 4'),
-            (5 + 5, 46, 0x0535, 0x034F, 'Column 0, Row 5'),
-            # Column 1
-            (5 + 0, 47, 0x0320, 0x0000, 'Column 1, Row 0'),
-            (5 + 1, 47, 0x0000, 0x032F, 'Column 1, Row 1'),
-            (5 + 2, 47, 0x0000, 0x0350, 'Column 1, Row 2'),
-            (5 + 3, 47, 0x0000, 0x0339, 'Column 1, Row 3'),
-            (5 + 4, 47, 0x0532, 0x034E, 'Column 1, Row 4'),
-            (5 + 5, 47, 0x052D, 0x034E, 'Column 1, Row 5'),
-        ):
-            tiles_per_row = 16 * 3
-            offset = 2 * (tiles_per_row * row + col)
-            pokes.append((value_fg, 'u16', base_fg + offset, [context, note + ', Foreground Layer']))
-            pokes.append((value_bg, 'u16', base_bg + offset, [context, note + ', Background Layer']))
     patch['Changes']['Pokes'] = []
     for (value, data_type, offset, notes) in pokes:
         value_format = '{:08X}' if data_type == 'u32' else '{:04X}'
@@ -461,18 +526,17 @@ def get_normalize_jewel_sword_passageway_patch():
     return result
 
 def get_normalize_tall_stairwell_bottom_passage():
-    tilemap = [
-        '.... .... 0234 0235 0000 .... .... .... .... .... .... .... .... .... .... ....',
-        '.... .... 0177 011B 0239 023A .... .... .... .... 0248 024A .... .... .... ....',
-        '.... .... .... 017B 0A7F 0164 .... .... .... 0155 0155 0123 .... .... .... ....',
-        '.... .... .... 01A5 01A3 01A4 016D 016D .... 0183 01A8 01A9 .... .... .... ....',
-        '.... .... .... .... 01A1 010E 0155 0155 0164 0164 0110 01A7 .... .... .... ....',
-        '.... .... .... .... 0001 0001 0000 0000 0000 0000 0001 0001 .... .... .... ....',
-    ]
-    reverse_tilemap = []
-    for row_data in reversed(tilemap):
-        flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-        reverse_tilemap.append(flipped_row_data)
+    tilemaps = {
+        'Foreground': [
+            '.... .... 0234 0235 0000 .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... 0177 011B 0239 023A .... .... .... .... 0248 024A .... .... .... ....',
+            '.... .... .... 017B 0A7F 0164 .... .... .... 0155 0155 0123 .... .... .... ....',
+            '.... .... .... 01A5 01A3 01A4 016D 016D .... 0183 01A8 01A9 .... .... .... ....',
+            '.... .... .... .... 01A1 010E 0155 0155 0164 0164 0110 01A7 .... .... .... ....',
+            '.... .... .... .... 0001 0001 0000 0000 0000 0000 0001 0001 .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Tall Stairwell, Bottom Passage',
         'Authors': [
@@ -498,7 +562,7 @@ def get_normalize_tall_stairwell_bottom_passage():
                     'Layer': 'Foreground',
                     'Top': 138,
                     'Left': 0,
-                    'Tiles': tilemap,
+                    'Tiles': tilemaps['Foreground'],
                 },
                 {
                     'Type': 'Tile ID-Based',
@@ -507,7 +571,7 @@ def get_normalize_tall_stairwell_bottom_passage():
                     'Layer': 'Foreground',
                     'Top': 0,
                     'Left': 0,
-                    'Tiles': reverse_tilemap,
+                    'Tiles': reverse_tilemaps['Foreground'],
                 },
             ],
         },
@@ -526,13 +590,7 @@ def get_normalize_ice_floe_room_top_passage():
             '.... .... .... .... .... .... 0183 .... .... 0146 .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Ice Floe Room, Top Passage',
         'Authors': [
@@ -594,18 +652,17 @@ def get_normalize_ice_floe_room_top_passage():
     return result
 
 def get_normalize_long_drop_bottom_passage():
-    tilemap = [
-        '.... .... 01A5 01A1 01A4 .... .... .... .... .... .... .... 01A8 01A9 01AA ....',
-        '.... .... 0180 01A5 01A3 01A4 .... .... .... .... 01A8 01A9 01A7 01AA 0180 ....',
-        '.... .... .... 0180 01A1 010E .... .... .... .... 0110 01A7 01AA 0180 .... ....',
-        '.... .... .... 0180 0181 0182 .... .... .... .... 019F 01A0 0180 0180 .... ....',
-        '.... .... .... 0180 01A1 01A2 .... .... .... .... 01A6 01A7 0180 0180 .... ....',
-        '.... .... .... .... .... 0001 .... .... .... .... 0001 0001 .... .... .... ....',
-    ]
-    reverse_tilemap = []
-    for row_data in reversed(tilemap):
-        flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-        reverse_tilemap.append(flipped_row_data)
+    tilemaps = {
+        'Foreground': [
+            '.... .... 01A5 01A1 01A4 .... .... .... .... .... .... .... 01A8 01A9 01AA ....',
+            '.... .... 0180 01A5 01A3 01A4 .... .... .... .... 01A8 01A9 01A7 01AA 0180 ....',
+            '.... .... .... 0180 01A1 010E .... .... .... .... 0110 01A7 01AA 0180 .... ....',
+            '.... .... .... 0180 0181 0182 .... .... .... .... 019F 01A0 0180 0180 .... ....',
+            '.... .... .... 0180 01A1 01A2 .... .... .... .... 01A6 01A7 0180 0180 .... ....',
+            '.... .... .... .... .... 0001 .... .... .... .... 0001 0001 .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Long Drop, Bottom Passage',
         'Authors': [
@@ -631,7 +688,7 @@ def get_normalize_long_drop_bottom_passage():
                     'Layer': 'Foreground',
                     'Top': 170,
                     'Left': 0,
-                    'Tiles': tilemap,
+                    'Tiles': tilemaps['Foreground'],
                 },
                 {
                     'Type': 'Tile ID-Based',
@@ -640,7 +697,7 @@ def get_normalize_long_drop_bottom_passage():
                     'Layer': 'Foreground',
                     'Top': 0,
                     'Left': 0,
-                    'Tiles': reverse_tilemap,
+                    'Tiles': reverse_tilemaps['Foreground'],
                 },
             ],
         },
@@ -673,13 +730,7 @@ def get_normalize_underground_caverns_exit_to_castle_entrance():
             '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize UC-CE Exit, Bottom Passage',
         'Authors': [
@@ -758,13 +809,7 @@ def get_normalize_underground_caverns_left_ferryman_route_top_passage():
             ".... .... .... .... .... .... .... .... 05B5 05B7 .... .... .... .... .... ....",
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Left Ferryman Route, Top Passage',
         'Authors': [
@@ -826,19 +871,18 @@ def get_normalize_underground_caverns_left_ferryman_route_top_passage():
     return result
 
 def get_normalize_hidden_crystal_entrance_top_passage():
-    tilemap = [
-        '.... ..... .... .... .... 0001 .... .... .... .... 0001 0001 .... .... .... ....',
-        '.... ..... .... 0181 0181 0182 .... .... .... .... 019F 01A0 0180 0180 .... ....',
-        '.... ..... .... .... 0180 0542 .... .... .... .... 019F 01A7 0180 0180 .... ....',
-        '.... ..... .... .... 0180 0A74 .... .... .... .... 03BB 0397 0180 0180 .... ....',
-        '.... ..... .... 0180 037B 0372 .... .... .... .... 0A73 03A2 0180 0180 .... ....',
-        '.... ..... .... 0A75 0372 .... .... .... .... .... 037F 03BC 0370 03BC .... ....',
-        '.... ..... .... 0375 .... .... .... .... .... .... .... 03BD 0374 03BD .... ....',
-    ]
-    reverse_tilemap = []
-    for row_data in reversed(tilemap):
-        flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-        reverse_tilemap.append(flipped_row_data)
+    tilemaps = {
+        'Foreground': [
+            '.... ..... .... .... .... 0001 .... .... .... .... 0001 0001 .... .... .... ....',
+            '.... ..... .... 0181 0181 0182 .... .... .... .... 019F 01A0 0180 0180 .... ....',
+            '.... ..... .... .... 0180 0542 .... .... .... .... 019F 01A7 0180 0180 .... ....',
+            '.... ..... .... .... 0180 0A74 .... .... .... .... 03BB 0397 0180 0180 .... ....',
+            '.... ..... .... 0180 037B 0372 .... .... .... .... 0A73 03A2 0180 0180 .... ....',
+            '.... ..... .... 0A75 0372 .... .... .... .... .... 037F 03BC 0370 03BC .... ....',
+            '.... ..... .... 0375 .... .... .... .... .... .... .... 03BD 0374 03BD .... ....',
+        ]
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Hidden Crystal Entrance, Top Passage',
         'Authors': [
@@ -864,7 +908,7 @@ def get_normalize_hidden_crystal_entrance_top_passage():
                     'Layer': 'Foreground',
                     'Top': 0,
                     'Left': 0,
-                    'Tiles': tilemap,
+                    'Tiles': tilemaps['Foreground'],
                 },
                 {
                     'Type': 'Tile ID-Based',
@@ -873,7 +917,7 @@ def get_normalize_hidden_crystal_entrance_top_passage():
                     'Layer': 'Foreground',
                     'Top': 41,
                     'Left': 0,
-                    'Tiles': reverse_tilemap,
+                    'Tiles': reverse_tilemaps['Foreground'],
                 },
             ],
         },
@@ -998,13 +1042,7 @@ def get_normalize_underground_caverns_room_id_09_bottom_passage():
             '.... .... .... .... .... .... 0000 0000 0000 .... 0001 0001 0001 .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Room ID 09, Bottom Passage',
         'Authors': [
@@ -1068,13 +1106,7 @@ def get_normalize_underground_caverns_room_id_10_top_passage():
             '.... .... .... .... .... .... .... 0319 0319 0313 .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Room ID 10, Top Passage',
         'Authors': [
@@ -1145,13 +1177,7 @@ def get_normalize_dk_bridge_bottom_passage():
             '.... .... .... .... .... .... 04E1 .... .... .... .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize DK Bridge, Bottom Passage',
         'Authors': [
@@ -1233,13 +1259,7 @@ def get_normalize_underground_caverns_exit_to_abandoned_mine_top_passage():
             '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize UC-AM, Top Passage',
         'Authors': [
@@ -1319,13 +1339,7 @@ def get_normalize_underground_caverns_small_stairwell_top_passage():
             '.... .... .... .... .... .... .... .... .... .... .... 0320 .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Small Stairwell, Top Passage',
         'Authors': [
@@ -1396,13 +1410,7 @@ def get_normalize_underground_caverns_plaque_room_bottom_passage():
             '.... .... .... .... .... .... 0000 0000 0000 0000 0001 0001 0001 .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Plaque Room, Top Passage',
         'Authors': [
@@ -1486,13 +1494,7 @@ def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
             '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Hidden Crystal Entrance, Bottom Passage',
         'Authors': [
@@ -1621,13 +1623,7 @@ def get_normalize_alchemy_laboratory_entryway_top_passage():
             '.... .... .... .... .... .... .... .... .... 0000 0011 0012 .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Alchemy Lab Entryway, Top Passage',
         'Authors': [
@@ -1691,13 +1687,7 @@ def get_normalize_alchemy_laboratory_glass_vats_bottom_passage():
               "0005 0006 0004 0005 002E 0047 0000 0000 0000 0000 004A 002F 002D 0028 0029 002A 002E 002F 002D 0028 0029 002A 002E 002F 002D 0028 004C 0050 0051 0052 0053 0051"
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Glass Vats, Left-Bottom Passage',
         'Authors': [
@@ -1800,13 +1790,7 @@ def get_normalize_alchemy_laboratory_red_skeleton_lift_room_top_passage():
             "0029 002A 0028 0029 059B 0000 013F 0000 011A 011B 011C 011D 011E 011F 0120 0121 01CE 01CF 01D0 0000 01D1 01D2 01D3 0000 011A 011B 011C 011D 011E 011F 0120 0121 01CE 01CF 01D0 0000 0000 0000 001E 001A 0000 0000 001E 001F 0010 0028 0029 002A"
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Red Skeleton Lift Room, Top Passage',
         'Authors': [
@@ -1862,13 +1846,7 @@ def get_normalize_alchemy_laboratory_red_skeleton_lift_room_bottom_passage():
             '.... .... .... .... .... .... .... .... .... 0000 001E 001F .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Red Skeleton Lift Room, Bottom Passage',
         'Authors': [
@@ -1934,13 +1912,7 @@ def get_normalize_underground_caverns_crystal_bend_top_passage():
             '.... .... .... 05B9 05B5 .... .... .... 05BB 05BC .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Crystal Bend, Top Passage',
         'Authors': [
@@ -2010,13 +1982,7 @@ def get_normalize_alchemy_laboratory_tall_zig_zag_room_bottom_passage():
             '.... .... .... .... .... .... 06A9 06A1 06B6 06B7 .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Tall Zig Zag Room, Bottom Passage',
         'Authors': [
@@ -2118,13 +2084,7 @@ def get_normalize_alchemy_laboratory_secret_life_max_up_room_top_passage():
             '.... .... .... .... .... .... .... .... .... 024D 01BC .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Secret Life Max-Up Room, Top Passage',
         'Authors': [
@@ -2293,13 +2253,7 @@ def get_normalize_marble_gallery_beneath_right_trapdoor_top_passage():
             '.... .... .... .... .... .... .... 0335 0335 036B .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Marble Gallery Beneath Right Trapdoor',
         'Authors': [
@@ -2391,13 +2345,7 @@ def get_normalize_marble_gallery_slinger_staircase_right_bottom_passage():
             '.... .... .... .... 0597 0597 0000 0000 0000 0000 .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Marble Gallery Slinger Staircase',
         'Authors': [
@@ -2678,13 +2626,7 @@ def get_normalize_olroxs_quarters_tall_shaft_top_passage():
             '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': "Normalize Olrox's Quarters Tall Shaft",
         'Authors': [
@@ -2816,13 +2758,7 @@ def get_normalize_olroxs_quarters_prison_right_bottom_passage():
             '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': "Normalize Olrox's Quarters Prison Right Bottom",
         'Authors': [
@@ -2898,13 +2834,7 @@ def get_normalize_olroxs_quarters_prison_left_bottom_passage():
             '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': "Normalize Olrox's Quarters Prison Left Bottom",
         'Authors': [
@@ -2980,13 +2910,7 @@ def get_normalize_olroxs_quarters_open_courtyard_top_passage():
             '0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 03CB 03CC 03CD',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': "Normalize Olrox's Quarters Open Courtyard Top",
         'Authors': [
@@ -3056,13 +2980,7 @@ def get_normalize_olroxs_quarters_catwalk_crypt_left_top_passage():
             '.... .... .... .... .... .... 0021 0022 0049 004A .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': "Normalize Olrox's Quarters Catwalk Crypt Left Top",
         'Authors': [
@@ -3133,13 +3051,7 @@ def get_normalize_olroxs_quarters_sword_card_room_bottom_passage():
             '.... .... .... .... .... .... 0000 .... .... 0000 .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': "Normalize Olrox's Quarters Sword Card Room Bottom",
         'Authors': [
@@ -3201,13 +3113,7 @@ def get_normalize_castle_entrance_after_drawbridge_bottom_passage():
             '.... .... .... .... .... .... 0000 .... .... 0000 .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': "Normalize Castle Entrance After Drawbridge Bottom",
         'Authors': [
@@ -3291,13 +3197,7 @@ def get_normalize_castle_entrance_drop_under_portcullis_top_passage():
             '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': "Normalize Castle Entrance Under Portcullis Top",
         'Authors': [
@@ -3422,13 +3322,7 @@ def get_normalize_castle_entrance_attic_entrance_bottom_passage():
             '.... .... .... .... .... .... .... 0000 0000 0000 0000 0000 0000 0000 .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': "Normalize Castle Entrance Attic Entrance Bottom",
         'Authors': [
@@ -3527,13 +3421,7 @@ def get_normalize_castle_entrance_merman_room_top_passage():
             '.... .... .... .... .... .... .... .... 0323 0323 .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': "Normalize Castle Entrance Merman Room Top",
         'Authors': [
@@ -3654,13 +3542,7 @@ def get_normalize_marble_gallery_three_paths_top_passage():
             '.... .... .... .... .... .... 06B6 06B7 06BE 06BF .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Marble Gallery Three Paths Top',
         'Authors': [
@@ -3729,13 +3611,7 @@ def get_normalize_marble_gallery_gravity_boots_room_bottom_passage():
             '.... .... .... .... .... .... 0520 .... .... 0520 .... .... .... .... .... ....',
         ],
     }
-    reverse_tilemaps = {}
-    for layer in sorted(tilemaps.keys()):
-        reverse_tilemap = []
-        for row_data in reversed(tilemaps[layer]):
-            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
-            reverse_tilemap.append(flipped_row_data)
-        reverse_tilemaps[layer] = reverse_tilemap
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
         'Description': 'Normalize Marble Gallery Gravity Boots Bottom',
         'Authors': [

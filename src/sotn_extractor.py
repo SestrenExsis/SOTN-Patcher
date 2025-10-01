@@ -806,6 +806,9 @@ if __name__ == '__main__':
             (0x04D81CA8, 'u16', 16, 'Laboratory Floor Tiles (Necromancy Laboratory)'),
             (0x040FBE24, 'u16', 16, "Breakable Ceiling Tiles (Olrox's Quarters)"),
             (0x04681634, 'u16', 16, "Breakable Ceiling Tiles (Death Wing's Lair)"),
+            (0x041A8AAC, 'u16', 45, 'Breakable Wall in Merman Room (Castle Entrance)'),
+            (0x0491B974, 'u16', 45, 'Breakable Wall in Merman Room (Castle Entrance Revisited)'),
+            # (0xFFFFFFFF, 'u16', 45, 'Breakable Wall in Merman Room (Reverse Entrance)'),
             # NOTE(sestren): Snake Column Wall C Tile ID was found at 0x0596D620, maybe that's for Boss - Death?
             (0x049BF654, 'u16', 32, 'Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)'),
             (0x04D81C68, 'u16', 32, 'Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)'),
