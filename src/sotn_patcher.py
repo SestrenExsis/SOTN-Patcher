@@ -2903,12 +2903,6 @@ def get_normalize_olroxs_quarters_open_courtyard_top_passage():
             '01FD 01FE 01FD 01FE 01FD 01FF 0224 0224 0224 0224 022D 01FD 022C 022D 0230 0231',
             '0201 0202 0201 0202 0201 01FF 0229 022A 0229 022A 022D 0201 022C 022D 022E 022F',
         ],
-        'Background': [
-            '066A 066B 0000 0000 0000 0000 0000 0000 067D 067E 067F 0680 0681 0000 0000 0000',
-            '0000 0000 0000 0000 0693 066F 0670 0671 0672 0668 0000 0000 0000 0000 0000 0000',
-            '06B4 06B4 06B4 06B4 06B4 06B4 06B4 06B4 06B4 06B4 06B4 06B4 06B4 06B4 06B4 06B4',
-            '0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 03CB 03CC 03CD',
-        ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
     patch = {
@@ -2940,30 +2934,12 @@ def get_normalize_olroxs_quarters_open_courtyard_top_passage():
                 },
                 {
                     'Type': 'Tile ID-Based',
-                    'Stage': "Olrox's Quarters",
-                    'Room': "Olrox's Quarters, Open Courtyard",
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 80,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
                     'Stage': "Death Wing's Lair",
                     'Room': "Death Wing's Lair, Open Courtyard",
                     'Layer': 'Foreground',
                     'Top': 48 + 12,
                     'Left': 0,
                     'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Death Wing's Lair",
-                    'Room': "Death Wing's Lair, Open Courtyard",
-                    'Layer': 'Background',
-                    'Top': 48 + 12,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Background'],
                 },
             ],
         },
