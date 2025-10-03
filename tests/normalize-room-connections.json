@@ -1,0 +1,6 @@
+{
+    "Options": {
+        "Enable debug mode": true,
+        "Normalize room connections": true
+    }
+}

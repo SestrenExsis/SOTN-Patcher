@@ -1,10 +1,5 @@
 {
     "Options": {
-        "Enable debug mode": true,
-        "Preserve unsaved map data": "Revelation"
-    },
-    "Constants": {
-        "Message - Richter Mode Instructions 1": "Preserve map exploration    ",
-        "Message - Richter Mode Instructions 2": "Beta Release 3      "
+        "Preserve unsaved map data": "Exploration"
     }
 }

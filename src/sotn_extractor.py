@@ -1,6 +1,7 @@
 # External libraries
 import argparse
 import json
+import os
 
 # Local libraries
 import sotn_address
@@ -223,7 +224,7 @@ if __name__ == '__main__':
     OFFSET = 0x80180000
     parser = argparse.ArgumentParser()
     parser.add_argument('binary_filepath', help='Input a filepath to the input BIN file', type=str)
-    parser.add_argument('json_filepath', help='Input a filepath for creating the output JSON file', type=str)
+    parser.add_argument('build_dir', help='Input a filepath to the folder that will contain all the build files', type=str)
     args = parser.parse_args()
     with (
         open(args.binary_filepath, 'br') as binary_file,
@@ -791,11 +792,23 @@ if __name__ == '__main__':
             (0x047C4E20, 'u16', 27, 'Unique Item Drops (Reverse Caverns)'),
             # Breakable Container Drops
             (0x049BF79C, 'u16', 4, 'Breakable Container Drops'),
+            # Marble Gallery
+            (0x03F8BFF0, 'u16', 4, 'Trapdoor Offsets (Marble Gallery)'), # D_us_80180FF0 in the decomp
+            (0x03F8BFF8, 'u16', 24, 'Trapdoor Tiles (Marble Gallery)'), # D_us_80180FF8 in the decomp
             # Breakable Wall Tiles
             (0x03CE009C, 'u16', 24, 'Demon Switch Wall Tiles (Abandoned Mine)'),
             (0x0439BFEC, 'u16', 24, 'Demon Switch Wall Tiles (Cave)'),
             (0x03CE00CC, 'u16', 24, 'Snake Column Wall Tiles (Abandoned Mine)'),
             (0x0439C01C, 'u16', 24, 'Snake Column Wall Tiles (Cave)'),
+            (0x04259080, 'u16', 24, 'Crystal Floor Tiles (Underground Caverns)'),
+            (0x047C4EBC, 'u16', 24, 'Crystal Floor Tiles (Reverse Caverns)'),
+            (0x049BF694, 'u16', 16, 'Laboratory Floor Tiles (Alchemy Laboratory)'),
+            (0x04D81CA8, 'u16', 16, 'Laboratory Floor Tiles (Necromancy Laboratory)'),
+            (0x040FBE24, 'u16', 16, "Breakable Ceiling Tiles (Olrox's Quarters)"),
+            (0x04681634, 'u16', 16, "Breakable Ceiling Tiles (Death Wing's Lair)"),
+            (0x041A8AAC, 'u16', 45, 'Breakable Wall in Merman Room (Castle Entrance)'),
+            (0x0491B974, 'u16', 45, 'Breakable Wall in Merman Room (Castle Entrance Revisited)'),
+            # (0xFFFFFFFF, 'u16', 45, 'Breakable Wall in Merman Room (Reverse Entrance)'),
             # NOTE(sestren): Snake Column Wall C Tile ID was found at 0x0596D620, maybe that's for Boss - Death?
             (0x049BF654, 'u16', 32, 'Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)'),
             (0x04D81C68, 'u16', 32, 'Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)'),
@@ -858,13 +871,10 @@ if __name__ == '__main__':
             (0x000E7DD0, 'False Save Room, Room Y', 'u16'), # 0x2100 --> 33
             (0x000E7DA4, 'Reverse False Save Room, Room X', 'u16'), # 0x1200 --> 18
             (0x000E7DAC, 'Reverse False Save Room, Room Y', 'u16'), # 0x1E00 --> 30
-            # To enable NOCLIP mode; set to 0xAC258850 --> sw a1, -$77B0(at)
-            (0x000D9364, 'Set initial NOCLIP value', 'u32'), # 0xAC208850 --> sw 0, -$77B0(at)
             # Buy Castle Map, set to NOP to draw every tile within the boundaries
             (0x000E7B1C, 'Should reveal map tile', 'u32'), # 0x10400020 --> beq v0,0,$800F23A0
             # (0x0009840C, 'Castle map reveal boundary', 'u32') # 0x06082600 --> {0, 26, 8, 6} # Change to 0x40400000???
             # (0x049F761C, 'Stun player when meeting Maria in Alchemy Lab', 'u32'), # 0x34100001 --> ori s0,0,$1 # Change to 0x36100000 --> ori s0,$0
-            (0x049F66EC, 'Should skip Maria Alchemy Laboratory', 'u32'), # 0x144002DA --> bne v0,0,$801B8A58 # Change to 0x0806E296 --> j $801B8A58
             # Strings
             (0x03ACF0B4, 'Message - Richter Mode Instructions 1', 'string'), # 'Input "RICHTER" to play'
             (0x03ACF0D4, 'Message - Richter Mode Instructions 2', 'string'), # 'as Richter Belmont.'
@@ -1158,5 +1168,5 @@ if __name__ == '__main__':
             'Teleporters': teleporters,
             'Warp Room Coordinates': warp_room_coordinates,
         }
-        with open(args.json_filepath, 'w') as extraction_json:
+        with open(os.path.join(os.path.normpath(args.build_dir), 'extraction.json'), 'w') as extraction_json:
             json.dump(extraction, extraction_json, indent='  ', sort_keys=True)

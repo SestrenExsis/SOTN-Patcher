@@ -1,1464 +1,3840 @@
 # External libraries
 import argparse
-import collections
-import copy
 import json
 import os
-import yaml
 
-# Local libraries
-import sotn_address
+def reverse_tilemap_changes(tilemap_changes: dict) -> dict:
+    reversed_tilemap_changes = {}
+    for layer in sorted(tilemap_changes.keys()):
+        reversed_tilemap_change = []
+        for row_data in reversed(tilemap_changes[layer]):
+            flipped_row_data = ' '.join(reversed(row_data.split(' ')))
+            reversed_tilemap_change.append(flipped_row_data)
+        reversed_tilemap_changes[layer] = reversed_tilemap_change
+    result = reversed_tilemap_changes
+    return result
 
-class PPF:
-    def __init__(self, description, patch, debug: bool=False):
-        self.debug = debug
-        self.description = (description + 50 * ' ')[:50]
-        self.bytes = bytearray()
-        self.write_string('PPF30')
-        self.write_byte(2) # Encoding method = PPF3.0
-        self.write_string(self.description)
-        self.write_byte(0) # Imagetype = BIN
-        self.write_byte(0) # Blockcheck = Disabled
-        self.write_byte(0) # Undo data = Not available
-        self.write_byte(0) # Dummy
-        assert len(self.bytes) == 60 # 0x3C
-        for high in sorted(patch.writes.keys()):
-            left = 0
-            right = 0
-            lows = list(reversed(sorted(patch.writes[high].keys())))
-            while len(lows) > 0:
-                right = left = lows.pop()
-                while (len(lows) > 0) and (lows[-1] == (right + 1)):
-                    right = lows.pop()
-                disc_address = patch.partition_size * high + left
-                size = 1 + (right - left)
-                self.write_u64(disc_address)
-                self.write_byte(size)
-                values = []
-                for low in range(left, right + 1):
-                    value = patch.writes[high][low]
-                    self.write_byte(value)
-                    values.append(value)
-                if self.debug:
-                    print(disc_address, size, values)
-    
-    def write_byte(self, byte):
-        assert 0x00 <= byte < 0x100
-        self.bytes.append(byte)
-    
-    def write_u64(self, value):
-        write_value = value
-        for _ in range(8):
-            write_value, byte = divmod(write_value, 0x100)
-            self.write_byte(byte)
-    
-    def write_string(self, string):
-        for char in string:
-            self.write_byte(ord(char))
-
-class Patch:
-    def __init__(self):
-        self.writes = {}
-        self.cursor = 0
-        self.partition_size = 0x80
-    
-    def write_byte(self, byte):
-        assert 0x00 <= byte < 0x100
-        (high, low) = divmod(self.cursor, self.partition_size)
-        if high not in self.writes:
-            self.writes[high] = {}
-        self.writes[high][low] = byte
-    
-    def write_u8(self, value):
-        write_value = value
-        for _ in range(1):
-            write_value, byte = divmod(write_value, 0x100)
-            self.write_byte(byte)
-            self.cursor += 1
-    
-    def write_s8(self, value):
-        write_value = (value & 0x7F) + (0x80 if value < 0 else 0x00)
-        for _ in range(1):
-            write_value, byte = divmod(write_value, 0x100)
-            self.write_byte(byte)
-            self.cursor += 1
-    
-    def write_u16(self, value):
-        write_value = value
-        for _ in range(2):
-            write_value, byte = divmod(write_value, 0x100)
-            self.write_byte(byte)
-            self.cursor += 1
-    
-    def write_s16(self, value):
-        write_value = (value & 0x7FFF) + (0x8000 if value < 0 else 0x0000)
-        for _ in range(2):
-            write_value, byte = divmod(write_value, 0x100)
-            self.write_byte(byte)
-            self.cursor += 1
-    
-    def write_u32(self, value):
-        write_value = value
-        for _ in range(4):
-            write_value, byte = divmod(write_value, 0x100)
-            self.write_byte(byte)
-            self.cursor += 1
-    
-    def write_s32(self, value):
-        write_value = (value & 0x7FFFFFFF) + (0x80000000 if value < 0 else 0x00000000)
-        for _ in range(4):
-            write_value, byte = divmod(write_value, 0x100)
-            self.write_byte(byte)
-            self.cursor += 1
-    
-    def patch_value(self, value: int, type: str, address: sotn_address.Address):
-        self.cursor = address.to_disc_address()
-        if type == 'u8':
-            self.write_u8(value)
-        elif type == 's8':
-            self.write_s8(value)
-        elif type == 'u16':
-            self.write_u16(value)
-        elif type == 's16':
-            self.write_s16(value)
-        elif type == 'u32':
-            self.write_u32(value)
-        elif type == 's32':
-            self.write_s32(value)
-        else:
-            raise Exception('Incorrect type for patch_value:', (value, type, address))
-
-def get_changes_template_file(extract, aliases):
-    result = {
-        'Boss Teleporters': {},
-        'Castle Map': [],
-        'Castle Map Reveals': [],
-        'Constants': {},
-        'Options': {
-            'Assign Power of Wolf relic a unique ID': False,
-            'Enable debug mode': False,
-            'Skip Maria cutscene in Alchemy Laboratory': False,
+def get_clock_hands_patch():
+    patch = {
+        'Description': 'Clock hands display minutes and seconds',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Pokes': [],
         },
-        'Stages': {},
-        'Teleporters': {},
     }
-    for boss_teleporter_id in range(len(extract['Boss Teleporters']['Data'])):
-        result['Boss Teleporters'][boss_teleporter_id] = {
-            'Room X': extract['Boss Teleporters']['Data'][boss_teleporter_id]['Room X'],
-            'Room Y': extract['Boss Teleporters']['Data'][boss_teleporter_id]['Room Y'],
-        }
-    for (stage_id, stage_data) in extract['Stages'].items():
-        result['Stages'][stage_id] = {}
-        result['Stages'][stage_id]['Rooms'] = {}
-        for (room_id, room_data) in stage_data['Rooms'].items():
-            room_name = room_id
-            for (alias_room_name, alias_room) in aliases['Rooms'].items():
-                if alias_room_name.startswith(stage_id + ', ') and alias_room['Room Index'] == int(room_id):
-                    room_name = alias_room_name
-                    break
-            relic_found_ind = False
-            object_layout_h = None
-            object_layout_v = None
-            if room_data['Tileset ID']['Value'] != -1:
-                object_layout_h = {}
-                for (index, object_layout_data) in enumerate(room_data['Object Layout - Horizontal']['Data']):
-                    entity_type_id = object_layout_data['Entity Type ID']
-                    if entity_type_id == 11:
-                        relic_found_ind = True
-                        object_h = {
-                            'Entity Type ID': entity_type_id,
-                            'Entity Room Index': object_layout_data['Entity Room Index'],
-                            'Params': object_layout_data['Params'],
-                        }
-                        object_layout_h[index] = object_h
-                object_layout_v = {}
-                for (index, object_layout_data) in enumerate(room_data['Object Layout - Vertical']['Data']):
-                    entity_type_id = object_layout_data['Entity Type ID']
-                    if entity_type_id == 11:
-                        relic_found_ind = True
-                        object_h = {
-                            'Entity Type ID': entity_type_id,
-                            'Entity Room Index': object_layout_data['Entity Room Index'],
-                            'Params': object_layout_data['Params'],
-                        }
-                        object_layout_v[index] = object_h
-            result['Stages'][stage_id]['Rooms'][room_name] = {
-                'Left': room_data['Left']['Value'],
-                'Top': room_data['Top']['Value'],
-            }
-            if relic_found_ind:
-                room = result['Stages'][stage_id]['Rooms'][room_name]
-                room['Object Layout - Horizontal'] = object_layout_h
-                room['Object Layout - Vertical'] = object_layout_v
-    for teleporter_id in range(len(extract['Teleporters']['Data'])):
-        result['Teleporters'][teleporter_id] = {
-            'Player X': extract['Teleporters']['Data'][teleporter_id]['Player X'],
-            'Player Y': extract['Teleporters']['Data'][teleporter_id]['Player Y'],
-            'Room': extract['Teleporters']['Data'][teleporter_id]['Room'] // 8, # NOTE(sestren): Divide by 8 to translate to room index
-            'Stage': extract['Teleporters']['Data'][teleporter_id]['Target Stage ID'],
-        }
-    for row in range(len(extract['Castle Map']['Data'])):
-        row_data = extract['Castle Map']['Data'][row]
-        result['Castle Map'].append(row_data)
-    for castle_map_reveal_id in range(len(extract['Castle Map Reveals']['Data'])):
-        castle_map_reveal = {
-            'Bytes Per Row': extract['Castle Map Reveals']['Data'][castle_map_reveal_id]['Bytes Per Row'],
-            'Left': extract['Castle Map Reveals']['Data'][castle_map_reveal_id]['Left'],
-            'Rows': extract['Castle Map Reveals']['Data'][castle_map_reveal_id]['Rows'],
-            'Top': extract['Castle Map Reveals']['Data'][castle_map_reveal_id]['Top'],
-            'Grid': extract['Castle Map Reveals']['Data'][castle_map_reveal_id]['Grid'],
-        }
-        result['Castle Map Reveals'].append(castle_map_reveal)
-    # Add constants
-    for constant_name in sorted(extract['Constants']):
-        constant = extract['Constants'][constant_name]
-        if constant.get('Type', None) in ('string', 'shifted-string'):
-            if constant_name in (
-                'Message - Richter Mode Instructions 1',
-                'Message - Richter Mode Instructions 2',
-            ):
-                result['Constants'][constant_name] = constant['Value']
+    for (base, stage_name) in (
+        (0x03FD7C2C, 'Marble Gallery'),
+        (0x0457E5D4, 'Black Marble Gallery'),
+        (0x05811C94, 'Maria Clock Room Cutscene'),
+    ):
+        for (offset, value_a, value_b, note) in (
+            (0x00, 0x8CA302D4, 0x8E6302D4, 'lw v1,$2D4(X)'),
+            (0x18, 0x00000000, 0x00000000, 'nop'),
+            (0x20, 0x00000000, 0x00000000, 'nop'),
+            (0x24, 0x00000000, 0x00000000, 'nop'),
+            (0x28, 0x00051900, 0x00041900, 'sll v1,X,$4'),
+            (0x2C, 0x00651823, 0x00641823, 'subu v1,X'),
+            (0x34, 0x00000000, 0x00000000, 'nop'),
+            (0x38, 0x00000000, 0x00000000, 'nop'),
+            (0x3C, 0x00000000, 0x00000000, 'nop'),
+        ):
+            value = value_a if stage_name in ('Marble Gallery', 'Black Marble Gallery') else value_b
+            patch['Changes']['Pokes'].append({
+                'Gamedata Address': '{:08X}'.format(base + offset),
+                'Data Type': 'u32',
+                'Value': '{:08X}'.format(value),
+                'Notes': [
+                    f'EntityClockRoomController in {stage_name}',
+                    note,
+                ]
+            })
+    result = patch
     return result
 
-def validate_changes(changes):
-    if 'Boss Teleporters' in changes:
-        # TODO(sestren): Validate boss teleporters
-        pass
-    if 'Stages' in changes:
-        for (stage_id, stage_data) in changes['Stages'].items():
-            if 'Rooms' in stage_data:
-                for (room_id, room_data) in stage_data['Rooms'].items():
-                    if 'Top' in room_data:
-                        # assert 0 <= room_data['Top'] <= 58
-                        assert 0 <= room_data['Top'] <= 63
-                    if 'Left' in room_data:
-                        assert 0 <= room_data['Left'] <= 63
-                    if 'Object Layout - Horizontal' in room_data:
-                        # TODO(sestren): Validate changes to object layouts
-                        pass
-    if 'Teleporters' in changes:
-        # TODO(sestren): Validate teleporters
-        pass
-
-def getID(aliases: dict, path: tuple):
-    result = path[-1]
-    scope = aliases
-    for token in path:
-        result = token
-        if token not in scope:
-            break
-        scope = scope[token]
-    else:
-        result = scope
-    if type(result) == str:
-        result = int(result)
+def get_prevent_softlocks_when_meeting_death_patch():
+    patch = {
+        'Description': 'Prevent softlocks when meeting Death',
+        'Authors': [
+            'Mottzilla',
+        ],
+        'Changes': {
+            'Pokes': [],
+        },
+    }
+    for (offset, data_type, value) in (
+        (0x041E77B0, 'u32', 0x34020000),
+        (0x041E77B4, 'u32', 0xAE22B98C),
+    ):
+        patch['Changes']['Pokes'].append({
+            'Gamedata Address': '{:08X}'.format(offset),
+            'Data Type': data_type,
+            'Value': '{:08X}'.format(value),
+        })
+    result = patch
     return result
 
-def transformed_value(value, transformations):
-    result = value
-    for transformation in transformations:
-        (mnemonic, operand) = transformation[:-1].split('(')
-        if mnemonic == 'mul':
-            result *= int(operand)
-        elif mnemonic == 'add':
-            result += int(operand)
+def get_prevent_softlocks_after_defeating_scylla():
+    # 801A094C RAM, 0x0552794C GAM : 0x38420001 xori v0,$1     -> 0x304200FE andi v0,$FE
+    # 801A3514 RAM, 0x0552A514 GAM : 0x3042FFCF andi v0,$FFCF  -> 0x3042FFCE andi v0,$FFCE
+    patch = {
+        'Description': 'Prevent softlocks after defeating Scylla',
+        'Authors': [
+            'Mottzilla',
+        ],
+        'Changes': {
+            'Pokes': [],
+        },
+    }
+    for (offset, data_type, value) in (
+        (0x0552794C, 'u32', 0x304200FE),
+        (0x0552A514, 'u16', 0x00CE),
+    ):
+        value_format = '{:08X}' if data_type == 'u32' else '{:04X}'
+        patch['Changes']['Pokes'].append({
+            'Gamedata Address': '{:08X}'.format(offset),
+            'Data Type': data_type,
+            'Value': value_format.format(value),
+        })
+    result = patch
     return result
 
-def get_patch(extract, changes, data):
-    aliases = data['Aliases']
-    result = Patch()
-    # Patch boss teleporters
-    extract_metadata = extract['Boss Teleporters']['Metadata']
-    for boss_teleporter_id in sorted(changes.get('Boss Teleporters', {})):
-        boss_teleporter_data = changes['Boss Teleporters'][boss_teleporter_id]
-        extract_id = getID(aliases, ('Boss Teleporters', boss_teleporter_id))
-        extract_data = extract['Boss Teleporters']['Data'][extract_id]
-        # Boss Teleporter: Patch room X
-        room_x = extract_data['Room X']
-        if boss_teleporter_data.get('Room X', room_x) != room_x:
-            room_x = boss_teleporter_data['Room X']
-            result.patch_value(
-                room_x,
-                extract_metadata['Fields']['Room X']['Type'],
-                sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room X']['Offset']),
-            )
-        # Boss Teleporter: Patch room Y
-        room_y = extract_data['Room Y']
-        if boss_teleporter_data.get('Room Y', room_y) != room_y:
-            room_y = boss_teleporter_data['Room Y']
-            result.patch_value(
-                room_y,
-                extract_metadata['Fields']['Room Y']['Type'],
-                sotn_address.Address(extract_metadata['Start'] + int(boss_teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room Y']['Offset']),
-            )
-    # Option - Enable debug mode
-    if changes.get('Options', {}).get('Enable debug mode', False):
-        constant_extract = extract['Constants']['Set initial NOCLIP value']
-        result.patch_value(
-            0xAC258850,
-            constant_extract['Type'],
-            sotn_address.Address(constant_extract['Start']),
-        )
-    # Option - Skip Maria cutscene in Alchemy Laboratory
-    if changes.get('Options', {}).get('Skip Maria cutscene in Alchemy Laboratory', False):
-        constant_extract = extract['Constants']['Should skip Maria Alchemy Laboratory']
-        result.patch_value(
-            0x0806E296,
-            constant_extract['Type'],
-            sotn_address.Address(constant_extract['Start']),
-        )
-    # Option - Disable clipping on screen edge of Demon Switch Wall
-    if changes.get('Options', {}).get('Disable clipping on screen edge of Demon Switch Wall', False):
-        for (constant_name, index, value) in (
-            ('Demon Switch Wall Tiles (Abandoned Mine)', 8, 0x01BF),
-            ('Demon Switch Wall Tiles (Abandoned Mine)', 9, 0x01BF),
-            ('Demon Switch Wall Tiles (Abandoned Mine)', 10, 0x01BF),
-            ('Demon Switch Wall Tiles (Abandoned Mine)', 11, 0x01BF),
-            ('Demon Switch Wall Tiles (Cave)', 8, 0x01BF),
-            ('Demon Switch Wall Tiles (Cave)', 9, 0x01BF),
-            ('Demon Switch Wall Tiles (Cave)', 10, 0x01BF),
-            ('Demon Switch Wall Tiles (Cave)', 11, 0x01BF),
+def get_prevent_softlocks_at_snake_column_wall_patch():
+    patch = {
+        'Description': 'Prevent softlocks at Snake Column Wall',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Constants': {},
+        },
+        # 'Logic': {
+        #     'Modification - Disable clipping on screen edge of Snake Column Wall': True,
+        # },
+    }
+    for stage_name in (
+        'Abandoned Mine',
+        'Cave',
+    ):
+        constant_key = f'Snake Column Wall Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in (
+            (0, 0x0000),
+            (1, 0x0000),
+            (2, 0x0000),
+            (3, 0x0000),
         ):
-            metadata = extract['Constants'][constant_name]['Metadata']
-            result.patch_value(
-                value,
-                metadata['Type'],
-                sotn_address.Address(metadata['Start'] + index * metadata['Size'])
-            )
-    # Option - Disable clipping on screen edge of Snake Column Wall
-    if changes.get('Options', {}).get('Disable clipping on screen edge of Snake Column Wall', False):
-        for (constant_name, index, value) in (
-            ('Snake Column Wall Tiles (Abandoned Mine)', 0, 0x0000),
-            ('Snake Column Wall Tiles (Abandoned Mine)', 1, 0x0000),
-            ('Snake Column Wall Tiles (Abandoned Mine)', 2, 0x0000),
-            ('Snake Column Wall Tiles (Abandoned Mine)', 3, 0x0000),
-            ('Snake Column Wall Tiles (Cave)', 0, 0x0000),
-            ('Snake Column Wall Tiles (Cave)', 1, 0x0000),
-            ('Snake Column Wall Tiles (Cave)', 2, 0x0000),
-            ('Snake Column Wall Tiles (Cave)', 3, 0x0000),
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    result = patch
+    return result
+
+def get_prevent_softlocks_at_demon_switch_wall_patch():
+    patch = {
+        'Description': 'Prevent softlocks at Demon Switch Wall',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Constants': {},
+            'Familiar Events': [
+                # NOTE(sestren): Changing the camera Y from 772 to 767 allows the Demon to "see" the switch from either side of the wall
+                {
+                    'Familiar Event ID': 6,
+                    'Camera Y': 767,
+                },
+                {
+                    'Familiar Event ID': 11,
+                    'Camera Y': 767,
+                },
+            ],
+        },
+        # 'Logic': {
+        #     'Modification - Disable clipping on screen edge of Demon Switch Wall': True,
+        # }
+    }
+    patch['Changes']['Object Layouts'] = [
+        {
+            'Stage': 'Cave',
+            'Room': 'Cave, Crumbling Stairwells With Demon Switch',
+            'Object Layout ID': 2,
+            'Properties': {
+                # NOTE(sestren): Changing the Y position from 977 to 972 allows the Demon to hit the switch correctly in Inverted Castle
+                'Y': 972,
+            },
+        },
+    ]
+    for stage_name in (
+        'Abandoned Mine',
+        'Cave',
+    ):
+        constant_key = f'Demon Switch Wall Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in (
+            (8, 0x01BF),
+            (9, 0x01BF),
+            (10, 0x01BF),
+            (11, 0x01BF),
         ):
-            metadata = extract['Constants'][constant_name]['Metadata']
-            result.patch_value(
-                value,
-                metadata['Type'],
-                sotn_address.Address(metadata['Start'] + index * metadata['Size'])
-            )
-    # Option - Prevent softlocks related to Death cutscene in Castle Entrance
-    # (Solved by @MottZilla)
-    if changes.get('Options', {}).get('Prevent softlocks related to Death cutscene in Castle Entrance', False):
-        for (offset, data_type, value) in (
-            (0x041E77B0, 'u32', 0x34020000),
-            (0x041E77B4, 'u32', 0xAE22B98C),
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    result = patch
+    return result
+
+def get_prevent_softlocks_at_tall_zig_zag_room_wall_patch():
+    patch = {
+        'Description': 'Prevent softlocks at Tall Zig Zag Room Wall',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Constants': {},
+        },
+        # 'Logic': {
+        #     'Commands': {
+        #         'Alchemy Laboratory, Tall Zig Zag Room': {
+        #             'Action - Break Wall': {
+        #                 'Requirements': {
+        #                     'Secret Wall - Default': {
+        #                         'Section': 'Secret Wall',
+        #                         'Status - Breakable Wall in Tall Zig Zag Room Broken': False,
+        #                         'Modification - Disable clipping on screen edge of Tall Zig Zag Room Wall': True,
+        #                     },
+        #                 },
+        #             },
+        #         },
+        #     },
+        #     'State': {
+        #         'Modification - Disable clipping on screen edge of Tall Zig Zag Room Wall': True,
+        #     },
+        # },
+    }
+    for stage_name in (
+        'Alchemy Laboratory',
+        'Necromancy Laboratory',
+    ):
+        constant_key = f'Tall Zig Zag Room Wall Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in (
+            (0, 0x05C6),
+            (2, 0x05CE),
+            (4, 0x05D6),
+            (6, 0x05DE),
+            (8, 0x05C6),
+            (10, 0x05CE),
+            (12, 0x05D6),
+            (14, 0x05DE),
+            (16, 0x05C6),
+            (18, 0x05CE),
+            (20, 0x05D6),
+            (22, 0x05DE),
         ):
-            result.patch_value(value, data_type, sotn_address.Address(offset))
-    # Option - Disable clipping on screen edge of Tall Zig Zag Room Wall
-    if changes.get('Options', {}).get('Disable clipping on screen edge of Tall Zig Zag Room Wall', False):
-        for (constant_name, index, value) in (
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 0, 0x05C6),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 2, 0x05CE),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 4, 0x05D6),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 6, 0x05DE),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 8, 0x05C6),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 10, 0x05CE),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 12, 0x05D6),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 14, 0x05DE),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 16, 0x05C6),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 18, 0x05CE),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 20, 0x05D6),
-            ('Tall Zig Zag Room Wall Tiles (Alchemy Laboratory)', 22, 0x05DE),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 0, 0x05C6),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 2, 0x05CE),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 4, 0x05D6),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 6, 0x05DE),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 8, 0x05C6),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 10, 0x05CE),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 12, 0x05D6),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 14, 0x05DE),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 16, 0x05C6),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 18, 0x05CE),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 20, 0x05D6),
-            ('Tall Zig Zag Room Wall Tiles (Necromancy Laboratory)', 22, 0x05DE),
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    result = patch
+    return result
+
+def get_prevent_softlocks_at_plaque_room_wall_patch():
+    patch = {
+        'Description': 'Prevent softlocks at Plaque Room Wall',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Constants': {},
+            'Pokes': [],
+        },
+    }
+    for stage_name in (
+        'Underground Caverns',
+    ):
+        constant_key = f'Plaque Room With Breakable Wall Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in (
+            (0, 0x030F),
+            (1, 0x030E),
+            (2, 0x0334),
+            (3, 0x0766),
+            (4, 0x0327),
+            (5, 0x076B),
+            (6, 0x0351),
+            (7, 0x0323),
+            (8, 0x030F),
+            (9, 0x076D),
+            (10, 0x0334),
+            (11, 0x076E),
+            (12, 0x0327),
+            (13, 0x076F),
+            (14, 0x0351),
+            (15, 0x0770),
+            (16, 0x030F),
+            (17, 0x0771),
+            (18, 0x0334),
+            (19, 0x0772),
+            (20, 0x0327),
+            (21, 0x0773),
+            (22, 0x0351),
+            (23, 0x0774),
         ):
-            metadata = extract['Constants'][constant_name]['Metadata']
-            result.patch_value(
-                value,
-                metadata['Type'],
-                sotn_address.Address(metadata['Start'] + index * metadata['Size'])
-            )
-    # Option - Disable clipping on screen edge of Pendulum Room Wall
-    if changes.get('Options', {}).get('Disable clipping on screen edge of Pendulum Room Wall', False):
-        for (constant_name, index, value) in (
-            ('Pendulum Room Wall Tiles (Clock Tower)', 0, 0x0561),
-            ('Pendulum Room Wall Tiles (Clock Tower)', 2, 0x0000),
-            ('Pendulum Room Wall Tiles (Clock Tower)', 4, 0x0000),
-            ('Pendulum Room Wall Tiles (Clock Tower)', 6, 0x0563),
-            ('Pendulum Room Wall Tiles (Clock Tower)', 8, 0x0561),
-            ('Pendulum Room Wall Tiles (Clock Tower)', 10, 0x0000),
-            ('Pendulum Room Wall Tiles (Clock Tower)', 12, 0x0000),
-            ('Pendulum Room Wall Tiles (Clock Tower)', 14, 0x0563),
-            ('Pendulum Room Wall Tiles (Clock Tower)', 16, 0x0561),
-            ('Pendulum Room Wall Tiles (Clock Tower)', 18, 0x0000),
-            ('Pendulum Room Wall Tiles (Clock Tower)', 20, 0x0000),
-            ('Pendulum Room Wall Tiles (Clock Tower)', 22, 0x0563),
-            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 0, 0x0561),
-            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 2, 0x0000),
-            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 4, 0x0000),
-            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 6, 0x0563),
-            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 8, 0x0561),
-            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 10, 0x0000),
-            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 12, 0x0000),
-            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 14, 0x0563),
-            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 16, 0x0561),
-            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 18, 0x0000),
-            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 20, 0x0000),
-            ('Pendulum Room Wall Tiles (Reverse Clock Tower)', 22, 0x0563),
-        ):
-            metadata = extract['Constants'][constant_name]['Metadata']
-            result.patch_value(
-                value,
-                metadata['Type'],
-                sotn_address.Address(metadata['Start'] + index * metadata['Size'])
-            )
-    # Option - Shift wall in Plaque Room With Breakable Wall away from screen edge
-    if changes.get('Options', {}).get('Shift wall in Plaque Room With Breakable Wall away from screen edge', False):
-        for (constant_name, index, value) in (
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 0, 0x030F),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 1, 0x030E),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 2, 0x0334),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 3, 0x0766),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 4, 0x0327),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 5, 0x076B),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 6, 0x0351),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 7, 0x0323),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 8, 0x030F),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 9, 0x076D),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 10, 0x0334),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 11, 0x076E),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 12, 0x0327),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 13, 0x076F),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 14, 0x0351),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 15, 0x0770),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 16, 0x030F),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 17, 0x0771),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 18, 0x0334),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 19, 0x0772),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 20, 0x0327),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 21, 0x0773),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 22, 0x0351),
-            ('Plaque Room With Breakable Wall Tiles (Underground Caverns)', 23, 0x0774),
-        ):
-            metadata = extract['Constants'][constant_name]['Metadata']
-            result.patch_value(
-                value,
-                metadata['Type'],
-                sotn_address.Address(metadata['Start'] + index * metadata['Size'])
-            )
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    for (offset, data_type, value) in (
         # NOTE(sestren): The entity responsible for the breakable wall works differently in the Inverted Castle
         # https://github.com/SestrenExsis/SOTN-Shuffler/issues/92
         # Shift the starting point left 1 tile
-        for (offset, value) in (
-            (0x0480D210, 0x3406009E), # ori a2,zero,$9E
-            (0x0480D2B0, 0x3406009E), # ori a2,zero,$9E
-        ):
-            result.patch_value(value, 'u32', sotn_address.Address(offset))
+        (0x0480D210, 'u32', 0x3406009E), # ori a2,zero,$9E
+        (0x0480D2B0, 'u32', 0x3406009E), # ori a2,zero,$9E
         # Rewrite the original location directly on the tilemap
         # TODO(sestren): Edit this like any other tilemap instead of directly overwriting
-        for (offset, value) in (
-            (0x047DB702, 0x0351),
-            (0x047DB722, 0x0327),
-            (0x047DB742, 0x0334),
-            (0x047DB762, 0x030F),
-        ):
-            result.patch_value(value, 'u16', sotn_address.Address(offset))
-    # Option - Disable clipping on screen edge of Left Gear Room Wall
-    if changes.get('Options', {}).get('Disable clipping on screen edge of Left Gear Room Wall', False):
-        for (constant_name, index, value) in (
-            ('Left Gear Room Wall Tiles (Clock Tower)', 1, 0x0565),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 3, 0x056D),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 5, 0x0575),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 7, 0x057D),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 9, 0x0565),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 11, 0x056D),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 13, 0x0575),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 15, 0x057D),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 17, 0x0565),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 19, 0x056D),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 21, 0x0575),
-            ('Left Gear Room Wall Tiles (Clock Tower)', 23, 0x057D),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 1, 0x0565),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 3, 0x056D),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 5, 0x0575),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 7, 0x057D),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 9, 0x0565),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 11, 0x056D),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 13, 0x0575),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 15, 0x057D),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 17, 0x0565),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 19, 0x056D),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 21, 0x0575),
-            ('Left Gear Room Wall Tiles (Reverse Clock Tower)', 23, 0x057D),
-        ):
-            metadata = extract['Constants'][constant_name]['Metadata']
-            result.patch_value(
-                value,
-                metadata['Type'],
-                sotn_address.Address(metadata['Start'] + index * metadata['Size'])
-            )
-        # NOTE(sestren): The entity responsible for the breakable wall works differently
-        # https://github.com/SestrenExsis/SOTN-Shuffler/issues/92
-        # Shift the starting point left 1 tile
-        for (offset, value) in (
-            (0x0480D210, 0x3406009E), # ori a2,zero,$9E
-            (0x0480D2B0, 0x3406009E), # ori a2,zero,$9E
-        ):
-            result.patch_value(value, 'u32', sotn_address.Address(offset))
-        # Rewrite the original location directly on the tilemap
-        # TODO(sestren): Edit this like any other tilemap instead of directly overwriting
-        for (offset, value) in (
-            (0x047DB702, 0x0351),
-            (0x047DB722, 0x0327),
-            (0x047DB742, 0x0334),
-            (0x047DB762, 0x030F),
-        ):
-            result.patch_value(value, 'u16', sotn_address.Address(offset))
-    # Option - Clock hands show minutes and seconds instead of hours and minutes
-    if changes.get('Options', {}).get('Clock hands show minutes and seconds instead of hours and minutes', False):
-        for (base, type) in (
-            (0x03FD7C2C, 'A'), # Marble Gallery
-            (0x0457E5D4, 'A'), # Black Marble Gallery
-            (0x05811C94, 'B'), # Maria Clock Room Cutscene
-        ):
-            for (offset, a_value, b_value) in (
-                (0x00, 0x8CA302D4, 0x8E6302D4), # lw v1,$2D4(X)
-                (0x18, 0x00000000, 0x00000000), # nop
-                (0x20, 0x00000000, 0x00000000), # nop
-                (0x24, 0x00000000, 0x00000000), # nop
-                (0x28, 0x00051900, 0x00041900), # sll v1,X,$4
-                (0x2C, 0x00651823, 0x00641823), # subu v1,X
-                (0x34, 0x00000000, 0x00000000), # nop
-                (0x38, 0x00000000, 0x00000000), # nop
-                (0x3C, 0x00000000, 0x00000000), # nop
-            ):
-                value = a_value if type == 'A' else b_value
-                result.patch_value(value, 'u32', sotn_address.Address(base + offset))
-    # Option - Normalize Ferryman Gate
-    if changes.get('Options', {}).get('Normalize Ferryman Gate', False):
-        # 0x801C5C7C - EntityFerrymanController
-        # ------------------------------------------
-        # Equivalent to the following C code
-        # ------------------------------------------
-        # offset = self->posX.i.hi + g_Tilemap.scrollX.i.hi;
-        # if (self->facingLeft) {
-        #     if (offset > 3040) {
-        #         self->step++;
-        #     }
-        #     else if (offset > 2720) {
-        #         g_CastleFlags[0xC2] = true;
-        #     }
-        # } else {
-        #     if (offset < 288) {
-        #         self->step++;
-        #     }
-        #     else if (offset < 3104) {
-        #         g_CastleFlags[0xC2] = true;
-        #     }
-        # }
-        for (base, description) in (
-            (0x0429D47C, 'Underground Caverns'),
-        ):
-            for (offset, value) in (
-                (0x3F8, 0x96040014), # 801C6074 lhu     a0,0x14(s0)
-                (0x3FC, 0x00000000), # 801C6078 nop     
-                (0x400, 0x1080000E), # 801C607C beqz    a0,$801C60B8
-                (0x404, 0x00431021), # 801C6080 addu    v0,v0,v1
-                (0x408, 0x00021400), # 801C6084 sll     v0,v0,0x10
-                (0x40C, 0x00021C03), # 801C6088 sra     v1,v0,0x10
-                (0x410, 0x28620BE1), # 801C608C slti    v0,v1,0xbe1
-                (0x414, 0x14400004), # 801C6090 bnez    v0,$801C60A4
-                (0x418, 0x00000000), # 801C6094 nop     
-                (0x41C, 0x9602002C), # 801C6098 lhu     v0,0x2c(s0)
-                (0x420, 0x0807185A), # 801C609C j       $801C6168
-                (0x424, 0x24420001), # 801C60A0 addiu   v0,v0,1
-                (0x428, 0x28620AA1), # 801C60A4 slti    v0,v1,0xaa1
-                (0x42C, 0x14400030), # 801C60A8 bnez    v0,$801C616C
-                (0x430, 0x34020001), # 801C60AC li      v0,0x1
-                (0x434, 0x08071839), # 801C60B0 j       $801C60E4
-                (0x438, 0x00000000), # 801C60B4 nop     
-                (0x43C, 0x00021400), # 801C60B8 sll     v0,v0,0x10
-                (0x440, 0x00021C03), # 801C60BC sra     v1,v0,0x10
-                (0x444, 0x28620120), # 801C60C0 slti    v0,v1,0x120
-                (0x448, 0x10400004), # 801C60C4 beqz    v0,$801C60D8
-                (0x44C, 0x00000000), # 801C60C8 nop     
-                (0x450, 0x9602002C), # 801C60CC lhu     v0,0x2c(s0)
-                (0x454, 0x0807185A), # 801C60D0 j       $801C6168
-                (0x458, 0x24420001), # 801C60D4 addiu   v0,v0,1
-                (0x45C, 0x28620C20), # 801C60D8 slti    v0,v1,0xc20
-                (0x460, 0x10400023), # 801C60DC beqz    v0,$801C616C
-                (0x464, 0x34020001), # 801C60E0 li      v0,0x1
-                (0x468, 0x3C018004), # 801C60E4 lui     at,$8004
-                (0x46C, 0xA022BEAE), # 801C60E8 sb      v0,-$4152(at)
-                (0x470, 0x0807185B), # 801C60EC j       $801C616C
-                (0x474, 0x00000000), # 801C60F0 nop     
-                (0x478, 0x00000000), # 801C60F4 nop     
-                (0x47C, 0x00000000), # 801C60F8 nop     
-                (0x480, 0x00000000), # 801C60FC nop     
-            ):
-                # value = a_value if type == 'A' else b_value
-                result.patch_value(value, 'u32', sotn_address.Address(base + offset))
-    # Option - Preserve unsaved map data
-    if changes.get('Options', {}).get('Preserve unsaved map data', 'None') != 'None':
-        preservation_method = changes['Options']['Preserve unsaved map data']
-        assert preservation_method in ('None', 'Revelation', 'Exploration')
-        # 0x801B948C - LoadSaveData
-        # ------------------------------------------
-        # Equivalent to the following C code (for Revelation Mode)
-        # ------------------------------------------
-        # i = 0;
-        # while (i < LEN(g_CastleFlags)) {
-        #     g_CastleFlags[i] = savePtr->castleFlags[i];
-        #     g_CastleMap[i] = ((0x55 & g_CastleMap[i]) << 1) | (0xAA & g_CastleMap[i]) | savePtr->castleMap[i];
-        #     i++
-        # }
-        # while (i < LEN(g_CastleMap)) {
-        #     g_CastleMap[i] = ((0x55 & g_CastleMap[i]) << 1) | (0xAA & g_CastleMap[i]) | savePtr->castleMap[i];
-        #     i++;
-        # }
-        # ------------------------------------------
-        revelation_ind = (preservation_method == 'Revelation')
-        for (base, type) in (
-            (0x000DFA70, 'A'), # SEL or DRA?
-            (0x03AE0C8C, 'B'), # SEL or DRA?
-        ):
-            for (offset, value) in (
-                (0x0180, 0x3C068007), # lui     a2,$8007          ; %hi(g_CastleMap)
-                (0x0184, 0x24C6BB74), # addiu   a2,a2,-$448C      ; %lo(g_CastleMap)
-                (0x0188, 0x3C028004), # lui     v0,$8004          ; %hi(g_Settings+0x108)
-                (0x018C, 0x2442CB00), # addiu   v0,v0,-$3500      ; %lo(g_Settings+0x108)
-                (0x0190, 0x8C430000), # lw      v1,0(v0)          
-                (0x0194, 0x3C048004), # lui     a0,$8004          ; %hi(g_Settings+0x10c)
-                (0x0198, 0x8C84CB04), # lw      a0,-$34FC(a0)     ; %lo(g_Settings+0x10c)
-                (0x019C, 0x01431825), # or      v1,t2,v1          
-                (0x01A0, 0x01642025), # or      a0,t3,a0          
-                (0x01A4, 0xAC430000), # sw      v1,0(v0)          
-                (0x01A8, 0x3C018004), # lui     at,$8004          ; %hi(g_Settings+0x10c)
-                (0x01AC, 0xAC24CB04), # sw      a0,-$34FC(at)     ; %lo(g_Settings+0x10c)
-                (0x01B0, 0x01052021), # addu    a0,t0,a1          
-                (0x01B4, 0x908206C8), # lbu     v0,0x6c8(a0)      
-                (0x01B8, 0x3C018004), # lui     at,$8004          ; %hi(g_CastleFlags)
-                (0x01BC, 0x00250821), # addu    at,at,a1          
-                (0x01C0, 0xA022BDEC), # sb      v0,-$4214(at)     ; %lo(g_CastleFlags)
-                (0x01C4, 0x24A50001), # addiu   a1,a1,1           
-                (0x01C8, 0x90C30000), # lbu     v1,0(a2)          
-                (0x01CC, 0x908409C8), # lbu     a0,0x9c8(a0)      
-                (0x01D0, 0x30620055), # andi    v0,v1,0x55        
-                (0x01D4, 0x00021040 if revelation_ind else 0x00000000),
-                                      # sll     v0,v0,0x1         (for Revelation)
-                                      # nop                       (for Exploration)
-                (0x01D8, 0x306300AA), # andi    v1,v1,0xaa        
-                (0x01DC, 0x00431025), # or      v0,v0,v1          
-                (0x01E0, 0x00441025), # or      v0,v0,a0          
-                (0x01E4, 0xA0C20000), # sb      v0,0(a2)          
-                (0x01E8, 0x28A20300), # slti    v0,a1,0x300       
-                (0x01EC, 0x1440FFF0), # bnez    v0,154c ~>        
-                (0x01F0, 0x24C60001), # addiu   a2,a2,1           
-            ):
-                result.patch_value(value, 'u32', sotn_address.Address(base + offset))
-    # Room shuffler - Normalize room connections
-    if changes.get('Options', {}).get('Normalize room connections', False):
-        # Eliminate left-most column of passage to Jewel Sword Room in Merman Room
-        # TODO(sestren): Figure out how to patch the entity and array in Reverse Entrance
-        for (base, description) in (
-            (0x041E23E8, 'Castle Entrance?, Merman Room (EntityJewelSwordDoor)'),
-            # (0x047FFFFF, 'Reverse Entrance, Merman Room (EntityJewelSwordDoor)'), 
-            (0x0494FC88, 'Castle Entrance Revisited?, Merman Room (EntityJewelSwordDoor)'),
-        ):
-            for (offset, data_type, value) in (
-                (0x0A8, 's16', 0x3F0), # addiu a2,t0,$3F0
-                (0x0D0, 's16', 0x006), # slti v0,a1,$6
-                (0x0E8, 's16', 0x3F0), # addiu a2,t0,$3F0
-            ):
-                result.patch_value(value, data_type, sotn_address.Address(base + offset))
-        for (base, description) in (
-            (0x041A8AAC, 'Castle Entrance?, Merman Room (rockTiles3)'),
-            # (0x0471F020, 'Reverse Entrance, Merman Room (rockTiles3)'),
-            (0x0491B974, 'Castle Entrance Revisited?, Merman Room (rockTiles3)'),
-        ):
-            for (offset, data_type, value) in (
-                # Column 0
-                (0x036, 'u16', 0x030B), # Row 0
-                (0x038, 'u16', 0x030E), # Row 1
-                (0x03A, 'u16', 0x0000), # Row 2
-                (0x03C, 'u16', 0x0000), # Row 3
-                (0x03E, 'u16', 0x06BD), # Row 4
-                (0x040, 'u16', 0x06BF), # Row 5
-                # Column 1
-                (0x042, 'u16', 0x030C), # Row 0
-                (0x044, 'u16', 0x030F), # Row 1
-                (0x046, 'u16', 0x0000), # Row 2
-                (0x048, 'u16', 0x0000), # Row 3
-                (0x04A, 'u16', 0x06BE), # Row 4
-                (0x04C, 'u16', 0x06C0), # Row 5
-                # Column 2
-                (0x04E, 'u16', 0x054F), # Row 0
-                (0x050, 'u16', 0x0000), # Row 1
-                (0x052, 'u16', 0x0000), # Row 2
-                (0x054, 'u16', 0x0000), # Row 3
-                (0x056, 'u16', 0x06BD), # Row 4
-                (0x058, 'u16', 0x06C1), # Row 5
-            ):
-                result.patch_value(value, data_type, sotn_address.Address(base + offset))
-        for (base_fg, base_bg, description) in (
-            (0x041C4638, 0x041C5238, 'Castle Entrance, Merman Room'),
-            (0x049356F4, 0x049362F4, 'Castle Entrance Revisited, Merman Room'),
-        ):
-            for (row, col, value_fg, value_bg) in (
-                # Column 0
-                (21 + 0, 0, 0x052D, 0x034E), # Row 0
-                (21 + 1, 0, 0x0532, 0x034E), # Row 1
-                (21 + 2, 0, 0x0000, 0x0339), # Row 2
-                (21 + 3, 0, 0x0000, 0x0350), # Row 3
-                (21 + 4, 0, 0x0000, 0x032F), # Row 4
-                (21 + 5, 0, 0x0320, 0x0000), # Row 5
-                # Column 1
-                (21 + 0, 1, 0x0535, 0x034F), # Row 0
-                (21 + 1, 1, 0x0536, 0x034F), # Row 1
-                (21 + 2, 1, 0x0308, 0x033A), # Row 2
-                (21 + 3, 1, 0x0309, 0x0351), # Row 3
-                (21 + 4, 1, 0x053E, 0x0330), # Row 4
-                (21 + 5, 1, 0x053F, 0x0000), # Row 5
-            ):
-                tiles_per_row = 16 * 3
-                offset = 2 * (tiles_per_row * row + col)
-                result.patch_value(value_fg, 'u16', sotn_address.Address(base_fg + offset))
-                result.patch_value(value_bg, 'u16', sotn_address.Address(base_bg + offset))
-        for (base_fg, base_bg, description) in (
-            (0x04733488, 0x04734088, 'Reverse Entrance, Merman Room'),
-        ):
-            for (row, col, value_fg, value_bg) in (
-                # Column 0
-                (5 + 0, 46, 0x053F, 0x0000), # Row 0
-                (5 + 1, 46, 0x053E, 0x0330), # Row 1
-                (5 + 2, 46, 0x0309, 0x0351), # Row 2
-                (5 + 3, 46, 0x0308, 0x033A), # Row 3
-                (5 + 4, 46, 0x0536, 0x034F), # Row 4
-                (5 + 5, 46, 0x0535, 0x034F), # Row 5
-                # Column 1
-                (5 + 0, 47, 0x0320, 0x0000), # Row 0
-                (5 + 1, 47, 0x0000, 0x032F), # Row 1
-                (5 + 2, 47, 0x0000, 0x0350), # Row 2
-                (5 + 3, 47, 0x0000, 0x0339), # Row 3
-                (5 + 4, 47, 0x0532, 0x034E), # Row 4
-                (5 + 5, 47, 0x052D, 0x034E), # Row 5
-            ):
-                tiles_per_row = 16 * 3
-                offset = 2 * (tiles_per_row * row + col)
-                result.patch_value(value_fg, 'u16', sotn_address.Address(base_fg + offset))
-                result.patch_value(value_bg, 'u16', sotn_address.Address(base_bg + offset))
-    # Insert boss stages into stage data prior to stage patching
-    if 'Stages' in changes:
-        for (address, source_stage_name, source_room_name, offset, edge) in (
-            # func_800F1A3C for Underground Caverns
-            (0x000E7248 + 0x00, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 5, 'Left'),
-            (0x000E7248 + 0x08, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 1, 'Top'),
-            (0x000E7248 + 0x0C, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 7, 'Left'),
-            (0x000E7248 + 0x14, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 1, 'Top'),
-            (0x000E7248 + 0x18, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 3, 'Left'),
-            (0x000E7248 + 0x20, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
-            (0x000E7248 + 0x24, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 4, 'Left'),
-            (0x000E7248 + 0x2C, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
-            (0x000E7248 + 0x30, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 5, 'Left'),
-            (0x000E7248 + 0x38, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
-            (0x000E7248 + 0x3C, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 8, 'Left'),
-            (0x000E7248 + 0x44, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
-            # func_800F1A3C for Reverse Caverns
-            (0x000E7248 + 0x50, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 5, 'Left'),
-            (0x000E7248 + 0x54, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 1, 'Top'),
-            (0x000E7248 + 0x60, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 7, 'Left'),
-            (0x000E7248 + 0x64, 'Underground Caverns', 'Underground Caverns, Left Ferryman Route', 1, 'Top'),
-            (0x000E7248 + 0x70, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 3, 'Left'),
-            (0x000E7248 + 0x74, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
-            (0x000E7248 + 0x80, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 4, 'Left'),
-            (0x000E7248 + 0x84, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
-            (0x000E7248 + 0x90, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 5, 'Left'),
-            (0x000E7248 + 0x94, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
-            (0x000E7248 + 0xA0, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 8, 'Left'),
-            (0x000E7248 + 0xA4, 'Underground Caverns', 'Underground Caverns, Right Ferryman Route', 1, 'Top'),
-        ):
-            if source_stage_name not in changes['Stages']:
-                continue
-            if source_room_name not in changes['Stages'][source_stage_name]['Rooms']:
-                continue
-            source_room = changes['Stages'][source_stage_name]['Rooms'][source_room_name]
-            value = source_room[edge] + offset
-            result.patch_value(value, 'u8', sotn_address.Address(address))
-    # Patch stage data
-    stages_remaining = collections.deque()
-    for stage_id in sorted(changes.get('Stages', {})):
-        stages_remaining.appendleft(stage_id)
-    while len(stages_remaining) > 0:
-        stage_id = stages_remaining.pop()
-        stage_data = changes['Stages'][stage_id]
-        stage_extract = extract['Stages'][stage_id]
-        # Stage: Patch room data
-        for room_id in sorted(stage_data.get('Rooms', {})):
-            room_data = stage_data['Rooms'][room_id]
-            extract_id = getID(aliases, ('Rooms', room_id, 'Room Index'))
-            room_extract = stage_extract['Rooms'][str(extract_id)]
-            left = room_extract['Left']['Value']
-            right = room_extract['Right']['Value']
-            # Room: Patch left and right
-            if room_data.get('Left', left) != left:
-                left = room_data['Left']
-                result.patch_value(
-                    left,
-                    room_extract['Left']['Type'],
-                    sotn_address.Address(room_extract['Left']['Start']),
-                )
-                width = 1 + room_extract['Right']['Value'] - room_extract['Left']['Value']
-                right = left + width - 1
-                result.patch_value(
-                    right,
-                    room_extract['Right']['Type'],
-                    sotn_address.Address(room_extract['Right']['Start']),
-                )
-            # Room: Patch top and bottom
-            top = room_extract['Top']['Value']
-            bottom = room_extract['Bottom']['Value']
-            if room_data.get('Top', top) != top:
-                top = room_data['Top']
-                result.patch_value(
-                    top,
-                    room_extract['Top']['Type'],
-                    sotn_address.Address(room_extract['Top']['Start']),
-                )
-                height = 1 + room_extract['Bottom']['Value'] - room_extract['Top']['Value']
-                bottom = top + height - 1
-                result.patch_value(
-                    bottom,
-                    room_extract['Bottom']['Type'],
-                    sotn_address.Address(room_extract['Bottom']['Start']),
-                )
-            # Room: Patch layout rect if applicable and any derived values changed
-            if 'Tile Layout' in room_extract:
-                tile_layout_extract = room_extract['Tile Layout']
-                flags = 0xFF & (tile_layout_extract['Layout Rect']['Value'] >> 24)
-                layout_rect = (
-                    left << 0 |
-                    top << 6 |
-                    right << 12  |
-                    bottom << 18 |
-                    flags << 24
-                )
-                if layout_rect != tile_layout_extract['Layout Rect']['Value']:
-                    result.patch_value(
-                        layout_rect,
-                        tile_layout_extract['Layout Rect']['Type'],
-                        sotn_address.Address(tile_layout_extract['Layout Rect']['Start']),
-                    )
-                # Room: Patch dependents
-                for dependent in aliases['Rooms'][room_id].get('Dependents', {}):
-                    if dependent['Type'] == 'Room':
-                        target_stage_name = dependent['Stage']
-                        if target_stage_name not in stages_remaining:
-                            stages_remaining.appendleft(target_stage_name)
-                        target_room_name = dependent['Room']
-                        if target_stage_name not in changes['Stages']:
-                            changes['Stages'][target_stage_name] = {
-                                'Rooms': {},
-                            }
-                        changes['Stages'][target_stage_name]['Rooms'][target_room_name] = {
-                            'Top': top + dependent['Top'],
-                            'Left': left + dependent['Left'],
-                        }
-                    elif dependent['Type'] == 'Secret Map Tile':
-                        array_extract = extract['Constants']['Secret Map Tile Reveals']
-                        array_extract_meta = array_extract['Metadata']
-                        for (element_index, element_value) in (
-                            (dependent['Index'] + 0, left + dependent['Left']),
-                            (dependent['Index'] + 1, top + dependent['Top']),
-                        ):
-                            if element_value == array_extract['Data'][element_index]:
-                                continue
-                            result.patch_value(
-                                element_value,
-                                array_extract['Metadata']['Type'],
-                                sotn_address.Address(
-                                    array_extract_meta['Start'] + element_index * array_extract_meta['Size']
-                                ),
-                            )
-                    elif dependent['Type'] == 'Warp Coordinate':
-                        object_extract = extract[dependent['Array Name']]
-                        object_meta = object_extract['Metadata']
-                        for (element_value, target_field_name) in (
-                            (left, 'Room X'),
-                            (top, 'Room Y'),
-                        ):
-                            result.patch_value(
-                                element_value,
-                                object_extract['Metadata']['Fields'][target_field_name]['Type'],
-                                sotn_address.Address(
-                                    object_meta['Start'] + dependent['Warp Index'] * object_meta['Size'] + object_meta['Fields'][target_field_name]['Offset']
-                                ),
-                            )
-                    elif dependent['Type'] == 'Familiar Event':
-                        # NOTE(sestren): Familiar events exist as a complete copy in 7 different locations, one for each familiar in the code
-                        # TODO(sestren): Replace this hacky way of doing it with a better approach
-                        familiar_event_id = dependent['Familiar Event ID']
-                        copy_offsets = [
-                            0x0392A760, # Possibly for Bat Familiar
-                            0x0394BDB0, # Possibly for Ghost Familiar
-                            0x0396FD2C, # Possibly for Faerie Familiar
-                            0x03990890, # Possibly for Demon Familiar
-                            0x039AF9E4, # Possibly for Sword Familiar
-                            0x039D1D38, # Possibly for Yousei Familiar
-                            0x039F2664, # Possibly for Nose Demon Familiar
-                        ]
-                        object_extract = extract['Familiar Events']
-                        object_meta = object_extract['Metadata']
-                        extract_data = extract['Familiar Events']['Data'][familiar_event_id]
-                        sign = -1 if dependent['Inverted'] else 1
-                        # Familiar event: Patch room X
-                        if (extract_data.get('Room X', sign * left)) != (sign * left):
-                            base_offset = object_meta['Start'] + int(familiar_event_id) * object_meta['Size'] + object_meta['Fields']['Room X']['Offset'] - copy_offsets[0]
-                            for copy_offset in copy_offsets:
-                                offset = base_offset + copy_offset
-                                result.patch_value(
-                                    sign * left,
-                                    object_meta['Fields']['Room X']['Type'],
-                                    sotn_address.Address(offset),
-                                )
-                        # Familiar event: Patch room Y
-                        if extract_data.get('Room Y', top) != top:
-                            base_offset = object_meta['Start'] + int(familiar_event_id) * object_meta['Size'] + object_meta['Fields']['Room Y']['Offset'] - copy_offsets[0]
-                            for copy_offset in copy_offsets:
-                                offset = base_offset + copy_offset
-                                result.patch_value(
-                                    top,
-                                    object_meta['Fields']['Room Y']['Type'],
-                                    sotn_address.Address(offset),
-                                )
-                    elif dependent['Type'] == 'Direct Write':
-                        values = {
-                            'Top': top,
-                            'Left': left,
-                        }
-                        value = transformed_value(
-                            values.get(dependent['Property'], 0),
-                            dependent.get('Transformations', [])
-                        )
-                        result.patch_value(
-                            value,
-                            dependent['Data Type'],
-                            sotn_address.Address(dependent['Address']),
-                        )
-                    elif dependent['Type'] == 'Tile Layout':
-                        for (dependent_property_name, dependent_value) in (
-                            ('Z Priority', left + dependent['Left']),
-                            ('Flags', top + dependent['Top']),
-                        ):
-                            dependent_room_id = getID(aliases, ('Rooms', dependent['Room'], 'Room Index'))
-                            dependent_extract = extract['Stages'][dependent['Stage']]['Rooms'][str(dependent_room_id)]['Tile Layout'][dependent_property_name]
-                            result.patch_value(
-                                dependent_value,
-                                dependent_extract['Type'],
-                                sotn_address.Address(dependent_extract['Start']),
-                            )
-                # Room: Patch tilemap foreground and background
-                if 'Tiles' in tile_layout_extract and 'Tilemap' in room_data:
-                    # Fetch the source tilemap data and start with empty target tilemaps
-                    tilemaps = {
-                        'Source Background': [],
-                        'Source Foreground': [],
-                        'Target Background': [],
-                        'Target Foreground': [],
-                    }
-                    for row_data in room_extract['Tilemap Foreground']['Data']:
-                        tilemaps['Source Foreground'].append(list(map(lambda x: int(x, 16), row_data.split(' '))))
-                        tilemaps['Target Foreground'].append([None] * len(tilemaps['Source Foreground'][-1]))
-                    for row_data in room_extract['Tilemap Background']['Data']:
-                        tilemaps['Source Background'].append(list(map(lambda x: int(x, 16), row_data.split(' '))))
-                        tilemaps['Target Background'].append([None] * len(tilemaps['Source Background'][-1]))
-                    for edit in room_data['Tilemap']:
-                        layers = edit['Layer'].split(' and ')
-                        source = edit['Source']
-                        target = edit['Target']
-                        target_rows = len(target)
-                        target_cols = len(target[0])
-                        # Copy source data to target directly if a space in the target is specified
-                        # If target already has source data copied to it, preserve that data
-                        for layer in layers:
-                            for row in range(target_rows):
-                                for col in range(target_cols):
-                                    if target[row][col] == ' ' and tilemaps['Target ' + layer][row][col] is None:
-                                        tilemaps['Target ' + layer][row][col] = tilemaps['Source ' + layer][row][col]
-                        for (stamp_height, stamp_width) in (
-                            (5, 5), (5, 4), (4, 5), (4, 4), (5, 3), (3, 5),
-                            (4, 3), (3, 4), (5, 2), (2, 5), (3, 3), (4, 2),
-                            (2, 4), (3, 2), (2, 3), (5, 1), (1, 5), (2, 2),
-                            (3, 1), (1, 3), (2, 1), (1, 2), (1, 1),
-                        ):
-                            # Find valid target locations for the stamp
-                            for layer in layers:
-                                for target_top in range(target_rows - (stamp_height - 1)):
-                                    for target_left in range(target_cols - (stamp_width - 1)):
-                                        # Confirm target location has empty space for the stamp
-                                        valid_target_ind = True
-                                        for row in range(stamp_height):
-                                            if not valid_target_ind:
-                                                break
-                                            for col in range(stamp_width):
-                                                if not valid_target_ind:
-                                                    break
-                                                if tilemaps['Target ' + layer][target_top + row][target_left + col] is not None:
-                                                    valid_target_ind = False
-                                                    break
-                                        if not valid_target_ind:
-                                            continue
-                                        # Stamp if a valid source location can be found
-                                        valid_source_ind = False
-                                        for source_top in range(target_rows - (stamp_height - 1)):
-                                            if valid_source_ind:
-                                                break
-                                            for source_left in range(target_cols - (stamp_width - 1)):
-                                                # Find first source location that matches the target location for the stamp
-                                                valid_source_ind = True
-                                                for row in range(stamp_height):
-                                                    if not valid_source_ind:
-                                                        break
-                                                    for col in range(stamp_width):
-                                                        source_value = source[source_top + row][source_left + col]
-                                                        target_value = target[target_top + row][target_left + col]
-                                                        if source_value != target_value:
-                                                            valid_source_ind = False
-                                                            break
-                                                if not valid_source_ind:
-                                                    continue
-                                                # Apply the stamp
-                                                for row in range(stamp_height):
-                                                    for col in range(stamp_width):
-                                                        assert tilemaps['Target ' + layer][target_top + row][target_left + col] is None
-                                                        value = tilemaps['Source ' + layer][source_top + row][source_left + col]
-                                                        tilemaps['Target ' + layer][target_top + row][target_left + col] = value
-                                                break
-                        # Debug info
-                        # for layer in edit['Layer'].split(' and '):
-                        #     rows = len(tilemaps['Target ' + layer])
-                        #     cols = len(tilemaps['Target ' + layer][0])
-                        #     print('Target ' + layer, (rows, cols))
-                        #     for row in range(rows):
-                        #         row_data = []
-                        #         for col in range(cols):
-                        #             cell = '#'
-                        #             if tilemaps['Target ' + layer][row][col] is None:
-                        #                 cell = '.'
-                        #             elif tilemaps['Target ' + layer][row][col] == -1:
-                        #                 cell = '?'
-                        #             row_data.append(cell)
-                        #         print(''.join(row_data))
-                        # ...
-                        for layer in edit['Layer'].split(' and '):
-                            extract_data = room_extract['Tilemap ' + layer]['Data']
-                            extract_metadata = room_extract['Tilemap ' + layer]['Metadata']
-                            offset = 0
-                            for (tile_row, tiles) in enumerate(tilemaps['Target ' + layer]):
-                                extract_row_data = list(map(lambda x: int(x, 16), extract_data[tile_row].split(' ')))
-                                for (tile_col, tile) in enumerate(tiles):
-                                    extract_value = extract_row_data[tile_col]
-                                    if tile == extract_value:
-                                        offset += 2
-                                        continue
-                                    result.patch_value(tile, 'u16', sotn_address.Address(extract_metadata['Start'] + offset))
-                                    offset += 2
-    # Patch teleporters
-    extract_metadata = extract['Teleporters']['Metadata']
-    for teleporter_name in sorted(changes.get('Teleporters', {})):
-        teleporter_data = changes['Teleporters'][teleporter_name]
-        teleporter_id = getID(aliases, ('Teleporters', teleporter_name))
-        extract_data = extract['Teleporters']['Data'][teleporter_id]
-        # Teleporter: Patch player X
-        player_x = extract_data['Player X']
-        if teleporter_data.get('Player X', player_x) != player_x:
-            player_x = teleporter_data['Player X']
-            result.patch_value(player_x,
-                extract_metadata['Fields']['Player X']['Type'],
-                sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Player X']['Offset']),
-            )
-        # Teleporter: Patch player Y
-        player_y = extract_data['Player Y']
-        if teleporter_data.get('Player Y', player_y) != player_y:
-            player_y = teleporter_data['Player Y']
-            result.patch_value(player_y,
-                extract_metadata['Fields']['Player Y']['Type'],
-                sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Player Y']['Offset']),
-            )
-        # Teleporter: Patch room offset
-        room_offset = extract_data['Room']
-        if 'Room' in teleporter_data:
-            # NOTE(sestren): Multiply by 8 to translate room ID to room offset
-            extract_room_offset = 8 * getID(aliases, ('Rooms', teleporter_data['Room'], 'Room Index'))
-            if extract_room_offset != room_offset:
-                room_offset = extract_room_offset
-                result.patch_value(room_offset,
-                    extract_metadata['Fields']['Room']['Type'],
-                    sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Room']['Offset']),
-                )
-        # Teleporter: Patch target stage ID
-        target_stage_id = extract_data['Target Stage ID']
-        if 'Stage' in teleporter_data:
-            extract_stage_id = getID(aliases, ('Stages', teleporter_data['Stage']))
-            if extract_stage_id != target_stage_id:
-                target_stage_id = extract_stage_id
-                result.patch_value(target_stage_id,
-                    extract_metadata['Fields']['Target Stage ID']['Type'],
-                    sotn_address.Address(extract_metadata['Start'] + int(teleporter_id) * extract_metadata['Size'] + extract_metadata['Fields']['Target Stage ID']['Offset']),
-                )
-    extract_metadata = extract['Castle Map']['Metadata']
-    for row in range(extract_metadata.get('Rows', {})):
-        if 'Castle Map' not in changes:
-            continue
-        row_data = changes['Castle Map'][row]
-        for col in range(0, 2 * extract_metadata['Columns'], 2):
-            (left, right) = (col, col + 1)
-            (little, big) = (int(row_data[left], base=16), int(row_data[right], base=16))
-            pixel_pair_value = 0x10 * big + little
-            col_span = col // 2
-            result.patch_value(pixel_pair_value,
-                'u8',
-                sotn_address.Address(extract_metadata['Start'] + row * extract_metadata['Columns'] + col_span),
-            )
-    if 'Castle Map Reveals' in changes:
-        changes_data = changes['Castle Map Reveals']
-        extract_data = extract['Castle Map Reveals']['Data']
-        extract_metadata = extract['Castle Map Reveals']['Metadata']
-        offset = 0
-        for (castle_map_reveal_id, castle_map_reveal) in enumerate(changes_data):
-            # If the original extraction has fewer reveals than are in changes, default to the last ID in the extraction
-            id = min(len(extract_data) - 1, castle_map_reveal_id)
-            grid = castle_map_reveal.get('Grid', extract_data[id]['Grid'])
-            rows = len(grid)
-            bytes_per_row = (len(grid[0])) // 8
-            left = castle_map_reveal.get('Left', extract_data[id]['Left'])
-            top = castle_map_reveal.get('Top', extract_data[id]['Top'])
-            for value in (left, top, bytes_per_row, rows):
-                result.patch_value(value, 'u8',
-                    sotn_address.Address(extract_metadata['Start'] + offset),
-                )
-                offset += 1
-            for row in range(rows):
-                assert 0 < len(grid[row]) <= 64
-                assert (len(grid[row]) % 8) == 0
-                for byte_id in range(bytes_per_row):
-                    byte_value = 0
-                    for bit_id in range(8):
-                        col = 8 * byte_id + bit_id
-                        if grid[row][col] != ' ':
-                            byte_value += 2 ** bit_id
-                    result.patch_value(byte_value, 'u8',
-                        sotn_address.Address(extract_metadata['Start'] + offset),
-                    )
-                    offset += 1
-        result.patch_value(0xFF, 'u8',
-            sotn_address.Address(extract_metadata['Start'] + offset),
-        )
-        assert offset <= extract_metadata['Footprint']
-    object_layouts = {}
-    # Option - Assign Power of Wolf relic a unique ID
-    power_of_wolf_patch = changes.get('Options', {}).get('Assign Power of Wolf relic a unique ID', False)
-    if power_of_wolf_patch:
-        if 'Quest Rewards' not in changes:
-            changes['Quest Rewards'] = {}
-        if 'Location - Castle Entrance, After Drawbridge (Power of Wolf)' not in changes['Quest Rewards']:
-            changes['Quest Rewards']['Location - Castle Entrance, After Drawbridge (Power of Wolf)'] = 'Relic - Power of Wolf'
-    # Color Palettes
-    if 'Castle Map Color Palette' in changes:
-        for (palette_index, rgba32) in enumerate(changes['Castle Map Color Palette']):
-            red = int(rgba32[1:3], 16) // 8
-            green = int(rgba32[3:5], 16) // 8
-            blue = int(rgba32[5:7], 16) // 8
-            alpha = int(rgba32[7:9], 16) // 128
-            value = (alpha << 15) + (blue << 10) + (green << 5) + red
-            array_extract_meta = extract['Constants']['Castle Map Color Palette']['Metadata']
-            result.patch_value(
-                value,
-                'u16',
-                sotn_address.Address(
-                    array_extract_meta['Start'] + palette_index * array_extract_meta['Size']
-                ),
-            )
-    # Quest Rewards - Part 1
-    for location_name in sorted(changes.get('Quest Rewards', {})):
-        reward_name = changes['Quest Rewards'][location_name]
-        # print((location_name, reward_name))
-        reward_type = reward_name.split(' - ')[0]
-        reward_data = aliases['Quest Rewards'][location_name]
-        for data_element in reward_data[reward_type + ' Data']:
-            if data_element['Type'] == 'Object Layout':
-                stage_name = data_element['Stage']
-                room_name = data_element['Room']
-                if (stage_name, room_name) not in object_layouts:
-                    room_id = str(aliases['Rooms'].get(room_name, {}).get('Room Index', None))
-                    room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
-                    object_extract = room_extract['Object Layout - Horizontal']['Data'][1:-1]
-                    object_layouts[(stage_name, room_name)] = copy.deepcopy(object_extract)
-                object_layout_id = data_element['Object Layout ID']
-                for (property_key, property_value) in aliases['Entities'].get(reward_name, {}).items():
-                    if property_value is None:
-                        continue
-                    object_layouts[(stage_name, room_name)][object_layout_id][property_key] = property_value
-                if power_of_wolf_patch and location_name == 'Location - Castle Entrance, After Drawbridge (Power of Wolf)':
-                    object_layouts[(stage_name, room_name)][object_layout_id]['Entity Room Index'] = 18
-                if 'Params' in data_element:
-                    object_layouts[(stage_name, room_name)][object_layout_id]['Params'] = data_element['Params']
-            elif data_element['Type'] == 'Stage Item Drop':
-                constant_name = data_element['Constant']
-                item_drop_index = data_element['Item Drop Index']
-                array_extract_meta = extract['Constants'][constant_name]['Metadata']
-                item_id = aliases['Items'][reward_name]
-                result.patch_value(
-                    item_id,
-                    array_extract_meta['Type'],
-                    sotn_address.Address(
-                        array_extract_meta['Start'] + item_drop_index * array_extract_meta['Size']
-                    ),
-                )
-            elif data_element['Type'] == 'Enemy Definition':
-                enemy_def_id = data_element['Enemy Definition ID']
-                field_name = data_element['Property']
-                array_extract_meta = extract['Enemy Definitions']['Metadata']
-                field_extract_meta = array_extract_meta['Fields'][field_name]
-                item_id = aliases['Items'][reward_name]
-                result.patch_value(
-                    item_id,
-                    field_extract_meta['Type'],
-                    sotn_address.Address(
-                        array_extract_meta['Start'] + enemy_def_id * array_extract_meta['Size'] + field_extract_meta['Offset']
-                    ),
-                )
-            elif data_element['Type'] == 'Breakable Container Drop':
-                # TODO(sestren): Combine this with 'Stage Item Drop' above (make it type 'Array' instead?)
-                constant_name = data_element['Constant']
-                drop_index = data_element['Breakable Drop Index']
-                assert 2 <= drop_index <= 3 # NOTE(sestren): Drop indexes outside this range are not relics and should be handled differently
-                array_extract_meta = extract['Constants'][constant_name]['Metadata']
-                relic_id = aliases['Entities'][reward_name]['Params']
-                result.patch_value(
-                    relic_id,
-                    array_extract_meta['Type'],
-                    sotn_address.Address(
-                        array_extract_meta['Start'] + drop_index * array_extract_meta['Size']
-                    ),
-                )
-            elif data_element['Type'] == 'Shop Purchase Option':
-                # Update label on shop item
-                if 'Constants' not in changes:
-                    changes['Constants'] = {}
-                label_key = 'Message - Shop Item Name 1'
-                if label_key not in changes['Constants']:
-                    changes['Constants'][label_key] = aliases['Entities'][reward_name]['Label']
-                constant_name = data_element['Constant']
-                shop_index = data_element['Shop Index']
-                relic_id = aliases['Entities'][reward_name]['Params']
-                array_extract_meta = extract['Constants'][constant_name]['Metadata']
-                result.patch_value(
-                    relic_id,
-                    array_extract_meta['Type'],
-                    sotn_address.Address(
-                        array_extract_meta['Start'] + shop_index * array_extract_meta['Size']
-                    ),
-                )
-                # https://github.com/Xeeynamo/sotn-decomp/blob/3e18d5e8654cdfd77fbebeabefebb7333c1da98f/src/st/lib/e_shop.c#L1899
-                result.patch_value(0x64 + relic_id, 'u8', sotn_address.Address(0x03E92308))
-            elif data_element['Type'] == 'Direct Write':
-                value = 0
-                if data_element['Property'] == 'Item ID':
-                    value = aliases['Items'][reward_name]
-                else:
-                    value = aliases['Entities'][reward_name][data_element['Property']]
-                value = transformed_value(value, data_element.get('Transformations', []))
-                assert value >= 0
-                result.patch_value(
-                    value,
-                    data_element['Data Type'],
-                    sotn_address.Address(data_element['Address']),
-                )
-    # TODO(sestren): Instead of checksums for tests, output the address writes for comparison
-    # Quest Rewards - Part 2
-    for ((stage_name, room_name), object_layout) in object_layouts.items():
-        horizontal_object_layout = list(sorted(object_layout,
-            key=lambda x: (x['X'], x['Y'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
-        ))
-        vertical_object_layout = list(sorted(object_layout,
-            key=lambda x: (x['Y'], x['X'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
-        ))
-        assert len(horizontal_object_layout) == len(vertical_object_layout)
-        for (sort_method, sorted_object_layout) in (
-            ('Horizontal', horizontal_object_layout),
-            ('Vertical', vertical_object_layout),
-        ):
-            room_id = str(aliases['Rooms'].get(room_name, {}).get('Room Index', None))
-            room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
-            object_extract = room_extract['Object Layout - ' + sort_method]
-            for object_layout_id in range(len(sorted_object_layout)):
-                sorted_object_layout[object_layout_id]
-                # NOTE(sestren): Add +1 to the object layout ID to get the extract ID
-                # NOTE(sestren): This accounts for the sentinel entity at the start of every entity list
-                extract_id = object_layout_id + 1
-                # print(object_extract['Data'][extract_id])
-                for field_name in (
-                    'Entity Room Index',
-                    'Entity Type ID',
-                    'Params',
-                    'X',
-                    'Y',
-                ):
-                    if sorted_object_layout[object_layout_id][field_name] == object_extract['Data'][extract_id][field_name]:
-                        continue
-                    result.patch_value(
-                        sorted_object_layout[object_layout_id][field_name],
-                        object_extract['Metadata']['Fields'][field_name]['Type'],
-                        sotn_address.Address(
-                            object_extract['Metadata']['Start'] + extract_id * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset']
-                        ),
-                    )
-    # Patch strings
-    # NOTE(sestren): For now, there is nothing preventing strings from overflowing their boundaries
-    # TODO(sestren): Ensure strings fit by truncating strings that are too long
-    NULL_CHAR = 0x00
-    SPACE_CHAR = 0x20
-    PERIOD_CHAR = 0x44
-    QUESTION_MARK_CHAR = 0x48
-    APOSTROPHE_CHAR = 0x66
-    QUOTE_CHAR = 0x68
-    DOUBLE_BYTE_CHAR = 0x81
-    NULL_CHAR_SHIFTED = 0xFF
-    for constant_name in changes.get('Constants', {}):
-        constant_extract = extract['Constants'][constant_name]
-        offset = 0
-        if constant_extract.get('Type', None) not in ('string', 'shifted-string'):
-            continue
-        string = changes['Constants'][constant_name]
-        if constant_extract['Type'] == 'string':
-            # Strings in SOTN are null-terminated, Shift JIS-encoded character arrays
-            for char in string:
-                if char in '".?\'':
-                    result.patch_value(DOUBLE_BYTE_CHAR, 'u8',
-                        sotn_address.Address(constant_extract['Start'] + offset),
-                    )
-                    offset += 1
-                char_code = SPACE_CHAR
-                if char == '"':
-                    char_code = QUOTE_CHAR
-                elif char == ".":
-                    char_code = PERIOD_CHAR
-                elif char == "?":
-                    char_code = QUESTION_MARK_CHAR
-                elif char == "'":
-                    char_code = APOSTROPHE_CHAR
-                elif char in 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-                    char_code = ord(char)
-                elif char in '0123456789':
-                    result.patch_value(0x82, 'u8',
-                        sotn_address.Address(constant_extract['Start'] + offset),
-                    )
-                    offset += 1
-                    char_code = 0x4f + (ord(char) - ord('0'))
-                else:
-                    char_code = SPACE_CHAR
-                result.patch_value(char_code, 'u8',
-                    sotn_address.Address(constant_extract['Start'] + offset),
-                )
-                offset += 1
-            padding = 4 - (offset % 4)
-            for _ in range(padding):
-                result.patch_value(NULL_CHAR, 'u8',
-                    sotn_address.Address(constant_extract['Start'] + offset),
-                )
-                offset += 1
-        elif constant_extract['Type'] == 'shifted-string':
-            # Shifted strings in SOTN are terminated with an 0xFF, and every character is shifted smaller by 0x20
-            for char in string:
-                char_code = ord('*') - 0x20
-                if char in '0123456789 abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-                    char_code = ord(char) - 0x20
-                result.patch_value(char_code, 'u8',
-                    sotn_address.Address(constant_extract['Start'] + offset),
-                )
-                offset += 1
-            padding = constant_extract['Size'] - offset
-            assert padding > 0
-            for i in range(padding):
-                null_char = NULL_CHAR if i > 0 else NULL_CHAR_SHIFTED
-                result.patch_value(null_char, 'u8',
-                    sotn_address.Address(constant_extract['Start'] + offset),
-                )
-                offset += 1
-    # Adjust the target points for the Castle Teleporter and False Save Room locations
-    for (constant_id, source_stage, source_room_name, offset_type, offset_amount) in (
-        # Adjust the False Save Room trigger, discovered by @MottZilla
-        # See https://github.com/Xeeynamo/sotn-decomp/blob/ffce97b0022ab5d4118ad35c93dea86bb18b25cc/src/dra/5087C.c#L1012
-        ('False Save Room, Room Y', 'Underground Caverns', 'Underground Caverns, False Save Room', 'Top', None),
-        ('False Save Room, Room X', 'Underground Caverns', 'Underground Caverns, False Save Room', 'Left', None),
-        ('Reverse False Save Room, Room Y', 'Reverse Caverns', 'Reverse Caverns, False Save Room', 'Top', None),
-        ('Reverse False Save Room, Room X', 'Reverse Caverns', 'Reverse Caverns, False Save Room', 'Left', None),
+        (0x047DB702, 'u16', 0x0351),
+        (0x047DB722, 'u16', 0x0327),
+        (0x047DB742, 'u16', 0x0334),
+        (0x047DB762, 'u16', 0x030F),
     ):
-        source_room = changes.get('Stages', {}).get(source_stage, {}).get('Rooms', {}).get(source_room_name, None)
-        if source_room is None:
-            continue
-        constant_extract = extract['Constants'][constant_id]
-        # NOTE(sestren): For the castle teleporter, use world coordinates and negate the value
-        # NOTE(sestren): For the False Save Room, just use the room location
-        # TODO(sestren): Consider a less hacky way to handle both cases
-        change_value = source_room[offset_type]
-        if offset_amount is not None:
-            change_value = -1 * (256 * source_room[offset_type] + offset_amount)
-        if change_value != constant_extract['Value']:
-            result.patch_value(
-                change_value,
-                constant_extract['Type'],
-                sotn_address.Address(constant_extract['Start']),
-            )
+        patch['Changes']['Pokes'].append({
+            'Gamedata Address': '{:08X}'.format(offset),
+            'Data Type': data_type,
+            'Value': '{:08X}'.format(value),
+        })
+    result = patch
+    return result
+
+def get_prevent_softlocks_at_pendulum_room_wall_patch():
+    patch = {
+        'Description': 'Prevent softlocks at Pendulum Room Wall',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Constants': {},
+        },
+    }
+    for stage_name in (
+        'Clock Tower',
+        'Reverse Clock Tower',
+    ):
+        constant_key = f'Pendulum Room Wall Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in (
+            (0, 0x0561),
+            (2, 0x0000),
+            (4, 0x0000),
+            (6, 0x0563),
+            (8, 0x0561),
+            (10, 0x0000),
+            (12, 0x0000),
+            (14, 0x0563),
+            (16, 0x0561),
+            (18, 0x0000),
+            (20, 0x0000),
+            (22, 0x0563),
+        ):
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    result = patch
+    return result
+
+def get_prevent_softlocks_at_left_gear_room_wall_patch():
+    patch = {
+        'Description': 'Prevent softlocks at Left Gear Room Wall',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Constants': {},
+            'Pokes': [],
+        },
+    }
+    for stage_name in (
+        'Clock Tower',
+        'Reverse Clock Tower',
+    ):
+        constant_key = f'Left Gear Room Wall Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in (
+            (1, 0x0565),
+            (3, 0x056D),
+            (5, 0x0575),
+            (7, 0x057D),
+            (9, 0x0565),
+            (11, 0x056D),
+            (13, 0x0575),
+            (15, 0x057D),
+            (17, 0x0565),
+            (19, 0x056D),
+            (21, 0x0575),
+            (23, 0x057D),
+        ):
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    result = patch
+    return result
+
+def get_normalize_jewel_sword_passageway_patch():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '052D 0535 .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0532 0536 .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0000 0308 .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0000 0309 .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0000 053E .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0320 053F .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '034E 034F .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '034E 034F .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0339 033A .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0350 0351 .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '032F 0330 .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '0000 0000 .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Jewel Sword passageway',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance',
+                    'Room': 'Castle Entrance, Merman Room',
+                    'Layer': 'Foreground',
+                    'Top': 16,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance',
+                    'Room': 'Castle Entrance, Merman Room',
+                    'Layer': 'Background',
+                    'Top': 16,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance Revisited',
+                    'Room': 'Castle Entrance Revisited, Merman Room',
+                    'Layer': 'Foreground',
+                    'Top': 16,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance Revisited',
+                    'Room': 'Castle Entrance Revisited, Merman Room',
+                    'Layer': 'Background',
+                    'Top': 16,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Entrance',
+                    'Room': 'Reverse Entrance, Merman Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 32,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Entrance',
+                    'Room': 'Reverse Entrance, Merman Room',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 32,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Constants'] = {}
+    for stage_name in (
+        'Castle Entrance',
+        'Castle Entrance Revisited',
+    ):
+        constant_key = f'Breakable Wall in Merman Room ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in (
+            # Column 0
+            (27, 0x030B),
+            (28, 0x030E),
+            (29, 0x0000),
+            (30, 0x0000),
+            (31, 0x06BD),
+            (32, 0x06BF),
+            # Column 1
+            (33, 0x030C),
+            (34, 0x030F),
+            (35, 0x0000),
+            (36, 0x0000),
+            (37, 0x06BE),
+            (38, 0x06C0),
+            # Column 2
+            (39, 0x054F),
+            (40, 0x0000),
+            (41, 0x0000),
+            (42, 0x0000),
+            (43, 0x06BD),
+            (44, 0x06C1),
+        ):
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    pokes = []
+    # Eliminate left-most column of passage to Jewel Sword Room in Merman Room
+    # TODO(sestren): Figure out how to patch the entity and array in Reverse Entrance
+    for (base, context) in (
+        (0x041E23E8, 'Castle Entrance, Merman Room (EntityJewelSwordDoor)'),
+        # (0x047FFFFF, 'Reverse Entrance, Merman Room (EntityJewelSwordDoor)'), 
+        (0x0494FC88, 'Castle Entrance Revisited, Merman Room (EntityJewelSwordDoor)'),
+    ):
+        for (offset, data_type, value, note) in (
+            (0x0A8, 's16', 0x3F0, 'addiu a2,t0,$3F0'),
+            (0x0D0, 's16', 0x006, 'slti v0,a1,$6'),
+            (0x0E8, 's16', 0x3F0, 'addiu a2,t0,$3F0'),
+        ):
+            pokes.append((value, data_type, base + offset, [context, note]))
+    patch['Changes']['Pokes'] = []
+    for (value, data_type, offset, notes) in pokes:
+        value_format = '{:08X}' if data_type == 'u32' else '{:04X}'
+        poke = {
+            'Gamedata Address': '{:08X}'.format(offset),
+            'Data Type': data_type,
+            'Value': value_format.format(value),
+            'Notes': []
+        }
+        for note in notes:
+            poke['Notes'].append(note)
+        patch['Changes']['Pokes'].append(poke)
+    result = patch
+    return result
+
+def get_normalize_tall_stairwell_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... 0234 0235 0000 .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... 0177 011B 0239 023A .... .... .... .... 0248 024A .... .... .... ....',
+            '.... .... .... 017B 0A7F 0164 .... .... .... 0155 0155 0123 .... .... .... ....',
+            '.... .... .... 01A5 01A3 01A4 016D 016D .... 0183 01A8 01A9 .... .... .... ....',
+            '.... .... .... .... 01A1 010E 0155 0155 0164 0164 0110 01A7 .... .... .... ....',
+            '.... .... .... .... 0001 0001 0000 0000 0000 0000 0001 0001 .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Tall Stairwell, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Tall Stairwell': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Tall Stairwell',
+                    'Layer': 'Foreground',
+                    'Top': 138,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Tall Stairwell',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_ice_floe_room_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... 0001 0000 .... .... 0000 0001 .... .... .... .... ....',
+            '.... .... .... .... .... 03B0 0000 .... .... 0000 03B5 .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0183 .... .... 0146 .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Ice Floe Room, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Ice Floe Room': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Ice Floe Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 128,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Ice Floe Room',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 128,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Ice Floe Room',
+                    'Layer': 'Foreground',
+                    'Top': 30,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Ice Floe Room',
+                    'Layer': 'Background',
+                    'Top': 30,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_long_drop_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... 01A5 01A1 01A4 .... .... .... .... .... .... .... 01A8 01A9 01AA ....',
+            '.... .... 0180 01A5 01A3 01A4 .... .... .... .... 01A8 01A9 01A7 01AA 0180 ....',
+            '.... .... .... 0180 01A1 010E .... .... .... .... 0110 01A7 01AA 0180 .... ....',
+            '.... .... .... 0180 0181 0182 .... .... .... .... 019F 01A0 0180 0180 .... ....',
+            '.... .... .... 0180 01A1 01A2 .... .... .... .... 01A6 01A7 0180 0180 .... ....',
+            '.... .... .... .... .... 0001 .... .... .... .... 0001 0001 .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Long Drop, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Long Drop': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Long Drop',
+                    'Layer': 'Foreground',
+                    'Top': 170,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Long Drop',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_underground_caverns_exit_to_castle_entrance():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... .... .... .... .... .... 0000 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... 0000 038C .... .... .... ....',
+            '.... .... .... 03BE 0000 .... .... .... 0000 0000 0386 03C8 .... .... .... ....',
+            '.... .... 039A 03BF 0391 0392 .... .... 0000 0000 039C 03D1 .... .... .... ....',
+            '.... .... 039F 037D 0393 0A80 0ABC .... 0000 0000 03ED 0180 .... .... .... ....',
+            '.... .... .... .... 0001 0001 0000 .... 0000 0000 0001 0001 .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... 03FC .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 03FD 03FF 0000 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 040F 0402 0569 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 03F8 0408 0A6B .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 03FC 03FA 03FC .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 03FD 03FF 0A6D .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 040F 0402 0571 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 03F8 0408 06DB .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 03FC 03FA 0000 .... .... .... ....',
+            '.... .... .... .... .... .... 0400 03FD 03FE 0A6C 0000 0000 .... .... .... ....',
+            '.... .... .... .... .... .... 0564 040F .... 0573 0000 0000 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize UC-CE Exit, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Exit to Castle Entrance': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Exit to Castle Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 10,
+                    'Left': 16,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Exit to Castle Entrance',
+                    'Layer': 'Background',
+                    'Top': 4,
+                    'Left': 16,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Exit to Castle Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Exit to Castle Entrance',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_underground_caverns_left_ferryman_route_top_passage():
+    tilemaps = {
+        'Foreground': [
+            ".... .... .... .... 0001 0001 .... .... 0000 0000 .... .... .... .... .... ....",
+            ".... .... 03AB 0180 03AB 03CF 0000 0000 0000 0000 .... .... .... .... .... ....",
+            ".... .... 07E2 036F 07E2 03F4 0000 0000 0000 03BA .... .... .... .... .... ....",
+            ".... .... 0375 0373 0375 03F5 .... .... 0000 0000 .... .... .... .... .... ....",
+        ],
+        'Background': [
+            ".... .... .... .... .... .... .... 0000 0000 0000 .... .... .... .... .... ....",
+            ".... .... .... .... .... .... .... 06E5 057E 0000 .... .... .... .... .... ....",
+            ".... .... .... .... .... .... .... 06DD 057E 0512 .... .... .... .... .... ....",
+            ".... .... .... .... .... .... .... 06E3 05B5 05B1 .... .... .... .... .... ....",
+            ".... .... .... .... .... .... .... 06E4 05B1 057E .... .... .... .... .... ....",
+            ".... .... .... .... .... .... .... 06E5 057E 05B5 .... .... .... .... .... ....",
+            ".... .... .... .... .... .... .... .... 05B5 05B7 .... .... .... .... .... ....",
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Left Ferryman Route, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Left Ferryman Route': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Left Ferryman Route',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 128,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Left Ferryman Route',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 128,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Left Ferryman Route',
+                    'Layer': 'Foreground',
+                    'Top': 28,
+                    'Left': 64,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Left Ferryman Route',
+                    'Layer': 'Background',
+                    'Top': 25,
+                    'Left': 64,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_hidden_crystal_entrance_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... ..... .... .... .... 0001 .... .... .... .... 0001 0001 .... .... .... ....',
+            '.... ..... .... 0181 0181 0182 .... .... .... .... 019F 01A0 0180 0180 .... ....',
+            '.... ..... .... .... 0180 0542 .... .... .... .... 019F 01A7 0180 0180 .... ....',
+            '.... ..... .... .... 0180 0A74 .... .... .... .... 03BB 0397 0180 0180 .... ....',
+            '.... ..... .... 0180 037B 0372 .... .... .... .... 0A73 03A2 0180 0180 .... ....',
+            '.... ..... .... 0A75 0372 .... .... .... .... .... 037F 03BC 0370 03BC .... ....',
+            '.... ..... .... 0375 .... .... .... .... .... .... .... 03BD 0374 03BD .... ....',
+        ]
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Hidden Crystal Entrance, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Hidden Crystal Entrance': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######'
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Hidden Crystal Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Hidden Crystal Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 41,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_secret_bookcase_rooms():
+    patch = {
+        'Description': 'Normalize Secret Bookcase rooms',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Long Library, Holy Rod Room': {
+                    'Nodes': {
+                        'Left Passage': {
+                            'Type': '######....######'
+                        },
+                    },
+                },
+                'Long Library, Secret Bookcase Room': {
+                    'Nodes': {
+                        'Right Passage': {
+                            'Type': '######....######'
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Long Library',
+                    'Room': 'Long Library, Holy Rod Room',
+                    'Layer': 'Foreground',
+                    'Top': 3,
+                    'Left': 0,
+                    'Tiles': [
+                        '028C 028D 028E',
+                        '0294 028C 028E',
+                        '029F 029E 029B',
+                        '0339 0339 035E',
+                        '.... .... ....',
+                        '.... .... ....',
+                        '.... .... ....',
+                        '0285 0284 028B',
+                        '028D 028C 028E',
+                    ],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Long Library',
+                    'Room': 'Long Library, Secret Bookcase Room',
+                    'Layer': 'Foreground',
+                    'Top': 4,
+                    'Left': 15,
+                    'Tiles': [
+                        '02A4',
+                        '02A3',
+                        '....',
+                        '....',
+                        '....',
+                        '....',
+                        '0451',
+                        '02A9',
+                    ],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Forbidden Library',
+                    'Room': 'Forbidden Library, Holy Rod Room',
+                    'Layer': 'Foreground',
+                    'Top': 4,
+                    'Left': 13,
+                    'Tiles': [
+                        '028E 028C 028D',
+                        '028B 0284 0285',
+                        '.... .... ....',
+                        '.... .... ....',
+                        '.... .... ....',
+                        '035E 0339 0339',
+                        '029B 029E 029F',
+                        '028E 0296 0297',
+                        '028E 028D 028C',
+                    ],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Forbidden Library',
+                    'Room': 'Forbidden Library, Secret Bookcase Room',
+                    'Layer': 'Foreground',
+                    'Top': 4,
+                    'Left': 0,
+                    'Tiles': [
+                        '02A9',
+                        '0451',
+                        '....',
+                        '....',
+                        '....',
+                        '....',
+                        '02A3',
+                        '02A4',
+                    ],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_underground_caverns_room_id_09_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '0023 00E1 0328 010A 07C1 07C2 07B7 07C0 .... .... .... .... .... .... .... ....',
+            '0329 032A 00E4 032B 07BF 07C5 07BF 07C0 .... .... .... .... .... .... .... ....',
+            '032C 032D 032A 00E4 032E 07C0 07BF 07C0 .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... 0090 0065 0066 0091 0067 0068 0023 0023 0023 .... ....',
+            '.... .... .... .... .... .... 07BF 07C5 07C1 07AD 003B 000C 000C .... .... ....',
+            '.... .... .... .... .... .... 0000 0000 0000 .... 0001 0001 0001 .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Room ID 09, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Room ID 09': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Room ID 09',
+                    'Layer': 'Foreground',
+                    'Top': 10,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Room ID 09',
+                    'Layer': 'Foreground',
+                    'Top': 00,
+                    'Left': 16,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_underground_caverns_room_id_10_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... 0000 0000 0000 .... 0001 0001 0001 .... .... ....',
+            '.... .... .... .... .... 0053 0011 0014 002E .... 003B 000C 000B .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... 0033 0034 0035 0346 0007 0008',
+            '.... .... .... .... .... .... .... .... .... .... 003B 003C 0028 0348 000D 000E',
+            '.... .... .... .... .... .... .... .... 01E7 01E8 01E8 01E8 .... .... .... ....',
+            '.... 0023 00E1 01DC 007B 07AF 007B .... .... .... .... .... .... .... .... ....',
+            '.... .... 00E7 00E4 00E5 0000 0000 0000 .... .... .... .... .... .... .... ....',
+            '.... .... .... 00E7 00E4 00E5 0000 0000 0000 .... .... .... .... .... .... ....',
+            '.... .... .... .... 00E7 00E4 00E5 0000 0000 0000 .... .... .... .... .... ....',
+            '.... .... .... .... .... 00E7 00E4 00E5 0000 0000 0000 .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... 0319 .... 0331 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... 0319 0319 031A .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0319 0319 0314 .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... 0319 0319 0313 .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Room ID 10, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Room ID 10': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Room ID 10',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Room ID 10',
+                    'Layer': 'Background',
+                    'Top': 6,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Room ID 10',
+                    'Layer': 'Foreground',
+                    'Top': 6,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Room ID 10',
+                    'Layer': 'Background',
+                    'Top': 6,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_dk_bridge_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... 039A 03BF 03CA 0000 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0000 .... .... .... .... .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... 04E1 .... .... .... .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize DK Bridge, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, DK Bridge': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, DK Bridge',
+                    'Layer': 'Foreground',
+                    'Top': 14,
+                    'Left': 48,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, DK Bridge',
+                    'Layer': 'Background',
+                    'Top': 14,
+                    'Left': 48,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, DK Bridge',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, DK Bridge',
+                    'Layer': 'Background',
+                    'Top': 1,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_underground_caverns_exit_to_abandoned_mine_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... 0000 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... 03CF 0000 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... 037A 03E7 0000 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... 037D 037E 0383 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... 03AB 0A74 038A 03BA .... .... .... .... .... .... .... ....',
+            '.... .... .... 0370 03AC 0372 0AD0 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... 0374 0375 0000 .... .... .... .... .... .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0400 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 040E .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 03F7 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 03FB .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... 03FF .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize UC-AM, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Exit to Abandoned Mine': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Exit to Abandoned Mine',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Exit to Abandoned Mine',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Exit to Abandoned Mine',
+                    'Layer': 'Foreground',
+                    'Top': 9,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Exit to Abandoned Mine',
+                    'Layer': 'Background',
+                    'Top': 9,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_underground_caverns_small_stairwell_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... 0000 0000 0000 0000 0001 0001 0001 .... .... ....',
+            '.... .... .... .... .... 0090 0065 0066 0066 0066 0099 0023 0023 0023 .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... 0337 0338 0339 0000 0000 .... .... ....',
+            '.... .... .... .... .... .... .... .... 033A 033B 033C 0000 0000 .... .... ....',
+            '.... .... .... .... .... .... .... .... 033D 033E 033F 0000 0000 .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... 031C .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... 0320 .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Small Stairwell, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Small Stairwell': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Small Stairwell',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Small Stairwell',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Small Stairwell',
+                    'Layer': 'Foreground',
+                    'Top': 26,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Small Stairwell',
+                    'Layer': 'Background',
+                    'Top': 26,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_underground_caverns_plaque_room_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... 0023 00E1 0328 001E 001F 0020 0021 0036 003E 003F 0040 01BE .... .... ....',
+            '000F 0329 032A 00E4 032B 0019 001A 001B 0036 0037 0038 0039 0101 .... .... ....',
+            '0016 032C 032D 032A 00E4 032E 0020 0014 002E 002F 0030 0031 0101 .... .... ....',
+            '.... .... .... .... .... 0090 0065 0066 0066 0066 0099 0023 0023 .... .... ....',
+            '.... .... .... .... .... .... 0000 0000 0000 0000 0001 0001 0001 .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Plaque Room, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Plaque Room With Life Max-Up': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Plaque Room With Life Max-Up',
+                    'Layer': 'Foreground',
+                    'Top': 11,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Plaque Room With Life Max-Up',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_simple_patch(description, pokes):
+    patch = {
+        'Description': description,
+        'Changes': {
+            'Pokes': [],
+        },
+    }
+    for (offset, data_type, value, note) in pokes:
+        patch['Changes']['Pokes'].append(
+            {
+                'Gamedata Address': '{:08X}'.format(offset),
+                'Data Type': data_type,
+                'Value': '{:08X}'.format(value),
+                'Notes':
+                [
+                    note,
+                ]
+            }
+        )
+    result = patch
+    return result
+
+def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... 0549 0000 .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... 0A84 0A81 059D .... .... .... 0557 038C .... .... .... ....',
+            '.... .... .... .... 0551 0552 05F0 05F1 0739 073C 055A 038D .... .... .... ....',
+            '.... .... .... .... 06F8 06FA 060C 060D 073A 0591 055D 0180 .... .... .... ....',
+            '.... .... .... .... 0543 06F9 0000 0000 0000 0000 0180 .... .... .... .... ....',
+            '.... .... .... .... 0001 0001 0000 0000 0000 0000 .... .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... 03FD 03FE 03FF .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 040E 040F 0401 0402 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Hidden Crystal Entrance, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Hidden Crystal Entrance': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Hidden Crystal Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 42,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Hidden Crystal Entrance',
+                    'Layer': 'Background',
+                    'Top': 42,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Hidden Crystal Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Hidden Crystal Entrance',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Constants'] = {}
+    for stage_name in (
+        'Underground Caverns',
+        'Reverse Caverns',
+    ):
+        constant_key = f'Crystal Floor Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in enumerate((
+            # Phase 0
+            0x05F0, 0x054D, 0x054E,
+            0x060C, 0x0000, 0x0000,
+            # Phase 1
+            0x05F0, 0x0740, 0x0748,
+            0x060C, 0x0000, 0x0000,
+            # Phase 2
+            0x05F0, 0x074D, 0x074E,
+            0x060C, 0x0000, 0x0000,
+            # Phase 3
+            0x05F0, 0x0000, 0x0000,
+            0x060C, 0x0000, 0x0000,
+        )):
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    patch['Changes']['Pokes'] = []
+    for (offset, data_type, value) in (
+        (0x0429FF64, 's16', 0x02C6),
+        (0x042A006C, 's16', 0x02C6),
+        (0x042A0080, 's16', 0x0003), # In Underground Caverns, only require 1 hit to destroy the floor
+        (0x0480CF1C, 's16', 0x0039),
+        (0x0480D02C, 's16', 0x0039),
+    ):
+        patch['Changes']['Pokes'].append({
+            'Gamedata Address': '{:08X}'.format(offset),
+            'Data Type': data_type,
+            'Value': '{:08X}'.format(value),
+        })
+    patch['Changes']['Object Layouts'] = [
+        {
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Hidden Crystal Entrance',
+            'Object Layout ID': 0,
+            'Properties': {
+                'X': 128,
+                'Y': 720,
+            },
+        },
+        {
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Hidden Crystal Entrance',
+            'Object Layout ID': 5,
+            'Properties': {
+                'X': 128,
+                'Y': 48,
+            },
+        },
+    ]
+    result = patch
+    return result
+
+def get_normalize_alchemy_laboratory_entryway_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... .... .... .... 0000 004C 0050 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 0031 0032 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 0004 0005 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0676 000B 000C .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 0011 0012 .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Alchemy Lab Entryway, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Alchemy Laboratory, Entryway': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Alchemy Laboratory',
+                    'Room': 'Alchemy Laboratory, Entryway',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 16,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Necromancy Laboratory',
+                    'Room': 'Necromancy Laboratory, Entryway',
+                    'Layer': 'Foreground',
+                    'Top': 11,
+                    'Left': 16,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_alchemy_laboratory_glass_vats_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+              "0034 0020 0033 0034 004C 0050 0031 0032 0005 0006 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 004C 0050 0033 0034",
+              "0024 0025 0023 0024 0031 0032 0004 0005 000C 0007 0008 0009 000A 000B 000C 0007 0008 0009 000A 000B 000C 0007 0008 0009 000A 001D 0014 0007 0031 0032 0023 0024",
+              "0029 002A 0028 0029 0004 0005 0026 0027 0012 000D 0019 000F 0010 0011 0012 000D 000E 000F 0010 0011 0012 000D 0019 001F 0010 0016 0017 0018 0004 0005 0028 0029",
+              "0005 0006 0004 0005 0026 0027 0011 0012 0126 0127 0288 0289 028A 028B 028A 028A 028A 028A 028A 012A 0122 0123 0124 0125 0126 0127 0288 0289 0026 0027 0004 0005",
+              "0027 002B 0026 0027 0011 0012 0000 01DC 06A0 06A4 0298 0299 01D4 0128 00DA 028A 028A 028A 012B 0147 014C 01D5 01D8 01DC 06A0 06A4 0298 0299 0011 0012 0026 0027",
+              "0052 0053 0051 0052 0000 059C 059D 0000 0000 0000 0296 0297 029F 02A0 028C 028D 028E 028A 020E 0210 0236 0000 0000 0000 0000 0000 0296 0297 05AD 05AE 0011 0012",
+              "0034 0020 0033 0034 05A3 05A4 05A5 05A6 0000 0000 028F 0290 0291 0292 0293 00D8 00D9 00DB 029D 029E 0105 0000 0000 0000 0000 0000 028F 0290 05AA 0000 059C 059D",
+              "0024 0025 0023 0024 05AB 05AC 05AD 05AE 0000 0000 0000 0000 00DC 0689 068A 068D 068E 0287 0100 0000 0000 0000 0101 0294 0295 0000 0000 0000 059E 05A3 05A4 05A5",
+              "0029 002A 0028 0029 0000 05A9 05AA 0000 0000 0000 0000 0000 029A 029B 0691 0692 0695 0696 0155 0000 0000 0156 0159 015E 0162 0000 06A8 0000 05A7 05AB 05AC 05AD",
+              "0005 0006 0004 0005 059D 0000 0000 0000 0000 0000 0000 0000 0108 0109 010A 010B 010C 010D 016A 0000 0000 0000 0000 0183 0184 0187 06A7 0000 013F 0000 05A9 05AA",
+              "0027 002B 0026 0027 05A5 05A6 0000 0000 0000 0000 0000 05B0 010E 010F 0110 0111 0112 0113 0189 018A 0000 0000 018B 018C 01A5 01B3 0000 059E 003F 0038 003B 003F",
+              "0052 0053 0051 0052 05AD 05AE 0000 0000 0000 0000 0000 05B1 0114 0115 0116 0117 0118 0119 01B4 01CA 0000 0000 01CB 01CC 01CD 0000 0000 05A7 0023 0024 0025 0023",
+              "0034 0020 0033 0034 05AA 0000 0000 0000 0000 0000 011A 011B 011C 011D 011E 011F 0120 0121 01CE 01CF 01D0 0000 01D1 01D2 01D3 0000 003F 0038 0028 0029 002A 0028",
+              "0024 0025 0023 0024 0037 0045 0000 0000 0000 0000 0048 0043 003E 0044 003A 0039 0037 0043 003E 0044 003A 0039 003C 003D 003E 003F 0023 0024 0004 0005 0006 0004",
+              "0029 002A 0028 0029 0040 0046 0000 0000 0000 0000 0049 0041 0042 0023 0024 0025 0040 0041 0042 0023 0024 0025 0040 0041 0042 0023 0028 0029 0026 0027 002B 0026",
+              "0005 0006 0004 0005 002E 0047 0000 0000 0000 0000 004A 002F 002D 0028 0029 002A 002E 002F 002D 0028 0029 002A 002E 002F 002D 0028 004C 0050 0051 0052 0053 0051"
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Glass Vats, Left-Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Alchemy Laboratory, Glass Vats': {
+                    'Nodes': {
+                        'Left-Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Alchemy Laboratory',
+                    'Room': 'Alchemy Laboratory, Glass Vats',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Necromancy Laboratory',
+                    'Room': 'Necromancy Laboratory, Glass Vats',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Object Layouts'] = [
+        {
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Glass Vats',
+            'Object Layout ID': 0,
+            'Properties': {
+                'X': 192,
+            },
+        },
+        {
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Glass Vats',
+            'Object Layout ID': 1,
+            'Properties': {
+                'X': 240,
+            },
+        },
+        {
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Glass Vats',
+            'Object Layout ID': 2,
+            'Properties': {
+                'X': 288,
+            },
+        },
+        {
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Glass Vats',
+            'Object Layout ID': 3,
+            'Properties': {
+                'X': 336,
+            },
+        },
+        {
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Glass Vats',
+            'Object Layout ID': 4,
+            'Properties': {
+                'X': 384,
+            },
+        },
+    ]
+    result = patch
+    return result
+
+def get_normalize_alchemy_laboratory_red_skeleton_lift_room_top_passage():
+    tilemaps = {
+        'Foreground': [
+            ".... 0020 0033 0034 0001 0013 0000 0000 0000 0000 001B 0002 0006 0001 0002 0003 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 0004 0005 0006 0033 0034 0020 0033 0034 0020 0033 0034 0020 0033 0034",
+            ".... 0025 0023 0024 0008 0046 0000 0000 0000 0000 001C 0009 0007 0008 0009 000A 0008 0009 000A 000B 000C 0007 0008 0009 000A 001D 0014 0007 0008 0009 000A 000B 000C 0007 000B 000C 0007 0023 0024 0025 0023 0024 0025 0023 0024 0025 0023 0024",
+            ".... 002A 0028 0029 000E 001A 0000 0000 0000 0000 001E 001F 000D 0019 001F 0010 000E 000F 0010 0011 0012 000D 0019 001F 0010 0016 0017 0018 000E 000F 0010 0011 0012 000D 0011 0012 000D 0028 0029 002A 0028 0029 002A 0028 0029 002A 0028 0029",
+            "0006 0004 0005 0000 0000 0598 0126 0127 0288 0289 028A 028B 028A 028A 028A 028A 028A 012A 0122 0123 0124 0125 0126 0127 0288 0289 028A 028B 028A 028A 028A 028A 028A 012A 0122 0123 0124 0004 0005 0006 0004 0005 0006 0004 0005 0006 0004 0005",
+            "002B 0026 0027 0000 0000 059A 06A0 06A4 0298 0299 01D4 0128 00DA 028A 028A 028A 012B 0147 014C 01D5 01D8 01DC 06A0 06A4 0298 0299 01D4 0128 00DA 028A 028A 028A 012B 0147 014C 01D5 01D8 0026 0027 002B 0026 0027 002B 0026 0027 002B 0026 0027",
+            "0018 0011 0012 0000 0000 0000 0000 0000 0296 0297 029F 02A0 028C 028D 028E 028A 020E 0210 0236 0000 0000 0000 0000 0000 0296 0297 029F 02A0 028C 028D 028E 028A 020E 0210 0236 0000 0000 0011 0012 0018 0011 0012 0018 0011 0012 0018 0011 0012",
+            "0000 059C 05AD 05AE 0000 0000 0000 0000 028F 0290 0291 0292 0293 00D8 00D9 00DB 029D 029E 0105 0000 0000 0000 0000 0000 028F 0290 0291 0292 0293 00D8 00D9 00DB 029D 029E 0105 0000 0000 0000 004A 0047 0286 029C 0000 0172 0000 0000 0000 0000",
+            "05A3 05A4 05AA 0000 0000 0000 0000 0000 0000 0000 00DC 0689 068A 068D 068E 0287 0100 0000 0000 0000 0101 0294 0295 0000 0000 0000 00DC 0689 068A 068D 068E 0287 0100 0000 0000 0000 0000 0000 001B 0013 0000 0000 0000 05A7 0000 0000 0000 0000",
+            "05AB 05AC 059D 0000 0000 0000 0000 0000 0000 0000 029A 029B 0691 0692 0695 0696 0155 0000 0000 0156 0159 015E 0162 0000 06A8 0000 029A 029B 0691 0692 0695 0696 0155 0000 0000 0000 0000 0000 0049 0046 0000 0000 0000 059B 0000 059E 0000 0000",
+            "0000 05A9 05A5 05A6 0000 0000 059E 0000 0000 0000 0108 0109 010A 010B 010C 010D 016A 0000 0000 0000 0000 0183 0184 0187 06A7 0000 0108 0109 010A 010B 010C 010D 016A 0000 0000 0000 0000 0000 004A 0047 0000 0000 0000 0000 0000 05A7 0000 0000",
+            "0038 004B 003F 0038 0000 0000 05A7 0000 0000 05B0 010E 010F 0110 0111 0112 0113 0189 018A 0000 0000 018B 018C 01A5 01B3 0000 05B0 010E 010F 0110 0111 0112 0113 0189 018A 0000 0000 0000 0000 001B 0013 0000 0000 0048 003D 003E 003F 0038 0039",
+            "0024 0025 0023 0024 0678 0679 013F 0000 0000 05B1 0114 0115 0116 0117 0118 0119 01B4 01CA 0000 0000 01CB 01CC 01CD 0000 0000 05B1 0114 0115 0116 0117 0118 0119 01B4 01CA 0000 0000 0000 0000 004D 0046 0000 0000 004D 0106 0107 0023 0024 0025",
+            "0029 002A 0028 0029 059B 0000 013F 0000 011A 011B 011C 011D 011E 011F 0120 0121 01CE 01CF 01D0 0000 01D1 01D2 01D3 0000 011A 011B 011C 011D 011E 011F 0120 0121 01CE 01CF 01D0 0000 0000 0000 001E 001A 0000 0000 001E 001F 0010 0028 0029 002A"
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Red Skeleton Lift Room, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Alchemy Laboratory, Red Skeleton Lift Room': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Alchemy Laboratory',
+                    'Room': 'Alchemy Laboratory, Red Skeleton Lift Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Necromancy Laboratory',
+                    'Room': 'Necromancy Laboratory, Red Skeleton Lift Room',
+                    'Layer': 'Foreground',
+                    'Top': 19,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_alchemy_laboratory_red_skeleton_lift_room_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... .... .... .... 0000 0048 0045 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 0049 0046 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 0048 003D .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 004D 0041 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 004A 002F .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 001B 0002 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 001C 0009 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0000 001E 001F .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Red Skeleton Lift Room, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Alchemy Laboratory, Red Skeleton Lift Room': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Alchemy Laboratory',
+                    'Room': 'Alchemy Laboratory, Red Skeleton Lift Room',
+                    'Layer': 'Foreground',
+                    'Top': 24,
+                    'Left': 32,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Necromancy Laboratory',
+                    'Room': 'Necromancy Laboratory, Red Skeleton Lift Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_underground_caverns_crystal_bend_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... 0001 0001 0000 0000 0000 0000 .... .... .... .... .... ....',
+            '.... .... 0180 0589 058A 058A 0000 0000 0000 0000 0588 .... .... .... .... ....',
+            '.... .... 0180 0180 058D 0A7A 0000 0000 0000 0000 058B 058C .... .... .... ....',
+            '.... .... 0180 0180 058F 0590 0000 0000 03BA 03BA 0A79 058E .... .... .... ....',
+            '.... .... 0180 058F 0590 .... 0000 0000 0000 0000 05A0 05A1 .... .... .... ....',
+            '.... .... 058F 0590 .... .... .... 0000 0000 0000 0588 .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... 0000 0000 .... .... .... 03BA 03BA .... .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... 05BE 05B1 05B2 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... 0581 057E 057F .... .... .... .... .... ....',
+            '.... .... .... .... .... 0623 0582 05B9 05BB 05BC .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... 05BA 05B7 05B8 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... 05B1 05B2 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... 057E 057F .... .... .... .... .... ....',
+            '.... .... .... 05B9 05B5 .... .... .... 05BB 05BC .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Crystal Bend, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Underground Caverns, Crystal Bend': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Crystal Bend',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Underground Caverns',
+                    'Room': 'Underground Caverns, Crystal Bend',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Crystal Bend',
+                    'Layer': 'Foreground',
+                    'Top': 24,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Reverse Caverns',
+                    'Room': 'Reverse Caverns, Crystal Bend',
+                    'Layer': 'Background',
+                    'Top': 24,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_alchemy_laboratory_tall_zig_zag_room_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... 003B 05B8 05B8 003B .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0271 05B9 05B9 027F .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0272 0230 0256 0280 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 06A9 06A1 06B6 06B7 .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Tall Zig Zag Room, Bottom Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Alchemy Laboratory, Tall Zig Zag Room': {
+                    'Nodes': {
+                        'Lower Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Alchemy Laboratory',
+                    'Room': 'Alchemy Laboratory, Tall Zig Zag Room',
+                    'Layer': 'Foreground',
+                    'Top': 44,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Necromancy Laboratory',
+                    'Room': 'Necromancy Laboratory, Tall Zig Zag Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Pokes'] = []
+    for (offset, data_type, value) in (
+        (0x049EFFD8, 's16', 0x02C7), # Alchemy Laboratory - 0x02E7 -> 0x02C7
+        (0x049F008C, 's16', 0x02C7), # Alchemy Laboratory - 0x02E7 -> 0x02C7
+        (0x049F00A0, 's16', 0x0003), # Alchemy Laboratory - only require 1 hit to destroy the floor
+        (0x04DACB0C, 's16', 0x0038), # Necromancy Laboratory - 0x0018 -> 0x02C7
+        (0x04DACBCC, 's16', 0x0038), # Necromancy Laboratory - 0x0018 -> 0x02C7
+    ):
+        patch['Changes']['Pokes'].append({
+            'Gamedata Address': '{:08X}'.format(offset),
+            'Data Type': data_type,
+            'Value': '{:08X}'.format(value),
+        })
+    patch['Changes']['Object Layouts'] = [
+        {
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Tall Zig Zag Room',
+            'Object Layout ID': 4,
+            'Properties': {
+                'X': 128,
+                'Y': 720,
+            },
+        },
+        {
+            'Stage': 'Necromancy Laboratory',
+            'Room': 'Necromancy Laboratory, Tall Zig Zag Room',
+            'Object Layout ID': 5,
+            'Properties': {
+                'X': 128,
+                'Y': 48,
+            },
+        },
+    ]
+    patch['Changes']['Constants'] = {}
+    for stage_name in (
+        'Alchemy Laboratory',
+        'Necromancy Laboratory',
+    ):
+        constant_key = f'Laboratory Floor Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in (
+            (12, 0x0224),
+            (13, 0x024C),
+            (14, 0x022A),
+            (15, 0x0250),
+        ):
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    result = patch
+    return result
+
+def get_normalize_alchemy_laboratory_secret_life_max_up_room_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... 026C .... .... 0276 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 026F .... .... 027B 0011 0012 .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 0249 024A .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... 024D 01BC .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Secret Life Max-Up Room, Top Passage',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Alchemy Laboratory, Secret Life Max-Up Room': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Alchemy Laboratory',
+                    'Room': 'Alchemy Laboratory, Secret Life Max-Up Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Necromancy Laboratory',
+                    'Room': 'Necromancy Laboratory, Secret Life Max-Up Room',
+                    'Layer': 'Foreground',
+                    'Top': 28,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_marble_gallery_stopwatch_room_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... 0597 0597 0597 0597 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+        ],
+    }
+    patch = {
+        'Description': 'Normalize Marble Gallery Stopwatch Room',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Marble Gallery, Stopwatch Room': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Marble Gallery',
+                    'Room': 'Marble Gallery, Stopwatch Room',
+                    'Layer': 'Foreground',
+                    'Top': 12,
+                    'Left': 16,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Black Marble Gallery',
+                    'Room': 'Black Marble Gallery, Stopwatch Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 16,
+                    'Tiles': [
+                        '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+                        '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+                        '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+                        '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+                    ],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Pokes'] = []
+    for (offset, data_type, value) in (
+        (0x03FCE06C, 's16', 0x0001), # Marble Gallery - 0x0003 -> 0x0001
+    ):
+        patch['Changes']['Pokes'].append({
+            'Gamedata Address': '{:08X}'.format(offset),
+            'Data Type': data_type,
+            'Value': '{:08X}'.format(value),
+        })
+    result = patch
+    return result
+
+def get_normalize_marble_gallery_beneath_left_trapdoor_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0000 0000 .... .... .... .... .... .... .... ....',
+        ],
+    }
+    patch = {
+        'Description': 'Normalize Marble Gallery Stopwatch Room',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Marble Gallery, Beneath Left Trapdoor': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Marble Gallery',
+                    'Room': 'Marble Gallery, Beneath Left Trapdoor',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_marble_gallery_beneath_right_trapdoor_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... 02D5 02D5 .... .... 0000 0000 .... .... .... .... .... ....',
+            '.... .... .... .... 02D6 02D6 0000 0000 0000 0000 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... 02EE 02EE 032F .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... 02F0 02F0 .... .... .... .... .... .... .... .... .... ....',
+            '.... .... 030B 02E3 02E4 02E5 02E6 02E7 .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... 036E 036E .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... 0335 0335 0362 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... 0335 0335 036B .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Marble Gallery Beneath Right Trapdoor',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Marble Gallery, Beneath Right Trapdoor': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Marble Gallery',
+                    'Room': 'Marble Gallery, Beneath Right Trapdoor',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Marble Gallery',
+                    'Room': 'Marble Gallery, Beneath Right Trapdoor',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Black Marble Gallery',
+                    'Room': 'Black Marble Gallery, Beneath Right Trapdoor',
+                    'Layer': 'Foreground',
+                    'Top': 9,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Black Marble Gallery',
+                    'Room': 'Black Marble Gallery, Beneath Right Trapdoor',
+                    'Layer': 'Background',
+                    'Top': 9,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Object Layouts'] = [
+        {
+            'Stage': 'Marble Gallery',
+            'Room': 'Marble Gallery, Beneath Right Trapdoor',
+            'Object Layout ID': 1,
+            'Properties': {
+                'X': 129 + 32,
+                'Y': 8,
+            },
+        },
+        # {
+        #     'Stage': 'Black Marble Gallery',
+        #     'Room': 'Black Marble Gallery, Beneath Right Trapdoor',
+        #     'Object Layout ID': 99,
+        #     'Properties': {
+        #         'X': 999,
+        #         'Y': 999,
+        #     },
+        # },
+    ]
+    result = patch
+    return result
+
+def get_normalize_marble_gallery_slinger_staircase_right_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... 02EE 02EE 031A 031B .... .... 0000 0000 031B .... .... .... .... ....',
+            '.... .... .... 02F0 02F0 031C .... .... 0000 0000 031C .... .... .... .... ....',
+            '.... .... .... .... 02F3 02F3 .... .... 0597 0597 .... .... .... .... .... ....',
+            '.... .... .... .... 02F7 02F8 .... .... 0000 0000 .... .... .... .... .... ....',
+            '.... .... .... .... 0319 02E1 0000 0000 0000 0000 .... .... .... .... .... ....',
+            '.... .... .... .... 0597 0597 0000 0000 0000 0000 .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Marble Gallery Slinger Staircase',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Marble Gallery, Slinger Staircase': {
+                    'Nodes': {
+                        'Right-Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Marble Gallery',
+                    'Room': 'Marble Gallery, Slinger Staircase',
+                    'Layer': 'Foreground',
+                    'Top': 16 + 10,
+                    'Left': 32,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Black Marble Gallery',
+                    'Room': 'Black Marble Gallery, Slinger Staircase',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Pokes'] = []
+    for (offset, data_type, value) in (
+        (0x03FCE06C, 's16', 0x0001), # Marble Gallery - 0x0003 -> 0x0001
+    ):
+        patch['Changes']['Pokes'].append({
+            'Gamedata Address': '{:08X}'.format(offset),
+            'Data Type': data_type,
+            'Value': '{:08X}'.format(value),
+        })
+    patch['Changes']['Object Layouts'] = [
+        {
+            'Stage': 'Marble Gallery',
+            'Room': 'Marble Gallery, Slinger Staircase',
+            'Object Layout ID': 11,
+            'Properties': {
+                'X': 608 + 32,
+                'Y': 476,
+            },
+        },
+        {
+            'Stage': 'Black Marble Gallery',
+            'Room': 'Black Marble Gallery, Slinger Staircase',
+            'Object Layout ID': 5,
+            'Properties': {
+                'X': 160,
+                'Y': 36,
+            },
+        },
+    ]
+    patch['Changes']['Constants'] = {}
+    constant_key = f'Trapdoor Offsets (Marble Gallery)'
+    patch['Changes']['Constants'][constant_key] = []
+    for (index, value) in (
+        (2, 0x0566),
+       ):
+        patch['Changes']['Constants'][constant_key].append({
+            'Index': index,
+            'Value': '{:04X}'.format(value),
+        })
+    result = patch
+    return result
+
+def get_normalize_olroxs_quarters_tall_shaft_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... 06B4 06B4 06B4 06B4 0000 0000 0000 0000 06B4 06B4 06B4 .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D7 03D8 03D7 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 039D 0000 0000 0000 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03A1 0000 0000 0000 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 039D 0000 0000 0000 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03A1 0000 0000 0000 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 0412 0414 0412 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D7 03D8 03D7 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 039D 0000 0000 0000 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03A1 0000 0000 0000 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 039D 0000 0000 0000 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03A1 0000 0000 0000 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 0412 0414 0412 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D7 03D8 03D7 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 039D 0000 0000 0000 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03A1 0000 0000 0000 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 039D 0000 0000 0000 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03A1 0000 0000 0000 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 0412 0414 0412 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... 03D0 03D1 03D0 0207 0000 0000 0000 0000 025C 03D1 03D0 .... .... ....',
+            '.... .... 03CC 03CD 03CC 0207 0000 0000 0000 0000 025C 03CD 03CC .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0489 03B2 03B3 06A2 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 03F9 03F7 03F8 03F7 03F8 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 03FB 03F8 03F7 03F8 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 03FC 03FD 03FE 03FD 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0489 03B2 03B3 06A2 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 03F9 03F7 03F8 03F7 03F8 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 03FB 03F8 03F7 03F8 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 03FC 03FD 03FE 03FD 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0489 03B2 03B3 06A2 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 03F9 03F7 03F8 03F7 03F8 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 03FB 03F8 03F7 03F8 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 03FC 03FD 03FE 03FD 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03F9 03F7 03F8 044A 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FB 03F8 03F7 0449 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03FC 03FD 03FE 044B 0000 0000 0000 .... .... ....',
+            '.... .... 0000 0000 0000 0000 03C1 0402 0403 03C1 0000 0000 0000 .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': "Normalize Olrox's Quarters Tall Shaft",
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                "Olrox's Quarters, Tall Shaft": {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Olrox's Quarters",
+                    'Room': "Olrox's Quarters, Tall Shaft",
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Olrox's Quarters",
+                    'Room': "Olrox's Quarters, Tall Shaft",
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Death Wing's Lair",
+                    'Room': "Death Wing's Lair, Tall Shaft",
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Death Wing's Lair",
+                    'Room': "Death Wing's Lair, Tall Shaft",
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Object Layouts'] = [
+        {
+            'Stage': "Olrox's Quarters",
+            'Room': "Olrox's Quarters, Tall Shaft",
+            'Object Layout ID': 0,
+            'Properties': {
+                'X': 95 - 32,
+                'Y': 1039,
+            },
+        },
+        {
+            'Stage': "Olrox's Quarters",
+            'Room': "Olrox's Quarters, Tall Shaft",
+            'Object Layout ID': 1,
+            'Properties': {
+                'X': 95 - 32,
+                'Y': 911,
+            },
+        },
+        {
+            'Stage': "Olrox's Quarters",
+            'Room': "Olrox's Quarters, Tall Shaft",
+            'Object Layout ID': 2,
+            'Properties': {
+                'X': 95 - 32,
+                'Y': 399,
+            },
+        },
+        {
+            'Stage': "Death Wing's Lair",
+            'Room': "Death Wing's Lair, Tall Shaft",
+            'Object Layout ID': 1,
+            'Properties': {
+                'X': 161 + 32,
+                'Y': 497,
+            },
+        },
+        {
+            'Stage': "Death Wing's Lair",
+            'Room': "Death Wing's Lair, Tall Shaft",
+            'Object Layout ID': 2,
+            'Properties': {
+                'X': 161 + 32,
+                'Y': 625,
+            },
+        },
+        {
+            'Stage': "Death Wing's Lair",
+            'Room': "Death Wing's Lair, Tall Shaft",
+            'Object Layout ID': 3,
+            'Properties': {
+                'X': 161 + 32,
+                'Y': 1137,
+            },
+        },
+    ]
+    result = patch
+    return result
+
+def get_normalize_olroxs_quarters_prison_right_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... 039D 0401 0000 0000 0000 .... 0404 040D 03FF .... .... ....',
+            '.... .... .... .... 01FE 01FF 0000 0000 0000 .... 022D 01FD 0405 .... .... ....',
+            '.... .... .... .... 0202 01FF 0000 0000 0000 .... 022D 0201 040A .... .... ....',
+            '.... .... .... .... .... .... 0000 0000 0000 .... 06B4 .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... 0403 0402 0403 .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': "Normalize Olrox's Quarters Prison Right Bottom",
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                "Olrox's Quarters, Prison": {
+                    'Nodes': {
+                        'Right-Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Olrox's Quarters",
+                    'Room': "Olrox's Quarters, Prison",
+                    'Layer': 'Foreground',
+                    'Top': 12,
+                    'Left': 80,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Olrox's Quarters",
+                    'Room': "Olrox's Quarters, Prison",
+                    'Layer': 'Background',
+                    'Top': 12,
+                    'Left': 80,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Death Wing's Lair",
+                    'Room': "Death Wing's Lair, Prison",
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Death Wing's Lair",
+                    'Room': "Death Wing's Lair, Prison",
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_olroxs_quarters_prison_left_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... 039D 0401 0000 0000 0000 0000 0404 040D 03FF .... .... ....',
+            '.... .... .... .... 01FE 01FF 0000 0000 0000 0000 022D 01FD 0405 .... .... ....',
+            '.... .... .... .... 0202 01FF 0000 0000 0000 0000 022D 0201 040A .... .... ....',
+            '.... .... .... .... .... 06B4 0000 0000 0000 0000 06B4 .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... 0403 0402 0403 0402 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': "Normalize Olrox's Quarters Prison Left Bottom",
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                "Olrox's Quarters, Prison": {
+                    'Nodes': {
+                        'Left-Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Olrox's Quarters",
+                    'Room': "Olrox's Quarters, Prison",
+                    'Layer': 'Foreground',
+                    'Top': 12,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Olrox's Quarters",
+                    'Room': "Olrox's Quarters, Prison",
+                    'Layer': 'Background',
+                    'Top': 12,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Death Wing's Lair",
+                    'Room': "Death Wing's Lair, Prison",
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 80,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Death Wing's Lair",
+                    'Room': "Death Wing's Lair, Prison",
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 80,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_olroxs_quarters_open_courtyard_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '06B4 06B4 06B4 06B4 06B4 06B4 0000 0000 0000 0000 06B4 06B4 06B4 06B4 06B4 06B4',
+            '0201 0202 0201 0202 0201 01FF 0224 0224 0224 0224 022D 0201 022C 022D 022E 022F',
+            '01FD 01FE 01FD 01FE 01FD 01FF 0224 0224 0224 0224 022D 01FD 022C 022D 0230 0231',
+            '0201 0202 0201 0202 0201 01FF 0229 022A 0229 022A 022D 0201 022C 022D 022E 022F',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': "Normalize Olrox's Quarters Open Courtyard Top",
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                "Olrox's Quarters, Open Courtyard": {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Olrox's Quarters",
+                    'Room': "Olrox's Quarters, Open Courtyard",
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 80,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Death Wing's Lair",
+                    'Room': "Death Wing's Lair, Open Courtyard",
+                    'Layer': 'Foreground',
+                    'Top': 48 + 12,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_olroxs_quarters_catwalk_crypt_left_top_passage():
+    # NOTE(sestren): In Death Wing's Lair, it is possible to clip through the barrier when flying upward from underneath
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0027 0027 002A 002B .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0021 0022 0049 004A .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': "Normalize Olrox's Quarters Catwalk Crypt Left Top",
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                "Olrox's Quarters, Catwalk Crypt": {
+                    'Nodes': {
+                        'Left-Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Olrox's Quarters",
+                    'Room': "Olrox's Quarters, Catwalk Crypt",
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 16,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Death Wing's Lair",
+                    'Room': "Death Wing's Lair, Catwalk Crypt",
+                    'Layer': 'Foreground',
+                    'Top': 13,
+                    'Left': 80,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Constants'] = {}
+    for stage_name in (
+        "Olrox's Quarters",
+        "Death Wing's Lair",
+    ):
+        constant_key = f'Breakable Ceiling Tiles ({stage_name})'
+        patch['Changes']['Constants'][constant_key] = []
+        for (index, value) in enumerate((
+            # Closed
+            0x0027, 0x0027, 0x002A, 0x002B,
+            0x000F, 0x000D, 0x000E, 0x000D,
+            # Open
+            0x0027, 0x0027, 0x002A, 0x002B,
+            0x0021, 0x0022, 0x0049, 0x004A,
+        )):
+            patch['Changes']['Constants'][constant_key].append({
+                'Index': index,
+                'Value': '{:04X}'.format(value),
+            })
+    result = patch
+    return result
+
+def get_normalize_olroxs_quarters_sword_card_room_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... 03C1 03C1 04EA 04ED .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 04DF 04E0 04EB 04EC .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 04EE 04EF 04F8 04F9 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0000 .... .... 0000 .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': "Normalize Olrox's Quarters Sword Card Room Bottom",
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                "Olrox's Quarters, Sword Card Room": {
+                    'Nodes': {
+                        'Left-Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Olrox's Quarters",
+                    'Room': "Olrox's Quarters, Sword Card Room",
+                    'Layer': 'Foreground',
+                    'Top': 12,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Death Wing's Lair",
+                    'Room': "Death Wing's Lair, Sword Card Room",
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 16,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_castle_entrance_after_drawbridge_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... 0127 0129 0132 0128 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 012C 04F9 04F8 012D .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 012E 012E 012E 012E .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 012E 012E 012E 012E .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 012E 012E 012E 012E .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0000 .... .... 0000 .... .... .... .... .... ....',
+        ],
+        'Foreground (Reverse Entrance)': [
+            '.... .... .... .... .... .... 0127 00CF 00D0 0128 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 012C 04F9 04F8 012D .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 012E 012E 012E 012E .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 012E 012E 012E 012E .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 012E 012E 012E 012E .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0000 .... .... 0000 .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': "Normalize Castle Entrance After Drawbridge Bottom",
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Castle Entrance, After Drawbridge': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+                'Castle Entrance Revisited, After Drawbridge': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance',
+                    'Room': 'Castle Entrance, After Drawbridge',
+                    'Layer': 'Foreground',
+                    'Top': 32 + 10,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance Revisited',
+                    'Room': 'Castle Entrance Revisited, After Drawbridge',
+                    'Layer': 'Foreground',
+                    'Top': 32 + 10,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Reverse Entrance",
+                    'Room': 'Reverse Entrance, After Drawbridge',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 16,
+                    'Tiles': reverse_tilemaps['Foreground (Reverse Entrance)'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_castle_entrance_drop_under_portcullis_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... 02D8 0000 .... .... 0000 0309 .... .... .... .... ....',
+            '.... .... .... .... .... 02D7 0000 .... .... 0000 0307 .... .... .... .... ....',
+            '.... .... .... .... .... 02D6 0000 .... .... 0000 0307 .... .... .... .... ....',
+            '.... .... .... .... .... 02D8 0000 .... .... 0540 053F .... .... .... .... ....',
+            '.... .... .... .... .... 02D7 0000 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... 02D6 0000 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... 02D4 0000 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... 02D6 0000 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... 02D7 0000 .... .... .... .... .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0563 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0562 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 0564 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': "Normalize Castle Entrance Under Portcullis Top",
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Castle Entrance, Drop Under Portcullis': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+                'Castle Entrance Revisited, Drop Under Portcullis': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance',
+                    'Room': 'Castle Entrance, Drop Under Portcullis',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance',
+                    'Room': 'Castle Entrance, Drop Under Portcullis',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance Revisited',
+                    'Room': 'Castle Entrance Revisited, Drop Under Portcullis',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance Revisited',
+                    'Room': 'Castle Entrance Revisited, Drop Under Portcullis',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Reverse Entrance",
+                    'Room': 'Reverse Entrance, Drop Under Portcullis',
+                    'Layer': 'Foreground',
+                    'Top': 16 + 7,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Reverse Entrance",
+                    'Room': 'Reverse Entrance, Drop Under Portcullis',
+                    'Layer': 'Background',
+                    'Top': 16 + 7,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_castle_entrance_attic_entrance_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 0420 0421',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 0423 0425',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 041A 041B',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 041D 041E',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 0420 0421',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 0423 0425',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 041A 041B',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0000 041D 041E',
+            '.... .... .... .... .... .... .... .... 0000 0000 0000 0000 0447 0448 0420 0421',
+            '.... .... .... .... .... .... .... .... 0000 0000 0000 044C 044D 0434 0423 0425',
+            '.... .... .... .... .... .... .... .... 0000 0000 044C 0450 0451 04FA 041A 041B',
+            '.... .... .... .... .... .... .... .... 0000 0000 0505 0465 0464 0465 041D 041E',
+            '.... .... .... .... .... .... .... .... 0000 0000 04FA 04FA 04FA 04FA 04FA 04FA',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0474 .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 047D .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0483 .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0489 .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 047B .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0489 .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 047B .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... .... .... 0489 .... ....',
+            '.... .... .... .... .... .... .... .... .... .... .... 0488 0487 0000 .... ....',
+            '.... .... .... .... .... .... .... .... .... .... 0481 0482 0000 0000 .... ....',
+            '.... .... .... .... .... .... .... 0488 0487 0488 0481 0473 047B 047B .... ....',
+            '.... .... .... .... .... .... .... 048A 0487 0487 048A 0000 0000 0000 .... ....',
+            '.... .... .... .... .... .... .... 0000 0000 0000 0000 0000 0000 0000 .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': "Normalize Castle Entrance Attic Entrance Bottom",
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Castle Entrance, Attic Entrance': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+                'Castle Entrance Revisited, Attic Entrance': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance',
+                    'Room': 'Castle Entrance, Attic Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance',
+                    'Room': 'Castle Entrance, Attic Entrance',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance Revisited',
+                    'Room': 'Castle Entrance Revisited, Attic Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance Revisited',
+                    'Room': 'Castle Entrance Revisited, Attic Entrance',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Reverse Entrance",
+                    'Room': 'Reverse Entrance, Attic Entrance',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Reverse Entrance",
+                    'Room': 'Reverse Entrance, Attic Entrance',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_castle_entrance_merman_room_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... .... .... .... 0000 0000 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... 0000 0000 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... 0000 0000 .... .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... .... .... 0323 0323 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... 0323 0323 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... .... .... 0323 0323 .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': "Normalize Castle Entrance Merman Room Top",
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Castle Entrance, Merman Room': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+                'Castle Entrance Revisited, Merman Room': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance',
+                    'Room': 'Castle Entrance, Merman Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance',
+                    'Room': 'Castle Entrance, Merman Room',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance Revisited',
+                    'Room': 'Castle Entrance Revisited, Merman Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Castle Entrance Revisited',
+                    'Room': 'Castle Entrance Revisited, Merman Room',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Reverse Entrance",
+                    'Room': 'Reverse Entrance, Merman Room',
+                    'Layer': 'Foreground',
+                    'Top': 16 + 13,
+                    'Left': 32,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': "Reverse Entrance",
+                    'Room': 'Reverse Entrance, Merman Room',
+                    'Layer': 'Background',
+                    'Top': 16 + 13,
+                    'Left': 32,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    patch['Changes']['Object Layouts'] = [
+        {
+            'Stage': 'Castle Entrance',
+            'Room': 'Castle Entrance, Merman Room',
+            'Object Layout ID': 7,
+            'Properties': {
+                'X': 144 + 24,
+                'Y': 56,
+            },
+        },
+        {
+            'Stage': 'Castle Entrance Revisited',
+            'Room': 'Castle Entrance Revisited, Merman Room',
+            'Object Layout ID': 6,
+            'Properties': {
+                'X': 144 + 24,
+                'Y': 56,
+            },
+        },
+    ]
+    result = patch
+    return result
+
+def get_normalize_marble_gallery_three_paths_top_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... 068A 0000 .... .... 0000 0689 .... .... .... .... ....',
+            '.... .... .... .... .... 0688 0000 .... .... 0000 0687 .... .... .... .... ....',
+            '.... .... .... .... .... 0685 0000 .... .... 0000 0686 .... .... .... .... ....',
+            '.... .... .... .... .... 068C 0000 .... .... 0000 068B .... .... .... .... ....',
+        ],
+        'Background': [
+            '.... .... .... .... .... .... 06B9 06B3 06BC 06C0 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 06B6 06B7 06BE 06BF .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 06B9 06B3 06BC 06C0 .... .... .... .... .... ....',
+            '.... .... .... .... .... .... 06B6 06B7 06BE 06BF .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Marble Gallery Three Paths Top',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Marble Gallery, Three Paths': {
+                    'Nodes': {
+                        'Top Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Marble Gallery',
+                    'Room': 'Marble Gallery, Three Paths',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Marble Gallery',
+                    'Room': 'Marble Gallery, Three Paths',
+                    'Layer': 'Background',
+                    'Top': 0,
+                    'Left': 0,
+                    'Tiles': tilemaps['Background'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Black Marble Gallery',
+                    'Room': 'Black Marble Gallery, Three Paths',
+                    'Layer': 'Foreground',
+                    'Top': 16 + 12,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Black Marble Gallery',
+                    'Room': 'Black Marble Gallery, Three Paths',
+                    'Layer': 'Background',
+                    'Top': 16 + 12,
+                    'Left': 0,
+                    'Tiles': reverse_tilemaps['Background'],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_marble_gallery_gravity_boots_room_bottom_passage():
+    tilemaps = {
+        'Foreground': [
+            '.... .... .... .... .... 06C6 0520 .... .... 0520 06CB .... .... .... .... ....',
+            '.... .... .... .... .... 0541 0520 .... .... 0520 053B .... .... .... .... ....',
+            '.... .... .... .... .... .... 0520 .... .... 0520 .... .... .... .... .... ....',
+        ],
+    }
+    reverse_tilemaps = reverse_tilemap_changes(tilemaps)
+    patch = {
+        'Description': 'Normalize Marble Gallery Gravity Boots Bottom',
+        'Authors': [
+            'Sestren',
+        ],
+        'Mapper': {
+            'Rooms': {
+                'Marble Gallery, Gravity Boots Room': {
+                    'Nodes': {
+                        'Bottom Passage': {
+                            'Type': '######....######',
+                        },
+                    },
+                },
+            },
+        },
+        'Changes': {
+            'Tilemaps': [
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Marble Gallery',
+                    'Room': 'Marble Gallery, Gravity Boots Room',
+                    'Layer': 'Foreground',
+                    'Top': 13,
+                    'Left': 32,
+                    'Tiles': tilemaps['Foreground'],
+                },
+                {
+                    'Type': 'Tile ID-Based',
+                    'Stage': 'Black Marble Gallery',
+                    'Room': 'Black Marble Gallery, Gravity Boots Room',
+                    'Layer': 'Foreground',
+                    'Top': 0,
+                    'Left': 32,
+                    'Tiles': reverse_tilemaps['Foreground'],
+                },
+            ],
+        },
+    }
+    result = patch
     return result
 
 if __name__ == '__main__':
     '''
+    Some patches play nice with other patches, some don't.
+    A good patcher will assemble patches and attempt to validate if they work together or not
+
     Usage
-    python sotn_patcher.py EXTRACTION_JSON --data= --changes=CHANGES_JSON --ppf=OUTPUT_PPF
+    python sotn_patcher.py
     '''
-    DESCRIPTION = 'Designed to work with SOTN Shuffler'
     parser = argparse.ArgumentParser()
-    parser.add_argument('extract_file', help='Input a filepath to the extract JSON file', type=str)
-    parser.add_argument('--data', help='Input an optional (required if changes argument is given) filepath to a folder containing various data dependency files', type=str)
-    parser.add_argument('--changes', help='Input an optional (required if data argument is given) filepath to the changes JSON file', type=str)
-    parser.add_argument('--template', help='Input an optional filepath to the output template file, if one is generated', type=str)
-    parser.add_argument('--ppf', help='Input an optional filepath to the output PPF file', type=str)
+    parser.add_argument('build_dir', help='Input a filepath to a folder that will contain the build files', type=str)
     args = parser.parse_args()
-    with open(args.extract_file) as extract_file:
-        extract = json.load(extract_file)
-        if 'Extract' in extract:
-            extract = extract['Extract']
-        if args.changes is None:
-            if args.template is None:
-                args.template = "build/vanilla-changes.json"
-            with (
-                open(os.path.join(os.path.normpath(args.template)), 'w') as changes_file,
-                open(os.path.join(os.path.normpath(args.data), 'aliases.yaml')) as aliases_file,
-            ):
-                aliases = yaml.safe_load(aliases_file)
-                changes = get_changes_template_file(extract, aliases)
-                json.dump(changes, changes_file, indent='    ', sort_keys=True)
-        else:
-            with (
-                open(os.path.join(os.path.normpath(args.data), 'aliases.yaml')) as aliases_file,
-                open(args.changes) as changes_file,
-                open(args.ppf, 'wb') as ppf_file,
-            ):
-                data = {
-                    'Aliases': yaml.safe_load(aliases_file),
-                }
-                changes = json.load(changes_file)
-                if 'Changes' in changes:
-                    changes = changes['Changes']
-                validate_changes(changes)
-                patch = get_patch(extract, changes, data)
-                ppf = PPF(DESCRIPTION, patch, False)
-                ppf_file.write(ppf.bytes)
+    for (file_name, patch) in (
+        ('clock-hands-display-minutes-and-seconds', get_clock_hands_patch()),
+        ('enable-debug-mode', get_simple_patch("Enables the game's hidden debug mode", [
+            (0x000D9364, 'u32', 0xAC258850, 'sw a1, -$77B0(at)'), # Original instruction was sw 0, -$77B0(at)
+        ])),
+        ('normalize-dk-bridge-bottom-passage', get_normalize_dk_bridge_bottom_passage()),
+        ('normalize-ferryman-gate', get_simple_patch('Normalize Ferryman Gate', [
+            # 0x801C5C7C - EntityFerrymanController
+            # ------------------------------------------
+            # Equivalent to the following C code
+            # ------------------------------------------
+            # offset = self->posX.i.hi + g_Tilemap.scrollX.i.hi;
+            # if (self->facingLeft) {
+            #     if (offset > 3040) {
+            #         self->step++;
+            #     }
+            #     else if (offset > 2720) {
+            #         g_CastleFlags[0xC2] = true;
+            #     }
+            # } else {
+            #     if (offset < 288) {
+            #         self->step++;
+            #     }
+            #     else if (offset < 3104) {
+            #         g_CastleFlags[0xC2] = true;
+            #     }
+            # }
+            (0x0429D47C + 0x3F8, 'u32', 0x96040014, 'lhu     a0,0x14(s0)'),   # 801C6074
+            (0x0429D47C + 0x3FC, 'u32', 0x00000000, 'nop'),                   # 801C6078
+            (0x0429D47C + 0x400, 'u32', 0x1080000E, 'beqz    a0,$801C60B8'),  # 801C607C
+            (0x0429D47C + 0x404, 'u32', 0x00431021, 'addu    v0,v0,v1'),      # 801C6080
+            (0x0429D47C + 0x408, 'u32', 0x00021400, 'sll     v0,v0,0x10'),    # 801C6084
+            (0x0429D47C + 0x40C, 'u32', 0x00021C03, 'sra     v1,v0,0x10'),    # 801C6088
+            (0x0429D47C + 0x410, 'u32', 0x28620BE1, 'slti    v0,v1,0xBE1'),   # 801C608C
+            (0x0429D47C + 0x414, 'u32', 0x14400004, 'bnez    v0,$801C60A4'),  # 801C6090
+            (0x0429D47C + 0x418, 'u32', 0x00000000, 'nop'),                   # 801C6094
+            (0x0429D47C + 0x41C, 'u32', 0x9602002C, 'lhu     v0,0x2c(s0)'),   # 801C6098
+            (0x0429D47C + 0x420, 'u32', 0x0807185A, 'j       $801C6168'),     # 801C609C
+            (0x0429D47C + 0x424, 'u32', 0x24420001, 'addiu   v0,v0,1'),       # 801C60A0
+            (0x0429D47C + 0x428, 'u32', 0x28620AA1, 'slti    v0,v1,0xaa1'),   # 801C60A4
+            (0x0429D47C + 0x42C, 'u32', 0x14400030, 'bnez    v0,$801C616C'),  # 801C60A8
+            (0x0429D47C + 0x430, 'u32', 0x34020001, 'li      v0,0x1'),        # 801C60AC
+            (0x0429D47C + 0x434, 'u32', 0x08071839, 'j       $801C60E4'),     # 801C60B0
+            (0x0429D47C + 0x438, 'u32', 0x00000000, 'nop'),                   # 801C60B4
+            (0x0429D47C + 0x43C, 'u32', 0x00021400, 'sll     v0,v0,0x10'),    # 801C60B8
+            (0x0429D47C + 0x440, 'u32', 0x00021C03, 'sra     v1,v0,0x10'),    # 801C60BC
+            (0x0429D47C + 0x444, 'u32', 0x28620120, 'slti    v0,v1,0x120'),   # 801C60C0
+            (0x0429D47C + 0x448, 'u32', 0x10400004, 'beqz    v0,$801C60D8'),  # 801C60C4
+            (0x0429D47C + 0x44C, 'u32', 0x00000000, 'nop'),                   # 801C60C8
+            (0x0429D47C + 0x450, 'u32', 0x9602002C, 'lhu     v0,0x2c(s0)'),   # 801C60CC
+            (0x0429D47C + 0x454, 'u32', 0x0807185A, 'j       $801C6168'),     # 801C60D0
+            (0x0429D47C + 0x458, 'u32', 0x24420001, 'addiu   v0,v0,1'),       # 801C60D4
+            (0x0429D47C + 0x45C, 'u32', 0x28620C20, 'slti    v0,v1,0xc20'),   # 801C60D8
+            (0x0429D47C + 0x460, 'u32', 0x10400023, 'beqz    v0,$801C616C'),  # 801C60DC
+            (0x0429D47C + 0x464, 'u32', 0x34020001, 'li      v0,0x1'),        # 801C60E0
+            (0x0429D47C + 0x468, 'u32', 0x3C018004, 'lui     at,$8004'),      # 801C60E4
+            (0x0429D47C + 0x46C, 'u32', 0xA022BEAE, 'sb      v0,-$4152(at)'), # 801C60E8
+            (0x0429D47C + 0x470, 'u32', 0x0807185B, 'j       $801C616C'),     # 801C60EC
+            (0x0429D47C + 0x474, 'u32', 0x00000000, 'nop'),                   # 801C60F0
+            (0x0429D47C + 0x478, 'u32', 0x00000000, 'nop'),                   # 801C60F4
+            (0x0429D47C + 0x47C, 'u32', 0x00000000, 'nop'),                   # 801C60F8
+            (0x0429D47C + 0x480, 'u32', 0x00000000, 'nop'),                   # 801C60FC
+        ])),
+        ('normalize-alchemy-laboratory-entryway-top-passage', get_normalize_alchemy_laboratory_entryway_top_passage()),
+        ('normalize-alchemy-laboratory-glass-vats-bottom-passage', get_normalize_alchemy_laboratory_glass_vats_bottom_passage()),
+        ('normalize-alchemy-laboratory-red-skeleton-lift-room-bottom-passage', get_normalize_alchemy_laboratory_red_skeleton_lift_room_bottom_passage()),
+        ('normalize-alchemy-laboratory-red-skeleton-lift-room-top-passage', get_normalize_alchemy_laboratory_red_skeleton_lift_room_top_passage()),
+        ('normalize-alchemy-laboratory-secret-life-max-up-room-top-passage', get_normalize_alchemy_laboratory_secret_life_max_up_room_top_passage()),
+        ('normalize-alchemy-laboratory-tall-zig-zag-room-bottom-passage', get_normalize_alchemy_laboratory_tall_zig_zag_room_bottom_passage()),
+        ('normalize-castle-entrance-after-drawbridge-bottom-passage', get_normalize_castle_entrance_after_drawbridge_bottom_passage()),
+        ('normalize-castle-entrance-attic-entrance-bottom-passage', get_normalize_castle_entrance_attic_entrance_bottom_passage()),
+        ('normalize-castle-entrance-drop-under-portcullis-top-passage', get_normalize_castle_entrance_drop_under_portcullis_top_passage()),
+        ('normalize-castle-entrance-merman-room-top-passage', get_normalize_castle_entrance_merman_room_top_passage()),
+        ('normalize-hidden-crystal-entrance-top-passage', get_normalize_hidden_crystal_entrance_top_passage()),
+        ('normalize-ice-floe-room-top-passage', get_normalize_ice_floe_room_top_passage()),
+        ('normalize-jewel-sword-passageway', get_normalize_jewel_sword_passageway_patch()),
+        ('normalize-long-drop-bottom-passage', get_normalize_long_drop_bottom_passage()),
+        ('normalize-marble-gallery-beneath-left-trapdoor-top-passage', get_normalize_marble_gallery_beneath_left_trapdoor_top_passage()),
+        ('normalize-marble-gallery-beneath-right-trapdoor-top-passage', get_normalize_marble_gallery_beneath_right_trapdoor_top_passage()),
+        ('normalize-marble-gallery-gravity-boots-room-bottom-passage', get_normalize_marble_gallery_gravity_boots_room_bottom_passage()),
+        ('normalize-marble-gallery-slinger-staircase-right-bottom-passage', get_normalize_marble_gallery_slinger_staircase_right_bottom_passage()),
+        ('normalize-marble-gallery-stopwatch-room-bottom-passage', get_normalize_marble_gallery_stopwatch_room_bottom_passage()),
+        ('normalize-marble-gallery-three-paths-top-passage', get_normalize_marble_gallery_three_paths_top_passage()),
+        ('normalize-olroxs-quarters-catwalk-crypt-left-top-passage', get_normalize_olroxs_quarters_catwalk_crypt_left_top_passage()),
+        ('normalize-olroxs-quarters-open-courtyard-top-passage', get_normalize_olroxs_quarters_open_courtyard_top_passage()),
+        ('normalize-olroxs-quarters-prison-left-bottom-passage', get_normalize_olroxs_quarters_prison_left_bottom_passage()),
+        ('normalize-olroxs-quarters-prison-right-bottom-passage', get_normalize_olroxs_quarters_prison_right_bottom_passage()),
+        ('normalize-olroxs-quarters-sword-card-room-bottom-passage', get_normalize_olroxs_quarters_sword_card_room_bottom_passage()),
+        ('normalize-olroxs-quarters-tall-shaft-top-passage', get_normalize_olroxs_quarters_tall_shaft_top_passage()),
+        ('normalize-secret-bookcase-rooms', get_normalize_secret_bookcase_rooms()),
+        ('normalize-tall-stairwell-bottom-passage', get_normalize_tall_stairwell_bottom_passage()),
+        ('normalize-underground-caverns-crystal-bend-top-passage', get_normalize_underground_caverns_crystal_bend_top_passage()),
+        ('normalize-underground-caverns-exit-to-abandoned-mine-top-passage', get_normalize_underground_caverns_exit_to_abandoned_mine_top_passage()),
+        ('normalize-underground-caverns-exit-to-castle-entrance', get_normalize_underground_caverns_exit_to_castle_entrance()),
+        ('normalize-underground-caverns-hidden-crystal-entrance-bottom-passage', get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage()),
+        ('normalize-underground-caverns-left-ferryman-route-top-passage', get_normalize_underground_caverns_left_ferryman_route_top_passage()),
+        ('normalize-underground-caverns-plaque-room-bottom-passage', get_normalize_underground_caverns_plaque_room_bottom_passage()),
+        ('normalize-underground-caverns-room-id-09-bottom-passage', get_normalize_underground_caverns_room_id_09_bottom_passage()),
+        ('normalize-underground-caverns-room-id-10-top-passage', get_normalize_underground_caverns_room_id_10_top_passage()),
+        ('normalize-underground-caverns-small-stairwell-top-passage', get_normalize_underground_caverns_small_stairwell_top_passage()),
+        ('prevent-softlocks-after-defeating-scylla', get_prevent_softlocks_after_defeating_scylla()),
+        ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
+        ('prevent-softlocks-at-left-gear-room-wall', get_prevent_softlocks_at_left_gear_room_wall_patch()),
+        ('prevent-softlocks-at-pendulum-room-wall', get_prevent_softlocks_at_pendulum_room_wall_patch()),
+        ('prevent-softlocks-at-plaque-room-wall', get_prevent_softlocks_at_plaque_room_wall_patch()),
+        ('prevent-softlocks-at-snake-column-wall', get_prevent_softlocks_at_snake_column_wall_patch()),
+        ('prevent-softlocks-at-tall-zig-zag-room-wall', get_prevent_softlocks_at_tall_zig_zag_room_wall_patch()),
+        ('prevent-softlocks-when-meeting-death', get_prevent_softlocks_when_meeting_death_patch()),
+        ('skip-maria-cutscene-in-alchemy-laboratory', get_simple_patch('Skip Maria cutscene in Alchemy Laboratory', [
+            (0x049F66EC, 'u32', 0x0806E296, 'bne v0,0,$801B8A58'), # Original instruction was bne v0,0,$801B8A58
+        ])),
+    ):
+        with open(os.path.join(os.path.normpath(args.build_dir), 'patches', file_name + '.json'), 'w') as patch_file:
+            json.dump(patch, patch_file, indent='    ', sort_keys=True)
+    # # Option - Preserve unsaved map data
+    # if changes.get('Options', {}).get('Preserve unsaved map data', 'None') != 'None':
+    #     preservation_method = changes['Options']['Preserve unsaved map data']
+    #     assert preservation_method in ('None', 'Revelation', 'Exploration')
+    #     # 0x801B948C - LoadSaveData
+    #     # ------------------------------------------
+    #     # Equivalent to the following C code (for Revelation Mode)
+    #     # ------------------------------------------
+    #     # i = 0;
+    #     # while (i < LEN(g_CastleFlags)) {
+    #     #     g_CastleFlags[i] = savePtr->castleFlags[i];
+    #     #     g_CastleMap[i] = ((0x55 & g_CastleMap[i]) << 1) | (0xAA & g_CastleMap[i]) | savePtr->castleMap[i];
+    #     #     i++
+    #     # }
+    #     # while (i < LEN(g_CastleMap)) {
+    #     #     g_CastleMap[i] = ((0x55 & g_CastleMap[i]) << 1) | (0xAA & g_CastleMap[i]) | savePtr->castleMap[i];
+    #     #     i++;
+    #     # }
+    #     # ------------------------------------------
+    #     revelation_ind = (preservation_method == 'Revelation')
+    #     for (base, type) in (
+    #         (0x000DFA70, 'A'), # SEL or DRA?
+    #         (0x03AE0C8C, 'B'), # SEL or DRA?
+    #     ):
+    #         for (offset, value) in (
+    #             (0x0180, 0x3C068007), # lui     a2,$8007          ; %hi(g_CastleMap)
+    #             (0x0184, 0x24C6BB74), # addiu   a2,a2,-$448C      ; %lo(g_CastleMap)
+    #             (0x0188, 0x3C028004), # lui     v0,$8004          ; %hi(g_Settings+0x108)
+    #             (0x018C, 0x2442CB00), # addiu   v0,v0,-$3500      ; %lo(g_Settings+0x108)
+    #             (0x0190, 0x8C430000), # lw      v1,0(v0)          
+    #             (0x0194, 0x3C048004), # lui     a0,$8004          ; %hi(g_Settings+0x10c)
+    #             (0x0198, 0x8C84CB04), # lw      a0,-$34FC(a0)     ; %lo(g_Settings+0x10c)
+    #             (0x019C, 0x01431825), # or      v1,t2,v1          
+    #             (0x01A0, 0x01642025), # or      a0,t3,a0          
+    #             (0x01A4, 0xAC430000), # sw      v1,0(v0)          
+    #             (0x01A8, 0x3C018004), # lui     at,$8004          ; %hi(g_Settings+0x10c)
+    #             (0x01AC, 0xAC24CB04), # sw      a0,-$34FC(at)     ; %lo(g_Settings+0x10c)
+    #             (0x01B0, 0x01052021), # addu    a0,t0,a1          
+    #             (0x01B4, 0x908206C8), # lbu     v0,0x6c8(a0)      
+    #             (0x01B8, 0x3C018004), # lui     at,$8004          ; %hi(g_CastleFlags)
+    #             (0x01BC, 0x00250821), # addu    at,at,a1          
+    #             (0x01C0, 0xA022BDEC), # sb      v0,-$4214(at)     ; %lo(g_CastleFlags)
+    #             (0x01C4, 0x24A50001), # addiu   a1,a1,1           
+    #             (0x01C8, 0x90C30000), # lbu     v1,0(a2)          
+    #             (0x01CC, 0x908409C8), # lbu     a0,0x9c8(a0)      
+    #             (0x01D0, 0x30620055), # andi    v0,v1,0x55        
+    #             (0x01D4, 0x00021040 if revelation_ind else 0x00000000),
+    #                                   # sll     v0,v0,0x1         (for Revelation)
+    #                                   # nop                       (for Exploration)
+    #             (0x01D8, 0x306300AA), # andi    v1,v1,0xaa        
+    #             (0x01DC, 0x00431025), # or      v0,v0,v1          
+    #             (0x01E0, 0x00441025), # or      v0,v0,a0          
+    #             (0x01E4, 0xA0C20000), # sb      v0,0(a2)          
+    #             (0x01E8, 0x28A20300), # slti    v0,a1,0x300       
+    #             (0x01EC, 0x1440FFF0), # bnez    v0,154c ~>        
+    #             (0x01F0, 0x24C60001), # addiu   a2,a2,1           
+    #         ):
+    #             result.patch_value(value, 'u32', base + offset)

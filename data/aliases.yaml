@@ -5550,6 +5550,21 @@ Rooms:
     Room Index: 41
   Reverse Caverns, False Save Room:
     Room Index: 37
+    Notes:
+      - Fix discovered by @MottZilla
+      - The function DRA/func_800F24F4 contains constants that must be updated
+      - The values refer to the location of the False Save Room that takes you to fight Succubus
+    Dependents:
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000E7DA4
+        Property: Left
+        Transformations: {}
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000E7DAC
+        Property: Top
+        Transformations: {}
   Reverse Caverns, Hidden Crystal Entrance:
     Room Index: 1
   Reverse Caverns, Holy Symbol Room:
@@ -6100,6 +6115,21 @@ Rooms:
     Room Index: 38
   Underground Caverns, False Save Room:
     Room Index: 37
+    Notes:
+      - Fix discovered by @MottZilla
+      - The function DRA/func_800F24F4 contains constants that must be updated
+      - The values refer to the location of the False Save Room that takes you to fight Succubus
+    Dependents:
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000E7DC8
+        Property: Left
+        Transformations: {}
+      - Type: Direct Write
+        Data Type: s16
+        Address: 0x000E7DD0
+        Property: Top
+        Transformations: {}
   Underground Caverns, Hidden Crystal Entrance:
     Room Index: 1
     Dependents:

@@ -1,0 +1,5 @@
+{
+    "Options": {
+        "Prevent softlocks related to Door behind Scylla": true
+    }
+}

@@ -27,7 +27,8 @@ Most of the knowledge present in this project is only possible due to the immens
 - Forat Negre, for their research into room layouts, which helped demystify a lot of how stages and rooms worked in this game
 - [TalicZealot](https://github.com/taliczealot), for furthering knowledge about the game and making available tons of SOTN-related resources
 - [MainMemory](https://github.com/MainMemory), for their [CastleEditor](https://github.com/MainMemory/SotNCastleEditor) project, which provided key insight into a few addresses as well as extremely helpful visualizations of the castle stages
-- [Mottzilla](https://github.com/MottZilla), for their _StartAnywhere_ script, which dramatically improved turnaround time during playtesting
+- [Mottzilla](https://github.com/MottZilla), for their _StartAnywhere_ and _TileMapFind_ scripts, which dramatically improved turnaround time during playtesting
+- [meunierd](https://github.com/meunierd), for the PPF file format
 - [Fatalis](https://github.com/fatalis), for their Drop Calculator
 - Contributors and maintainers of the [SOTN-Decomp](https://github.com/Xeeynamo/sotn-decomp) project, including:
   - [Xeeynamo](https://github.com/Xeeynamo)
@@ -39,4 +40,6 @@ Most of the knowledge present in this project is only possible due to the immens
   - [Mottzilla](https://github.com/MottZilla)
   - [eldri7ch](https://github.com/eldri7ch2)
   - [LuciaRolon](https://github.com/LuciaRolon)
+- [ToiletPain](https://github.com/jjcdrummer), for their extensive help during beta testing
+- Dr4gonBlitz, for being a huge inspiration for SOTN speedrunning, and for their continued help and patience during the alpha testing phase of this project
 - The entire SOTN community, for their generosity and kindness
