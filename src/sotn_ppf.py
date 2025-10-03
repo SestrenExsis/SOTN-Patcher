@@ -328,6 +328,9 @@ def get_patch(args, extract, changes, data):
             'normalize-underground-caverns-room-id-10-top-passage',
             'normalize-underground-caverns-small-stairwell-top-passage',
         )),
+        ('Prevent softlocks related to Door behind Scylla', (
+            'prevent-softlocks-after-defeating-scylla',
+        )),
         ('Prevent softlocks related to Death cutscene in Castle Entrance', (
             'prevent-softlocks-when-meeting-death',
         )),

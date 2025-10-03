@@ -24,6 +24,7 @@ python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/normalize-room-co
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/preserve-map-exploration.json" --ppf="build/ppf/preserve-map-exploration.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/preserve-map-revelation.json" --ppf="build/ppf/preserve-map-revelation.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/prevent-death-meeting-softlocks.json" --ppf="build/ppf/prevent-death-meeting-softlocks.ppf" || goto :error
+python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/prevent-softlocks-after-defeating-scylla.json" --ppf="build/ppf/prevent-softlocks-after-defeating-scylla.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/prevent-softlocks-at-demon-switch-wall.json" --ppf="build/ppf/prevent-softlocks-at-demon-switch-wall.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/prevent-softlocks-at-left-gear-room-wall.json" --ppf="build/ppf/prevent-softlocks-at-left-gear-room-wall.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/prevent-softlocks-at-pendulum-room-wall.json" --ppf="build/ppf/prevent-softlocks-at-pendulum-room-wall.ppf" || goto :error

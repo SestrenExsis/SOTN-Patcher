@@ -75,6 +75,31 @@ def get_prevent_softlocks_when_meeting_death_patch():
     result = patch
     return result
 
+def get_prevent_softlocks_after_defeating_scylla():
+    # 801A094C RAM, 0x0552794C GAM : 0x38420001 xori v0,$1     -> 0x304200FE andi v0,$FE
+    # 801A3514 RAM, 0x0552A514 GAM : 0x3042FFCF andi v0,$FFCF  -> 0x3042FFCE andi v0,$FFCE
+    patch = {
+        'Description': 'Prevent softlocks after defeating Scylla',
+        'Authors': [
+            'Mottzilla',
+        ],
+        'Changes': {
+            'Pokes': [],
+        },
+    }
+    for (offset, data_type, value) in (
+        (0x0552794C, 'u32', 0x304200FE),
+        (0x0552A514, 'u16', 0x00CE),
+    ):
+        value_format = '{:08X}' if data_type == 'u32' else '{:04X}'
+        patch['Changes']['Pokes'].append({
+            'Gamedata Address': '{:08X}'.format(offset),
+            'Data Type': data_type,
+            'Value': value_format.format(value),
+        })
+    result = patch
+    return result
+
 def get_prevent_softlocks_at_snake_column_wall_patch():
     patch = {
         'Description': 'Prevent softlocks at Snake Column Wall',
@@ -3741,6 +3766,7 @@ if __name__ == '__main__':
         ('normalize-underground-caverns-room-id-09-bottom-passage', get_normalize_underground_caverns_room_id_09_bottom_passage()),
         ('normalize-underground-caverns-room-id-10-top-passage', get_normalize_underground_caverns_room_id_10_top_passage()),
         ('normalize-underground-caverns-small-stairwell-top-passage', get_normalize_underground_caverns_small_stairwell_top_passage()),
+        ('prevent-softlocks-after-defeating-scylla', get_prevent_softlocks_after_defeating_scylla()),
         ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
         ('prevent-softlocks-at-left-gear-room-wall', get_prevent_softlocks_at_left_gear_room_wall_patch()),
         ('prevent-softlocks-at-pendulum-room-wall', get_prevent_softlocks_at_pendulum_room_wall_patch()),
