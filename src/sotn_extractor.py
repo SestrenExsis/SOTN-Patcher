@@ -567,8 +567,10 @@ if __name__ == '__main__':
                 'Metadata': {
                     'Type': '2d-object-array',
                     'Start': cursors['Horizontal Entity Layout'].cursor.address,
+                    'End': 0,
                     'Size': 0x0A,
-                    'Count': 0,
+                    'Sentinel Entity Count': 0,
+                    'Non-Sentinel Entity Count': 0,
                     'Fields': {
                         'X': {
                             'Offset': 0x00,
@@ -593,18 +595,22 @@ if __name__ == '__main__':
                     },
                 },
             }
-            # Object layouts for the current room
+            # Entity layouts for the current room
             current_object_layout_offset = cursors['Horizontal Entity Layout'].u32(0) - OFFSET
             current_cursor = cursors['Stage'].clone(current_object_layout_offset)
             target_object_layout_offset = cursors['Vertical Entity Layout'].u32(0) - OFFSET
             target_cursor = cursors['Stage'].clone(target_object_layout_offset)
-            while current_cursor.cursor.address < target_cursor.cursor.address:
+            offset = 0
+            while current_cursor.cursor.address <= (target_cursor.cursor.address - 4):
                 x = current_cursor.s16(0x0)
                 y = current_cursor.s16(0x2)
                 entity_type_id = current_cursor.u16(0x4)
                 entity_room_index = current_cursor.u16(0x6)
                 params = current_cursor.u16(0x8)
-                current_cursor.seek(10)
+                current_cursor.seek(stage_entity_layout['Metadata']['Size'])
+                offset += stage_entity_layout['Metadata']['Size']
+                if x in (-2, -1):
+                    stage_entity_layout['Metadata']['Sentinel Entity Count'] += 1
                 if x == -2:
                     stage_entity_layout['Data'].append([])
                     continue
@@ -618,7 +624,17 @@ if __name__ == '__main__':
                     'Params': params,
                 }
                 stage_entity_layout['Data'][-1].append(data)
-                stage_entity_layout['Metadata']['Count'] += 1
+                stage_entity_layout['Metadata']['Non-Sentinel Entity Count'] += 1
+            # The next 2D-array must start at the next 4-byte alignment
+            current_cursor.seek(offset % 4)
+            # Verify that the vertical entity layout starts immediately after
+            stage_entity_layout['Metadata']['End'] = current_cursor.cursor.address
+            x = current_cursor.s16(0x0)
+            y = current_cursor.s16(0x2)
+            entity_type_id = current_cursor.u16(0x4)
+            entity_room_index = current_cursor.u16(0x6)
+            params = current_cursor.u16(0x8)
+            assert (x,  y, entity_type_id, entity_room_index, params) in ((-2, -2, 0, 0, 0), (-2, -2, 0, 0, 1))
             entity_layouts[stage_name] = stage_entity_layout
             # Room data
             stages[stage_name]['Rooms'] = {}
