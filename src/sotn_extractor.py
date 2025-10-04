@@ -229,6 +229,8 @@ if __name__ == '__main__':
     with (
         open(args.binary_filepath, 'br') as binary_file,
     ):
+        entity_layouts = {}
+        # Stages
         stages = {
             'Abandoned Mine': {
                 'Stage': {
@@ -538,6 +540,7 @@ if __name__ == '__main__':
             },
         }
         for stage_name in stages.keys():
+            print('', stage_name)
             cursors = {}
             stage_offset = stages[stage_name]['Stage']['Start']
             cursors['Stage'] = BIN(binary_file, stage_offset)
@@ -556,10 +559,71 @@ if __name__ == '__main__':
             ):
                 stage_offset = cursors['Stage'].u32(address) - OFFSET
                 cursors[cursor_name] = cursors['Stage'].clone(stage_offset)
-            #
+            # Entity Layout data
+            cursors['Horizontal Entity Layout'] = cursors['Stage'].clone(cursors['Entities'].u16(0x1C))
+            cursors['Vertical Entity Layout'] = cursors['Stage'].clone(cursors['Entities'].u16(0x28))
+            stage_entity_layout = {
+                'Data': [],
+                'Metadata': {
+                    'Type': '2d-object-array',
+                    'Start': cursors['Horizontal Entity Layout'].cursor.address,
+                    'Size': 0x0A,
+                    'Count': 0,
+                    'Fields': {
+                        'X': {
+                            'Offset': 0x00,
+                            'Type': 's16',
+                        },
+                        'Y': {
+                            'Offset': 0x02,
+                            'Type': 's16',
+                        },
+                        'Entity Type ID': {
+                            'Offset': 0x04,
+                            'Type': 'u16',
+                        },
+                        'Entity Room Index': {
+                            'Offset': 0x06,
+                            'Type': 'u16',
+                        },
+                        'Params': {
+                            'Offset': 0x08,
+                            'Type': 'u16',
+                        },
+                    },
+                },
+            }
+            # Object layouts for the current room
+            current_object_layout_offset = cursors['Horizontal Entity Layout'].u32(0) - OFFSET
+            current_cursor = cursors['Stage'].clone(current_object_layout_offset)
+            target_object_layout_offset = cursors['Vertical Entity Layout'].u32(0) - OFFSET
+            target_cursor = cursors['Stage'].clone(target_object_layout_offset)
+            while current_cursor.cursor.address < target_cursor.cursor.address:
+                x = current_cursor.s16(0x0)
+                y = current_cursor.s16(0x2)
+                entity_type_id = current_cursor.u16(0x4)
+                entity_room_index = current_cursor.u16(0x6)
+                params = current_cursor.u16(0x8)
+                current_cursor.seek(10)
+                if x == -2:
+                    stage_entity_layout['Data'].append([])
+                    continue
+                elif x == -1:
+                    continue
+                data = {
+                    'X': x,
+                    'Y': y,
+                    'Entity Type ID': entity_type_id,
+                    'Entity Room Index': entity_room_index,
+                    'Params': params,
+                }
+                stage_entity_layout['Data'][-1].append(data)
+                stage_entity_layout['Metadata']['Count'] += 1
+            entity_layouts[stage_name] = stage_entity_layout
             # Room data
             stages[stage_name]['Rooms'] = {}
             for room_id in range(256):
+                debug = {}
                 cursors['Current Room'] = cursors['Rooms'].clone(0x08 * room_id)
                 if cursors['Current Room'].u8() == 0x40:
                     break
@@ -617,13 +681,13 @@ if __name__ == '__main__':
                     }
                 # Object layouts for the current room
                 object_layout_id = stages[stage_name]['Rooms'][room_id]['Object Layout ID']['Value']
-                for (direction, indirect_offset) in (
-                    ('Horizontal', 0x1C),
-                    ('Vertical', 0x28),
+                for direction in (
+                    'Horizontal',
+                    'Vertical',
                 ):
-                    cursors[direction + ' Indirect'] = cursors['Stage'].clone(cursors['Entities'].u16(indirect_offset))
                     # Object list
-                    object_layout_offset = cursors[direction + ' Indirect'].u32(4 * object_layout_id) - OFFSET
+                    object_layout_offset = cursors[direction + ' Entity Layout'].u32(4 * object_layout_id) - OFFSET
+                    debug[direction] = sotn_address._hex(object_layout_offset + OFFSET, 8)
                     cursors[direction] = cursors['Stage'].clone(object_layout_offset)
                     objects = {
                         'Metadata': {
@@ -656,6 +720,7 @@ if __name__ == '__main__':
                         'Data': [],
                     }
                     offset = 0
+                    prev_pos = float('-inf')
                     while True:
                         x = cursors[direction].s16(offset + 0x0)
                         y = cursors[direction].s16(offset + 0x2)
@@ -673,8 +738,13 @@ if __name__ == '__main__':
                         objects['Data'].append(data)
                         if x == -1:
                             break
+                        # Confirm that the lists are ordered
+                        curr_pos = x if direction == 'Horizontal' else y
+                        assert curr_pos >= prev_pos
+                        prev_pos = curr_pos
                     objects['Metadata']['Count'] = len(objects['Data'])
                     stages[stage_name]['Rooms'][room_id]['Object Layout - ' + direction] = objects
+                print('  ', 'R =', room_id, 'O =', object_layout_id, 'H =', debug['Horizontal'], ', V =', debug['Vertical'])
         # Extract teleporter data
         cursor = BIN(binary_file, 0x00097C5C)
         teleporters = {
@@ -1162,6 +1232,7 @@ if __name__ == '__main__':
             'Castle Map Reveals': castle_map_reveals,
             'Constants': constants,
             'Enemy Definitions': enemy_definitions,
+            'Entity Layouts': entity_layouts,
             'Familiar Events': familiar_events,
             'Reverse Warp Room Coordinates': reverse_warp_room_coordinates,
             'Stages': stages,
