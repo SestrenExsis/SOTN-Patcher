@@ -596,11 +596,13 @@ if __name__ == '__main__':
                 },
             }
             # Entity layouts for the current room
+            # NOTE(sestren): Marble Gallery is laid out weird; the 2D data is not contiguous, so it will be ignored
             current_object_layout_offset = cursors['Horizontal Entity Layout'].u32(0) - OFFSET
             current_cursor = cursors['Stage'].clone(current_object_layout_offset)
             target_object_layout_offset = cursors['Vertical Entity Layout'].u32(0) - OFFSET
             target_cursor = cursors['Stage'].clone(target_object_layout_offset)
             offset = 0
+            contiguous_ind = True
             while current_cursor.cursor.address <= (target_cursor.cursor.address - 4):
                 x = current_cursor.s16(0x0)
                 y = current_cursor.s16(0x2)
@@ -615,6 +617,9 @@ if __name__ == '__main__':
                     stage_entity_layout['Data'].append([])
                     continue
                 elif x == -1:
+                    next_xy = (current_cursor.s16(0x0), current_cursor.s16(0x2))
+                    if next_xy != (-2, -2) and current_cursor.cursor.address < (target_cursor.cursor.address - 4):
+                        contiguous_ind = False
                     continue
                 data = {
                     'X': x,
@@ -635,7 +640,8 @@ if __name__ == '__main__':
             entity_room_index = current_cursor.u16(0x6)
             params = current_cursor.u16(0x8)
             assert (x,  y, entity_type_id, entity_room_index, params) in ((-2, -2, 0, 0, 0), (-2, -2, 0, 0, 1))
-            entity_layouts[stage_name] = stage_entity_layout
+            if contiguous_ind:
+                entity_layouts[stage_name] = stage_entity_layout
             # Room data
             stages[stage_name]['Rooms'] = {}
             for room_id in range(256):
