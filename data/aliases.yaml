@@ -3996,12 +3996,13 @@ Entities:
     Label: Eye of Vlad
 Rooms:
   Abandoned Mine, Bend:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 10
   Abandoned Mine, Cerberus Room:
+    Notes:
+      - This stage has two Entity Layouts that are empty, at rows 0 and 6
     Room Index: 2
-    Entity Layout ID: 0
-    Entity Layout ID Copy 1: 6
+    Entity Layout Row: 6
     Dependents:
       - Type: Room
         Stage: Boss - Cerberus
@@ -4020,7 +4021,7 @@ Rooms:
         Left: 2
   Abandoned Mine, Crumbling Stairwells With Demon Switch:
     Room Index: 3
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Dependents:
       - Type: Secret Map Tile
         Index: 10
@@ -4033,10 +4034,10 @@ Rooms:
         Inverted: false
         Familiar Event ID: 9
   Abandoned Mine, Crumbling Stairwells With Mushrooms:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 8
   Abandoned Mine, Demon Card Room:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 11
   Abandoned Mine, Fake Room with Teleporter to Catacombs:
     Room Index: 18
@@ -4045,78 +4046,78 @@ Rooms:
   Abandoned Mine, Fake Room with Teleporter to Warp Rooms:
     Room Index: 17
   Abandoned Mine, Four-Way Intersection:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 7
   Abandoned Mine, Karma Coin Room:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 9
   Abandoned Mine, Loading Room to Catacombs:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 12
   Abandoned Mine, Loading Room to Underground Caverns:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 14
   Abandoned Mine, Loading Room to Warp Rooms:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 13
   Abandoned Mine, Peanuts Room:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 6
   Abandoned Mine, Save Room A:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 15
   Abandoned Mine, Snake Column:
     Room Index: 5
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Dependents:
       - Type: Secret Map Tile
         Index: 15
         Top: 1
         Left: 0
   Abandoned Mine, Venus Weed Room:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 4
   Abandoned Mine, Well-Lit Skull Room:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 1
   Abandoned Mine, Wolf's Head Column:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 0
   Alchemy Laboratory, Bat Card Room:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 0
   Alchemy Laboratory, Bloody Zombie Hallway:
-    Entity Layout ID: 19
+    Entity Layout Row: 19
     Room Index: 3
   Alchemy Laboratory, Blue Door Hallway:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 2
   Alchemy Laboratory, Box Puzzle Room:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 17
   Alchemy Laboratory, Cannon Room:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 4
   Alchemy Laboratory, Cloth Cape Room:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 5
   Alchemy Laboratory, Corridor to Elevator:
-    Entity Layout ID: 22
+    Entity Layout Row: 22
     Room Index: 21
   Alchemy Laboratory, Elevator Shaft:
-    Entity Layout ID: 24
+    Entity Layout Row: 24
     Room Index: 22
   Alchemy Laboratory, Empty Zig Zag Room:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 12
   Alchemy Laboratory, Entryway:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 10
   Alchemy Laboratory, Exit to Marble Gallery:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 20
   Alchemy Laboratory, Exit to Royal Chapel:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 1
   Alchemy Laboratory, Fake Room with Teleporter to Castle Entrance:
     Room Index: 31
@@ -4125,53 +4126,53 @@ Rooms:
   Alchemy Laboratory, Fake Room with Teleporter to Royal Chapel:
     Room Index: 30
   Alchemy Laboratory, Glass Vats:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 7
   Alchemy Laboratory, Heart Max-Up Room:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 9
   Alchemy Laboratory, Loading Room to Castle Entrance:
-    Entity Layout ID: 26
+    Entity Layout Row: 26
     Room Index: 28
   Alchemy Laboratory, Loading Room to Marble Gallery:
-    Entity Layout ID: 26
+    Entity Layout Row: 26
     Room Index: 26
   Alchemy Laboratory, Loading Room to Royal Chapel:
-    Entity Layout ID: 26
+    Entity Layout Row: 26
     Room Index: 27
   Alchemy Laboratory, Red Skeleton Lift Room:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 18
   Alchemy Laboratory, Save Room A:
-    Entity Layout ID: 25
+    Entity Layout Row: 25
     Room Index: 23
   Alchemy Laboratory, Save Room B:
-    Entity Layout ID: 25
+    Entity Layout Row: 25
     Room Index: 24
   Alchemy Laboratory, Save Room C:
-    Entity Layout ID: 25
+    Entity Layout Row: 25
     Room Index: 25
   Alchemy Laboratory, Secret Life Max-Up Room:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 15
   Alchemy Laboratory, Short Zig Zag Room:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 13
   Alchemy Laboratory, Skill of Wolf Room:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 8
   Alchemy Laboratory, Slogra and Gaibon Room:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 16
   Alchemy Laboratory, Sunglasses Room:
-    Entity Layout ID: 23
+    Entity Layout Row: 23
     Room Index: 6
   Alchemy Laboratory, Tall Spittlebone Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 11
   Alchemy Laboratory, Tall Zig Zag Room:
     Room Index: 14
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Dependents:
       - Type: Secret Map Tile
         Index: 0
@@ -4194,17 +4195,18 @@ Rooms:
         Inverted: false
         Familiar Event ID: 39
   Alchemy Laboratory, Tetromino Room:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 19
   Anti-Chapel, Chapel Staircase:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 11
   Anti-Chapel, Confessional Booth:
-    Entity Layout ID: 0
-    Entity Layout ID Copy 1: 2
+    Notes:
+      - This stage has two Entity Layouts that are empty, at rows 0 and 2
+    Entity Layout Row: 2
     Room Index: 7
   Anti-Chapel, Empty Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 10
   Anti-Chapel, Fake Room with Teleporter to Alchemy Laboratory:
     Room Index: 22
@@ -4215,11 +4217,11 @@ Rooms:
   Anti-Chapel, Fake Room with Teleporter to Olrox's Quarters:
     Room Index: 24
   Anti-Chapel, Goggles Room:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 8
   Anti-Chapel, Hippogryph Room:
     Room Index: 4
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Dependents:
       - Type: Room
         Stage: Boss - Medusa
@@ -4237,85 +4239,85 @@ Rooms:
         Top: 0
         Left: 2
   Anti-Chapel, Left Tower:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 13
   Anti-Chapel, Loading Room to Alchemy Laboratory:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 19
   Anti-Chapel, Loading Room to Castle Keep:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 15
   Anti-Chapel, Loading Room to Colosseum:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 20
   Anti-Chapel, Loading Room to Olrox's Quarters:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 21
   Anti-Chapel, Middle Tower:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 14
   Anti-Chapel, Nave:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 9
   Anti-Chapel, Pushing Statue Shortcut:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 6
   Anti-Chapel, Right Tower:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 17
   Anti-Chapel, Save Room A:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 18
   Anti-Chapel, Save Room B:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 16
   Anti-Chapel, Silver Ring Room:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 0
   Anti-Chapel, Spike Hallway:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 1
   Anti-Chapel, Statue Ledge:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 12
   Anti-Chapel, Walkway Between Towers:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 2
   Anti-Chapel, Walkway Left of Hippogryph:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 3
   Anti-Chapel, Walkway Right of Hippogryph:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 5
   Black Marble Gallery, Alucart Room:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 25
   Black Marble Gallery, Beneath Dropoff:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 4
   Black Marble Gallery, Beneath Left Trapdoor:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 23
   Black Marble Gallery, Beneath Right Trapdoor:
-    Entity Layout ID: 24
+    Entity Layout Row: 24
     Room Index: 24
   Black Marble Gallery, Blue Door Room:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 12
   Black Marble Gallery, Clock Room:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 9
   Black Marble Gallery, Dropoff:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 5
   Black Marble Gallery, Elevator Room:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 21
   Black Marble Gallery, Empty Room:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 11
   Black Marble Gallery, Entrance:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 6
   Black Marble Gallery, Fake Room with Teleporter to Alchemy Laboratory:
     Room Index: 36
@@ -4330,82 +4332,84 @@ Rooms:
   Black Marble Gallery, Fake Room with Teleporter to Underground Caverns:
     Room Index: 35
   Black Marble Gallery, Gravity Boots Room:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 20
   Black Marble Gallery, Left of Clock Room:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 10
   Black Marble Gallery, Loading Room to Alchemy Laboratory:
-    Entity Layout ID: 26
+    Entity Layout Row: 26
     Room Index: 28
   Black Marble Gallery, Loading Room to Castle Entrance:
-    Entity Layout ID: 26
+    Entity Layout Row: 26
     Room Index: 30
   Black Marble Gallery, Loading Room to Olrox's Quarters:
-    Entity Layout ID: 26
+    Entity Layout Row: 26
     Room Index: 29
   Black Marble Gallery, Loading Room to Outer Wall:
-    Entity Layout ID: 26
+    Entity Layout Row: 26
     Room Index: 26
   Black Marble Gallery, Loading Room to Underground Caverns:
-    Entity Layout ID: 26
+    Entity Layout Row: 26
     Room Index: 27
   Black Marble Gallery, Long Hallway:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 8
   Black Marble Gallery, Ouija Table Stairway:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 15
   Black Marble Gallery, Pathway After Left Statue:
-    Entity Layout ID: 19
+    Entity Layout Row: 19
     Room Index: 13
   Black Marble Gallery, Pathway After Right Statue:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 14
   Black Marble Gallery, Power-Up Room:
-    Entity Layout ID: 22
+    Entity Layout Row: 22
     Room Index: 22
   Black Marble Gallery, Right of Clock Room:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 19
   Black Marble Gallery, S-Shaped Hallways:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 0
   Black Marble Gallery, Save Room A:
-    Entity Layout ID: 27
+    Entity Layout Row: 27
     Room Index: 31
   Black Marble Gallery, Save Room B:
-    Entity Layout ID: 27
+    Entity Layout Row: 27
     Room Index: 32
   Black Marble Gallery, Slinger Staircase:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 18
   Black Marble Gallery, Spirit Orb Room:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 2
   Black Marble Gallery, Stained Glass Corner:
-    Entity Layout ID: 0
-    Entity Layout ID Copy 1: 25
+    Notes:
+      - This stage has two Entity Layouts that are empty, at rows 0 and 25
+    Entity Layout Row: 0
     Room Index: 3
   Black Marble Gallery, Stairwell to Underground Caverns:
-    Entity Layout ID: 23
+    Entity Layout Row: 23
     Room Index: 17
   Black Marble Gallery, Stopwatch Room:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 7
   Black Marble Gallery, Tall Stained Glass Windows:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 1
   Black Marble Gallery, Three Paths:
-    Entity Layout ID: 0
-    Entity Layout ID Copy 1: 25
+    Notes:
+      - This stage has two Entity Layouts that are empty, at rows 0 and 25
+    Entity Layout Row: 0
     Room Index: 16
   Boss - Akmodan II, Fake Room With Teleporter A:
     Room Index: 1
   Boss - Akmodan II, Fake Room With Teleporter B:
     Room Index: 2
   Boss - Akmodan II, Olrox's Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Boss - Beelzebub, Fake Room With Teleporter A:
     Room Index: 1
@@ -4414,31 +4418,31 @@ Rooms:
   Boss - Beelzebub, Fake Room With Teleporter C:
     Room Index: 3
   Boss - Beelzebub, Slogra and Gaibon Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Boss - Cerberus, Cerberus Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Boss - Cerberus, Fake Room With Teleporter A:
     Room Index: 1
   Boss - Cerberus, Fake Room With Teleporter B:
     Room Index: 2
   Boss - Creature, Doppelganger Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Boss - Creature, Fake Room With Teleporter A:
     Room Index: 1
   Boss - Creature, Fake Room With Teleporter B:
     Room Index: 2
   Boss - Death, Cerberus Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Boss - Death, Fake Room With Teleporter A:
     Room Index: 1
   Boss - Death, Fake Room With Teleporter B:
     Room Index: 2
   Boss - Doppelganger 10, Doppelganger Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Boss - Doppelganger 10, Fake Room With Teleporter A:
     Room Index: 1
@@ -4449,38 +4453,38 @@ Rooms:
   Boss - Doppelganger 40, Fake Room With Teleporter B:
     Room Index: 2
   Boss - Doppelganger 40, Scylla Wyrm Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Boss - Galamoth, Fake Room With Teleporter A:
     Room Index: 1
   Boss - Galamoth, Fake Room With Teleporter B:
     Room Index: 2
   Boss - Galamoth, Granfaloon's Lair:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Boss - Granfaloon, Fake Room With Teleporter A:
     Room Index: 1
   Boss - Granfaloon, Fake Room With Teleporter B:
     Room Index: 2
   Boss - Granfaloon, Granfaloon's Lair:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Boss - Hippogryph, Fake Room With Teleporter A:
     Room Index: 1
   Boss - Hippogryph, Fake Room With Teleporter B:
     Room Index: 2
   Boss - Hippogryph, Hippogryph Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Boss - Medusa, Fake Room With Teleporter A:
     Room Index: 1
   Boss - Medusa, Fake Room With Teleporter B:
     Room Index: 2
   Boss - Medusa, Hippogryph Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Boss - Minotaur and Werewolf, Arena:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Boss - Minotaur and Werewolf, Fake Room With Teleporter A:
     Room Index: 1
@@ -4491,62 +4495,62 @@ Rooms:
   Boss - Olrox, Fake Room With Teleporter B:
     Room Index: 2
   Boss - Olrox, Olrox's Room:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 0
   Boss - Richter, Throne Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Boss - Scylla, Crystal Cloak Room:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 3
   Boss - Scylla, Fake Room With Teleporter A:
     Room Index: 4
   Boss - Scylla, Rising Water Room:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 2
   Boss - Scylla, Scylla Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Boss - Scylla, Scylla Wyrm Room:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 1
   Boss - Trio, Arena:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Boss - Trio, Fake Room With Teleporter A:
     Room Index: 1
   Boss - Trio, Fake Room With Teleporter B:
     Room Index: 2
   Castle Center, Center Cube:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 1
   Castle Center, Elevator Shaft:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 0
   Castle Center, Fake Room with Teleporter to BO6:
     Room Index: 4
   Castle Center, Fake Room with Teleporter to Marble Gallery:
     Room Index: 3
   Castle Center, Unknown Room ID 02:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 2
   Castle Entrance Revisited, After Drawbridge:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 0
   Castle Entrance Revisited, Attic Entrance:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 6
   Castle Entrance Revisited, Attic Hallway:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 5
   Castle Entrance Revisited, Attic Staircase:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 4
   Castle Entrance Revisited, Cube of Zoe Room:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 15
   Castle Entrance Revisited, Drop Under Portcullis:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 1
   Castle Entrance Revisited, Fake Room with Teleporter to Alchemy Laboratory:
     Room Index: 25
@@ -4557,79 +4561,79 @@ Rooms:
   Castle Entrance Revisited, Fake Room with Teleporter to Warp Rooms:
     Room Index: 27
   Castle Entrance Revisited, Gargoyle Room:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 13
   Castle Entrance Revisited, Heart Max-Up Room:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 14
   Castle Entrance Revisited, Holy Mail Room:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 3
   Castle Entrance Revisited, Jewel Sword Room:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 8
   Castle Entrance Revisited, Life Max-Up Room:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 17
   Castle Entrance Revisited, Loading Room to Alchemy Laboratory:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 20
   Castle Entrance Revisited, Loading Room to Marble Gallery:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 18
   Castle Entrance Revisited, Loading Room to Underground Caverns:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 21
   Castle Entrance Revisited, Loading Room to Warp Rooms:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 19
   Castle Entrance Revisited, Meeting Room With Death:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 11
   Castle Entrance Revisited, Merman Room:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 7
   Castle Entrance Revisited, Save Room A:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 22
   Castle Entrance Revisited, Save Room B:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 23
   Castle Entrance Revisited, Save Room C:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 24
   Castle Entrance Revisited, Shortcut to Underground Caverns:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 10
   Castle Entrance Revisited, Shortcut to Warp Rooms:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 16
   Castle Entrance Revisited, Stairwell After Death:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 12
   Castle Entrance Revisited, Warg Hallway:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 9
   Castle Entrance Revisited, Zombie Hallway:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 2
   Castle Entrance, After Drawbridge:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 0
   Castle Entrance, Attic Entrance:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 6
   Castle Entrance, Attic Hallway:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 5
   Castle Entrance, Attic Staircase:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 4
   Castle Entrance, Cube of Zoe Room:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 15
   Castle Entrance, Drop Under Portcullis:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 1
   Castle Entrance, Fake Room with Teleporter to Alchemy Laboratory:
     Room Index: 28
@@ -4640,67 +4644,67 @@ Rooms:
   Castle Entrance, Fake Room with Teleporter to Warp Rooms:
     Room Index: 30
   Castle Entrance, Forest Cutscene:
-    Entity Layout ID: 19
+    Entity Layout Row: 19
     Room Index: 18
   Castle Entrance, Gargoyle Room:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 13
   Castle Entrance, Heart Max-Up Room:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 14
   Castle Entrance, Holy Mail Room:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 3
   Castle Entrance, Jewel Sword Room:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 8
   Castle Entrance, Life Max-Up Room:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 17
   Castle Entrance, Loading Room to Alchemy Laboratory:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 23
   Castle Entrance, Loading Room to Marble Gallery:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 21
   Castle Entrance, Loading Room to Underground Caverns:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 24
   Castle Entrance, Loading Room to Warp Rooms:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 22
   Castle Entrance, Meeting Room With Death:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 11
   Castle Entrance, Merman Room:
     Room Index: 7
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Dependents:
       - Type: Secret Map Tile
         Index: 30
         Top: 1
         Left: 0
   Castle Entrance, Save Room A:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 25
   Castle Entrance, Save Room B:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 26
   Castle Entrance, Save Room C:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 27
   Castle Entrance, Shortcut to Underground Caverns:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 10
   Castle Entrance, Shortcut to Warp Rooms:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 16
   Castle Entrance, Stairwell After Death:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 12
   Castle Entrance, Unknown Room 19:
     Room Index: 19
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Dependents:
       - Type: Tile Layout
         Stage: Castle Entrance
@@ -4709,7 +4713,7 @@ Rooms:
         Left: 1
   Castle Entrance, Unknown Room 20:
     Room Index: 20
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Dependents:
       - Type: Tile Layout
         Stage: Castle Entrance
@@ -4717,16 +4721,16 @@ Rooms:
         Top: 0
         Left: -1
   Castle Entrance, Warg Hallway:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 9
   Castle Entrance, Zombie Hallway:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 2
   Castle Keep, Bend:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 4
   Castle Keep, Dual Platforms:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 7
   Castle Keep, Fake Room with Teleporter to Clock Tower:
     Room Index: 13
@@ -4735,14 +4739,14 @@ Rooms:
   Castle Keep, Fake Room with Teleporter to Warp Rooms:
     Room Index: 15
   Castle Keep, Falchion Room:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 5
   Castle Keep, Ghost Card Room:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 3
   Castle Keep, Keep Area:
     Room Index: 2
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Notes:
       - The functions DRA/GetTeleportToOtherCastle, DRA/func_80115C50, and RIC/func_8015BB80 contain constants that must be updated
       - The values refer to the location of the Castle Teleporter in the Keep Area
@@ -4814,46 +4818,46 @@ Rooms:
           - mul(-256)
           - add(-320)
   Castle Keep, Lion Torch Platform:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 6
   Castle Keep, Loading Room to Clock Tower:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 10
   Castle Keep, Loading Room to Royal Chapel:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 12
   Castle Keep, Loading Room to Warp Rooms:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 11
   Castle Keep, Lower Attic:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 1
   Castle Keep, Save Room A:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 9
   Castle Keep, Tyrfing Room:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 8
   Castle Keep, Upper Attic:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 0
   Catacombs, Ballroom Mask Room:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 11
   Catacombs, Bone Ark Room:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 18
   Catacombs, Cat-Eye Circlet Room:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 13
   Catacombs, Exit to Abandoned Mine:
-    Entity Layout ID: 28
+    Entity Layout Row: 28
     Room Index: 17
   Catacombs, Fake Room with Teleporter to Abandoned Mine:
     Room Index: 29
   Catacombs, Granfaloon's Lair:
     Room Index: 3
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Dependents:
       - Type: Room
         Stage: Boss - Granfaloon
@@ -4871,23 +4875,23 @@ Rooms:
         Top: 1
         Left: -1
   Catacombs, Hellfire Beast Room:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 16
   Catacombs, Icebrand Room:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 9
   Catacombs, Left Lava Path:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 10
   Catacombs, Loading Room to Abandoned Mine:
-    Entity Layout ID: 22
+    Entity Layout Row: 22
     Room Index: 28
   Catacombs, Mormegil Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 1
   Catacombs, Pitch Black Spike Maze:
     Room Index: 24
-    Entity Layout ID: 23
+    Entity Layout Row: 23
     Dependents:
       - Type: Familiar Event
         Inverted: false
@@ -4917,66 +4921,67 @@ Rooms:
         Inverted: false
         Familiar Event ID: 47
   Catacombs, Right Lava Path:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 12
   Catacombs, Room ID 00:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 0
   Catacombs, Room ID 02:
-    Entity Layout ID: 0
-    Entity Layout ID Copy 1: 10
+    Notes:
+      - This stage has two Entity Layouts that are empty, at rows 0 and 10
+    Entity Layout Row: 10
     Room Index: 2
   Catacombs, Room ID 04:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 4
   Catacombs, Room ID 05:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 5
   Catacombs, Room ID 14:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 14
   Catacombs, Room ID 19:
-    Entity Layout ID: 19
+    Entity Layout Row: 19
     Room Index: 19
   Catacombs, Room ID 20:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 20
   Catacombs, Room ID 21:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 21
   Catacombs, Room ID 22:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 22
   Catacombs, Room ID 23:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 23
   Catacombs, Room ID 25:
-    Entity Layout ID: 24
+    Entity Layout Row: 24
     Room Index: 25
   Catacombs, Room ID 26:
-    Entity Layout ID: 25
+    Entity Layout Row: 25
     Room Index: 26
   Catacombs, Save Room A:
-    Entity Layout ID: 27
+    Entity Layout Row: 27
     Room Index: 7
   Catacombs, Save Room B:
-    Entity Layout ID: 27
+    Entity Layout Row: 27
     Room Index: 15
   Catacombs, Small Gremlin Room:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 6
   Catacombs, Spike Breaker Room:
-    Entity Layout ID: 26
+    Entity Layout Row: 26
     Room Index: 27
   Catacombs, Walk Armor Room:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 8
   Cave, Bend:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 10
   Cave, Cerberus Room:
     Room Index: 2
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Dependents:
       - Type: Room
         Stage: Boss - Death
@@ -4995,7 +5000,7 @@ Rooms:
         Left: 2
   Cave, Crumbling Stairwells With Demon Switch:
     Room Index: 3
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Dependents:
       - Type: Familiar Event
         Inverted: true
@@ -5004,10 +5009,10 @@ Rooms:
         Inverted: true
         Familiar Event ID: 11
   Cave, Crumbling Stairwells With Mushrooms:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 8
   Cave, Demon Card Room:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 11
   Cave, Fake Room with Teleporter to Catacombs:
     Room Index: 16
@@ -5016,63 +5021,63 @@ Rooms:
   Cave, Fake Room with Teleporter to Warp Rooms:
     Room Index: 17
   Cave, Four-Way Intersection:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 7
   Cave, Karma Coin Room:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 9
   Cave, Loading Room to Catacombs:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 12
   Cave, Loading Room to Underground Caverns:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 14
   Cave, Loading Room to Warp Rooms:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 13
   Cave, Peanuts Room:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 6
   Cave, Save Room A:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 15
   Cave, Snake Column:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 5
   Cave, Venus Weed Room:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 4
   Cave, Well-Lit Skull Room:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 1
   Cave, Wolf's Head Column:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 0
   Clock Tower, Belfry:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 9
   Clock Tower, Exit to Courtyard:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 8
   Clock Tower, Fake Room with Teleporter to Castle Keep:
     Room Index: 15
   Clock Tower, Fake Room with Teleporter to Outer Wall:
     Room Index: 16
   Clock Tower, Fire of Bat Room:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 12
   Clock Tower, Healing Mail Room:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 2
   Clock Tower, Hidden Armory:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 5
   Clock Tower, Karasuman's Room:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 0
   Clock Tower, Left Gear Room:
     Room Index: 6
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Dependents:
       - Type: Secret Map Tile
         Index: 25
@@ -5085,20 +5090,20 @@ Rooms:
         Inverted: false
         Familiar Event ID: 42
   Clock Tower, Loading Room to Castle Keep:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 14
   Clock Tower, Loading Room to Outer Wall:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 13
   Clock Tower, Open Courtyard:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 10
   Clock Tower, Path to Karasuman:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 1
   Clock Tower, Pendulum Room:
     Room Index: 3
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Dependents:
       - Type: Secret Map Tile
         Index: 20
@@ -5111,17 +5116,17 @@ Rooms:
         Inverted: false
         Familiar Event ID: 43
   Clock Tower, Right Gear Room:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 7
   Clock Tower, Spire:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 4
   Clock Tower, Stairwell to Outer Wall:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 11
   Colosseum, Arena:
     Room Index: 5
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Dependents:
       - Type: Room
         Stage: Boss - Minotaur and Werewolf
@@ -5140,55 +5145,55 @@ Rooms:
         Left: 2
   Colosseum, Blade Master Room:
     Room Index: 2
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Dependents:
       - Type: Secret Map Tile
         Index: 40
         Top: 0
         Left: 2
   Colosseum, Blood Cloak Room:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 10
   Colosseum, Bottom of Elevator Shaft:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 11
   Colosseum, Fake Room with Teleporter to Olrox's Quarters:
     Room Index: 19
   Colosseum, Fake Room with Teleporter to Royal Chapel:
     Room Index: 18
   Colosseum, Fountain Room:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 9
   Colosseum, Holy Sword Room:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 0
   Colosseum, Left-Side Armory:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 12
   Colosseum, Loading Room to Olrox's Quarters:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 15
   Colosseum, Loading Room to Royal Chapel:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 14
   Colosseum, Passageway Between Arena and Royal Chapel:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 4
   Colosseum, Right-Side Armory:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 13
   Colosseum, Save Room A:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 16
   Colosseum, Save Room B:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 17
   Colosseum, Spiral Staircases:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 7
   Colosseum, Top of Elevator Shaft:
     Room Index: 6
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Dependents:
       - Type: Secret Map Tile
         Index: 35
@@ -5201,13 +5206,13 @@ Rooms:
         Inverted: false
         Familiar Event ID: 32
   Colosseum, Top of Left Spiral Staircase:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 1
   Colosseum, Top of Right Spiral Staircase:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 3
   Colosseum, Valhalla Knight Room:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 8
   Cutscene - Meeting Maria in Clock Room, Clock Room:
     Room Index: 0
@@ -5216,19 +5221,19 @@ Rooms:
   Cutscene - Meeting Maria in Clock Room, Fake Room With Teleporter B:
     Room Index: 2
   Death Wing's Lair, Bottom of Stairwell:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 1
   Death Wing's Lair, Catwalk Crypt:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 15
   Death Wing's Lair, Echo of Bat Room:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 13
   Death Wing's Lair, Empty Cells:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 9
   Death Wing's Lair, Empty Room:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 5
   Death Wing's Lair, Fake Room with Teleporter to Colosseum:
     Room Index: 22
@@ -5239,32 +5244,32 @@ Rooms:
   Death Wing's Lair, Fake Room with Teleporter to Warp Rooms:
     Room Index: 23
   Death Wing's Lair, Garnet Room:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 10
   Death Wing's Lair, Grand Staircase:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 2
   Death Wing's Lair, Hammer and Blade Room:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 4
   Death Wing's Lair, Loading Room to Colosseum:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 18
   Death Wing's Lair, Loading Room to Marble Gallery:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 17
   Death Wing's Lair, Loading Room to Royal Chapel:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 20
   Death Wing's Lair, Loading Room to Warp Rooms:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 19
   Death Wing's Lair, Narrow Hallway to Olrox:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 11
   Death Wing's Lair, Olrox's Room:
     Room Index: 12
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Dependents:
       - Type: Room
         Stage: Boss - Akmodan II
@@ -5282,44 +5287,45 @@ Rooms:
         Top: 1
         Left: 2
   Death Wing's Lair, Open Courtyard:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 8
   Death Wing's Lair, Prison:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 7
   Death Wing's Lair, Save Room A:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 16
   Death Wing's Lair, Secret Onyx Room:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 3
   Death Wing's Lair, Skelerang Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 0
   Death Wing's Lair, Sword Card Room:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 14
   Death Wing's Lair, Tall Shaft:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 6
   Floating Catacombs, Ballroom Mask Room:
-    Entity Layout ID: 19
+    Entity Layout Row: 19
     Room Index: 11
   Floating Catacombs, Bone Ark Room:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 18
   Floating Catacombs, Cat-Eye Circlet Room:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 13
   Floating Catacombs, Exit to Abandoned Mine:
-    Entity Layout ID: 22
+    Entity Layout Row: 22
     Room Index: 17
   Floating Catacombs, Fake Room with Teleporter to Abandoned Mine:
     Room Index: 29
   Floating Catacombs, Granfaloon's Lair:
+    Notes:
+      - This stage has two Entity Layouts that are empty, at rows 0 and 18
     Room Index: 3
-    Entity Layout ID: 0
-    Entity Layout ID Copy 1: 18
+    Entity Layout Row: 18
     Dependents:
       - Type: Room
         Stage: Boss - Galamoth
@@ -5337,150 +5343,150 @@ Rooms:
         Top: 1
         Left: -1
   Floating Catacombs, Hellfire Beast Room:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 16
   Floating Catacombs, Icebrand Room:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 9
   Floating Catacombs, Left Lava Path:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 10
   Floating Catacombs, Loading Room to Abandoned Mine:
-    Entity Layout ID: 28
+    Entity Layout Row: 28
     Room Index: 28
   Floating Catacombs, Mormegil Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 1
   Floating Catacombs, Pitch Black Spike Maze:
-    Entity Layout ID: 23
+    Entity Layout Row: 23
     Room Index: 24
   Floating Catacombs, Right Lava Path:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 12
   Floating Catacombs, Room ID 00:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 0
   Floating Catacombs, Room ID 02:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 2
   Floating Catacombs, Room ID 04:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 4
   Floating Catacombs, Room ID 05:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 5
   Floating Catacombs, Room ID 14:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 14
   Floating Catacombs, Room ID 19:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 19
   Floating Catacombs, Room ID 20:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 20
   Floating Catacombs, Room ID 21:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 21
   Floating Catacombs, Room ID 22:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 22
   Floating Catacombs, Room ID 23:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 23
   Floating Catacombs, Room ID 25:
-    Entity Layout ID: 24
+    Entity Layout Row: 24
     Room Index: 25
   Floating Catacombs, Room ID 26:
-    Entity Layout ID: 25
+    Entity Layout Row: 25
     Room Index: 26
   Floating Catacombs, Save Room A:
-    Entity Layout ID: 27
+    Entity Layout Row: 27
     Room Index: 7
   Floating Catacombs, Save Room B:
-    Entity Layout ID: 27
+    Entity Layout Row: 27
     Room Index: 15
   Floating Catacombs, Small Gremlin Room:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 6
   Floating Catacombs, Spike Breaker Room:
-    Entity Layout ID: 26
+    Entity Layout Row: 26
     Room Index: 27
   Floating Catacombs, Walk Armor Room:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 8
   Forbidden Library, Dhuron and Flea Armor Room:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 3
   Forbidden Library, Dhuron and Flea Man Room:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 10
   Forbidden Library, Exit to Outer Wall:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 12
   Forbidden Library, Faerie Card Room:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 7
   Forbidden Library, Fake Room with Teleporter to Outer Wall:
     Room Index: 15
   Forbidden Library, Flea Man Room:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 6
   Forbidden Library, Foot of Staircase:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 11
   Forbidden Library, Holy Rod Room:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 2
   Forbidden Library, Lesser Demon Area:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 0
   Forbidden Library, Loading Room to Outer Wall:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 13
   Forbidden Library, Outside Shop:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 5
   Forbidden Library, Save Room A:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 14
   Forbidden Library, Secret Bookcase Room:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 1
   Forbidden Library, Shop:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 4
   Forbidden Library, Spellbook Area:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 9
   Forbidden Library, Three Layer Room:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 8
   Long Library, Dhuron and Flea Armor Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 3
   Long Library, Dhuron and Flea Man Room:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 10
   Long Library, Exit to Outer Wall:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 12
   Long Library, Faerie Card Room:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 7
   Long Library, Fake Room with Teleporter to Outer Wall:
     Room Index: 15
   Long Library, Flea Man Room:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 6
   Long Library, Foot of Staircase:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 11
   Long Library, Holy Rod Room:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 2
   Long Library, Lesser Demon Area:
     Room Index: 0
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Dependents:
       - Type: Familiar Event
         Inverted: false
@@ -5489,17 +5495,17 @@ Rooms:
         Inverted: false
         Familiar Event ID: 34
   Long Library, Loading Room to Outer Wall:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 13
   Long Library, Outside Shop:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 5
   Long Library, Save Room A:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 14
   Long Library, Secret Bookcase Room:
     Room Index: 1
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Dependents:
       - Type: Familiar Event
         Inverted: false
@@ -5509,7 +5515,7 @@ Rooms:
         Familiar Event ID: 41
   Long Library, Shop:
     Room Index: 4
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Dependents:
       - Type: Familiar Event
         Inverted: false
@@ -5527,10 +5533,10 @@ Rooms:
         Inverted: false
         Familiar Event ID: 45
   Long Library, Spellbook Area:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 9
   Long Library, Three Layer Room:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 8
   Marble Gallery, Alucart Room:
     Room Index: 25
@@ -5565,12 +5571,16 @@ Rooms:
         Top: 0
         Left: 0
   Marble Gallery, Dropoff:
+    Entity Layout Row: 17
     Room Index: 5
   Marble Gallery, Elevator Room:
+    Entity Layout Row: 9
     Room Index: 21
   Marble Gallery, Empty Room:
+    Entity Layout Row: 1
     Room Index: 11
   Marble Gallery, Entrance:
+    Entity Layout Row: 24
     Room Index: 6
   Marble Gallery, Fake Room with Teleporter to Alchemy Laboratory:
     Room Index: 35
@@ -5585,86 +5595,113 @@ Rooms:
   Marble Gallery, Fake Room with Teleporter to Underground Caverns:
     Room Index: 36
   Marble Gallery, Gravity Boots Room:
+    Entity Layout Row: 2
     Room Index: 20
   Marble Gallery, Left of Clock Room:
+    Entity Layout Row: 3
     Room Index: 10
   Marble Gallery, Loading Room to Alchemy Laboratory:
+    Entity Layout Row: 23
     Room Index: 28
   Marble Gallery, Loading Room to Castle Entrance:
+    Entity Layout Row: 23
     Room Index: 30
   Marble Gallery, Loading Room to Olrox's Quarters:
+    Entity Layout Row: 23
     Room Index: 29
   Marble Gallery, Loading Room to Outer Wall:
+    Entity Layout Row: 23
     Room Index: 26
   Marble Gallery, Loading Room to Underground Caverns:
+    Entity Layout Row: 23
     Room Index: 27
   Marble Gallery, Long Hallway:
+    Entity Layout Row: 21
     Room Index: 8
   Marble Gallery, Ouija Table Stairway:
+    Entity Layout Row: 14
     Room Index: 15
   Marble Gallery, Pathway After Left Statue:
+    Entity Layout Row: 25
     Room Index: 13
   Marble Gallery, Pathway After Right Statue:
+    Entity Layout Row: 26
     Room Index: 14
   Marble Gallery, Power-Up Room:
+    Entity Layout Row: 28
     Room Index: 22
   Marble Gallery, Right of Clock Room:
+    Entity Layout Row: 7
     Room Index: 19
   Marble Gallery, S-Shaped Hallways:
+    Entity Layout Row: 11
     Room Index: 0
   Marble Gallery, Save Room A:
+    Entity Layout Row: 32
     Room Index: 31
   Marble Gallery, Save Room B:
+    Entity Layout Row: 32
     Room Index: 32
   Marble Gallery, Slinger Staircase:
+    Entity Layout Row: 22
     Room Index: 18
   Marble Gallery, Spirit Orb Room:
+    Entity Layout Row: 13
     Room Index: 2
   Marble Gallery, Stained Glass Corner:
+    Notes:
+      - This stage has three Entity Layouts that are empty, at rows 0, 8, and 15
+    Entity Layout Row: 15
     Room Index: 3
   Marble Gallery, Stairwell to Underground Caverns:
+    Entity Layout Row: 29
     Room Index: 17
   Marble Gallery, Stopwatch Room:
+    Entity Layout Row: 18
     Room Index: 7
   Marble Gallery, Tall Stained Glass Windows:
+    Entity Layout Row: 12
     Room Index: 1
   Marble Gallery, Three Paths:
+    Notes:
+      - This stage has three Entity Layouts that are empty, at rows 0, 8, and 15
+    Entity Layout Row: 8
     Room Index: 16
   Necromancy Laboratory, Bat Card Room:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 0
   Necromancy Laboratory, Bloody Zombie Hallway:
-    Entity Layout ID: 19
+    Entity Layout Row: 19
     Room Index: 3
   Necromancy Laboratory, Blue Door Hallway:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 2
   Necromancy Laboratory, Box Puzzle Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 17
   Necromancy Laboratory, Cannon Room:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 4
   Necromancy Laboratory, Cloth Cape Room:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 5
   Necromancy Laboratory, Corridor to Elevator:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 21
   Necromancy Laboratory, Elevator Shaft:
-    Entity Layout ID: 23
+    Entity Layout Row: 23
     Room Index: 22
   Necromancy Laboratory, Empty Zig Zag Room:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 12
   Necromancy Laboratory, Entryway:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 10
   Necromancy Laboratory, Exit to Marble Gallery:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 20
   Necromancy Laboratory, Exit to Royal Chapel:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 1
   Necromancy Laboratory, Fake Room with Teleporter to Castle Entrance:
     Room Index: 29
@@ -5673,44 +5710,44 @@ Rooms:
   Necromancy Laboratory, Fake Room with Teleporter to Royal Chapel:
     Room Index: 30
   Necromancy Laboratory, Glass Vats:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 7
   Necromancy Laboratory, Heart Max-Up Room:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 9
   Necromancy Laboratory, Loading Room to Castle Entrance:
-    Entity Layout ID: 25
+    Entity Layout Row: 25
     Room Index: 28
   Necromancy Laboratory, Loading Room to Marble Gallery:
-    Entity Layout ID: 25
+    Entity Layout Row: 25
     Room Index: 26
   Necromancy Laboratory, Loading Room to Royal Chapel:
-    Entity Layout ID: 25
+    Entity Layout Row: 25
     Room Index: 27
   Necromancy Laboratory, Red Skeleton Lift Room:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 18
   Necromancy Laboratory, Save Room A:
-    Entity Layout ID: 24
+    Entity Layout Row: 24
     Room Index: 23
   Necromancy Laboratory, Save Room B:
-    Entity Layout ID: 24
+    Entity Layout Row: 24
     Room Index: 24
   Necromancy Laboratory, Save Room C:
-    Entity Layout ID: 24
+    Entity Layout Row: 24
     Room Index: 25
   Necromancy Laboratory, Secret Life Max-Up Room:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 15
   Necromancy Laboratory, Short Zig Zag Room:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 13
   Necromancy Laboratory, Skill of Wolf Room:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 8
   Necromancy Laboratory, Slogra and Gaibon Room:
     Room Index: 16
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Dependents:
       - Type: Room
         Stage: Boss - Beelzebub
@@ -5733,38 +5770,38 @@ Rooms:
         Top: 1
         Left: 4
   Necromancy Laboratory, Sunglasses Room:
-    Entity Layout ID: 22
+    Entity Layout Row: 22
     Room Index: 6
   Necromancy Laboratory, Tall Spittlebone Room:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 11
   Necromancy Laboratory, Tall Zig Zag Room:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 14
   Necromancy Laboratory, Tetromino Room:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 19
   Olrox's Quarters, Bottom of Stairwell:
-    Entity Layout ID: 0
-    Entity Layout ID Copy 1: 3
-    Entity Layout ID Copy 2: 5
+    Notes:
+      - This stage has three Entity Layouts that are empty, at rows 0, 3, and 5
+    Entity Layout Row: 3
     Room Index: 1
   Olrox's Quarters, Catwalk Crypt:
     Room Index: 15
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Dependents:
       - Type: Secret Map Tile
         Index: 50
         Top: 0
         Left: 1
   Olrox's Quarters, Echo of Bat Room:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 13
   Olrox's Quarters, Empty Cells:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 9
   Olrox's Quarters, Empty Room:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 5
   Olrox's Quarters, Fake Room with Teleporter to Colosseum:
     Room Index: 23
@@ -5775,11 +5812,11 @@ Rooms:
   Olrox's Quarters, Fake Room with Teleporter to Warp Rooms:
     Room Index: 22
   Olrox's Quarters, Garnet Room:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 10
   Olrox's Quarters, Grand Staircase:
     Room Index: 2
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Dependents:
       - Type: Secret Map Tile
         Index: 45
@@ -5792,28 +5829,28 @@ Rooms:
         Inverted: false
         Familiar Event ID: 40
   Olrox's Quarters, Hammer and Blade Room:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 4
   Olrox's Quarters, Loading Room to Colosseum:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 18
   Olrox's Quarters, Loading Room to Marble Gallery:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 17
   Olrox's Quarters, Loading Room to Royal Chapel:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 20
   Olrox's Quarters, Loading Room to Warp Rooms:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 19
   Olrox's Quarters, Narrow Hallway to Olrox:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 11
   Olrox's Quarters, Olrox's Room:
+    Notes:
+      - This stage has three Entity Layouts that are empty, at rows 0, 3, and 5
     Room Index: 12
-    Entity Layout ID: 0
-    Entity Layout ID Copy 1: 3
-    Entity Layout ID Copy 2: 5
+    Entity Layout Row: 5
     Dependents:
       - Type: Room
         Stage: Boss - Olrox
@@ -5831,32 +5868,32 @@ Rooms:
         Top: 0
         Left: 2
   Olrox's Quarters, Open Courtyard:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 8
   Olrox's Quarters, Prison:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 7
   Olrox's Quarters, Save Room A:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 16
   Olrox's Quarters, Secret Onyx Room:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 3
   Olrox's Quarters, Skelerang Room:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 0
   Olrox's Quarters, Sword Card Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 14
   Olrox's Quarters, Tall Shaft:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 6
   Outer Wall, Blue Axe Knight Room:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 9
   Outer Wall, Doppelganger Room:
     Room Index: 11
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Dependents:
       - Type: Room
         Stage: Boss - Doppelganger 10
@@ -5874,13 +5911,13 @@ Rooms:
         Top: 0
         Left: 2
   Outer Wall, Elevator Shaft Room:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 13
   Outer Wall, Exit to Clock Tower:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 2
   Outer Wall, Exit to Marble Gallery:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 7
   Outer Wall, Fake Room with Teleporter to Clock Tower:
     Room Index: 19
@@ -5891,32 +5928,32 @@ Rooms:
   Outer Wall, Fake Room with Teleporter to Warp Rooms:
     Room Index: 20
   Outer Wall, Garlic Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 10
   Outer Wall, Garnet Vase Room:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 8
   Outer Wall, Gladius Room:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 12
   Outer Wall, Jewel Knuckles Room:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 5
   Outer Wall, Loading Room to Clock Tower:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 15
   Outer Wall, Loading Room to Long Library:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 16
   Outer Wall, Loading Room to Marble Gallery:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 18
   Outer Wall, Loading Room to Warp Rooms:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 0
   Outer Wall, Lower Medusa Room:
     Room Index: 4
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Dependents:
       - Type: Familiar Event
         Inverted: false
@@ -5925,56 +5962,56 @@ Rooms:
         Inverted: false
         Familiar Event ID: 33
   Outer Wall, Save Room A:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 14
   Outer Wall, Save Room B:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 17
   Outer Wall, Secret Platform Room:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 6
   Outer Wall, Telescope Room:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 3
   Outer Wall, Top of Outer Wall:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 1
   Reverse Castle Center, Center Cube:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 1
   Reverse Castle Center, Elevator Shaft:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 0
   Reverse Castle Center, Fake Room with Teleporter to BO6:
     Room Index: 3
   Reverse Castle Center, Fake Room with Teleporter to Marble Gallery:
     Room Index: 4
   Reverse Castle Center, Unknown Room ID 02:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 2
   Reverse Caverns, Bandanna Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 30
   Reverse Caverns, Claymore Stairwell:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 6
   Reverse Caverns, Crystal Bend:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 2
   Reverse Caverns, Crystal Cloak Room:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 24
   Reverse Caverns, DK Bridge:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 15
   Reverse Caverns, DK Button:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 17
   Reverse Caverns, Exit to Abandoned Mine:
-    Entity Layout ID: 27
+    Entity Layout Row: 27
     Room Index: 16
   Reverse Caverns, Exit to Castle Entrance:
-    Entity Layout ID: 28
+    Entity Layout Row: 28
     Room Index: 20
   Reverse Caverns, Fake Room with Teleporter to Abandoned Mine:
     Room Index: 39
@@ -6003,83 +6040,83 @@ Rooms:
         Property: Top
         Transformations: {}
   Reverse Caverns, Hidden Crystal Entrance:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 1
   Reverse Caverns, Holy Symbol Room:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 13
   Reverse Caverns, Ice Floe Room:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 22
   Reverse Caverns, Left Ferryman Route:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 25
   Reverse Caverns, Loading Room to Abandoned Mine:
-    Entity Layout ID: 31
+    Entity Layout Row: 31
     Room Index: 33
   Reverse Caverns, Loading Room to Castle Entrance:
-    Entity Layout ID: 31
+    Entity Layout Row: 31
     Room Index: 31
   Reverse Caverns, Loading Room to Marble Gallery:
-    Entity Layout ID: 31
+    Entity Layout Row: 31
     Room Index: 32
   Reverse Caverns, Long Drop:
-    Entity Layout ID: 24
+    Entity Layout Row: 24
     Room Index: 0
   Reverse Caverns, Meal Tickets and Moonstone Room:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 7
   Reverse Caverns, Merman Statue Room:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 21
   Reverse Caverns, Pentagram Room:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 14
   Reverse Caverns, Plaque Room With Breakable Wall:
-    Entity Layout ID: 25
+    Entity Layout Row: 25
     Room Index: 8
   Reverse Caverns, Plaque Room With Life Max-Up:
-    Entity Layout ID: 26
+    Entity Layout Row: 26
     Room Index: 4
   Reverse Caverns, Right Ferryman Route:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 23
   Reverse Caverns, Rising Water Room:
-    Entity Layout ID: 23
+    Entity Layout Row: 23
     Room Index: 29
   Reverse Caverns, Room ID 09:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 9
   Reverse Caverns, Room ID 10:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 10
   Reverse Caverns, Room ID 11:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 11
   Reverse Caverns, Room ID 12:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 12
   Reverse Caverns, Room ID 18:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 18
   Reverse Caverns, Room ID 19:
-    Entity Layout ID: 19
+    Entity Layout Row: 19
     Room Index: 19
   Reverse Caverns, Save Room A:
-    Entity Layout ID: 30
+    Entity Layout Row: 30
     Room Index: 34
   Reverse Caverns, Save Room B:
-    Entity Layout ID: 30
+    Entity Layout Row: 30
     Room Index: 35
   Reverse Caverns, Save Room C:
-    Entity Layout ID: 30
+    Entity Layout Row: 30
     Room Index: 36
   Reverse Caverns, Scylla Room:
-    Entity Layout ID: 22
+    Entity Layout Row: 22
     Room Index: 27
   Reverse Caverns, Scylla Wyrm Room:
     Room Index: 28
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Dependents:
       - Type: Room
         Stage: Boss - Doppelganger 40
@@ -6097,66 +6134,66 @@ Rooms:
         Top: 0
         Left: 1
   Reverse Caverns, Small Stairwell:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 5
   Reverse Caverns, Tall Stairwell:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 3
   Reverse Caverns, Waterfall:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 26
   Reverse Clock Tower, Belfry:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 9
   Reverse Clock Tower, Exit to Courtyard:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 8
   Reverse Clock Tower, Fake Room with Teleporter to Castle Keep:
     Room Index: 16
   Reverse Clock Tower, Fake Room with Teleporter to Outer Wall:
     Room Index: 15
   Reverse Clock Tower, Fire of Bat Room:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 12
   Reverse Clock Tower, Healing Mail Room:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 2
   Reverse Clock Tower, Hidden Armory:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 5
   Reverse Clock Tower, Karasuman's Room:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 0
   Reverse Clock Tower, Left Gear Room:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 6
   Reverse Clock Tower, Loading Room to Castle Keep:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 14
   Reverse Clock Tower, Loading Room to Outer Wall:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 13
   Reverse Clock Tower, Open Courtyard:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 10
   Reverse Clock Tower, Path to Karasuman:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 1
   Reverse Clock Tower, Pendulum Room:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 3
   Reverse Clock Tower, Right Gear Room:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 7
   Reverse Clock Tower, Spire:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 4
   Reverse Clock Tower, Stairwell to Outer Wall:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 11
   Reverse Colosseum, Arena:
     Room Index: 5
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Dependents:
       - Type: Room
         Stage: Boss - Trio
@@ -6174,77 +6211,77 @@ Rooms:
         Top: 0
         Left: 2
   Reverse Colosseum, Blade Master Room:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 2
   Reverse Colosseum, Blood Cloak Room:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 10
   Reverse Colosseum, Bottom of Elevator Shaft:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 11
   Reverse Colosseum, Fake Room with Teleporter to Olrox's Quarters:
     Room Index: 18
   Reverse Colosseum, Fake Room with Teleporter to Royal Chapel:
     Room Index: 19
   Reverse Colosseum, Fountain Room:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 9
   Reverse Colosseum, Holy Sword Room:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 0
   Reverse Colosseum, Left-Side Armory:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 12
   Reverse Colosseum, Loading Room to Olrox's Quarters:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 15
   Reverse Colosseum, Loading Room to Royal Chapel:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 14
   Reverse Colosseum, Passageway Between Arena and Royal Chapel:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 4
   Reverse Colosseum, Right-Side Armory:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 13
   Reverse Colosseum, Save Room A:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 16
   Reverse Colosseum, Save Room B:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 17
   Reverse Colosseum, Spiral Staircases:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 7
   Reverse Colosseum, Top of Elevator Shaft:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 6
   Reverse Colosseum, Top of Left Spiral Staircase:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 1
   Reverse Colosseum, Top of Right Spiral Staircase:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 3
   Reverse Colosseum, Valhalla Knight Room:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 8
   Reverse Entrance, After Drawbridge:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 0
   Reverse Entrance, Attic Entrance:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 6
   Reverse Entrance, Attic Hallway:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 5
   Reverse Entrance, Attic Staircase:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 4
   Reverse Entrance, Cube of Zoe Room:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 15
   Reverse Entrance, Drop Under Portcullis:
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Room Index: 1
   Reverse Entrance, Fake Room with Teleporter to Alchemy Laboratory:
     Room Index: 31
@@ -6255,76 +6292,76 @@ Rooms:
   Reverse Entrance, Fake Room with Teleporter to Warp Rooms:
     Room Index: 29
   Reverse Entrance, Forest Cutscene:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 18
   Reverse Entrance, Gargoyle Room:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 13
   Reverse Entrance, Heart Max-Up Room:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 14
   Reverse Entrance, Holy Mail Room:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 3
   Reverse Entrance, Jewel Sword Room:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 8
   Reverse Entrance, Life Max-Up Room:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 17
   Reverse Entrance, Loading Room to Alchemy Laboratory:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 23
   Reverse Entrance, Loading Room to Marble Gallery:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 21
   Reverse Entrance, Loading Room to Underground Caverns:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 24
   Reverse Entrance, Loading Room to Warp Rooms:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 22
   Reverse Entrance, Meeting Room With Death:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 11
   Reverse Entrance, Merman Room:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 7
   Reverse Entrance, Save Room A:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 25
   Reverse Entrance, Save Room B:
-    Entity Layout ID: 19
+    Entity Layout Row: 19
     Room Index: 26
   Reverse Entrance, Save Room C:
-    Entity Layout ID: 19
+    Entity Layout Row: 19
     Room Index: 27
   Reverse Entrance, Shortcut to Underground Caverns:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 10
   Reverse Entrance, Shortcut to Warp Rooms:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 16
   Reverse Entrance, Stairwell After Death:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 12
   Reverse Entrance, Unknown Room 19:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 19
   Reverse Entrance, Unknown Room 20:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 20
   Reverse Entrance, Warg Hallway:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 9
   Reverse Entrance, Zombie Hallway:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 2
   Reverse Keep, Bend:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 4
   Reverse Keep, Dual Platforms:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 7
   Reverse Keep, Fake Room with Teleporter to Clock Tower:
     Room Index: 15
@@ -6333,14 +6370,14 @@ Rooms:
   Reverse Keep, Fake Room with Teleporter to Warp Rooms:
     Room Index: 13
   Reverse Keep, Falchion Room:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 5
   Reverse Keep, Ghost Card Room:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 3
   Reverse Keep, Keep Area:
     Room Index: 2
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Notes:
       - The functions DRA/GetTeleportToOtherCastle, DRA/func_80115C50, and RIC/func_8015BB80 contain constants that must be updated
       - The values refer to the location of the Castle Teleporter in the Keep Area
@@ -6403,35 +6440,35 @@ Rooms:
           - mul(-256)
           - add(-1728)
   Reverse Keep, Lion Torch Platform:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 6
   Reverse Keep, Loading Room to Clock Tower:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 10
   Reverse Keep, Loading Room to Royal Chapel:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 12
   Reverse Keep, Loading Room to Warp Rooms:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 11
   Reverse Keep, Lower Attic:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 1
   Reverse Keep, Save Room A:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 9
   Reverse Keep, Tyrfing Room:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 8
   Reverse Keep, Upper Attic:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 0
   Reverse Outer Wall, Blue Axe Knight Room:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 9
   Reverse Outer Wall, Doppelganger Room:
     Room Index: 11
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Dependents:
       - Type: Room
         Stage: Boss - Creature
@@ -6449,13 +6486,13 @@ Rooms:
         Top: 0
         Left: 2
   Reverse Outer Wall, Elevator Shaft Room:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 13
   Reverse Outer Wall, Exit to Clock Tower:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 2
   Reverse Outer Wall, Exit to Marble Gallery:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 7
   Reverse Outer Wall, Fake Room with Teleporter to Clock Tower:
     Room Index: 22
@@ -6466,46 +6503,46 @@ Rooms:
   Reverse Outer Wall, Fake Room with Teleporter to Warp Rooms:
     Room Index: 21
   Reverse Outer Wall, Garlic Room:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 10
   Reverse Outer Wall, Garnet Vase Room:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 8
   Reverse Outer Wall, Gladius Room:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 12
   Reverse Outer Wall, Jewel Knuckles Room:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 5
   Reverse Outer Wall, Loading Room to Clock Tower:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 15
   Reverse Outer Wall, Loading Room to Long Library:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 16
   Reverse Outer Wall, Loading Room to Marble Gallery:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 18
   Reverse Outer Wall, Loading Room to Warp Rooms:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 0
   Reverse Outer Wall, Lower Medusa Room:
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Room Index: 4
   Reverse Outer Wall, Save Room A:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 14
   Reverse Outer Wall, Save Room B:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 17
   Reverse Outer Wall, Secret Platform Room:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 6
   Reverse Outer Wall, Telescope Room:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 3
   Reverse Outer Wall, Top of Outer Wall:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 1
   Reverse Warp Rooms, Fake Room with Teleporter to Abandoned Mine:
     Room Index: 10
@@ -6518,61 +6555,61 @@ Rooms:
   Reverse Warp Rooms, Fake Room with Teleporter to Outer Wall:
     Room Index: 13
   Reverse Warp Rooms, Loading Room to Abandoned Mine:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 5
   Reverse Warp Rooms, Loading Room to Castle Entrance:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 6
   Reverse Warp Rooms, Loading Room to Castle Keep:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 9
   Reverse Warp Rooms, Loading Room to Olrox's Quarters:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 7
   Reverse Warp Rooms, Loading Room to Outer Wall:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 8
   Reverse Warp Rooms, Warp Room to Abandoned Mine:
     Room Index: 4
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Dependents:
       - Type: Warp Coordinate
         Array Name: Reverse Warp Room Coordinates
         Warp Index: 1
   Reverse Warp Rooms, Warp Room to Castle Entrance:
     Room Index: 3
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Dependents:
       - Type: Warp Coordinate
         Array Name: Reverse Warp Room Coordinates
         Warp Index: 0
   Reverse Warp Rooms, Warp Room to Castle Keep:
     Room Index: 0
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Dependents:
       - Type: Warp Coordinate
         Array Name: Reverse Warp Room Coordinates
         Warp Index: 3
   Reverse Warp Rooms, Warp Room to Olrox's Quarters:
     Room Index: 1
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Dependents:
       - Type: Warp Coordinate
         Array Name: Reverse Warp Room Coordinates
         Warp Index: 4
   Reverse Warp Rooms, Warp Room to Outer Wall:
     Room Index: 2
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Dependents:
       - Type: Warp Coordinate
         Array Name: Reverse Warp Room Coordinates
         Warp Index: 2
   Royal Chapel, Chapel Staircase:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 11
   Royal Chapel, Confessional Booth:
     Room Index: 7
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Dependents:
       - Type: Familiar Event
         Inverted: false
@@ -6590,7 +6627,7 @@ Rooms:
         Inverted: false
         Familiar Event ID: 46
   Royal Chapel, Empty Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 10
   Royal Chapel, Fake Room with Teleporter to Alchemy Laboratory:
     Room Index: 25
@@ -6601,11 +6638,11 @@ Rooms:
   Royal Chapel, Fake Room with Teleporter to Olrox's Quarters:
     Room Index: 23
   Royal Chapel, Goggles Room:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 8
   Royal Chapel, Hippogryph Room:
     Room Index: 4
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Dependents:
       - Type: Room
         Stage: Boss - Hippogryph
@@ -6623,44 +6660,44 @@ Rooms:
         Top: 0
         Left: 2
   Royal Chapel, Left Tower:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 13
   Royal Chapel, Loading Room to Alchemy Laboratory:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 19
   Royal Chapel, Loading Room to Castle Keep:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 15
   Royal Chapel, Loading Room to Colosseum:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 20
   Royal Chapel, Loading Room to Olrox's Quarters:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 21
   Royal Chapel, Middle Tower:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 14
   Royal Chapel, Nave:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 9
   Royal Chapel, Pushing Statue Shortcut:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 6
   Royal Chapel, Right Tower:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 17
   Royal Chapel, Save Room A:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 18
   Royal Chapel, Save Room B:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 16
   Royal Chapel, Silver Ring Room:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 0
   Royal Chapel, Spike Hallway:
     Room Index: 1
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Dependents:
       - Type: Familiar Event
         Inverted: false
@@ -6669,40 +6706,40 @@ Rooms:
         Inverted: false
         Familiar Event ID: 35
   Royal Chapel, Statue Ledge:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 12
   Royal Chapel, Walkway Between Towers:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 2
   Royal Chapel, Walkway Left of Hippogryph:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 3
   Royal Chapel, Walkway Right of Hippogryph:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 5
   Underground Caverns, Bandanna Room:
-    Entity Layout ID: 1
+    Entity Layout Row: 1
     Room Index: 30
   Underground Caverns, Claymore Stairwell:
-    Entity Layout ID: 7
+    Entity Layout Row: 7
     Room Index: 6
   Underground Caverns, Crystal Bend:
-    Entity Layout ID: 12
+    Entity Layout Row: 12
     Room Index: 2
   Underground Caverns, Crystal Cloak Room:
-    Entity Layout ID: 5
+    Entity Layout Row: 5
     Room Index: 24
   Underground Caverns, DK Bridge:
-    Entity Layout ID: 27
+    Entity Layout Row: 27
     Room Index: 15
   Underground Caverns, DK Button:
-    Entity Layout ID: 24
+    Entity Layout Row: 24
     Room Index: 17
   Underground Caverns, Exit to Abandoned Mine:
-    Entity Layout ID: 14
+    Entity Layout Row: 14
     Room Index: 16
   Underground Caverns, Exit to Castle Entrance:
-    Entity Layout ID: 15
+    Entity Layout Row: 15
     Room Index: 20
   Underground Caverns, Fake Room with Teleporter to Abandoned Mine:
     Room Index: 40
@@ -6714,7 +6751,7 @@ Rooms:
     Room Index: 38
   Underground Caverns, False Save Room:
     Room Index: 37
-    Entity Layout ID: 30
+    Entity Layout Row: 30
     Notes:
       - Fix discovered by @MottZilla
       - The function DRA/func_800F24F4 contains constants that must be updated
@@ -6732,7 +6769,7 @@ Rooms:
         Transformations: {}
   Underground Caverns, Hidden Crystal Entrance:
     Room Index: 1
-    Entity Layout ID: 11
+    Entity Layout Row: 11
     Dependents:
       - Type: Secret Map Tile
         Index: 60
@@ -6745,38 +6782,38 @@ Rooms:
         Inverted: false
         Familiar Event ID: 36
   Underground Caverns, Holy Symbol Room:
-    Entity Layout ID: 21
+    Entity Layout Row: 21
     Room Index: 13
   Underground Caverns, Ice Floe Room:
-    Entity Layout ID: 18
+    Entity Layout Row: 18
     Room Index: 22
   Underground Caverns, Left Ferryman Route:
-    Entity Layout ID: 17
+    Entity Layout Row: 17
     Room Index: 25
   Underground Caverns, Loading Room to Abandoned Mine:
-    Entity Layout ID: 32
+    Entity Layout Row: 32
     Room Index: 33
   Underground Caverns, Loading Room to Castle Entrance:
-    Entity Layout ID: 32
+    Entity Layout Row: 32
     Room Index: 31
   Underground Caverns, Loading Room to Marble Gallery:
-    Entity Layout ID: 32
+    Entity Layout Row: 32
     Room Index: 32
   Underground Caverns, Long Drop:
-    Entity Layout ID: 2
+    Entity Layout Row: 2
     Room Index: 0
   Underground Caverns, Meal Tickets and Moonstone Room:
-    Entity Layout ID: 13
+    Entity Layout Row: 13
     Room Index: 7
   Underground Caverns, Merman Statue Room:
-    Entity Layout ID: 26
+    Entity Layout Row: 26
     Room Index: 21
   Underground Caverns, Pentagram Room:
-    Entity Layout ID: 22
+    Entity Layout Row: 22
     Room Index: 14
   Underground Caverns, Plaque Room With Breakable Wall:
     Room Index: 8
-    Entity Layout ID: 3
+    Entity Layout Row: 3
     Dependents:
       - Type: Secret Map Tile
         Index: 65
@@ -6789,47 +6826,47 @@ Rooms:
         Inverted: false
         Familiar Event ID: 37
   Underground Caverns, Plaque Room With Life Max-Up:
-    Entity Layout ID: 4
+    Entity Layout Row: 4
     Room Index: 4
   Underground Caverns, Right Ferryman Route:
-    Entity Layout ID: 19
+    Entity Layout Row: 19
     Room Index: 23
   Underground Caverns, Rising Water Room:
-    Entity Layout ID: 29
+    Entity Layout Row: 29
     Room Index: 29
   Underground Caverns, Room ID 09:
-    Entity Layout ID: 9
+    Entity Layout Row: 9
     Room Index: 9
   Underground Caverns, Room ID 10:
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Room Index: 10
   Underground Caverns, Room ID 11:
-    Entity Layout ID: 6
+    Entity Layout Row: 6
     Room Index: 11
   Underground Caverns, Room ID 12:
-    Entity Layout ID: 20
+    Entity Layout Row: 20
     Room Index: 12
   Underground Caverns, Room ID 18:
-    Entity Layout ID: 23
+    Entity Layout Row: 23
     Room Index: 18
   Underground Caverns, Room ID 19:
-    Entity Layout ID: 25
+    Entity Layout Row: 25
     Room Index: 19
   Underground Caverns, Save Room A:
-    Entity Layout ID: 31
+    Entity Layout Row: 31
     Room Index: 34
   Underground Caverns, Save Room B:
-    Entity Layout ID: 31
+    Entity Layout Row: 31
     Room Index: 35
   Underground Caverns, Save Room C:
-    Entity Layout ID: 31
+    Entity Layout Row: 31
     Room Index: 36
   Underground Caverns, Scylla Room:
-    Entity Layout ID: 28
+    Entity Layout Row: 28
     Room Index: 27
   Underground Caverns, Scylla Wyrm Room:
     Room Index: 28
-    Entity Layout ID: 0
+    Entity Layout Row: 0
     Dependents:
       - Type: Room
         Stage: Boss - Scylla
@@ -6857,13 +6894,13 @@ Rooms:
         Top: -1
         Left: 0
   Underground Caverns, Small Stairwell:
-    Entity Layout ID: 8
+    Entity Layout Row: 8
     Room Index: 5
   Underground Caverns, Tall Stairwell:
-    Entity Layout ID: 10
+    Entity Layout Row: 10
     Room Index: 3
   Underground Caverns, Waterfall:
-    Entity Layout ID: 16
+    Entity Layout Row: 16
     Room Index: 26
   Warp Rooms, Fake Room with Teleporter to Abandoned Mine:
     Room Index: 14

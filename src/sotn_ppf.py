@@ -815,6 +815,107 @@ def get_patch(args, extract, changes, data):
                     offset += 1
         result.patch_value(0xFF, 'u8', extract_metadata['Start'] + offset)
         assert offset <= extract_metadata['Footprint']
+    # Patch entity layouts
+    entity_layouts = {}
+    entity_row_starts = {}
+    for change in changes.get('Entity Layouts', []):
+        stage_name = change['Stage']
+        if stage_name not in entity_layouts:
+            print(stage_name, len(extract['Entity Layouts'][stage_name]['Data']))
+            entity_layouts[stage_name] = copy.deepcopy(extract['Entity Layouts'][stage_name]['Data'])
+        target_entity = {}
+        for (key, value) in change.get('Properties', {}).items():
+            target_entity[key] = value
+        if 'Delete From' in change:
+            source_room_name = change['Delete From']['Room']
+            entity_layout_row = aliases['Rooms'][source_room_name]['Entity Layout Row']
+            entity_layout_id = change['Delete From']['Entity Layout ID']
+            print('Deleting', source_room_name, entity_layout_row, entity_layout_id)
+            for (key, value) in entity_layouts[stage_name][entity_layout_row][entity_layout_id].items():
+                if key not in target_entity:
+                    target_entity[key] = value
+            entity_layouts[stage_name][entity_layout_row].pop(entity_layout_id)
+        if 'Add To' in change:
+            target_room_name = change['Add To']['Room']
+            entity_layout_row = aliases['Rooms'][target_room_name]['Entity Layout Row']
+            print('Adding', target_room_name, entity_layout_row)
+            entity_layouts[stage_name][entity_layout_row].append(target_entity)
+    for (stage_name, entity_layout_table) in entity_layouts.items():
+        print('', stage_name, len(entity_layout_table))
+        for (row_id, entity_layout_row) in enumerate(entity_layout_table):
+            print('  ', row_id, len(entity_layout_row))
+            for (col_id, entity_layout_entry) in enumerate(entity_layout_row):
+                print('    ', col_id, entity_layout_entry)
+    sentinel_start_template = {
+        'Entity Room Index': 0,
+        'Entity Type ID': 0,
+        'Params': 0,
+        'X': -2,
+        'Y': -2,
+    }
+    sentinel_end_template = {
+        'Entity Room Index': 0,
+        'Entity Type ID': 0,
+        'Params': 0,
+        'X': -1,
+        'Y': -1,
+    }
+    for (stage_name, entity_layout_table) in entity_layouts.items():
+        stage_extract = extract['Entity Layouts'][stage_name]
+        layout_extract = extract['Constants']['Entity Layout'][stage_name]
+        horizontal_layout_start = layout_extract['Horizontal Layout']['Start']
+        horizontal_layout_value = layout_extract['Horizontal Layout']['Value']
+        vertical_layout_start = layout_extract['Vertical Layout']['Start']
+        vertical_layout_value = layout_extract['Vertical Layout']['Value']
+        vertical_offset = vertical_layout_start - horizontal_layout_start
+        print('', stage_name, horizontal_layout_start, sotn_address._hex(horizontal_layout_value, 8), vertical_layout_start, sotn_address._hex(vertical_layout_value, 8))
+        # NOTE(sestren): entity_row is the "row" of the entity layout table, entity_col is the "column" within that row
+        entity_offset = 0
+        entity_size = stage_extract['Metadata']['Size']
+        for (entity_row, entity_layout_row) in enumerate(entity_layout_table):
+            print('  ', entity_row)
+            # Adjust addresses pointing to start of row
+            # TODO(sestren): Instead of patching once per row, patch all references to that row in the layout table
+            # result.patch_value(horizontal_layout_value + 10 * entity_offset, 'u32', horizontal_layout_start + 4 * entity_row)
+            # result.patch_value(vertical_layout_value + 10 * entity_offset, 'u32', vertical_layout_start + 4 * entity_row)
+            print('    ', sotn_address._hex(horizontal_layout_start + 4 * entity_row, 8), sotn_address._hex(horizontal_layout_value + 10 * entity_offset, 8))
+            print('    ', sotn_address._hex(vertical_layout_start + 4 * entity_row, 8), sotn_address._hex(vertical_layout_value + 10 * entity_offset, 8))
+            sentinel_start = dict(sentinel_start_template)
+            sentinel_start['Params'] = stage_extract['Metadata']['Row Params'][entity_row]
+            sentinel_end = dict(sentinel_end_template)
+            # Sort both horizontal and vertical layouts, bookending them with sentinel values
+            horizontal_entity_layout_row = [sentinel_start] + list(sorted(entity_layout_row,
+                key=lambda x: (x['X'], x['Horizontal Sort'], x['Y'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
+            )) + [sentinel_end]
+            vertical_entity_layout_row = [sentinel_start] + list(sorted(entity_layout_row,
+                key=lambda y: (y['Y'], y['Vertical Sort'], y['X'], y['Entity Room Index'], y['Entity Type ID'], y['Params'])
+            )) + [sentinel_end]
+            assert len(horizontal_entity_layout_row) == len(vertical_entity_layout_row)
+            # Adjust the entity layouts for the entire row
+            for entity_col in range(len(horizontal_entity_layout_row)):
+                print('      ', entity_col)
+                for field_name in (
+                    'Entity Room Index',
+                    'Entity Type ID',
+                    'Params',
+                    'X',
+                    'Y',
+                ):
+                    if horizontal_entity_layout_row[entity_col][field_name] != stage_extract['Flattened Horizontal Data'][entity_offset][field_name]:
+                        print('        ', 'H', field_name, horizontal_entity_layout_row[entity_col][field_name])
+                        result.patch_value(
+                            horizontal_entity_layout_row[entity_col][field_name],
+                            stage_extract['Metadata']['Fields'][field_name]['Type'],
+                            layout_extract['Horizontal Table Start'] + entity_offset * entity_size + stage_extract['Metadata']['Fields'][field_name]['Offset'],
+                        )
+                    if vertical_entity_layout_row[entity_col][field_name] != stage_extract['Flattened Vertical Data'][entity_offset][field_name]:
+                        print('        ', 'V', field_name, vertical_entity_layout_row[entity_col][field_name])
+                        result.patch_value(
+                            vertical_entity_layout_row[entity_col][field_name],
+                            stage_extract['Metadata']['Fields'][field_name]['Type'],
+                            layout_extract['Vertical Table Start'] + entity_offset * entity_size + stage_extract['Metadata']['Fields'][field_name]['Offset'],
+                        )
+                entity_offset += 1
     # Patch object layouts
     object_layouts = {}
     for object_layout in changes.get('Object Layouts', {}):
@@ -935,7 +1036,7 @@ def get_patch(args, extract, changes, data):
             key=lambda x: (x['X'], x['Y'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
         ))
         vertical_object_layout = list(sorted(object_layout,
-            key=lambda x: (x['Y'], x['X'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
+            key=lambda y: (y['X'], y['Y'], y['Entity Room Index'], y['Entity Type ID'], y['Params'])
         ))
         assert len(horizontal_object_layout) == len(vertical_object_layout)
         for (sort_method, sorted_object_layout) in (

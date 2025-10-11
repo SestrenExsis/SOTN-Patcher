@@ -230,6 +230,9 @@ if __name__ == '__main__':
         open(args.binary_filepath, 'br') as binary_file,
     ):
         entity_layouts = {}
+        constants = {
+            'Entity Layout': {},
+        }
         # Stages
         stages = {
             'Abandoned Mine': {
@@ -540,7 +543,7 @@ if __name__ == '__main__':
             },
         }
         for stage_name in stages.keys():
-            print('', stage_name)
+            # print('', stage_name)
             cursors = {}
             stage_offset = stages[stage_name]['Stage']['Start']
             cursors['Stage'] = BIN(binary_file, stage_offset)
@@ -564,10 +567,13 @@ if __name__ == '__main__':
             cursors['Vertical Entity Layout'] = cursors['Stage'].clone(cursors['Entities'].u16(0x28))
             stage_entity_layout = {
                 'Data': [],
+                'Flattened Horizontal Data': [],
+                'Flattened Vertical Data': [],
                 'Metadata': {
-                    'Type': '2d-object-array',
+                    'Type': '2d-entity-array',
                     'Start': cursors['Horizontal Entity Layout'].cursor.address,
                     'End': 0,
+                    'Row Params': [],
                     'Size': 0x0A,
                     'Sentinel Entity Count': 0,
                     'Non-Sentinel Entity Count': 0,
@@ -596,11 +602,17 @@ if __name__ == '__main__':
                 },
             }
             # Entity layouts for the current room
-            # NOTE(sestren): Marble Gallery is laid out weird; the 2D data is not contiguous, so it will be ignored
+            # NOTE(sestren): Marble Gallery is laid out weird; the 2D data is not contiguous
+            constants['Entity Layout'][stage_name] = {
+                'Horizontal Layout': cursors['Horizontal Entity Layout'].u32(0, True),
+                'Vertical Layout': cursors['Vertical Entity Layout'].u32(0, True),
+            }
             current_object_layout_offset = cursors['Horizontal Entity Layout'].u32(0) - OFFSET
             current_cursor = cursors['Stage'].clone(current_object_layout_offset)
+            constants['Entity Layout'][stage_name]['Horizontal Table Start'] = current_cursor.cursor.address
             target_object_layout_offset = cursors['Vertical Entity Layout'].u32(0) - OFFSET
             target_cursor = cursors['Stage'].clone(target_object_layout_offset)
+            constants['Entity Layout'][stage_name]['Vertical Table Start'] = target_cursor.cursor.address
             offset = 0
             contiguous_ind = True
             while current_cursor.cursor.address <= (target_cursor.cursor.address - 4):
@@ -609,17 +621,43 @@ if __name__ == '__main__':
                 entity_type_id = current_cursor.u16(0x4)
                 entity_room_index = current_cursor.u16(0x6)
                 params = current_cursor.u16(0x8)
+                stage_entity_layout['Flattened Horizontal Data'].append({
+                    'X': x,
+                    'Y': y,
+                    'Entity Type ID': entity_type_id,
+                    'Entity Room Index': entity_room_index,
+                    'Params': params,
+                    'Sort': offset,
+                })
+                vertical_offset = target_object_layout_offset - current_object_layout_offset
+                stage_entity_layout['Flattened Vertical Data'].append({
+                    'X': current_cursor.s16(vertical_offset + 0x0),
+                    'Y': current_cursor.s16(vertical_offset + 0x2),
+                    'Entity Type ID': current_cursor.u16(vertical_offset + 0x4),
+                    'Entity Room Index': current_cursor.u16(vertical_offset + 0x6),
+                    'Params': current_cursor.u16(vertical_offset + 0x8),
+                    'Sort': offset,
+                })
                 current_cursor.seek(stage_entity_layout['Metadata']['Size'])
                 offset += stage_entity_layout['Metadata']['Size']
                 if x in (-2, -1):
                     stage_entity_layout['Metadata']['Sentinel Entity Count'] += 1
                 if x == -2:
                     stage_entity_layout['Data'].append([])
+                    stage_entity_layout['Metadata']['Row Params'].append(params)
                     continue
                 elif x == -1:
+                    padding = 0
                     next_xy = (current_cursor.s16(0x0), current_cursor.s16(0x2))
-                    if next_xy != (-2, -2) and current_cursor.cursor.address < (target_cursor.cursor.address - 4):
-                        contiguous_ind = False
+                    while next_xy != (-2, -2) and current_cursor.cursor.address < (target_cursor.cursor.address - 4):
+                        # NOTE(sestren): Suppress requiring contiguous data for now
+                        # contiguous_ind = False
+                        current_cursor.seek(4)
+                        offset += 4
+                        padding += 4
+                        next_xy = (current_cursor.s16(0x0), current_cursor.s16(0x2))
+                    if padding > 0:
+                        stage_entity_layout['Data'][-1][-1]['Padding'] = padding
                     continue
                 data = {
                     'X': x,
@@ -627,6 +665,8 @@ if __name__ == '__main__':
                     'Entity Type ID': entity_type_id,
                     'Entity Room Index': entity_room_index,
                     'Params': params,
+                    'Horizontal Sort': offset,
+                    'Vertical Sort': -1,
                 }
                 stage_entity_layout['Data'][-1].append(data)
                 stage_entity_layout['Metadata']['Non-Sentinel Entity Count'] += 1
@@ -642,6 +682,27 @@ if __name__ == '__main__':
             assert (x,  y, entity_type_id, entity_room_index, params) in ((-2, -2, 0, 0, 0), (-2, -2, 0, 0, 1))
             if contiguous_ind:
                 entity_layouts[stage_name] = stage_entity_layout
+            # Find and update the vertical sorts
+            search_indexes = set(range(len(stage_entity_layout['Flattened Vertical Data'])))
+            for (row_id, row_data) in enumerate(stage_entity_layout['Data']):
+                for (col_id, entity_data) in enumerate(row_data):
+                    matching_index = None
+                    for search_index in search_indexes:
+                        for property in (
+                            'X',
+                            'Y',
+                            'Entity Type ID',
+                            'Entity Room Index',
+                            'Params',
+                        ):
+                            if stage_entity_layout['Flattened Vertical Data'][search_index][property] != entity_data[property]:
+                                break
+                        else:
+                            matching_index = search_index
+                            break
+                    if matching_index is not None:
+                        entity_data['Vertical Sort'] = stage_entity_layout['Flattened Vertical Data'][search_index]['Sort']
+                        search_indexes.remove(matching_index)
             # Room data
             stages[stage_name]['Rooms'] = {}
             for room_id in range(256):
@@ -766,7 +827,7 @@ if __name__ == '__main__':
                         prev_pos = curr_pos
                     objects['Metadata']['Count'] = len(objects['Data'])
                     stages[stage_name]['Rooms'][room_id]['Object Layout - ' + direction] = objects
-                print('  ', 'R =', room_id, 'O =', object_layout_id, 'H =', debug['Horizontal'], ', V =', debug['Vertical'])
+                # print('  ', 'R =', room_id, 'O =', object_layout_id, 'H =', debug['Horizontal'], ', V =', debug['Vertical'])
         # Extract teleporter data
         cursor = BIN(binary_file, 0x00097C5C)
         teleporters = {
@@ -850,7 +911,6 @@ if __name__ == '__main__':
             }
             boss_teleporters['Data'].append(data)
         # Extract constant data stored as arrays
-        constants = {}
         for (starting_address, data_type, array_count, array_name) in (
             # Unique item drops in First Castle
             (0x03CE01E4, 'u16', 13, 'Unique Item Drops (Abandoned Mine)'),
@@ -963,8 +1023,6 @@ if __name__ == '__main__':
             (0x000E7DD0, 'False Save Room, Room Y', 'u16'), # 0x2100 --> 33
             (0x000E7DA4, 'Reverse False Save Room, Room X', 'u16'), # 0x1200 --> 18
             (0x000E7DAC, 'Reverse False Save Room, Room Y', 'u16'), # 0x1E00 --> 30
-            # Buy Castle Map, set to NOP to draw every tile within the boundaries
-            (0x000E7B1C, 'Should reveal map tile', 'u32'), # 0x10400020 --> beq v0,0,$800F23A0
             # (0x0009840C, 'Castle map reveal boundary', 'u32') # 0x06082600 --> {0, 26, 8, 6} # Change to 0x40400000???
             # (0x049F761C, 'Stun player when meeting Maria in Alchemy Lab', 'u32'), # 0x34100001 --> ori s0,0,$1 # Change to 0x36100000 --> ori s0,$0
             # Strings
