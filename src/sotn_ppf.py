@@ -866,7 +866,6 @@ def get_patch(args, extract, changes, data):
         horizontal_layout_value = layout_extract['Horizontal Layout']['Value']
         vertical_layout_start = layout_extract['Vertical Layout']['Start']
         vertical_layout_value = layout_extract['Vertical Layout']['Value']
-        vertical_offset = vertical_layout_start - horizontal_layout_start
         print('', stage_name, horizontal_layout_start, sotn_address._hex(horizontal_layout_value, 8), vertical_layout_start, sotn_address._hex(vertical_layout_value, 8))
         # NOTE(sestren): entity_row is the "row" of the entity layout table, entity_col is the "column" within that row
         entity_offset = 0
@@ -874,11 +873,12 @@ def get_patch(args, extract, changes, data):
         for (entity_row, entity_layout_row) in enumerate(entity_layout_table):
             print('  ', entity_row)
             # Adjust addresses pointing to start of row
-            # TODO(sestren): Instead of patching once per row, patch all references to that row in the layout table
-            # result.patch_value(horizontal_layout_value + 10 * entity_offset, 'u32', horizontal_layout_start + 4 * entity_row)
-            # result.patch_value(vertical_layout_value + 10 * entity_offset, 'u32', vertical_layout_start + 4 * entity_row)
-            print('    ', sotn_address._hex(horizontal_layout_start + 4 * entity_row, 8), sotn_address._hex(horizontal_layout_value + 10 * entity_offset, 8))
-            print('    ', sotn_address._hex(vertical_layout_start + 4 * entity_row, 8), sotn_address._hex(vertical_layout_value + 10 * entity_offset, 8))
+            for (layout_id, layout_index) in enumerate(layout_extract['Layout Indexes']):
+                if layout_extract['Row Indexes'].index(layout_index) != entity_row:
+                    continue
+                if layout_extract['Row Indexes'][entity_row] != entity_offset:
+                    result.patch_value(horizontal_layout_value + 10 * entity_offset, 'u32', horizontal_layout_start + 4 * layout_id)
+                    result.patch_value(vertical_layout_value + 10 * entity_offset, 'u32', vertical_layout_start + 4 * layout_id)
             sentinel_start = dict(sentinel_start_template)
             sentinel_start['Params'] = stage_extract['Metadata']['Row Params'][entity_row]
             sentinel_end = dict(sentinel_end_template)
