@@ -563,6 +563,7 @@ if __name__ == '__main__':
                 stage_offset = cursors['Stage'].u32(address) - OFFSET
                 cursors[cursor_name] = cursors['Stage'].clone(stage_offset)
             # Entity Layout data
+            size = 10
             cursors['Horizontal Entity Layout'] = cursors['Stage'].clone(cursors['Entities'].u16(0x1C))
             cursors['Vertical Entity Layout'] = cursors['Stage'].clone(cursors['Entities'].u16(0x28))
             stage_entity_layout = {
@@ -574,7 +575,7 @@ if __name__ == '__main__':
                     'Start': cursors['Horizontal Entity Layout'].cursor.address,
                     'End': 0,
                     'Row Params': [],
-                    'Size': 0x0A,
+                    'Size': size,
                     'Sentinel Entity Count': 0,
                     'Non-Sentinel Entity Count': 0,
                     'Fields': {
@@ -601,26 +602,35 @@ if __name__ == '__main__':
                     },
                 },
             }
+            size = stage_entity_layout['Metadata']['Size']
             # Entity layouts for the current room
             # NOTE(sestren): Marble Gallery is laid out weird; the 2D data is not contiguous
             constants['Entity Layout'][stage_name] = {
                 'Horizontal Layout': cursors['Horizontal Entity Layout'].u32(0, True),
                 'Vertical Layout': cursors['Vertical Entity Layout'].u32(0, True),
+                'Layout Indexes': [],
+                'Row Indexes': [],
             }
+            layout_cursor = cursors['Horizontal Entity Layout'].clone(0)
+            while layout_cursor.cursor.address < cursors['Vertical Entity Layout'].cursor.address:
+                layout_index = (layout_cursor.u32() - cursors['Horizontal Entity Layout'].u32()) // size
+                constants['Entity Layout'][stage_name]['Layout Indexes'].append(layout_index)
+                layout_cursor.seek(4)
+            layout_cursor = cursors['Horizontal Entity Layout'].clone(0)
             current_object_layout_offset = cursors['Horizontal Entity Layout'].u32(0) - OFFSET
-            current_cursor = cursors['Stage'].clone(current_object_layout_offset)
-            constants['Entity Layout'][stage_name]['Horizontal Table Start'] = current_cursor.cursor.address
             target_object_layout_offset = cursors['Vertical Entity Layout'].u32(0) - OFFSET
+            entity_cursor = cursors['Stage'].clone(current_object_layout_offset)
+            constants['Entity Layout'][stage_name]['Horizontal Table Start'] = entity_cursor.cursor.address
             target_cursor = cursors['Stage'].clone(target_object_layout_offset)
             constants['Entity Layout'][stage_name]['Vertical Table Start'] = target_cursor.cursor.address
             offset = 0
             contiguous_ind = True
-            while current_cursor.cursor.address <= (target_cursor.cursor.address - 4):
-                x = current_cursor.s16(0x0)
-                y = current_cursor.s16(0x2)
-                entity_type_id = current_cursor.u16(0x4)
-                entity_room_index = current_cursor.u16(0x6)
-                params = current_cursor.u16(0x8)
+            while entity_cursor.cursor.address <= (target_cursor.cursor.address - 4):
+                x = entity_cursor.s16(0x0)
+                y = entity_cursor.s16(0x2)
+                entity_type_id = entity_cursor.u16(0x4)
+                entity_room_index = entity_cursor.u16(0x6)
+                params = entity_cursor.u16(0x8)
                 stage_entity_layout['Flattened Horizontal Data'].append({
                     'X': x,
                     'Y': y,
@@ -631,31 +641,35 @@ if __name__ == '__main__':
                 })
                 vertical_offset = target_object_layout_offset - current_object_layout_offset
                 stage_entity_layout['Flattened Vertical Data'].append({
-                    'X': current_cursor.s16(vertical_offset + 0x0),
-                    'Y': current_cursor.s16(vertical_offset + 0x2),
-                    'Entity Type ID': current_cursor.u16(vertical_offset + 0x4),
-                    'Entity Room Index': current_cursor.u16(vertical_offset + 0x6),
-                    'Params': current_cursor.u16(vertical_offset + 0x8),
+                    'X': entity_cursor.s16(vertical_offset + 0x0),
+                    'Y': entity_cursor.s16(vertical_offset + 0x2),
+                    'Entity Type ID': entity_cursor.u16(vertical_offset + 0x4),
+                    'Entity Room Index': entity_cursor.u16(vertical_offset + 0x6),
+                    'Params': entity_cursor.u16(vertical_offset + 0x8),
                     'Sort': offset,
                 })
-                current_cursor.seek(stage_entity_layout['Metadata']['Size'])
-                offset += stage_entity_layout['Metadata']['Size']
                 if x in (-2, -1):
                     stage_entity_layout['Metadata']['Sentinel Entity Count'] += 1
                 if x == -2:
                     stage_entity_layout['Data'].append([])
                     stage_entity_layout['Metadata']['Row Params'].append(params)
+                    row_index = offset // size
+                    constants['Entity Layout'][stage_name]['Row Indexes'].append(row_index)
+                    layout_cursor.seek(4)
+                entity_cursor.seek(size)
+                offset += size
+                if x == -2:
                     continue
                 elif x == -1:
                     padding = 0
-                    next_xy = (current_cursor.s16(0x0), current_cursor.s16(0x2))
-                    while next_xy != (-2, -2) and current_cursor.cursor.address < (target_cursor.cursor.address - 4):
+                    next_xy = (entity_cursor.s16(0x0), entity_cursor.s16(0x2))
+                    while next_xy != (-2, -2) and entity_cursor.cursor.address < (target_cursor.cursor.address - 4):
                         # NOTE(sestren): Suppress requiring contiguous data for now
                         # contiguous_ind = False
-                        current_cursor.seek(4)
+                        entity_cursor.seek(4)
                         offset += 4
                         padding += 4
-                        next_xy = (current_cursor.s16(0x0), current_cursor.s16(0x2))
+                        next_xy = (entity_cursor.s16(0x0), entity_cursor.s16(0x2))
                     if padding > 0:
                         stage_entity_layout['Data'][-1][-1]['Padding'] = padding
                     continue
@@ -671,14 +685,14 @@ if __name__ == '__main__':
                 stage_entity_layout['Data'][-1].append(data)
                 stage_entity_layout['Metadata']['Non-Sentinel Entity Count'] += 1
             # The next 2D-array must start at the next 4-byte alignment
-            current_cursor.seek(offset % 4)
+            entity_cursor.seek(offset % 4)
             # Verify that the vertical entity layout starts immediately after
-            stage_entity_layout['Metadata']['End'] = current_cursor.cursor.address
-            x = current_cursor.s16(0x0)
-            y = current_cursor.s16(0x2)
-            entity_type_id = current_cursor.u16(0x4)
-            entity_room_index = current_cursor.u16(0x6)
-            params = current_cursor.u16(0x8)
+            stage_entity_layout['Metadata']['End'] = entity_cursor.cursor.address
+            x = entity_cursor.s16(0x0)
+            y = entity_cursor.s16(0x2)
+            entity_type_id = entity_cursor.u16(0x4)
+            entity_room_index = entity_cursor.u16(0x6)
+            params = entity_cursor.u16(0x8)
             assert (x,  y, entity_type_id, entity_room_index, params) in ((-2, -2, 0, 0, 0), (-2, -2, 0, 0, 1))
             if contiguous_ind:
                 entity_layouts[stage_name] = stage_entity_layout
@@ -706,7 +720,6 @@ if __name__ == '__main__':
             # Room data
             stages[stage_name]['Rooms'] = {}
             for room_id in range(256):
-                debug = {}
                 cursors['Current Room'] = cursors['Rooms'].clone(0x08 * room_id)
                 if cursors['Current Room'].u8() == 0x40:
                     break
@@ -770,7 +783,6 @@ if __name__ == '__main__':
                 ):
                     # Object list
                     object_layout_offset = cursors[direction + ' Entity Layout'].u32(4 * object_layout_id) - OFFSET
-                    debug[direction] = sotn_address._hex(object_layout_offset + OFFSET, 8)
                     cursors[direction] = cursors['Stage'].clone(object_layout_offset)
                     objects = {
                         'Metadata': {
@@ -821,13 +833,12 @@ if __name__ == '__main__':
                         objects['Data'].append(data)
                         if x == -1:
                             break
-                        # Confirm that the lists are ordered
+                        # Assume that the lists are ordered
                         curr_pos = x if direction == 'Horizontal' else y
                         assert curr_pos >= prev_pos
                         prev_pos = curr_pos
                     objects['Metadata']['Count'] = len(objects['Data'])
                     stages[stage_name]['Rooms'][room_id]['Object Layout - ' + direction] = objects
-                # print('  ', 'R =', room_id, 'O =', object_layout_id, 'H =', debug['Horizontal'], ', V =', debug['Vertical'])
         # Extract teleporter data
         cursor = BIN(binary_file, 0x00097C5C)
         teleporters = {

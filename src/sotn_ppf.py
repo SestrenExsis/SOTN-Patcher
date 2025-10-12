@@ -817,7 +817,6 @@ def get_patch(args, extract, changes, data):
         assert offset <= extract_metadata['Footprint']
     # Patch entity layouts
     entity_layouts = {}
-    entity_row_starts = {}
     for change in changes.get('Entity Layouts', []):
         stage_name = change['Stage']
         if stage_name not in entity_layouts:
