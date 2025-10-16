@@ -1035,7 +1035,7 @@ def get_patch(args, extract, changes, data):
             key=lambda x: (x['X'], x['Y'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
         ))
         vertical_object_layout = list(sorted(object_layout,
-            key=lambda y: (y['X'], y['Y'], y['Entity Room Index'], y['Entity Type ID'], y['Params'])
+            key=lambda y: (y['Y'], y['X'], y['Entity Room Index'], y['Entity Type ID'], y['Params'])
         ))
         assert len(horizontal_object_layout) == len(vertical_object_layout)
         for (sort_method, sorted_object_layout) in (
