@@ -2,6 +2,10 @@
 Boss Teleporters:
   Cutscene - Meeting Maria in Clock Room: 0
 Entity Types:
+  Entity - Breakable Container:
+    Alchemy Laboratory: 55
+  Entity - Breakable Item Orb:
+    Alchemy Laboratory: 53
   Entity - Candle:
     Global: 40961
   Entity - Enemy (Gremlin):
@@ -23,24 +27,24 @@ Entity Types:
     Long Library: 58
   Entity - Enemy (Venus Weed):
     Abandoned Mine: 41
-  Entity - Prize Drop:
-    Global: 3
-  Entity - Foreground:
-    Global: 8
-  Entity - Stage Name:
-    Global: 9
-  Entity - Red Door:
-    Global: 5
   Entity - Equippable Item:
     Global: 10
-  Entity - Relic Orb:
-    Global: 11
+  Entity - Foreground:
+    Global: 8
   Entity - Placed Item:
     Global: 12
-  Entity - Breakable Item Orb:
-    Alchemy Laboratory: 53
-  Entity - Breakable Container:
-    Alchemy Laboratory: 55
+  Entity - Prize Drop:
+    Global: 3
+  Entity - Red Door:
+    Global: 5
+  Entity - Relic Orb:
+    Global: 11
+  Entity - Sound (End Confessional Chime):
+    Royal Chapel: 45
+  Entity - Sound (Fade Waterfall Roar):
+    Underground Caverns: 80
+  Entity - Stage Name:
+    Global: 9
 Items:
   Item - Pineapple: 162
   Item - Parfait: 169
