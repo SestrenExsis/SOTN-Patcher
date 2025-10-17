@@ -1,0 +1,57 @@
+{
+    "Changes": {
+        "Entity Layouts": [
+            {
+                "Add Relative To": {
+                    "Room": "Royal Chapel, Confessional Booth",
+                    "Node": "Left Passage",
+                    "X Offset": 0,
+                    "Y Offset": 0
+                },
+                "Delete From": {
+                    "Entity Layout ID": 47,
+                    "Room": "Royal Chapel, Left Tower"
+                },
+                "Notes": [
+                    "Relocate Sound Entity that turns off Confessional Chime"
+                ],
+                "Stage": "Royal Chapel"
+            }
+        ],
+        "Options": {
+            "Enable debug mode": true
+        },
+        "Stages": {
+            "Royal Chapel": {
+                "Rooms": {
+                    "Royal Chapel, Confessional Booth": {
+                        "Left": 10,
+                        "Top": 22
+                    },
+                    "Royal Chapel, Goggles Room": {
+                        "Left": 10,
+                        "Top": 23
+                    }
+                }
+            }
+        }
+    },
+    "Shuffler": {
+        "Nodes": {
+            "Royal Chapel, Chapel Staircase": {
+                "Right Passage": {
+                    "Target Room Name": "Royal Chapel, Confessional Booth",
+                    "X": 0,
+                    "Y": 128
+                }
+            },
+            "Royal Chapel, Confessional Booth": {
+                "Left Passage": {
+                    "Target Room Name": "Royal Chapel, Chapel Staircase",
+                    "X": 2048,
+                    "Y": 384
+                }
+            }
+        }
+    }
+}

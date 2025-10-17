@@ -220,18 +220,18 @@ def get_changes_template_file(extract, aliases):
                 result['Constants'][constant_name] = constant['Value']
     return result
 
-def validate_changes(changes):
-    if 'Boss Teleporters' in changes:
+def validate_patch(patch):
+    if 'Boss Teleporters' in patch.get('Changes', {}):
         # TODO(sestren): Validate boss teleporters
         pass
-    for (stage_id, stage_data) in changes.get('Stages', {}).items():
+    for (stage_id, stage_data) in patch.get('Changes', {}).get('Stages', {}).items():
         for (room_id, room_data) in stage_data.get('Rooms', {}).items():
             assert 0 <= room_data.get('Top', 0) <= 63 # Should it be 58 instead of 63?
             assert 0 <= room_data.get('Left', 0) <= 63
             if 'Object Layout - Horizontal' in room_data:
                 # TODO(sestren): Validate changes to object layouts
                 pass
-    if 'Teleporters' in changes:
+    if 'Teleporters' in patch.get('Changes', {}):
         # TODO(sestren): Validate teleporters
         pass
 
@@ -259,7 +259,10 @@ def transformed_value(value, transformations):
             result += int(operand)
     return result
 
-def get_patch(args, extract, changes, data):
+def assemble_patch(args, extract, main_patch, data):
+    changes = main_patch.get('Changes', {})
+    if 'Changes' not in main_patch:
+        changes = main_patch
     aliases = data['Aliases']
     result = Patch()
     # Apply common patches
@@ -345,8 +348,8 @@ def get_patch(args, extract, changes, data):
             continue
         for patch_file_name in patch_file_names:
             with open(os.path.join(os.path.normpath(args.build_dir), 'patches', patch_file_name + '.json')) as patch_file:
-                patch = json.load(patch_file)
-                patch_changes = patch.get('Changes', {})
+                common_patch = json.load(patch_file)
+                patch_changes = common_patch.get('Changes', {})
                 # New pokes are added to the end of the poke list
                 for poke in patch_changes.get('Pokes', []):
                     if 'Pokes' not in changes:
@@ -839,6 +842,16 @@ def get_patch(args, extract, changes, data):
             entity_layout_row = aliases['Rooms'][target_room_name]['Entity Layout Row']
             print('Adding', target_room_name, entity_layout_row)
             entity_layouts[stage_name][entity_layout_row].append(target_entity)
+        if 'Add Relative To' in change:
+            source_room_name = change['Add Relative To']['Room']
+            source_node_name = change['Add Relative To']['Node']
+            target_room = main_patch['Shuffler']['Nodes'][source_room_name][source_node_name]
+            target_room_name = target_room['Target Room Name']
+            entity_layout_row = aliases['Rooms'][target_room_name]['Entity Layout Row']
+            target_entity['X'] = target_room.get('X', 0) + change['Add Relative To'].get('X Offset', 0)
+            target_entity['Y'] = target_room.get('Y', 0) + change['Add Relative To'].get('Y Offset', 0)
+            print('Adding', target_room_name, entity_layout_row)
+            entity_layouts[stage_name][entity_layout_row].append(target_entity)
     for (stage_name, entity_layout_table) in entity_layouts.items():
         print('', stage_name, len(entity_layout_table))
         for (row_id, entity_layout_row) in enumerate(entity_layout_table):
@@ -1219,10 +1232,7 @@ if __name__ == '__main__':
                 data = {
                     'Aliases': yaml.safe_load(aliases_file),
                 }
-                changes = json.load(changes_file)
-                if 'Changes' in changes:
-                    changes = changes['Changes']
-                validate_changes(changes)
-                patch = get_patch(args, extract, changes, data)
-                ppf = PPF(DESCRIPTION, patch, False)
+                patch = json.load(changes_file)
+                validate_patch(patch)
+                ppf = PPF(DESCRIPTION, assemble_patch(args, extract, patch, data), False)
                 ppf_file.write(ppf.bytes)
