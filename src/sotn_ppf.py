@@ -823,7 +823,7 @@ def assemble_patch(args, extract, main_patch, data):
     for change in changes.get('Entity Layouts', []):
         stage_name = change['Stage']
         if stage_name not in entity_layouts:
-            print(stage_name, len(extract['Entity Layouts'][stage_name]['Data']))
+            # print(stage_name, len(extract['Entity Layouts'][stage_name]['Data']))
             entity_layouts[stage_name] = copy.deepcopy(extract['Entity Layouts'][stage_name]['Data'])
         target_entity = {}
         for (key, value) in change.get('Properties', {}).items():
@@ -832,7 +832,7 @@ def assemble_patch(args, extract, main_patch, data):
             source_room_name = change['Delete From']['Room']
             entity_layout_row = aliases['Rooms'][source_room_name]['Entity Layout Row']
             entity_layout_id = change['Delete From']['Entity Layout ID']
-            print('Deleting', source_room_name, entity_layout_row, entity_layout_id)
+            # print('Deleting', source_room_name, entity_layout_row, entity_layout_id)
             for (key, value) in entity_layouts[stage_name][entity_layout_row][entity_layout_id].items():
                 if key not in target_entity:
                     target_entity[key] = value
@@ -840,7 +840,7 @@ def assemble_patch(args, extract, main_patch, data):
         if 'Add To' in change:
             target_room_name = change['Add To']['Room']
             entity_layout_row = aliases['Rooms'][target_room_name]['Entity Layout Row']
-            print('Adding', target_room_name, entity_layout_row)
+            # print('Adding', target_room_name, entity_layout_row)
             entity_layouts[stage_name][entity_layout_row].append(target_entity)
         if 'Add Relative To' in change:
             source_room_name = change['Add Relative To']['Room']
@@ -850,14 +850,16 @@ def assemble_patch(args, extract, main_patch, data):
             entity_layout_row = aliases['Rooms'][target_room_name]['Entity Layout Row']
             target_entity['X'] = target_room.get('X', 0) + change['Add Relative To'].get('X Offset', 0)
             target_entity['Y'] = target_room.get('Y', 0) + change['Add Relative To'].get('Y Offset', 0)
-            print('Adding', target_room_name, entity_layout_row)
+            if 'Entity Room Index' in change['Add Relative To']:
+                target_entity['Entity Room Index'] = change['Add Relative To']['Entity Room Index']
+            # print('Adding', target_room_name, entity_layout_row)
             entity_layouts[stage_name][entity_layout_row].append(target_entity)
-    for (stage_name, entity_layout_table) in entity_layouts.items():
-        print('', stage_name, len(entity_layout_table))
-        for (row_id, entity_layout_row) in enumerate(entity_layout_table):
-            print('  ', row_id, len(entity_layout_row))
-            for (col_id, entity_layout_entry) in enumerate(entity_layout_row):
-                print('    ', col_id, entity_layout_entry)
+    # for (stage_name, entity_layout_table) in entity_layouts.items():
+    #     print('', stage_name, len(entity_layout_table))
+    #     for (row_id, entity_layout_row) in enumerate(entity_layout_table):
+    #         print('  ', row_id, len(entity_layout_row))
+    #         for (col_id, entity_layout_entry) in enumerate(entity_layout_row):
+    #             print('    ', col_id, entity_layout_entry)
     sentinel_start_template = {
         'Entity Room Index': 0,
         'Entity Type ID': 0,
@@ -879,12 +881,12 @@ def assemble_patch(args, extract, main_patch, data):
         horizontal_layout_value = layout_extract['Horizontal Layout']['Value']
         vertical_layout_start = layout_extract['Vertical Layout']['Start']
         vertical_layout_value = layout_extract['Vertical Layout']['Value']
-        print('', stage_name, horizontal_layout_start, sotn_address._hex(horizontal_layout_value, 8), vertical_layout_start, sotn_address._hex(vertical_layout_value, 8))
+        # print('', stage_name, horizontal_layout_start, sotn_address._hex(horizontal_layout_value, 8), vertical_layout_start, sotn_address._hex(vertical_layout_value, 8))
         # NOTE(sestren): entity_row is the "row" of the entity layout table, entity_col is the "column" within that row
         entity_offset = 0
         entity_size = stage_extract['Metadata']['Size']
         for (entity_row, entity_layout_row) in enumerate(entity_layout_table):
-            print('  ', entity_row)
+            # print('  ', entity_row)
             # Adjust addresses pointing to start of row
             for (layout_id, layout_index) in enumerate(layout_extract['Layout Indexes']):
                 if layout_extract['Row Indexes'].index(layout_index) != entity_row:
@@ -905,7 +907,7 @@ def assemble_patch(args, extract, main_patch, data):
             assert len(horizontal_entity_layout_row) == len(vertical_entity_layout_row)
             # Adjust the entity layouts for the entire row
             for entity_col in range(len(horizontal_entity_layout_row)):
-                print('      ', entity_col)
+                # print('      ', entity_col)
                 for field_name in (
                     'Entity Room Index',
                     'Entity Type ID',
@@ -914,14 +916,14 @@ def assemble_patch(args, extract, main_patch, data):
                     'Y',
                 ):
                     if horizontal_entity_layout_row[entity_col][field_name] != stage_extract['Flattened Horizontal Data'][entity_offset][field_name]:
-                        print('        ', 'H', field_name, horizontal_entity_layout_row[entity_col][field_name])
+                        # print('        ', 'H', field_name, horizontal_entity_layout_row[entity_col][field_name])
                         result.patch_value(
                             horizontal_entity_layout_row[entity_col][field_name],
                             stage_extract['Metadata']['Fields'][field_name]['Type'],
                             layout_extract['Horizontal Table Start'] + entity_offset * entity_size + stage_extract['Metadata']['Fields'][field_name]['Offset'],
                         )
                     if vertical_entity_layout_row[entity_col][field_name] != stage_extract['Flattened Vertical Data'][entity_offset][field_name]:
-                        print('        ', 'V', field_name, vertical_entity_layout_row[entity_col][field_name])
+                        # print('        ', 'V', field_name, vertical_entity_layout_row[entity_col][field_name])
                         result.patch_value(
                             vertical_entity_layout_row[entity_col][field_name],
                             stage_extract['Metadata']['Fields'][field_name]['Type'],
@@ -1126,8 +1128,17 @@ def assemble_patch(args, extract, main_patch, data):
             data_elements = changes['Constants'][constant_name]
             array_extract_meta = extract['Constants'][constant_name]['Metadata']
             for data_element in data_elements:
+                value = 0
+                if 'Value Relative From' in data_element:
+                    source_room_name = data_element['Value Relative From']['Room']
+                    source_node_name = data_element['Value Relative From']['Node']
+                    target_room = main_patch['Shuffler']['Nodes'][source_room_name][source_node_name]
+                    property_name = data_element['Value Relative From']['Property']
+                    value = target_room[property_name]
+                else:
+                    value = get_value(data_element['Value'])
                 result.patch_value(
-                    get_value(data_element['Value']),
+                    value,
                     array_extract_meta['Type'],
                     array_extract_meta['Start'] + data_element['Index'] * array_extract_meta['Size'],
                 )
