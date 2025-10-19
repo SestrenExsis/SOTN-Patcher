@@ -294,7 +294,7 @@ def assemble_patch(args, extract, main_patch, data):
         ('Normalize sounds', (
             'normalize-confessional-chime-sound',
             'normalize-waterfall-roar-sound',
-        ),
+        )),
         ('Normalize room connections', (
             'normalize-alchemy-laboratory-entryway-top-passage',
             'normalize-alchemy-laboratory-glass-vats-bottom-passage',
