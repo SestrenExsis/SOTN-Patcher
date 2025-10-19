@@ -267,12 +267,6 @@ def assemble_patch(args, extract, main_patch, data):
     result = Patch()
     # Apply common patches
     for (option_name, patch_file_names) in (
-        ('Normalize confessional chime sound', (
-            'normalize-confessional-chime-sound',
-        )),
-        ('Normalize waterfall roar sound', (
-            'normalize-waterfall-roar-sound',
-        )),
         ('Clock hands show minutes and seconds instead of hours and minutes', (
             'clock-hands-display-minutes-and-seconds',
         )),
@@ -297,6 +291,10 @@ def assemble_patch(args, extract, main_patch, data):
         ('Normalize Ferryman Gate', (
             'normalize-ferryman-gate',
         )),
+        ('Normalize sounds', (
+            'normalize-confessional-chime-sound',
+            'normalize-waterfall-roar-sound',
+        ),
         ('Normalize room connections', (
             'normalize-alchemy-laboratory-entryway-top-passage',
             'normalize-alchemy-laboratory-glass-vats-bottom-passage',
