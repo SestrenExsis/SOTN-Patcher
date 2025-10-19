@@ -3655,6 +3655,197 @@ def get_normalize_marble_gallery_gravity_boots_room_bottom_passage():
     result = patch
     return result
 
+def get_normalize_confessional_chime_sound():
+    patch = {
+        'Description': 'Relocate sound entity that turns off chime',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Entity Layouts': [
+                {
+                    'Add Relative To': {
+                        'Room': 'Royal Chapel, Confessional Booth',
+                        'Node': 'Left Passage',
+                        'X Offset': 0,
+                        'Y Offset': 0,
+                    },
+                    'Delete From': {
+                        'Entity Layout ID': 47,
+                        'Room': 'Royal Chapel, Left Tower',
+                    },
+                    'Stage': 'Royal Chapel',
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_waterfall_roar_sound():
+    patch = {
+        'Description': 'Relocate sound entities that fade waterfall roar',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Constants': {
+                'Waterfall Sound Parameters (Underground Caverns)': [
+                    {
+                        'Index': 8,
+                        'Value Relative From': {
+                            'Room': 'Underground Caverns, Waterfall',
+                            'Node': 'Upper-Left Passage',
+                            'Property': 'X'
+                        }
+                    },
+                    {
+                        'Index': 12,
+                        'Value Relative From': {
+                            'Room': 'Underground Caverns, Waterfall',
+                            'Node': 'Lower-Left Passage',
+                            'Property': 'X'
+                        }
+                    }
+                ],
+                'Waterfall Sound Parameters (Reverse Caverns)': [
+                    {
+                        'Index': 0,
+                        'Value Relative From': {
+                            'Room': 'Reverse Caverns, Waterfall',
+                            'Node': 'Upper-Right Passage',
+                            'Property': 'X'
+                        }
+                    },
+                    {
+                        'Index': 4,
+                        'Value Relative From': {
+                            'Room': 'Reverse Caverns, Waterfall',
+                            'Node': 'Lower-Right Passage',
+                            'Property': 'X'
+                        }
+                    }
+                ]
+            },
+            'Entity Layouts': [
+                {
+                    'Add Relative To': {
+                        'Room': 'Underground Caverns, Waterfall',
+                        'Node': 'Upper-Left Passage',
+                        'X Offset': -128,
+                        'Y Offset': 0,
+                        'Entity Room Index': 140
+                    },
+                    'Delete From': {
+                        'Entity Layout ID': 0,
+                        'Room': 'Underground Caverns, DK Button'
+                    },
+                    'Stage': 'Underground Caverns'
+                },
+                {
+                    'Add Relative To': {
+                        'Room': 'Underground Caverns, Waterfall',
+                        'Node': 'Upper-Right Passage',
+                        'X Offset': 128,
+                        'Y Offset': 0,
+                        'Entity Room Index': 140
+                    },
+                    'Delete From': {
+                        'Entity Layout ID': 7,
+                        'Room': 'Underground Caverns, Pentagram Room'
+                    },
+                    'Stage': 'Underground Caverns'
+                },
+                {
+                    'Add Relative To': {
+                        'Room': 'Underground Caverns, Waterfall',
+                        'Node': 'Lower-Left Passage',
+                        'X Offset': -128,
+                        'Y Offset': 0,
+                        'Entity Room Index': 140
+                    },
+                    'Delete From': {
+                        'Entity Layout ID': 1,
+                        'Room': 'Underground Caverns, Room ID 19'
+                    },
+                    'Stage': 'Underground Caverns'
+                },
+                {
+                    'Add Relative To': {
+                        'Room': 'Underground Caverns, Waterfall',
+                        'Node': 'Lower-Right Passage',
+                        'X Offset': 128,
+                        'Y Offset': 0,
+                        'Entity Room Index': 140
+                    },
+                    'Delete From': {
+                        'Entity Layout ID': 2,
+                        'Room': 'Underground Caverns, Room ID 18'
+                    },
+                    'Stage': 'Underground Caverns'
+                },
+                {
+                    'Add Relative To': {
+                        'Room': 'Reverse Caverns, Waterfall',
+                        'Node': 'Upper-Left Passage',
+                        'X Offset': -128,
+                        'Y Offset': 0,
+                        'Entity Room Index': 140
+                    },
+                    'Delete From': {
+                        'Entity Layout ID': 0,
+                        'Room': 'Reverse Caverns, DK Button'
+                    },
+                    'Stage': 'Reverse Caverns'
+                },
+                {
+                    'Add Relative To': {
+                        'Room': 'Reverse Caverns, Waterfall',
+                        'Node': 'Upper-Right Passage',
+                        'X Offset': 128,
+                        'Y Offset': 0,
+                        'Entity Room Index': 140
+                    },
+                    'Delete From': {
+                        'Entity Layout ID': 7,
+                        'Room': 'Reverse Caverns, Pentagram Room'
+                    },
+                    'Stage': 'Reverse Caverns'
+                },
+                {
+                    'Add Relative To': {
+                        'Room': 'Reverse Caverns, Waterfall',
+                        'Node': 'Lower-Left Passage',
+                        'X Offset': -128,
+                        'Y Offset': 0,
+                        'Entity Room Index': 140
+                    },
+                    'Delete From': {
+                        'Entity Layout ID': 1,
+                        'Room': 'Reverse Caverns, Room ID 19'
+                    },
+                    'Stage': 'Reverse Caverns'
+                },
+                {
+                    'Add Relative To': {
+                        'Room': 'Reverse Caverns, Waterfall',
+                        'Node': 'Lower-Right Passage',
+                        'X Offset': 128,
+                        'Y Offset': 0,
+                        'Entity Room Index': 140
+                    },
+                    'Delete From': {
+                        'Entity Layout ID': 2,
+                        'Room': 'Reverse Caverns, Room ID 18'
+                    },
+                    'Stage': 'Reverse Caverns'
+                }
+            ],
+        },
+    }
+    result = patch
+    return result
+
 if __name__ == '__main__':
     '''
     Some patches play nice with other patches, some don't.
@@ -3667,6 +3858,8 @@ if __name__ == '__main__':
     parser.add_argument('build_dir', help='Input a filepath to a folder that will contain the build files', type=str)
     args = parser.parse_args()
     for (file_name, patch) in (
+        ('normalize-confessional-chime-sound', get_normalize_confessional_chime_sound()),
+        ('normalize-waterfall-roar-sound', get_normalize_waterfall_roar_sound()),
         ('clock-hands-display-minutes-and-seconds', get_clock_hands_patch()),
         ('enable-debug-mode', get_simple_patch("Enables the game's hidden debug mode", [
             (0x000D9364, 'u32', 0xAC258850, 'sw a1, -$77B0(at)'), # Original instruction was sw 0, -$77B0(at)
