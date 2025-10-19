@@ -369,6 +369,11 @@ def assemble_patch(args, extract, main_patch, data):
                     if 'Object Layouts' not in changes:
                         changes['Object Layouts'] = []
                     changes['Object Layouts'].append(object_layout)
+                # New entity layouts are added to the end of the object layouts list
+                for entity_layout in patch_changes.get('Entity Layouts', []):
+                    if 'Entity Layouts' not in changes:
+                        changes['Entity Layouts'] = []
+                    changes['Entity Layouts'].append(entity_layout)
                 # New familiar events are added to the end of the familiar events list
                 for familiar_event in patch_changes.get('Familiar Events', []):
                     if 'Familiar Events' not in changes:
