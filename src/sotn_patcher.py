@@ -1615,24 +1615,34 @@ def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
             'Data Type': data_type,
             'Value': '{:08X}'.format(value),
         })
-    patch['Changes']['Object Layouts'] = [
+    patch['Changes']['Entity Layouts'] = [
         {
-            'Stage': 'Underground Caverns',
-            'Room': 'Underground Caverns, Hidden Crystal Entrance',
-            'Object Layout ID': 0,
+            'Add To': {
+                'Room': 'Underground Caverns, Hidden Crystal Entrance',
+            },
+            'Delete From': {
+                'Entity Layout ID': 0,
+                'Room': 'Underground Caverns, Hidden Crystal Entrance',
+            },
             'Properties': {
                 'X': 128,
                 'Y': 720,
             },
+            'Stage': 'Underground Caverns',
         },
         {
-            'Stage': 'Reverse Caverns',
-            'Room': 'Reverse Caverns, Hidden Crystal Entrance',
-            'Object Layout ID': 5,
+            'Add To': {
+                'Room': 'Reverse Caverns, Hidden Crystal Entrance',
+            },
+            'Delete From': {
+                'Entity Layout ID': 5,
+                'Room': 'Reverse Caverns, Hidden Crystal Entrance',
+            },
             'Properties': {
                 'X': 128,
                 'Y': 48,
             },
+            'Stage': 'Reverse Caverns',
         },
     ]
     result = patch
@@ -3655,6 +3665,90 @@ def get_normalize_marble_gallery_gravity_boots_room_bottom_passage():
     result = patch
     return result
 
+def get_normalize_confessional_chime_sound():
+    patch = {
+        'Description': 'Relocate sound entity that turns off chime',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Entity Layouts': [
+                {
+                    'Add Relative To': {
+                        'Room': 'Royal Chapel, Confessional Booth',
+                        'Node': 'Left Passage',
+                        'X Offset': 0,
+                        'Y Offset': 0,
+                    },
+                    'Delete From': {
+                        'Entity Layout ID': 47,
+                        'Room': 'Royal Chapel, Left Tower',
+                    },
+                    'Stage': 'Royal Chapel',
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+def get_normalize_waterfall_roar_sound():
+    patch = {
+        'Description': 'Relocate sound entities that fade waterfall roar',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Constants': {},
+            'Entity Layouts': [],
+        },
+    }
+    for (stage_name, node_name, index) in (
+        ('Underground Caverns', 'Upper-Left Passage', 8),
+        ('Underground Caverns', 'Lower-Left Passage', 12),
+        ('Reverse Caverns', 'Upper-Right Passage', 0),
+        ('Reverse Caverns', 'Lower-Right Passage', 4),
+    ):
+        constant_name = f'Waterfall Sound Parameters ({stage_name})'
+        if constant_name not in patch['Changes']['Constants']:
+            patch['Changes']['Constants'][constant_name] = []
+        constant = {
+            'Index': index,
+            'Value Relative From': {
+                'Room': f'{stage_name}, Waterfall',
+                'Node': node_name,
+                'Property': 'X'
+            },
+        }
+        patch['Changes']['Constants'][constant_name].append(constant)
+    for (stage_name, node_name, room_name, x_offset, entity_layout_id) in (
+        ('Underground Caverns', 'Upper-Left Passage', 'DK Button', -128, 0),
+        ('Underground Caverns', 'Upper-Right Passage', 'Pentagram Room', 128, 7),
+        ('Underground Caverns', 'Lower-Left Passage', 'Room ID 19', -128, 1),
+        ('Underground Caverns', 'Lower-Right Passage', 'Room ID 18', 128, 2),
+        ('Reverse Caverns', 'Upper-Left Passage', 'DK Button', -128, 0),
+        ('Reverse Caverns', 'Upper-Right Passage', 'Pentagram Room', 128, 7),
+        ('Reverse Caverns', 'Lower-Left Passage', 'Room ID 19', -128, 1),
+        ('Reverse Caverns', 'Lower-Right Passage', 'Room ID 18', 128, 2),
+    ):
+        entity_layout = {
+            'Add Relative To': {
+                'Room': f'{stage_name}, Waterfall',
+                'Node': node_name,
+                'X Offset': x_offset,
+                'Y Offset': 0,
+                'Entity Room Index': 180,
+            },
+            'Delete From': {
+                'Entity Layout ID': entity_layout_id,
+                'Room': f'{stage_name}, {room_name}',
+            },
+            'Stage': f'{stage_name}',
+        }
+        patch['Changes']['Entity Layouts'].append(entity_layout)
+    result = patch
+    return result
+
 if __name__ == '__main__':
     '''
     Some patches play nice with other patches, some don't.
@@ -3667,6 +3761,8 @@ if __name__ == '__main__':
     parser.add_argument('build_dir', help='Input a filepath to a folder that will contain the build files', type=str)
     args = parser.parse_args()
     for (file_name, patch) in (
+        ('normalize-confessional-chime-sound', get_normalize_confessional_chime_sound()),
+        ('normalize-waterfall-roar-sound', get_normalize_waterfall_roar_sound()),
         ('clock-hands-display-minutes-and-seconds', get_clock_hands_patch()),
         ('enable-debug-mode', get_simple_patch("Enables the game's hidden debug mode", [
             (0x000D9364, 'u32', 0xAC258850, 'sw a1, -$77B0(at)'), # Original instruction was sw 0, -$77B0(at)
