@@ -220,18 +220,18 @@ def get_changes_template_file(extract, aliases):
                 result['Constants'][constant_name] = constant['Value']
     return result
 
-def validate_changes(changes):
-    if 'Boss Teleporters' in changes:
+def validate_patch(patch):
+    if 'Boss Teleporters' in patch.get('Changes', {}):
         # TODO(sestren): Validate boss teleporters
         pass
-    for (stage_id, stage_data) in changes.get('Stages', {}).items():
+    for (stage_id, stage_data) in patch.get('Changes', {}).get('Stages', {}).items():
         for (room_id, room_data) in stage_data.get('Rooms', {}).items():
             assert 0 <= room_data.get('Top', 0) <= 63 # Should it be 58 instead of 63?
             assert 0 <= room_data.get('Left', 0) <= 63
             if 'Object Layout - Horizontal' in room_data:
                 # TODO(sestren): Validate changes to object layouts
                 pass
-    if 'Teleporters' in changes:
+    if 'Teleporters' in patch.get('Changes', {}):
         # TODO(sestren): Validate teleporters
         pass
 
@@ -259,7 +259,10 @@ def transformed_value(value, transformations):
             result += int(operand)
     return result
 
-def get_patch(args, extract, changes, data):
+def assemble_patch(args, extract, main_patch, data):
+    changes = main_patch.get('Changes', {})
+    if 'Changes' not in main_patch:
+        changes = main_patch
     aliases = data['Aliases']
     result = Patch()
     # Apply common patches
@@ -287,6 +290,10 @@ def get_patch(args, extract, changes, data):
         )),
         ('Normalize Ferryman Gate', (
             'normalize-ferryman-gate',
+        )),
+        ('Normalize sounds', (
+            'normalize-confessional-chime-sound',
+            'normalize-waterfall-roar-sound',
         )),
         ('Normalize room connections', (
             'normalize-alchemy-laboratory-entryway-top-passage',
@@ -345,8 +352,8 @@ def get_patch(args, extract, changes, data):
             continue
         for patch_file_name in patch_file_names:
             with open(os.path.join(os.path.normpath(args.build_dir), 'patches', patch_file_name + '.json')) as patch_file:
-                patch = json.load(patch_file)
-                patch_changes = patch.get('Changes', {})
+                common_patch = json.load(patch_file)
+                patch_changes = common_patch.get('Changes', {})
                 # New pokes are added to the end of the poke list
                 for poke in patch_changes.get('Pokes', []):
                     if 'Pokes' not in changes:
@@ -362,6 +369,11 @@ def get_patch(args, extract, changes, data):
                     if 'Object Layouts' not in changes:
                         changes['Object Layouts'] = []
                     changes['Object Layouts'].append(object_layout)
+                # New entity layouts are added to the end of the object layouts list
+                for entity_layout in patch_changes.get('Entity Layouts', []):
+                    if 'Entity Layouts' not in changes:
+                        changes['Entity Layouts'] = []
+                    changes['Entity Layouts'].append(entity_layout)
                 # New familiar events are added to the end of the familiar events list
                 for familiar_event in patch_changes.get('Familiar Events', []):
                     if 'Familiar Events' not in changes:
@@ -688,22 +700,6 @@ def get_patch(args, extract, changes, data):
                                                         value = tilemaps['Source ' + layer][source_top + row][source_left + col]
                                                         tilemaps['Target ' + layer][target_top + row][target_left + col] = value
                                                 break
-                        # Debug info
-                        # for layer in edit['Layer'].split(' and '):
-                        #     rows = len(tilemaps['Target ' + layer])
-                        #     cols = len(tilemaps['Target ' + layer][0])
-                        #     print('Target ' + layer, (rows, cols))
-                        #     for row in range(rows):
-                        #         row_data = []
-                        #         for col in range(cols):
-                        #             cell = '#'
-                        #             if tilemaps['Target ' + layer][row][col] is None:
-                        #                 cell = '.'
-                        #             elif tilemaps['Target ' + layer][row][col] == -1:
-                        #                 cell = '?'
-                        #             row_data.append(cell)
-                        #         print(''.join(row_data))
-                        # ...
                         for layer in edit['Layer'].split(' and '):
                             extract_data = room_extract['Tilemap ' + layer]['Data']
                             extract_metadata = room_extract['Tilemap ' + layer]['Metadata']
@@ -815,6 +811,109 @@ def get_patch(args, extract, changes, data):
                     offset += 1
         result.patch_value(0xFF, 'u8', extract_metadata['Start'] + offset)
         assert offset <= extract_metadata['Footprint']
+    # Patch entity layouts
+    deletes = {}
+    entity_layouts = {}
+    for change in changes.get('Entity Layouts', []):
+        stage_name = change['Stage']
+        if stage_name not in entity_layouts:
+            entity_layouts[stage_name] = copy.deepcopy(extract['Entity Layouts'][stage_name]['Data'])
+        target_entity = {}
+        for (key, value) in change.get('Properties', {}).items():
+            target_entity[key] = value
+        if 'Delete From' in change:
+            source_room_name = change['Delete From']['Room']
+            entity_layout_row = aliases['Rooms'][source_room_name]['Entity Layout Row']
+            entity_layout_id = change['Delete From']['Entity Layout ID']
+            for (key, value) in entity_layouts[stage_name][entity_layout_row][entity_layout_id].items():
+                if key not in target_entity:
+                    target_entity[key] = value
+            if (stage_name, entity_layout_row) not in deletes:
+                deletes[(stage_name, entity_layout_row)] = set()
+            deletes[(stage_name, entity_layout_row)].add(entity_layout_id)
+        if 'Add To' in change:
+            target_room_name = change['Add To']['Room']
+            entity_layout_row = aliases['Rooms'][target_room_name]['Entity Layout Row']
+            entity_layouts[stage_name][entity_layout_row].append(target_entity)
+        if 'Add Relative To' in change:
+            source_room_name = change['Add Relative To']['Room']
+            source_node_name = change['Add Relative To']['Node']
+            target_room = main_patch['Shuffler']['Nodes'][source_room_name][source_node_name]
+            target_room_name = target_room['Target Room Name']
+            entity_layout_row = aliases['Rooms'][target_room_name]['Entity Layout Row']
+            target_entity['X'] = target_room.get('X', 0) + change['Add Relative To'].get('X Offset', 0)
+            target_entity['Y'] = target_room.get('Y', 0) + change['Add Relative To'].get('Y Offset', 0)
+            if 'Entity Room Index' in change['Add Relative To']:
+                target_entity['Entity Room Index'] = change['Add Relative To']['Entity Room Index']
+            entity_layouts[stage_name][entity_layout_row].append(target_entity)
+    for (stage_name, entity_layout_row) in deletes:
+        for entity_layout_id in reversed(sorted(deletes[(stage_name, entity_layout_row)])):
+            entity_layouts[stage_name][entity_layout_row].pop(entity_layout_id)
+    sentinel_start_template = {
+        'Entity Room Index': 0,
+        'Entity Type ID': 0,
+        'Params': 0,
+        'X': -2,
+        'Y': -2,
+    }
+    sentinel_end_template = {
+        'Entity Room Index': 0,
+        'Entity Type ID': 0,
+        'Params': 0,
+        'X': -1,
+        'Y': -1,
+    }
+    for (stage_name, entity_layout_table) in entity_layouts.items():
+        stage_extract = extract['Entity Layouts'][stage_name]
+        layout_extract = extract['Constants']['Entity Layout'][stage_name]
+        horizontal_layout_start = layout_extract['Horizontal Layout']['Start']
+        horizontal_layout_value = layout_extract['Horizontal Layout']['Value']
+        vertical_layout_start = layout_extract['Vertical Layout']['Start']
+        vertical_layout_value = layout_extract['Vertical Layout']['Value']
+        # NOTE(sestren): entity_row is the "row" of the entity layout table, entity_col is the "column" within that row
+        entity_offset = 0
+        entity_size = stage_extract['Metadata']['Size']
+        for (entity_row, entity_layout_row) in enumerate(entity_layout_table):
+            # Adjust addresses pointing to start of row
+            for (layout_id, layout_index) in enumerate(layout_extract['Layout Indexes']):
+                if layout_extract['Row Indexes'].index(layout_index) != entity_row:
+                    continue
+                if layout_extract['Row Indexes'][entity_row] != entity_offset:
+                    result.patch_value(horizontal_layout_value + 10 * entity_offset, 'u32', horizontal_layout_start + 4 * layout_id)
+                    result.patch_value(vertical_layout_value + 10 * entity_offset, 'u32', vertical_layout_start + 4 * layout_id)
+            sentinel_start = dict(sentinel_start_template)
+            sentinel_start['Params'] = stage_extract['Metadata']['Row Params'][entity_row]
+            sentinel_end = dict(sentinel_end_template)
+            # Sort both horizontal and vertical layouts, bookending them with sentinel values
+            horizontal_entity_layout_row = [sentinel_start] + list(sorted(entity_layout_row,
+                key=lambda x: (x['X'], x['Horizontal Sort'], x['Y'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
+            )) + [sentinel_end]
+            vertical_entity_layout_row = [sentinel_start] + list(sorted(entity_layout_row,
+                key=lambda y: (y['Y'], y['Vertical Sort'], y['X'], y['Entity Room Index'], y['Entity Type ID'], y['Params'])
+            )) + [sentinel_end]
+            assert len(horizontal_entity_layout_row) == len(vertical_entity_layout_row)
+            # Adjust the entity layouts for the entire row
+            for entity_col in range(len(horizontal_entity_layout_row)):
+                for field_name in (
+                    'Entity Room Index',
+                    'Entity Type ID',
+                    'Params',
+                    'X',
+                    'Y',
+                ):
+                    if horizontal_entity_layout_row[entity_col][field_name] != stage_extract['Flattened Horizontal Data'][entity_offset][field_name]:
+                        result.patch_value(
+                            horizontal_entity_layout_row[entity_col][field_name],
+                            stage_extract['Metadata']['Fields'][field_name]['Type'],
+                            layout_extract['Horizontal Table Start'] + entity_offset * entity_size + stage_extract['Metadata']['Fields'][field_name]['Offset'],
+                        )
+                    if vertical_entity_layout_row[entity_col][field_name] != stage_extract['Flattened Vertical Data'][entity_offset][field_name]:
+                        result.patch_value(
+                            vertical_entity_layout_row[entity_col][field_name],
+                            stage_extract['Metadata']['Fields'][field_name]['Type'],
+                            layout_extract['Vertical Table Start'] + entity_offset * entity_size + stage_extract['Metadata']['Fields'][field_name]['Offset'],
+                        )
+                entity_offset += 1
     # Patch object layouts
     object_layouts = {}
     for object_layout in changes.get('Object Layouts', {}):
@@ -847,7 +946,6 @@ def get_patch(args, extract, changes, data):
     # Quest Rewards - Part 1
     for location_name in sorted(changes.get('Quest Rewards', {})):
         reward_name = changes['Quest Rewards'][location_name]
-        # print((location_name, reward_name))
         reward_type = reward_name.split(' - ')[0]
         reward_data = aliases['Quest Rewards'][location_name]
         for data_element in reward_data[reward_type + ' Data']:
@@ -935,7 +1033,7 @@ def get_patch(args, extract, changes, data):
             key=lambda x: (x['X'], x['Y'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
         ))
         vertical_object_layout = list(sorted(object_layout,
-            key=lambda x: (x['Y'], x['X'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
+            key=lambda y: (y['Y'], y['X'], y['Entity Room Index'], y['Entity Type ID'], y['Params'])
         ))
         assert len(horizontal_object_layout) == len(vertical_object_layout)
         for (sort_method, sorted_object_layout) in (
@@ -950,7 +1048,6 @@ def get_patch(args, extract, changes, data):
                 # NOTE(sestren): Add +1 to the object layout ID to get the extract ID
                 # NOTE(sestren): This accounts for the sentinel entity at the start of every entity list
                 extract_id = object_layout_id + 1
-                # print(object_extract['Data'][extract_id])
                 for field_name in (
                     'Entity Room Index',
                     'Entity Type ID',
@@ -1013,8 +1110,17 @@ def get_patch(args, extract, changes, data):
             data_elements = changes['Constants'][constant_name]
             array_extract_meta = extract['Constants'][constant_name]['Metadata']
             for data_element in data_elements:
+                value = 0
+                if 'Value Relative From' in data_element:
+                    source_room_name = data_element['Value Relative From']['Room']
+                    source_node_name = data_element['Value Relative From']['Node']
+                    target_room = main_patch['Shuffler']['Nodes'][source_room_name][source_node_name]
+                    property_name = data_element['Value Relative From']['Property']
+                    value = target_room[property_name]
+                else:
+                    value = get_value(data_element['Value'])
                 result.patch_value(
-                    get_value(data_element['Value']),
+                    value,
                     array_extract_meta['Type'],
                     array_extract_meta['Start'] + data_element['Index'] * array_extract_meta['Size'],
                 )
@@ -1119,10 +1225,7 @@ if __name__ == '__main__':
                 data = {
                     'Aliases': yaml.safe_load(aliases_file),
                 }
-                changes = json.load(changes_file)
-                if 'Changes' in changes:
-                    changes = changes['Changes']
-                validate_changes(changes)
-                patch = get_patch(args, extract, changes, data)
-                ppf = PPF(DESCRIPTION, patch, False)
+                patch = json.load(changes_file)
+                validate_patch(patch)
+                ppf = PPF(DESCRIPTION, assemble_patch(args, extract, patch, data), False)
                 ppf_file.write(ppf.bytes)

@@ -1,0 +1,37 @@
+{
+    "Authors": [
+        "Sestren"
+    ],
+    "Changes": {
+        "Entity Layouts": [
+            {
+                "Add To": {
+                    "Room": "Castle Entrance, After Drawbridge"
+                },
+                "Delete From": {
+                    "Entity Layout ID": 7,
+                    "Room": "Castle Entrance, Merman Room"
+                },
+                "Notes": [
+                    "Transfer Leftmost Bat from Merman Room to After Drawbridge"
+                ],
+                "Properties": {
+                    "X": 490,
+                    "Y": 611
+                },
+                "Stage": "Castle Entrance"
+            },
+            {
+                "Delete From": {
+                    "Entity Layout ID": 11,
+                    "Room": "Castle Entrance, After Drawbridge"
+                },
+                "Notes": [
+                    "Delete First Warg"
+                ],
+                "Stage": "Castle Entrance"
+            }
+        ]
+    },
+    "Description": "Move Bat from Merman Room to After Drawbridge"
+}
