@@ -1615,24 +1615,34 @@ def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
             'Data Type': data_type,
             'Value': '{:08X}'.format(value),
         })
-    patch['Changes']['Object Layouts'] = [
+    patch['Changes']['Entity Layouts'] = [
         {
-            'Stage': 'Underground Caverns',
-            'Room': 'Underground Caverns, Hidden Crystal Entrance',
-            'Object Layout ID': 0,
+            'Add To': {
+                'Room': 'Underground Caverns, Hidden Crystal Entrance',
+            },
+            'Delete From': {
+                'Entity Layout ID': 0,
+                'Room': 'Underground Caverns, Hidden Crystal Entrance',
+            },
             'Properties': {
                 'X': 128,
                 'Y': 720,
             },
+            'Stage': 'Underground Caverns',
         },
         {
-            'Stage': 'Reverse Caverns',
-            'Room': 'Reverse Caverns, Hidden Crystal Entrance',
-            'Object Layout ID': 5,
+            'Add To': {
+                'Room': 'Reverse Caverns, Hidden Crystal Entrance',
+            },
+            'Delete From': {
+                'Entity Layout ID': 5,
+                'Room': 'Reverse Caverns, Hidden Crystal Entrance',
+            },
             'Properties': {
                 'X': 128,
                 'Y': 48,
             },
+            'Stage': 'Reverse Caverns',
         },
     ]
     result = patch
@@ -3689,160 +3699,53 @@ def get_normalize_waterfall_roar_sound():
             'Sestren',
         ],
         'Changes': {
-            'Constants': {
-                'Waterfall Sound Parameters (Underground Caverns)': [
-                    {
-                        'Index': 8,
-                        'Value Relative From': {
-                            'Room': 'Underground Caverns, Waterfall',
-                            'Node': 'Upper-Left Passage',
-                            'Property': 'X'
-                        }
-                    },
-                    {
-                        'Index': 12,
-                        'Value Relative From': {
-                            'Room': 'Underground Caverns, Waterfall',
-                            'Node': 'Lower-Left Passage',
-                            'Property': 'X'
-                        }
-                    }
-                ],
-                'Waterfall Sound Parameters (Reverse Caverns)': [
-                    {
-                        'Index': 0,
-                        'Value Relative From': {
-                            'Room': 'Reverse Caverns, Waterfall',
-                            'Node': 'Upper-Right Passage',
-                            'Property': 'X'
-                        }
-                    },
-                    {
-                        'Index': 4,
-                        'Value Relative From': {
-                            'Room': 'Reverse Caverns, Waterfall',
-                            'Node': 'Lower-Right Passage',
-                            'Property': 'X'
-                        }
-                    }
-                ]
-            },
-            'Entity Layouts': [
-                {
-                    'Add Relative To': {
-                        'Room': 'Underground Caverns, Waterfall',
-                        'Node': 'Upper-Left Passage',
-                        'X Offset': -128,
-                        'Y Offset': 0,
-                        'Entity Room Index': 140
-                    },
-                    'Delete From': {
-                        'Entity Layout ID': 0,
-                        'Room': 'Underground Caverns, DK Button'
-                    },
-                    'Stage': 'Underground Caverns'
-                },
-                {
-                    'Add Relative To': {
-                        'Room': 'Underground Caverns, Waterfall',
-                        'Node': 'Upper-Right Passage',
-                        'X Offset': 128,
-                        'Y Offset': 0,
-                        'Entity Room Index': 140
-                    },
-                    'Delete From': {
-                        'Entity Layout ID': 7,
-                        'Room': 'Underground Caverns, Pentagram Room'
-                    },
-                    'Stage': 'Underground Caverns'
-                },
-                {
-                    'Add Relative To': {
-                        'Room': 'Underground Caverns, Waterfall',
-                        'Node': 'Lower-Left Passage',
-                        'X Offset': -128,
-                        'Y Offset': 0,
-                        'Entity Room Index': 140
-                    },
-                    'Delete From': {
-                        'Entity Layout ID': 1,
-                        'Room': 'Underground Caverns, Room ID 19'
-                    },
-                    'Stage': 'Underground Caverns'
-                },
-                {
-                    'Add Relative To': {
-                        'Room': 'Underground Caverns, Waterfall',
-                        'Node': 'Lower-Right Passage',
-                        'X Offset': 128,
-                        'Y Offset': 0,
-                        'Entity Room Index': 140
-                    },
-                    'Delete From': {
-                        'Entity Layout ID': 2,
-                        'Room': 'Underground Caverns, Room ID 18'
-                    },
-                    'Stage': 'Underground Caverns'
-                },
-                {
-                    'Add Relative To': {
-                        'Room': 'Reverse Caverns, Waterfall',
-                        'Node': 'Upper-Left Passage',
-                        'X Offset': -128,
-                        'Y Offset': 0,
-                        'Entity Room Index': 140
-                    },
-                    'Delete From': {
-                        'Entity Layout ID': 0,
-                        'Room': 'Reverse Caverns, DK Button'
-                    },
-                    'Stage': 'Reverse Caverns'
-                },
-                {
-                    'Add Relative To': {
-                        'Room': 'Reverse Caverns, Waterfall',
-                        'Node': 'Upper-Right Passage',
-                        'X Offset': 128,
-                        'Y Offset': 0,
-                        'Entity Room Index': 140
-                    },
-                    'Delete From': {
-                        'Entity Layout ID': 7,
-                        'Room': 'Reverse Caverns, Pentagram Room'
-                    },
-                    'Stage': 'Reverse Caverns'
-                },
-                {
-                    'Add Relative To': {
-                        'Room': 'Reverse Caverns, Waterfall',
-                        'Node': 'Lower-Left Passage',
-                        'X Offset': -128,
-                        'Y Offset': 0,
-                        'Entity Room Index': 140
-                    },
-                    'Delete From': {
-                        'Entity Layout ID': 1,
-                        'Room': 'Reverse Caverns, Room ID 19'
-                    },
-                    'Stage': 'Reverse Caverns'
-                },
-                {
-                    'Add Relative To': {
-                        'Room': 'Reverse Caverns, Waterfall',
-                        'Node': 'Lower-Right Passage',
-                        'X Offset': 128,
-                        'Y Offset': 0,
-                        'Entity Room Index': 140
-                    },
-                    'Delete From': {
-                        'Entity Layout ID': 2,
-                        'Room': 'Reverse Caverns, Room ID 18'
-                    },
-                    'Stage': 'Reverse Caverns'
-                }
-            ],
+            'Constants': {},
+            'Entity Layouts': [],
         },
     }
+    for (stage_name, node_name, index) in (
+        ('Underground Caverns', 'Upper-Left Passage', 8),
+        ('Underground Caverns', 'Lower-Left Passage', 12),
+        ('Reverse Caverns', 'Upper-Right Passage', 0),
+        ('Reverse Caverns', 'Lower-Right Passage', 4),
+    ):
+        constant_name = f'Waterfall Sound Parameters ({stage_name})'
+        if constant_name not in patch['Changes']['Constants']:
+            patch['Changes']['Constants'][constant_name] = []
+        constant = {
+            'Index': index,
+            'Value Relative From': {
+                'Room': f'{stage_name}, Waterfall',
+                'Node': node_name,
+                'Property': 'X'
+            },
+        }
+        patch['Changes']['Constants'][constant_name].append(constant)
+    for (stage_name, node_name, room_name, x_offset, entity_layout_id) in (
+        ('Underground Caverns', 'Upper-Left Passage', 'DK Button', -128, 0),
+        ('Underground Caverns', 'Upper-Right Passage', 'Pentagram Room', 128, 7),
+        ('Underground Caverns', 'Lower-Left Passage', 'Room ID 19', -128, 1),
+        ('Underground Caverns', 'Lower-Right Passage', 'Room ID 18', 128, 2),
+        ('Reverse Caverns', 'Upper-Left Passage', 'DK Button', -128, 0),
+        ('Reverse Caverns', 'Upper-Right Passage', 'Pentagram Room', 128, 7),
+        ('Reverse Caverns', 'Lower-Left Passage', 'Room ID 19', -128, 1),
+        ('Reverse Caverns', 'Lower-Right Passage', 'Room ID 18', 128, 2),
+    ):
+        entity_layout = {
+            'Add Relative To': {
+                'Room': f'{stage_name}, Waterfall',
+                'Node': node_name,
+                'X Offset': x_offset,
+                'Y Offset': 0,
+                'Entity Room Index': 180,
+            },
+            'Delete From': {
+                'Entity Layout ID': entity_layout_id,
+                'Room': f'{stage_name}, {room_name}',
+            },
+            'Stage': f'{stage_name}',
+        }
+        patch['Changes']['Entity Layouts'].append(entity_layout)
     result = patch
     return result
 

@@ -827,12 +827,17 @@ def assemble_patch(args, extract, main_patch, data):
                     offset += 1
         result.patch_value(0xFF, 'u8', extract_metadata['Start'] + offset)
         assert offset <= extract_metadata['Footprint']
+    for (row_id, entity_layout_row) in enumerate(extract['Entity Layouts']['Underground Caverns']['Data']):
+        print('  ', row_id, len(entity_layout_row))
+        for (col_id, entity_layout_entry) in enumerate(entity_layout_row):
+            print('    ', col_id, entity_layout_entry)
     # Patch entity layouts
+    deletes = {}
     entity_layouts = {}
     for change in changes.get('Entity Layouts', []):
         stage_name = change['Stage']
         if stage_name not in entity_layouts:
-            # print(stage_name, len(extract['Entity Layouts'][stage_name]['Data']))
+            print(stage_name, len(extract['Entity Layouts'][stage_name]['Data']))
             entity_layouts[stage_name] = copy.deepcopy(extract['Entity Layouts'][stage_name]['Data'])
         target_entity = {}
         for (key, value) in change.get('Properties', {}).items():
@@ -845,7 +850,9 @@ def assemble_patch(args, extract, main_patch, data):
             for (key, value) in entity_layouts[stage_name][entity_layout_row][entity_layout_id].items():
                 if key not in target_entity:
                     target_entity[key] = value
-            entity_layouts[stage_name][entity_layout_row].pop(entity_layout_id)
+            if (stage_name, entity_layout_row) not in deletes:
+                deletes[(stage_name, entity_layout_row)] = set()
+            deletes[(stage_name, entity_layout_row)].add(entity_layout_id)
         if 'Add To' in change:
             target_room_name = change['Add To']['Room']
             entity_layout_row = aliases['Rooms'][target_room_name]['Entity Layout Row']
@@ -863,12 +870,9 @@ def assemble_patch(args, extract, main_patch, data):
                 target_entity['Entity Room Index'] = change['Add Relative To']['Entity Room Index']
             # print('Adding', target_room_name, entity_layout_row)
             entity_layouts[stage_name][entity_layout_row].append(target_entity)
-    # for (stage_name, entity_layout_table) in entity_layouts.items():
-    #     print('', stage_name, len(entity_layout_table))
-    #     for (row_id, entity_layout_row) in enumerate(entity_layout_table):
-    #         print('  ', row_id, len(entity_layout_row))
-    #         for (col_id, entity_layout_entry) in enumerate(entity_layout_row):
-    #             print('    ', col_id, entity_layout_entry)
+    for (stage_name, entity_layout_row) in deletes:
+        for entity_layout_id in reversed(sorted(deletes[(stage_name, entity_layout_row)])):
+            entity_layouts[stage_name][entity_layout_row].pop(entity_layout_id)
     sentinel_start_template = {
         'Entity Room Index': 0,
         'Entity Type ID': 0,
@@ -901,6 +905,7 @@ def assemble_patch(args, extract, main_patch, data):
                 if layout_extract['Row Indexes'].index(layout_index) != entity_row:
                     continue
                 if layout_extract['Row Indexes'][entity_row] != entity_offset:
+                    # print('', layout_extract['Row Indexes'][entity_row], entity_offset)
                     result.patch_value(horizontal_layout_value + 10 * entity_offset, 'u32', horizontal_layout_start + 4 * layout_id)
                     result.patch_value(vertical_layout_value + 10 * entity_offset, 'u32', vertical_layout_start + 4 * layout_id)
             sentinel_start = dict(sentinel_start_template)
