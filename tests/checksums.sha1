@@ -1,3 +1,4 @@
+70da74c9324a1f9495910603949239ee70d5cd0a *build/ppf/allow-all-possible-outer-wall-fish-spawns.ppf
 0da2a4807f7913796585e9eed393925bb6353740 *build/ppf/assign-power-of-wolf-relic-a-unique-id.ppf
 15d410ef25bec8941099be0aa33a9e4dc1da3e0e *build/ppf/clock-hands-mod.ppf
 4bed16166ab695d3a9d584735e3e50af0931736a *build/ppf/customized-castle-map-reveals.ppf
@@ -5,12 +6,14 @@ acffe21a5576c6d448088299dce6f9c450740e4c *build/ppf/customized-color-palettes.pp
 86273332910759b6db2ff29d10587639c5c39fe1 *build/ppf/customized-enemy-drops.ppf
 331e80a4bbf497fb10a87c37819b72d72ede7c4f *build/ppf/disable-clipping-on-one-way-walls.ppf
 cc27ae98f9fe9bf8231da2eb3081224085b63206 *build/ppf/enable-debug-mode.ppf
-de47a1f7c21e091aa4a9f1c6dd355a15a9b4fd25 *build/ppf/fix-secret-room-map-pixels.ppf
-2c84ddabf35ee18403ce7696da0ad4c9307319c5 *build/ppf/improve-normalized-room-visuals.ppf
+3225a08d99028351d3862f87e147ad041f13eeb5 *build/ppf/fix-confessional-bell-sound.ppf
+f31e501db39cb4c7ef8b85c172d6b13fba4dd4ce *build/ppf/fix-secret-room-map-pixels.ppf
+223ab27c187d1d6d12019c1e2033b682f57903d2 *build/ppf/fix-waterfall-sound.ppf
+512e6af8dc4bdcd7cda58bcb5e7ed8cdfd871348 *build/ppf/improve-normalized-room-visuals.ppf
 bb2edc1f7e08662b4df7e3e726067d8924341e23 *build/ppf/mix-items-and-relics.ppf
 0636a5b8e8c3e8bcb4e24773f54d7327b1d8d4c8 *build/ppf/move-drawbridge-room-vertically.ppf
 21f24f3f8c3741097be288c08e0e7f2e34a4c53e *build/ppf/normalize-ferryman-gate.ppf
-354977c554cb4ce10bac8c90e944ecd54fb4d4e5 *build/ppf/normalize-room-connections.ppf
+f8fe70c6c8177b2e78f5352ff0c3c49aa6938670 *build/ppf/normalize-room-connections.ppf
 4c37704ad4d2501b4b16438affef9ae19fb5e791 *build/ppf/preserve-map-exploration.ppf
 b25bb386a77fed72a06410052cb863e52ce514ef *build/ppf/preserve-map-revelation.ppf
 ac26ea1238f47895fc3c57ccb192d0727c9162ab *build/ppf/prevent-death-meeting-softlocks.ppf
@@ -23,7 +26,8 @@ d9283aad7bbdffdbaecd011ec57b0091f8dc05c8 *build/ppf/prevent-softlocks-at-pendulu
 2cdef6db99dbd3b788247c2b3a504bdedf6e0c56 *build/ppf/prevent-softlocks-at-tall-zig-zag-room-wall.ppf
 6f025191bfd7928400369a06a9bf7dd79241619f *build/ppf/randomized-items.ppf
 29ab1a198cd8ce17d75f0bc58a8db1a760dda4f2 *build/ppf/randomized-relics.ppf
-75739a4cb7406a78a99359cae649d93949abcd5e *build/ppf/sample-randomized-map.ppf
+dee9d21b5efa7afdd4570972ff25a4a9a2b08c9f *build/ppf/sample-entity-layout.ppf
+e0f885427651e349ec2b2ed8881fe6c8a30105aa *build/ppf/sample-randomized-map.ppf
 0a52d52ed1d6c329d084f047918db748ec598316 *build/ppf/shop-relic-name.ppf
 5cad450299828d41629acc3034725fac76bece05 *build/ppf/shuffle-spike-room.ppf
 0c18b44bbab522502ed75164605332692509be01 *build/ppf/shuffle-starting-gear.ppf
