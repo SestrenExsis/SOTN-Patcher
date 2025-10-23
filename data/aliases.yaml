@@ -6026,7 +6026,7 @@ Rooms:
   Reverse Caverns, Fake Room with Teleporter to Marble Gallery:
     Room Index: 41
   Reverse Caverns, False Save Room:
-    Room Index: 37
+    Entity Layout Row: 29
     Room Index: 37
     Notes:
       - Fix discovered by @MottZilla

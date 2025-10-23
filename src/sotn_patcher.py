@@ -3726,10 +3726,10 @@ def get_normalize_waterfall_roar_sound():
         ('Underground Caverns', 'Upper-Right Passage', 'Pentagram Room', 128, 7),
         ('Underground Caverns', 'Lower-Left Passage', 'Room ID 19', -128, 1),
         ('Underground Caverns', 'Lower-Right Passage', 'Room ID 18', 128, 2),
-        ('Reverse Caverns', 'Upper-Left Passage', 'DK Button', -128, 0),
-        ('Reverse Caverns', 'Upper-Right Passage', 'Pentagram Room', 128, 7),
-        ('Reverse Caverns', 'Lower-Left Passage', 'Room ID 19', -128, 1),
-        ('Reverse Caverns', 'Lower-Right Passage', 'Room ID 18', 128, 2),
+        ('Reverse Caverns', 'Upper-Left Passage', 'DK Button', 128, 0),
+        ('Reverse Caverns', 'Upper-Right Passage', 'Pentagram Room', -128, 7),
+        ('Reverse Caverns', 'Lower-Left Passage', 'Room ID 19', 128, 1),
+        ('Reverse Caverns', 'Lower-Right Passage', 'Room ID 18', -128, 2),
     ):
         entity_layout = {
             'Add Relative To': {
