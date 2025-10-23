@@ -1,0 +1,52 @@
+{
+    "Changes": {
+        "Options": {
+            "Enable debug mode": true,
+            "Normalize particle effects": true
+        },
+        "Stages": {
+            "Death Wing's Lair": {
+                "Rooms": {
+                    "Death Wing's Lair, Secret Onyx Room": {
+                        "Left": 31,
+                        "Top": 42
+                    },
+                    "Death Wing's Lair, Hammer and Blade Room": {
+                        "Left": 30,
+                        "Top": 41
+                    }
+                }
+            },
+            "Olrox's Quarters": {
+                "Rooms": {
+                    "Olrox's Quarters, Secret Onyx Room": {
+                        "Left": 30,
+                        "Top": 21
+                    },
+                    "Olrox's Quarters, Hammer and Blade Room": {
+                        "Left": 30,
+                        "Top": 22
+                    }
+                }
+            }
+        }
+    },
+    "Shuffler": {
+        "Nodes": {
+            "Olrox's Quarters, Grand Staircase": {
+                "Lower-Right Passage": {
+                    "Target Room Name": "Olrox's Quarters, Hammer and Blade Room",
+                    "X": 0,
+                    "Y": 128
+                }
+            },
+            "Death Wing's Lair, Grand Staircase": {
+                "Lower-Right Passage": {
+                    "Target Room Name": "Death Wing's Lair, Hammer and Blade Room",
+                    "X": 1024,
+                    "Y": 128
+                }
+            }
+        }
+    }
+}

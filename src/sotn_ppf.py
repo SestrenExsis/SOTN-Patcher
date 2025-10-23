@@ -291,6 +291,9 @@ def assemble_patch(args, extract, main_patch, data):
         ('Normalize Ferryman Gate', (
             'normalize-ferryman-gate',
         )),
+        ('Normalize particle effects', (
+            'normalize-olroxs-quarters-secret-onyx-room-rubble',
+        )),
         ('Normalize sounds', (
             'normalize-confessional-chime-sound',
             'normalize-waterfall-roar-sound',
