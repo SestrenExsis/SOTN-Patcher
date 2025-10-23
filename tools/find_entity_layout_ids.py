@@ -6,7 +6,7 @@ import yaml
 if __name__ == '__main__':
     '''
     Usage
-    python sotn_address.py TYPE ADDRESS
+    python find_entity_layout_ids.py build/extraction.json data/aliases.yaml build/aliases2.yaml
     '''
     with (
         open(os.path.join('build', 'extraction.json')) as extract_file,

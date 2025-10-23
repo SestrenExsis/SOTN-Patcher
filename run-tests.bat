@@ -14,6 +14,7 @@ python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/clock-hands-mod.j
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/customized-castle-map-reveals.json" --ppf="build/ppf/customized-castle-map-reveals.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/customized-color-palettes.json" --ppf="build/ppf/customized-color-palettes.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/customized-enemy-drops.json" --ppf="build/ppf/customized-enemy-drops.ppf" || goto :error
+python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/debug-sound-normalization.json" --ppf="build/ppf/debug-sound-normalization.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/disable-clipping-on-one-way-walls.json" --ppf="build/ppf/disable-clipping-on-one-way-walls.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/enable-debug-mode.json" --ppf="build/ppf/enable-debug-mode.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/fix-confessional-bell-sound.json" --ppf="build/ppf/fix-confessional-bell-sound.ppf" || goto :error

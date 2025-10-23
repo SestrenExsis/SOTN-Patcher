@@ -1,0 +1,63 @@
+{
+    "Changes": {
+        "Options": {
+            "Enable debug mode": true,
+            "Normalize sounds": true
+        }
+    },
+    "Shuffler": {
+        "Nodes": {
+            "Reverse Caverns, Waterfall": {
+                "Lower-Left Passage": {
+                    "Target Room Name": "Reverse Caverns, Claymore Stairwell",
+                    "X": 0,
+                    "Y": 128
+                },
+                "Lower-Right Passage": {
+                    "Target Room Name": "Reverse Caverns, DK Bridge",
+                    "X": 1024,
+                    "Y": 128
+                },
+                "Upper-Left Passage": {
+                    "Target Room Name": "Reverse Caverns, DK Button",
+                    "X": 0,
+                    "Y": 128
+                },
+                "Upper-Right Passage": {
+                    "Target Room Name": "Reverse Caverns, Room ID 18",
+                    "X": 256,
+                    "Y": 128
+                }
+            },
+            "Royal Chapel, Confessional Booth": {
+                "Left Passage": {
+                    "Target Room Name": "Royal Chapel, Left Tower",
+                    "X": 768,
+                    "Y": 2432
+                }
+            },
+            "Underground Caverns, Waterfall": {
+                "Lower-Left Passage": {
+                    "Target Room Name": "Underground Caverns, Claymore Stairwell",
+                    "X": 256,
+                    "Y": 896
+                },
+                "Lower-Right Passage": {
+                    "Target Room Name": "Underground Caverns, DK Bridge",
+                    "X": 0,
+                    "Y": 128
+                },
+                "Upper-Left Passage": {
+                    "Target Room Name": "Underground Caverns, DK Button",
+                    "X": 256,
+                    "Y": 128
+                },
+                "Upper-Right Passage": {
+                    "Target Room Name": "Underground Caverns, Room ID 18",
+                    "X": 0,
+                    "Y": 128
+                }
+            }
+        }
+    }
+}
