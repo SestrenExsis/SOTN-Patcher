@@ -3692,6 +3692,38 @@ def get_normalize_confessional_chime_sound():
     result = patch
     return result
 
+def get_normalize_olroxs_quarters_secret_onyx_room_rubble():
+    patch = {
+        'Description': 'Relocate rubble in Secret Onyx Room',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Entity Layouts': [],
+        },
+    }
+    for (stage_name, node_name, x_offset, entity_layout_id) in (
+        ("Olrox's Quarters", 'Lower-Right Passage', 8, 0),
+        ("Death Wing's Lair", 'Lower-Right Passage', -8, 6),
+    ):
+        entity_layout = {
+            'Add Relative To': {
+                'Room': f'{stage_name}, Grand Staircase',
+                'Node': node_name,
+                'X Offset': x_offset,
+                'Y Offset': 24,
+                'Entity Room Index': 180,
+            },
+            'Delete From': {
+                'Entity Layout ID': entity_layout_id,
+                'Room': f'{stage_name}, Secret Onyx Room',
+            },
+            'Stage': f'{stage_name}',
+        }
+        patch['Changes']['Entity Layouts'].append(entity_layout)
+    result = patch
+    return result
+
 def get_normalize_waterfall_roar_sound():
     patch = {
         'Description': 'Relocate sound entities that fade waterfall roar',
@@ -3849,6 +3881,7 @@ if __name__ == '__main__':
         ('normalize-olroxs-quarters-open-courtyard-top-passage', get_normalize_olroxs_quarters_open_courtyard_top_passage()),
         ('normalize-olroxs-quarters-prison-left-bottom-passage', get_normalize_olroxs_quarters_prison_left_bottom_passage()),
         ('normalize-olroxs-quarters-prison-right-bottom-passage', get_normalize_olroxs_quarters_prison_right_bottom_passage()),
+        ('normalize-olroxs-quarters-secret-onyx-room-rubble', get_normalize_olroxs_quarters_secret_onyx_room_rubble()),
         ('normalize-olroxs-quarters-sword-card-room-bottom-passage', get_normalize_olroxs_quarters_sword_card_room_bottom_passage()),
         ('normalize-olroxs-quarters-tall-shaft-top-passage', get_normalize_olroxs_quarters_tall_shaft_top_passage()),
         ('normalize-secret-bookcase-rooms', get_normalize_secret_bookcase_rooms()),
