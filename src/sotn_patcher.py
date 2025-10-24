@@ -3781,6 +3781,41 @@ def get_normalize_waterfall_roar_sound():
     result = patch
     return result
 
+def get_assign_power_of_wolf_relic_a_unique_id():
+    patch = {
+        'Description': 'Prevent Trapdoor from deleting Power of Wolf',
+        'Authors': [
+            'Eldritch',
+            'Mottzilla',
+        ],
+        'Changes': {
+            'Entity Layouts': [
+                {
+                    'Update': {
+                        'Room': 'Castle Entrance, After Drawbridge',
+                        'Entity Layout ID': 10,
+                    },
+                    'Properties': {
+                        'Entity Room Index': 18,
+                    },
+                    'Stage': 'Castle Entrance',
+                },
+                {
+                    'Update': {
+                        'Room': 'Castle Entrance Revisited, After Drawbridge',
+                        'Entity Layout ID': 13,
+                    },
+                    'Properties': {
+                        'Entity Room Index': 18,
+                    },
+                    'Stage': 'Castle Entrance Revisited',
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
 if __name__ == '__main__':
     '''
     Some patches play nice with other patches, some don't.
@@ -3793,12 +3828,12 @@ if __name__ == '__main__':
     parser.add_argument('build_dir', help='Input a filepath to a folder that will contain the build files', type=str)
     args = parser.parse_args()
     for (file_name, patch) in (
-        ('normalize-confessional-chime-sound', get_normalize_confessional_chime_sound()),
-        ('normalize-waterfall-roar-sound', get_normalize_waterfall_roar_sound()),
+        ('assign-power-of-wolf-relic-a-unique-id', get_assign_power_of_wolf_relic_a_unique_id()),
         ('clock-hands-display-minutes-and-seconds', get_clock_hands_patch()),
         ('enable-debug-mode', get_simple_patch("Enables the game's hidden debug mode", [
             (0x000D9364, 'u32', 0xAC258850, 'sw a1, -$77B0(at)'), # Original instruction was sw 0, -$77B0(at)
         ])),
+        ('normalize-confessional-chime-sound', get_normalize_confessional_chime_sound()),
         ('normalize-dk-bridge-bottom-passage', get_normalize_dk_bridge_bottom_passage()),
         ('normalize-ferryman-gate', get_simple_patch('Normalize Ferryman Gate', [
             # 0x801C5C7C - EntityFerrymanController
@@ -3895,6 +3930,7 @@ if __name__ == '__main__':
         ('normalize-underground-caverns-room-id-09-bottom-passage', get_normalize_underground_caverns_room_id_09_bottom_passage()),
         ('normalize-underground-caverns-room-id-10-top-passage', get_normalize_underground_caverns_room_id_10_top_passage()),
         ('normalize-underground-caverns-small-stairwell-top-passage', get_normalize_underground_caverns_small_stairwell_top_passage()),
+        ('normalize-waterfall-roar-sound', get_normalize_waterfall_roar_sound()),
         ('prevent-softlocks-after-defeating-scylla', get_prevent_softlocks_after_defeating_scylla()),
         ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
         ('prevent-softlocks-at-left-gear-room-wall', get_prevent_softlocks_at_left_gear_room_wall_patch()),
