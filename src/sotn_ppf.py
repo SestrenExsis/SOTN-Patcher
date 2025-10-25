@@ -847,14 +847,13 @@ def assemble_patch(args, extract, main_patch, data):
         reward_type = reward_name.split(' - ')[0]
         reward_data = aliases['Quest Rewards'][location_name]
         for data_element in reward_data[reward_type + ' Data']:
-            if data_element['Type'] == 'Object Layout':
-                # Translate object layout changes into entity layout changes
+            if data_element['Type'] == 'Entity Layout':
                 stage_name = data_element['Stage']
                 room_name = data_element['Room']
                 entity_layout = {
                     'Update': {
                         'Room': data_element['Room'],
-                        'Entity Layout ID': data_element['Object Layout ID'],
+                        'Entity Layout ID': data_element['Entity Layout ID'],
                     },
                     'Properties': {},
                     'Stage': data_element['Stage'],
@@ -866,6 +865,35 @@ def assemble_patch(args, extract, main_patch, data):
                 if 'Params' in data_element:
                     entity_layout['Properties']['Params'] = data_element['Params']
                 changes['Entity Layouts'].append(entity_layout)
+            elif data_element['Type'] == 'Object Layout':
+                stage_name = data_element['Stage']
+                room_name = data_element['Room']
+                room_id = str(aliases['Rooms'].get(room_name, {}).get('Room Index', None))
+                room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
+                horizontal_object_extract = room_extract['Object Layout - Horizontal']
+                vertical_object_extract = room_extract['Object Layout - Vertical']
+                horizontal_object_layout_id = data_element['Horizontal Object Layout ID']
+                vertical_object_layout_id = data_element['Vertical Object Layout ID']
+                for (property_key, property_value) in aliases['Entities'].get(reward_name, {}).items():
+                    if (
+                        property_value is None or
+                        property_key not in horizontal_object_extract['Metadata']['Fields'].keys()
+                    ):
+                        continue
+                    object_extract = horizontal_object_extract
+                    result.patch_value(
+                        property_value,
+                        object_extract['Metadata']['Fields'][property_key]['Type'],
+                        object_extract['Metadata']['Start'] + (1 + horizontal_object_layout_id) * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][property_key]['Offset'],
+                    )
+                    # NOTE(sestren): Add +1 to the object layout IDs to get the extract ID
+                    # NOTE(sestren): This accounts for the sentinel entity at the start of every entity list
+                    object_extract = vertical_object_extract
+                    result.patch_value(
+                        property_value,
+                        object_extract['Metadata']['Fields'][property_key]['Type'],
+                        object_extract['Metadata']['Start'] + (1 + vertical_object_layout_id) * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][property_key]['Offset'],
+                    )
             elif data_element['Type'] == 'Stage Item Drop':
                 constant_name = data_element['Constant']
                 item_drop_index = data_element['Item Drop Index']
@@ -950,6 +978,8 @@ def assemble_patch(args, extract, main_patch, data):
             target_room_name = change['Update']['Room']
             entity_layout_row = aliases['Rooms'][target_room_name]['Entity Layout Row']
             entity_layout_id = change['Update']['Entity Layout ID']
+            for (property_key, property_value) in target_entity.items():
+                entity_layouts[stage_name][entity_layout_row][entity_layout_id][property_key] = property_value
         elif 'Add To' in change:
             target_room_name = change['Add To']['Room']
             entity_layout_row = aliases['Rooms'][target_room_name]['Entity Layout Row']

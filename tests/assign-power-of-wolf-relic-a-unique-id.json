@@ -1,5 +1,6 @@
 {
     "Options": {
-        "Assign Power of Wolf relic a unique ID": true
+        "Assign Power of Wolf relic a unique ID": true,
+        "Enable debug mode": true
     }
 }

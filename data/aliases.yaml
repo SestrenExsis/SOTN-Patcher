@@ -1453,15 +1453,15 @@ Quest Rewards:
     Notes:
       - The Item Drop Index assigned for this location appears to be unused in the vanilla game
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Abandoned Mine
         Room: Abandoned Mine, Demon Card Room
-        Object Layout ID: 0
+        Entity Layout ID: 0
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Abandoned Mine
         Room: Abandoned Mine, Demon Card Room
-        Object Layout ID: 0
+        Entity Layout ID: 0
         Params: 2
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Abandoned Mine)
@@ -1738,14 +1738,14 @@ Quest Rewards:
         Item Drop Index: 11
   Location - Castle Entrance, Cube of Zoe Room (Cube of Zoe):
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Castle Entrance
         Room: Castle Entrance, Cube of Zoe Room
-        Object Layout ID: 5
-      - Type: Object Layout
+        Entity Layout ID: 5
+      - Type: Entity Layout
         Stage: Castle Entrance Revisited
         Room: Castle Entrance Revisited, Cube of Zoe Room
-        Object Layout ID: 4
+        Entity Layout ID: 4
   Location - Castle Entrance, Heart Max-Up Room (Heart Max-Up):
     Item Data:
       - Type: Stage Item Drop
@@ -1774,24 +1774,24 @@ Quest Rewards:
     Notes:
       - The Item Drop Index assigned for this location appears to be unused in the vanilla game
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Castle Entrance
         Room: Castle Entrance, After Drawbridge
-        Object Layout ID: 9
-      - Type: Object Layout
+        Entity Layout ID: 9
+      - Type: Entity Layout
         Stage: Castle Entrance Revisited
         Room: Castle Entrance Revisited, After Drawbridge
-        Object Layout ID: 11
+        Entity Layout ID: 11
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Castle Entrance
         Room: Castle Entrance, After Drawbridge
-        Object Layout ID: 9
+        Entity Layout ID: 9
         Params: 3
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Castle Entrance Revisited
         Room: Castle Entrance Revisited, After Drawbridge
-        Object Layout ID: 11
+        Entity Layout ID: 11
         Params: 3
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Castle Entrance)
@@ -1849,10 +1849,10 @@ Quest Rewards:
         Item Drop Index: 9
   Location - Castle Keep, Keep Area (Leap Stone):
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Castle Keep
         Room: Castle Keep, Keep Area
-        Object Layout ID: 12
+        Entity Layout ID: 12
   Location - Castle Keep, Keep Area (Turquoise):
     Item Data:
       - Type: Stage Item Drop
@@ -1942,15 +1942,15 @@ Quest Rewards:
     Notes:
       - The Item Drop Index assigned for this location appears to be unused in the vanilla game
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Castle Keep
         Room: Castle Keep, Keep Area
-        Object Layout ID: 11
+        Entity Layout ID: 11
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Castle Keep
         Room: Castle Keep, Keep Area
-        Object Layout ID: 11
+        Entity Layout ID: 11
         Params: 17
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Castle Keep)
@@ -1964,15 +1964,15 @@ Quest Rewards:
     Notes:
       - The Item Drop Index assigned for this location appears to be unused in the vanilla game
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Castle Keep
         Room: Castle Keep, Ghost Card Room
-        Object Layout ID: 5
+        Entity Layout ID: 5
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Castle Keep
         Room: Castle Keep, Ghost Card Room
-        Object Layout ID: 5
+        Entity Layout ID: 5
         Params: 19
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Castle Keep)
@@ -2059,15 +2059,15 @@ Quest Rewards:
         Item Drop Index: 15
   Location - Catacombs, Spike Breaker Room (Spike Breaker):
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Catacombs
         Room: Catacombs, Spike Breaker Room
-        Object Layout ID: 1
+        Entity Layout ID: 1
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Catacombs
         Room: Catacombs, Spike Breaker Room
-        Object Layout ID: 1
+        Entity Layout ID: 1
         Params: 16
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Catacombs)
@@ -2146,15 +2146,15 @@ Quest Rewards:
     Notes:
       - The Item Drop Index assigned for this location appears to be unused in the vanilla game
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Clock Tower
         Room: Clock Tower, Fire of Bat Room
-        Object Layout ID: 1
+        Entity Layout ID: 1
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Clock Tower
         Room: Clock Tower, Fire of Bat Room
-        Object Layout ID: 1
+        Entity Layout ID: 1
         Params: 2
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Clock Tower)
@@ -2218,15 +2218,15 @@ Quest Rewards:
     Notes:
       - The Item Drop Index assigned for this location appears to be unused in the vanilla game
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Colosseum
         Room: Colosseum, Top of Elevator Shaft
-        Object Layout ID: 6
+        Entity Layout ID: 6
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Colosseum
         Room: Colosseum, Top of Elevator Shaft
-        Object Layout ID: 6
+        Entity Layout ID: 6
         Params: 2
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Colosseum)
@@ -2460,15 +2460,15 @@ Quest Rewards:
     Notes:
       - The Item Drop Index assigned for this location appears to be unused in the vanilla game
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Long Library
         Room: Long Library, Lesser Demon Area
-        Object Layout ID: 30
+        Entity Layout ID: 30
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Long Library
         Room: Long Library, Lesser Demon Area
-        Object Layout ID: 30
+        Entity Layout ID: 30
         Params: 0
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Long Library)
@@ -2487,15 +2487,15 @@ Quest Rewards:
     Notes:
       - The Item Drop Index assigned for this location appears to be unused in the vanilla game
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Long Library
         Room: Long Library, Faerie Card Room
-        Object Layout ID: 0
+        Entity Layout ID: 0
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Long Library
         Room: Long Library, Faerie Card Room
-        Object Layout ID: 0
+        Entity Layout ID: 0
         Params: 3
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Long Library)
@@ -2539,15 +2539,15 @@ Quest Rewards:
     Notes:
       - The Item Drop Index assigned for this location appears to be unused in the vanilla game
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Long Library
         Room: Long Library, Spellbook Area
-        Object Layout ID: 38
+        Entity Layout ID: 38
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Long Library
         Room: Long Library, Spellbook Area
-        Object Layout ID: 38
+        Entity Layout ID: 38
         Params: 11
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Long Library)
@@ -2557,13 +2557,19 @@ Quest Rewards:
       - Type: Object Layout
         Stage: Marble Gallery
         Room: Marble Gallery, Gravity Boots Room
-        Object Layout ID: 3
+        Horizontal Object Layout ID: 3
+        Vertical Object Layout ID: 0
+        Notes:
+          - Marble Gallery's Entity Layout treatment is buggy, so this is being handled the old Object Layout way
   Location - Marble Gallery, Spirit Orb Room (Spirit Orb):
     Relic Data:
       - Type: Object Layout
         Stage: Marble Gallery
         Room: Marble Gallery, Spirit Orb Room
-        Object Layout ID: 8
+        Horizontal Object Layout ID: 8
+        Vertical Object Layout ID: 29
+        Notes:
+          - Marble Gallery's Entity Layout treatment is buggy, so this is being handled the old Object Layout way
   Location - Marble Gallery, Pathway After Left Statue (Life Max-Up):
     Item Data:
       - Type: Stage Item Drop
@@ -2688,15 +2694,15 @@ Quest Rewards:
     Notes:
       - The Item Drop Index assigned for this location appears to be unused in the vanilla game
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Olrox's Quarters
         Room: Olrox's Quarters, Echo of Bat Room
-        Object Layout ID: 2
+        Entity Layout ID: 2
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Olrox's Quarters
         Room: Olrox's Quarters, Echo of Bat Room
-        Object Layout ID: 2
+        Entity Layout ID: 2
         Params: 0
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Olrox's Quarters)
@@ -2710,15 +2716,15 @@ Quest Rewards:
     Notes:
       - The Item Drop Index assigned for this location appears to be unused in the vanilla game
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Olrox's Quarters
         Room: Olrox's Quarters, Sword Card Room
-        Object Layout ID: 0
+        Entity Layout ID: 0
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Olrox's Quarters
         Room: Olrox's Quarters, Sword Card Room
-        Object Layout ID: 0
+        Entity Layout ID: 0
         Params: 2
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Olrox's Quarters)
@@ -2812,15 +2818,15 @@ Quest Rewards:
     Notes:
       - The Item Drop Index assigned for this location appears to be unused in the vanilla game
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Outer Wall
         Room: Outer Wall, Elevator Shaft Room
-        Object Layout ID: 55
+        Entity Layout ID: 55
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Outer Wall
         Room: Outer Wall, Elevator Shaft Room
-        Object Layout ID: 55
+        Entity Layout ID: 55
         Params: 7
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Outer Wall)
@@ -3287,15 +3293,15 @@ Quest Rewards:
         Item Drop Index: 1
   Location - Royal Chapel, Silver Ring Room (Silver Ring):
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Royal Chapel
         Room: Royal Chapel, Silver Ring Room
-        Object Layout ID: 0
+        Entity Layout ID: 0
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Royal Chapel
         Room: Royal Chapel, Silver Ring Room
-        Object Layout ID: 0
+        Entity Layout ID: 0
         Params: 2
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Royal Chapel)
@@ -3391,15 +3397,15 @@ Quest Rewards:
         Item Drop Index: 2
   Location - Underground Caverns, Holy Symbol Room (Holy Symbol):
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Underground Caverns
         Room: Underground Caverns, Holy Symbol Room
-        Object Layout ID: 2
+        Entity Layout ID: 2
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Underground Caverns
         Room: Underground Caverns, Holy Symbol Room
-        Object Layout ID: 2
+        Entity Layout ID: 2
         Params: 3
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Boss - Scylla)
@@ -3441,15 +3447,15 @@ Quest Rewards:
         Item Drop Index: 7
   Location - Underground Caverns, Merman Statue Room (Merman Statue):
     Relic Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Underground Caverns
         Room: Underground Caverns, Merman Statue Room
-        Object Layout ID: 0
+        Entity Layout ID: 0
     Item Data:
-      - Type: Object Layout
+      - Type: Entity Layout
         Stage: Underground Caverns
         Room: Underground Caverns, Merman Statue Room
-        Object Layout ID: 0
+        Entity Layout ID: 0
         Params: 8
       - Type: Stage Item Drop
         Constant: Unique Item Drops (Boss - Scylla)

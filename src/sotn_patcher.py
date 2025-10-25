@@ -156,15 +156,17 @@ def get_prevent_softlocks_at_demon_switch_wall_patch():
         #     'Modification - Disable clipping on screen edge of Demon Switch Wall': True,
         # }
     }
-    patch['Changes']['Object Layouts'] = [
+    patch['Changes']['Entity Layouts'] = [
         {
-            'Stage': 'Cave',
-            'Room': 'Cave, Crumbling Stairwells With Demon Switch',
-            'Object Layout ID': 2,
+            'Update': {
+                'Room': 'Cave, Crumbling Stairwells With Demon Switch',
+                'Entity Layout ID': 2,
+            },
             'Properties': {
                 # NOTE(sestren): Changing the Y position from 977 to 972 allows the Demon to hit the switch correctly in Inverted Castle
                 'Y': 972,
             },
+            'Stage': 'Cave',
         },
     ]
     for stage_name in (
@@ -1762,46 +1764,56 @@ def get_normalize_alchemy_laboratory_glass_vats_bottom_passage():
             ],
         },
     }
-    patch['Changes']['Object Layouts'] = [
+    patch['Changes']['Entity Layouts'] = [
         {
-            'Stage': 'Alchemy Laboratory',
-            'Room': 'Alchemy Laboratory, Glass Vats',
-            'Object Layout ID': 0,
+            'Update': {
+                'Room': 'Alchemy Laboratory, Glass Vats',
+                'Entity Layout ID': 0,
+            },
             'Properties': {
                 'X': 192,
             },
+            'Stage': 'Alchemy Laboratory',
         },
         {
-            'Stage': 'Alchemy Laboratory',
-            'Room': 'Alchemy Laboratory, Glass Vats',
-            'Object Layout ID': 1,
+            'Update': {
+                'Room': 'Alchemy Laboratory, Glass Vats',
+                'Entity Layout ID': 1,
+            },
             'Properties': {
                 'X': 240,
             },
+            'Stage': 'Alchemy Laboratory',
         },
         {
-            'Stage': 'Alchemy Laboratory',
-            'Room': 'Alchemy Laboratory, Glass Vats',
-            'Object Layout ID': 2,
+            'Update': {
+                'Room': 'Alchemy Laboratory, Glass Vats',
+                'Entity Layout ID': 2,
+            },
             'Properties': {
                 'X': 288,
             },
+            'Stage': 'Alchemy Laboratory',
         },
         {
-            'Stage': 'Alchemy Laboratory',
-            'Room': 'Alchemy Laboratory, Glass Vats',
-            'Object Layout ID': 3,
+            'Update': {
+                'Room': 'Alchemy Laboratory, Glass Vats',
+                'Entity Layout ID': 3,
+            },
             'Properties': {
                 'X': 336,
             },
+            'Stage': 'Alchemy Laboratory',
         },
         {
-            'Stage': 'Alchemy Laboratory',
-            'Room': 'Alchemy Laboratory, Glass Vats',
-            'Object Layout ID': 4,
+            'Update': {
+                'Room': 'Alchemy Laboratory, Glass Vats',
+                'Entity Layout ID': 4,
+            },
             'Properties': {
                 'X': 384,
             },
+            'Stage': 'Alchemy Laboratory',
         },
     ]
     result = patch
@@ -2070,24 +2082,28 @@ def get_normalize_alchemy_laboratory_tall_zig_zag_room_bottom_passage():
             'Data Type': data_type,
             'Value': '{:08X}'.format(value),
         })
-    patch['Changes']['Object Layouts'] = [
+    patch['Changes']['Entity Layouts'] = [
         {
-            'Stage': 'Alchemy Laboratory',
-            'Room': 'Alchemy Laboratory, Tall Zig Zag Room',
-            'Object Layout ID': 4,
+            'Update': {
+                'Room': 'Alchemy Laboratory, Tall Zig Zag Room',
+                'Entity Layout ID': 4,
+            },
             'Properties': {
                 'X': 128,
                 'Y': 720,
             },
+            'Stage': 'Alchemy Laboratory',
         },
         {
-            'Stage': 'Necromancy Laboratory',
-            'Room': 'Necromancy Laboratory, Tall Zig Zag Room',
-            'Object Layout ID': 5,
+            'Update': {
+                'Room': 'Necromancy Laboratory, Tall Zig Zag Room',
+                'Entity Layout ID': 5,
+            },
             'Properties': {
                 'X': 128,
                 'Y': 48,
             },
+            'Stage': 'Necromancy Laboratory',
         },
     ]
     patch['Changes']['Constants'] = {}
@@ -2355,6 +2371,9 @@ def get_normalize_marble_gallery_beneath_right_trapdoor_top_passage():
                 'X': 129 + 32,
                 'Y': 8,
             },
+            'Notes': [
+                "Marble Gallery's Entity Layout treatment is buggy, so this is being handled the old Object Layout way",
+            ],
         },
         # {
         #     'Stage': 'Black Marble Gallery',
@@ -2438,6 +2457,9 @@ def get_normalize_marble_gallery_slinger_staircase_right_bottom_passage():
                 'X': 608 + 32,
                 'Y': 476,
             },
+            'Notes': [
+                "Marble Gallery's Entity Layout treatment is buggy, so this is being handled the old Object Layout way",
+            ],
         },
         {
             'Stage': 'Black Marble Gallery',
@@ -2719,60 +2741,72 @@ def get_normalize_olroxs_quarters_tall_shaft_top_passage():
             ],
         },
     }
-    patch['Changes']['Object Layouts'] = [
+    patch['Changes']['Entity Layouts'] = [
         {
-            'Stage': "Olrox's Quarters",
-            'Room': "Olrox's Quarters, Tall Shaft",
-            'Object Layout ID': 0,
+            'Update': {
+                'Room': "Olrox's Quarters, Tall Shaft",
+                'Entity Layout ID': 0,
+            },
             'Properties': {
                 'X': 95 - 32,
                 'Y': 1039,
             },
+            'Stage': "Olrox's Quarters",
         },
         {
-            'Stage': "Olrox's Quarters",
-            'Room': "Olrox's Quarters, Tall Shaft",
-            'Object Layout ID': 1,
+            'Update': {
+                'Room': "Olrox's Quarters, Tall Shaft",
+                'Entity Layout ID': 1,
+            },
             'Properties': {
                 'X': 95 - 32,
                 'Y': 911,
             },
+            'Stage': "Olrox's Quarters",
         },
         {
-            'Stage': "Olrox's Quarters",
-            'Room': "Olrox's Quarters, Tall Shaft",
-            'Object Layout ID': 2,
+            'Update': {
+                'Room': "Olrox's Quarters, Tall Shaft",
+                'Entity Layout ID': 2,
+            },
             'Properties': {
                 'X': 95 - 32,
                 'Y': 399,
             },
+            'Stage': "Olrox's Quarters",
         },
         {
-            'Stage': "Death Wing's Lair",
-            'Room': "Death Wing's Lair, Tall Shaft",
-            'Object Layout ID': 1,
+            'Update': {
+                'Room': "Death Wing's Lair, Tall Shaft",
+                'Entity Layout ID': 1,
+            },
             'Properties': {
                 'X': 161 + 32,
                 'Y': 497,
             },
+            'Stage': "Death Wing's Lair",
         },
         {
-            'Stage': "Death Wing's Lair",
-            'Room': "Death Wing's Lair, Tall Shaft",
-            'Object Layout ID': 2,
+            'Update': {
+                'Room': "Death Wing's Lair, Tall Shaft",
+                'Entity Layout ID': 2,
+            },
             'Properties': {
                 'X': 161 + 32,
                 'Y': 625,
             },
+            'Stage': "Death Wing's Lair",
         },
         {
-            'Stage': "Death Wing's Lair",
-            'Room': "Death Wing's Lair, Tall Shaft",
-            'Object Layout ID': 3,
+            'Update': {
+                'Room': "Death Wing's Lair, Tall Shaft",
+                'Entity Layout ID': 3,
+            },
             'Properties': {
                 'X': 161 + 32,
                 'Y': 1137,
             },
+            'Stage': "Death Wing's Lair",
         },
     ]
     result = patch
@@ -3515,24 +3549,28 @@ def get_normalize_castle_entrance_merman_room_top_passage():
             ],
         },
     }
-    patch['Changes']['Object Layouts'] = [
+    patch['Changes']['Entity Layouts'] = [
         {
-            'Stage': 'Castle Entrance',
-            'Room': 'Castle Entrance, Merman Room',
-            'Object Layout ID': 7,
+            'Update': {
+                'Room': 'Castle Entrance, Merman Room',
+                'Entity Layout ID': 7,
+            },
             'Properties': {
                 'X': 144 + 24,
                 'Y': 56,
             },
+            'Stage': 'Castle Entrance',
         },
         {
-            'Stage': 'Castle Entrance Revisited',
-            'Room': 'Castle Entrance Revisited, Merman Room',
-            'Object Layout ID': 6,
+            'Update': {
+                'Room': 'Castle Entrance Revisited, Merman Room',
+                'Entity Layout ID': 6,
+            },
             'Properties': {
                 'X': 144 + 24,
                 'Y': 56,
             },
+            'Stage': 'Castle Entrance Revisited',
         },
     ]
     result = patch
@@ -3793,20 +3831,20 @@ def get_assign_power_of_wolf_relic_a_unique_id():
                 {
                     'Update': {
                         'Room': 'Castle Entrance, After Drawbridge',
-                        'Entity Layout ID': 10,
+                        'Entity Layout ID': 9,
                     },
                     'Properties': {
-                        'Entity Room Index': 18,
+                        'Entity Room Index': 180,
                     },
                     'Stage': 'Castle Entrance',
                 },
                 {
                     'Update': {
                         'Room': 'Castle Entrance Revisited, After Drawbridge',
-                        'Entity Layout ID': 13,
+                        'Entity Layout ID': 11,
                     },
                     'Properties': {
-                        'Entity Room Index': 18,
+                        'Entity Room Index': 180,
                     },
                     'Stage': 'Castle Entrance Revisited',
                 },
