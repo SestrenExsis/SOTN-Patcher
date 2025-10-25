@@ -8,6 +8,9 @@ Entity Types:
     Alchemy Laboratory: 53
   Entity - Candle:
     Global: 40961
+  Entity - Effect (Lightning and Thunder):
+    Castle Entrance: 23
+    Castle Entrance Revisited: 23
   Entity - Enemy (Gremlin):
     Abandoned Mine: 30
     Catacombs: 71

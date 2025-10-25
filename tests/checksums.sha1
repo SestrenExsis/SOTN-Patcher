@@ -8,13 +8,14 @@ acffe21a5576c6d448088299dce6f9c450740e4c *build/ppf/customized-color-palettes.pp
 3d574c88510214fd8d66e9e37fde5022033b827e *build/ppf/disable-clipping-on-one-way-walls.ppf
 cc27ae98f9fe9bf8231da2eb3081224085b63206 *build/ppf/enable-debug-mode.ppf
 3225a08d99028351d3862f87e147ad041f13eeb5 *build/ppf/fix-confessional-bell-sound.ppf
+61332c6d4c553844e810d8bd7e1923d9ad452cb8 *build/ppf/fix-palette-darkening-in-castle-entrance.ppf
 17daeb89906abd78570fb8c9e07355ab6c1d682a *build/ppf/fix-secret-room-map-pixels.ppf
 223ab27c187d1d6d12019c1e2033b682f57903d2 *build/ppf/fix-waterfall-sound.ppf
 3c1754ff1279d55190a784a57ebae6a2554befb4 *build/ppf/improve-normalized-room-visuals.ppf
 7f180e76c98aeccdc816f86e1d0cf5e46353c3d0 *build/ppf/mix-items-and-relics.ppf
 0636a5b8e8c3e8bcb4e24773f54d7327b1d8d4c8 *build/ppf/move-drawbridge-room-vertically.ppf
 21f24f3f8c3741097be288c08e0e7f2e34a4c53e *build/ppf/normalize-ferryman-gate.ppf
-04c9f9536285b53fa067155f26b84ecde16e9730 *build/ppf/normalize-particle-effects.ppf
+c050765727f3e08e090809116ba1003a9c84d6fd *build/ppf/normalize-particle-effects.ppf
 1d6077532c6040d0be48f013ceab5af903ffe9f3 *build/ppf/normalize-room-connections.ppf
 4c37704ad4d2501b4b16438affef9ae19fb5e791 *build/ppf/preserve-map-exploration.ppf
 b25bb386a77fed72a06410052cb863e52ce514ef *build/ppf/preserve-map-revelation.ppf

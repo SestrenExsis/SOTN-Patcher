@@ -3854,6 +3854,39 @@ def get_assign_power_of_wolf_relic_a_unique_id():
     result = patch
     return result
 
+def get_prevent_palette_glitches_related_to_zombie_hallway():
+    patch = {
+        'Description': 'Prevent palette glitches related to Zombie Hallway',
+        'Authors': [
+            'Sestren',
+        ],
+        'Changes': {
+            'Entity Layouts': [
+                {
+                    'Add Relative To': {
+                        'Room': 'Castle Entrance, Zombie Hallway',
+                        'Entity Layout ID': 180,
+                        'Node': 'Left Passage',
+                    },
+                    'Properties': {
+                        'Entity Room Index': 180,
+                    },
+                    'Delete From': {
+                        'Entity Layout ID': 2,
+                        'Room': 'Castle Entrance, Merman Room',
+                    },
+                    'Stage': 'Castle Entrance',
+                    'Notes': [
+                        'Relocate Entity that controls lightning and lighting effects',
+                    ],
+                },
+            ],
+        },
+    }
+    result = patch
+    return result
+
+
 if __name__ == '__main__':
     '''
     Some patches play nice with other patches, some don't.
@@ -3969,6 +4002,7 @@ if __name__ == '__main__':
         ('normalize-underground-caverns-room-id-10-top-passage', get_normalize_underground_caverns_room_id_10_top_passage()),
         ('normalize-underground-caverns-small-stairwell-top-passage', get_normalize_underground_caverns_small_stairwell_top_passage()),
         ('normalize-waterfall-roar-sound', get_normalize_waterfall_roar_sound()),
+        ('prevent-palette-glitches-related-to-zombie-hallway', get_prevent_palette_glitches_related_to_zombie_hallway()),
         ('prevent-softlocks-after-defeating-scylla', get_prevent_softlocks_after_defeating_scylla()),
         ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
         ('prevent-softlocks-at-left-gear-room-wall', get_prevent_softlocks_at_left_gear_room_wall_patch()),

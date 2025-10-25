@@ -18,6 +18,7 @@ python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/debug-sound-norma
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/disable-clipping-on-one-way-walls.json" --ppf="build/ppf/disable-clipping-on-one-way-walls.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/enable-debug-mode.json" --ppf="build/ppf/enable-debug-mode.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/fix-confessional-bell-sound.json" --ppf="build/ppf/fix-confessional-bell-sound.ppf" || goto :error
+python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/fix-palette-darkening-in-castle-entrance.json" --ppf="build/ppf/fix-palette-darkening-in-castle-entrance.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/fix-secret-room-map-pixels.json" --ppf="build/ppf/fix-secret-room-map-pixels.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/improve-normalized-room-visuals.json" --ppf="build/ppf/improve-normalized-room-visuals.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/mix-items-and-relics.json" --ppf="build/ppf/mix-items-and-relics.ppf" || goto :error
