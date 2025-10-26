@@ -1,0 +1,51 @@
+{
+    "Changes": {
+        "Entity Layouts": [
+            {
+                "Add Relative To": {
+                    "Room": "Castle Entrance, Zombie Hallway",
+                    "Node": "Left Passage",
+                    "X Offset": 0,
+                    "Y Offset": 0,
+                    "Entity Room Index": 180
+                },
+                "Delete From": {
+                    "Entity Layout ID": 2,
+                    "Room": "Castle Entrance, Merman Room"
+                },
+                "Notes": [
+                    "Relocate Entity that controls lightning and lighting effects"
+                ],
+                "Stage": "Castle Entrance"
+            }
+        ],
+        "Options": {
+            "Enable debug mode": true
+        },
+        "Stages": {
+            "Castle Entrance": {
+                "Rooms": {
+                    "Castle Entrance, Merman Room": {
+                        "Left": 4,
+                        "Top": 40
+                    },
+                    "Castle Entrance, Zombie Hallway": {
+                        "Left": 7,
+                        "Top": 40
+                    }
+                }
+            }
+        }
+    },
+    "Shuffler": {
+        "Nodes": {
+            "Castle Entrance, Zombie Hallway": {
+                "Left Passage": {
+                    "Target Room Name": "Castle Entrance, Merman Room",
+                    "X": 768,
+                    "Y": 128
+                }
+            }
+        }
+    }
+}

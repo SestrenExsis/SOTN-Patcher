@@ -2,9 +2,21 @@
     "Changes": {
         "Options": {
             "Enable debug mode": true,
-            "Normalize particle effects": true
+            "Normalize special effects": true
         },
         "Stages": {
+            "Castle Entrance": {
+                "Rooms": {
+                    "Castle Entrance, Merman Room": {
+                        "Left": 4,
+                        "Top": 40
+                    },
+                    "Castle Entrance, Zombie Hallway": {
+                        "Left": 7,
+                        "Top": 40
+                    }
+                }
+            },
             "Death Wing's Lair": {
                 "Rooms": {
                     "Death Wing's Lair, Secret Onyx Room": {
@@ -33,10 +45,10 @@
     },
     "Shuffler": {
         "Nodes": {
-            "Olrox's Quarters, Grand Staircase": {
-                "Lower-Right Passage": {
-                    "Target Room Name": "Olrox's Quarters, Hammer and Blade Room",
-                    "X": 0,
+            "Castle Entrance, Zombie Hallway": {
+                "Left Passage": {
+                    "Target Room Name": "Castle Entrance, Merman Room",
+                    "X": 768,
                     "Y": 128
                 }
             },
@@ -44,6 +56,13 @@
                 "Lower-Right Passage": {
                     "Target Room Name": "Death Wing's Lair, Hammer and Blade Room",
                     "X": 1024,
+                    "Y": 128
+                }
+            },
+            "Olrox's Quarters, Grand Staircase": {
+                "Lower-Right Passage": {
+                    "Target Room Name": "Olrox's Quarters, Hammer and Blade Room",
+                    "X": 0,
                     "Y": 128
                 }
             }

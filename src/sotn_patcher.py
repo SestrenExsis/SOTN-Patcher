@@ -3,6 +3,45 @@ import argparse
 import json
 import os
 
+def get_base_patch(description: str, authors: list[str]):
+    result = {
+        'Description': description,
+        'Authors': authors,
+        'Changes': {},
+    }
+    return result
+
+def add_to_array(patch, path, object):
+    context = patch
+    for key in path[:-1]:
+        if key not in context:
+            context[key] = {}
+        context = context[key]
+    if path[-1] not in context:
+        context[path[-1]] = []
+    context = context[path[-1]]
+    context.append(object)
+
+def extend_array(patch, path, object_array):
+    for object in object_array:
+        add_to_array(patch, path, object)
+
+def define_object(patch, path, object):
+    context = patch
+    for key in path[:-1]:
+        if key not in context:
+            context[key] = {}
+        context = context[key]
+    context[path[-1]] = object
+
+def define_constant(patch, path, constant):
+    context = patch
+    for key in path[:-1]:
+        if key not in context:
+            context[key] = {}
+        context = context[key]
+    context[path[-1]] = constant
+
 def reverse_tilemap_changes(tilemap_changes: dict) -> dict:
     reversed_tilemap_changes = {}
     for layer in sorted(tilemap_changes.keys()):
@@ -15,15 +54,7 @@ def reverse_tilemap_changes(tilemap_changes: dict) -> dict:
     return result
 
 def get_clock_hands_patch():
-    patch = {
-        'Description': 'Clock hands display minutes and seconds',
-        'Authors': [
-            'Sestren',
-        ],
-        'Changes': {
-            'Pokes': [],
-        },
-    }
+    patch = get_base_patch('Clock hands display minutes and seconds', ['Sestren'])
     for (base, stage_name) in (
         (0x03FD7C2C, 'Marble Gallery'),
         (0x0457E5D4, 'Black Marble Gallery'),
@@ -41,7 +72,7 @@ def get_clock_hands_patch():
             (0x3C, 0x00000000, 0x00000000, 'nop'),
         ):
             value = value_a if stage_name in ('Marble Gallery', 'Black Marble Gallery') else value_b
-            patch['Changes']['Pokes'].append({
+            add_to_array(patch, ('Changes', 'Pokes'), {
                 'Gamedata Address': '{:08X}'.format(base + offset),
                 'Data Type': 'u32',
                 'Value': '{:08X}'.format(value),
@@ -54,20 +85,12 @@ def get_clock_hands_patch():
     return result
 
 def get_prevent_softlocks_when_meeting_death_patch():
-    patch = {
-        'Description': 'Prevent softlocks when meeting Death',
-        'Authors': [
-            'Mottzilla',
-        ],
-        'Changes': {
-            'Pokes': [],
-        },
-    }
+    patch = get_base_patch('Prevent softlocks when meeting Death', ['Mottzilla'])
     for (offset, data_type, value) in (
         (0x041E77B0, 'u32', 0x34020000),
         (0x041E77B4, 'u32', 0xAE22B98C),
     ):
-        patch['Changes']['Pokes'].append({
+        add_to_array(patch, ('Changes', 'Pokes'), {
             'Gamedata Address': '{:08X}'.format(offset),
             'Data Type': data_type,
             'Value': '{:08X}'.format(value),
@@ -78,21 +101,13 @@ def get_prevent_softlocks_when_meeting_death_patch():
 def get_prevent_softlocks_after_defeating_scylla():
     # 801A094C RAM, 0x0552794C GAM : 0x38420001 xori v0,$1     -> 0x304200FE andi v0,$FE
     # 801A3514 RAM, 0x0552A514 GAM : 0x3042FFCF andi v0,$FFCF  -> 0x3042FFCE andi v0,$FFCE
-    patch = {
-        'Description': 'Prevent softlocks after defeating Scylla',
-        'Authors': [
-            'Mottzilla',
-        ],
-        'Changes': {
-            'Pokes': [],
-        },
-    }
+    patch = get_base_patch('Prevent softlocks after defeating Scylla', ['Mottzilla'])
     for (offset, data_type, value) in (
         (0x0552794C, 'u32', 0x304200FE),
         (0x0552A514, 'u16', 0x00CE),
     ):
         value_format = '{:08X}' if data_type == 'u32' else '{:04X}'
-        patch['Changes']['Pokes'].append({
+        add_to_array(patch, ('Changes', 'Pokes'), {
             'Gamedata Address': '{:08X}'.format(offset),
             'Data Type': data_type,
             'Value': value_format.format(value),
@@ -101,31 +116,19 @@ def get_prevent_softlocks_after_defeating_scylla():
     return result
 
 def get_prevent_softlocks_at_snake_column_wall_patch():
-    patch = {
-        'Description': 'Prevent softlocks at Snake Column Wall',
-        'Authors': [
-            'Sestren',
-        ],
-        'Changes': {
-            'Constants': {},
-        },
-        # 'Logic': {
-        #     'Modification - Disable clipping on screen edge of Snake Column Wall': True,
-        # },
-    }
+    patch = get_base_patch('Prevent softlocks at Snake Column Wall', ['Sestren'])
+    # patch['Logic'] = { 'Modification - Disable clipping on screen edge of Snake Column Wall': True, }
     for stage_name in (
         'Abandoned Mine',
         'Cave',
     ):
-        constant_key = f'Snake Column Wall Tiles ({stage_name})'
-        patch['Changes']['Constants'][constant_key] = []
         for (index, value) in (
             (0, 0x0000),
             (1, 0x0000),
             (2, 0x0000),
             (3, 0x0000),
         ):
-            patch['Changes']['Constants'][constant_key].append({
+            add_to_array(patch, ('Changes', 'Constants', f'Snake Column Wall Tiles ({stage_name})'), {
                 'Index': index,
                 'Value': '{:04X}'.format(value),
             })
@@ -133,53 +136,38 @@ def get_prevent_softlocks_at_snake_column_wall_patch():
     return result
 
 def get_prevent_softlocks_at_demon_switch_wall_patch():
-    patch = {
-        'Description': 'Prevent softlocks at Demon Switch Wall',
-        'Authors': [
-            'Sestren',
-        ],
-        'Changes': {
-            'Constants': {},
-            'Familiar Events': [
-                # NOTE(sestren): Changing the camera Y from 772 to 767 allows the Demon to "see" the switch from either side of the wall
-                {
-                    'Familiar Event ID': 6,
-                    'Camera Y': 767,
-                },
-                {
-                    'Familiar Event ID': 11,
-                    'Camera Y': 767,
-                },
-            ],
-        },
-        # 'Logic': {
-        #     'Modification - Disable clipping on screen edge of Demon Switch Wall': True,
-        # }
-    }
-    patch['Changes']['Object Layouts'] = [
-        {
-            'Stage': 'Cave',
+    patch = get_base_patch('Prevent softlocks at Demon Switch Wall', ['Sestren'])
+    # NOTE(sestren): Changing the camera Y from 772 to 767 allows the Demon to "see" the switch from either side of the wall
+    add_to_array(patch, ('Changes', 'Familiar Events'), {
+        'Familiar Event ID': 6,
+        'Camera Y': 767,
+    })
+    add_to_array(patch, ('Changes', 'Familiar Events'), {
+        'Familiar Event ID': 11,
+        'Camera Y': 767,
+    })
+    # NOTE(sestren): Changing the Y position from 977 to 972 allows the Demon to hit the switch correctly in Inverted Castle
+    add_to_array(patch, ('Changes', 'Entity Layouts'), {
+        'Update': {
             'Room': 'Cave, Crumbling Stairwells With Demon Switch',
-            'Object Layout ID': 2,
-            'Properties': {
-                # NOTE(sestren): Changing the Y position from 977 to 972 allows the Demon to hit the switch correctly in Inverted Castle
-                'Y': 972,
-            },
+            'Entity Layout ID': 2,
         },
-    ]
+        'Properties': {
+            'Y': 972,
+        },
+        'Stage': 'Cave',
+    })
     for stage_name in (
         'Abandoned Mine',
         'Cave',
     ):
-        constant_key = f'Demon Switch Wall Tiles ({stage_name})'
-        patch['Changes']['Constants'][constant_key] = []
         for (index, value) in (
             (8, 0x01BF),
             (9, 0x01BF),
             (10, 0x01BF),
             (11, 0x01BF),
         ):
-            patch['Changes']['Constants'][constant_key].append({
+            add_to_array(patch, ('Changes', 'Constants', f'Demon Switch Wall Tiles ({stage_name})'), {
                 'Index': index,
                 'Value': '{:04X}'.format(value),
             })
@@ -187,39 +175,29 @@ def get_prevent_softlocks_at_demon_switch_wall_patch():
     return result
 
 def get_prevent_softlocks_at_tall_zig_zag_room_wall_patch():
-    patch = {
-        'Description': 'Prevent softlocks at Tall Zig Zag Room Wall',
-        'Authors': [
-            'Sestren',
-        ],
-        'Changes': {
-            'Constants': {},
-        },
-        # 'Logic': {
-        #     'Commands': {
-        #         'Alchemy Laboratory, Tall Zig Zag Room': {
-        #             'Action - Break Wall': {
-        #                 'Requirements': {
-        #                     'Secret Wall - Default': {
-        #                         'Section': 'Secret Wall',
-        #                         'Status - Breakable Wall in Tall Zig Zag Room Broken': False,
-        #                         'Modification - Disable clipping on screen edge of Tall Zig Zag Room Wall': True,
-        #                     },
-        #                 },
-        #             },
-        #         },
-        #     },
-        #     'State': {
-        #         'Modification - Disable clipping on screen edge of Tall Zig Zag Room Wall': True,
-        #     },
-        # },
-    }
+    patch = get_base_patch('Prevent softlocks at Tall Zig Zag Room Wall', ['Sestren'])
+    # patch['Logic'] = {
+    #     'Commands': {
+    #         'Alchemy Laboratory, Tall Zig Zag Room': {
+    #             'Action - Break Wall': {
+    #                 'Requirements': {
+    #                     'Secret Wall - Default': {
+    #                         'Section': 'Secret Wall',
+    #                         'Status - Breakable Wall in Tall Zig Zag Room Broken': False,
+    #                         'Modification - Disable clipping on screen edge of Tall Zig Zag Room Wall': True,
+    #                     },
+    #                 },
+    #             },
+    #         },
+    #     },
+    #     'State': {
+    #         'Modification - Disable clipping on screen edge of Tall Zig Zag Room Wall': True,
+    #     },
+    # },
     for stage_name in (
         'Alchemy Laboratory',
         'Necromancy Laboratory',
     ):
-        constant_key = f'Tall Zig Zag Room Wall Tiles ({stage_name})'
-        patch['Changes']['Constants'][constant_key] = []
         for (index, value) in (
             (0, 0x05C6),
             (2, 0x05CE),
@@ -234,7 +212,7 @@ def get_prevent_softlocks_at_tall_zig_zag_room_wall_patch():
             (20, 0x05D6),
             (22, 0x05DE),
         ):
-            patch['Changes']['Constants'][constant_key].append({
+            add_to_array(patch, ('Changes', 'Constants', f'Tall Zig Zag Room Wall Tiles ({stage_name})'), {
                 'Index': index,
                 'Value': '{:04X}'.format(value),
             })
@@ -242,21 +220,10 @@ def get_prevent_softlocks_at_tall_zig_zag_room_wall_patch():
     return result
 
 def get_prevent_softlocks_at_plaque_room_wall_patch():
-    patch = {
-        'Description': 'Prevent softlocks at Plaque Room Wall',
-        'Authors': [
-            'Sestren',
-        ],
-        'Changes': {
-            'Constants': {},
-            'Pokes': [],
-        },
-    }
+    patch = get_base_patch('Prevent softlocks at Plaque Room Wall', ['Sestren'])
     for stage_name in (
         'Underground Caverns',
     ):
-        constant_key = f'Plaque Room With Breakable Wall Tiles ({stage_name})'
-        patch['Changes']['Constants'][constant_key] = []
         for (index, value) in (
             (0, 0x030F),
             (1, 0x030E),
@@ -283,7 +250,7 @@ def get_prevent_softlocks_at_plaque_room_wall_patch():
             (22, 0x0351),
             (23, 0x0774),
         ):
-            patch['Changes']['Constants'][constant_key].append({
+            add_to_array(patch, ('Changes', 'Constants', f'Plaque Room With Breakable Wall Tiles ({stage_name})'), {
                 'Index': index,
                 'Value': '{:04X}'.format(value),
             })
@@ -300,7 +267,7 @@ def get_prevent_softlocks_at_plaque_room_wall_patch():
         (0x047DB742, 'u16', 0x0334),
         (0x047DB762, 'u16', 0x030F),
     ):
-        patch['Changes']['Pokes'].append({
+        add_to_array(patch, ('Changes', 'Pokes'), {
             'Gamedata Address': '{:08X}'.format(offset),
             'Data Type': data_type,
             'Value': '{:08X}'.format(value),
@@ -309,21 +276,11 @@ def get_prevent_softlocks_at_plaque_room_wall_patch():
     return result
 
 def get_prevent_softlocks_at_pendulum_room_wall_patch():
-    patch = {
-        'Description': 'Prevent softlocks at Pendulum Room Wall',
-        'Authors': [
-            'Sestren',
-        ],
-        'Changes': {
-            'Constants': {},
-        },
-    }
+    patch = get_base_patch('Prevent softlocks at Pendulum Room Wall', ['Sestren'])
     for stage_name in (
         'Clock Tower',
         'Reverse Clock Tower',
     ):
-        constant_key = f'Pendulum Room Wall Tiles ({stage_name})'
-        patch['Changes']['Constants'][constant_key] = []
         for (index, value) in (
             (0, 0x0561),
             (2, 0x0000),
@@ -338,7 +295,7 @@ def get_prevent_softlocks_at_pendulum_room_wall_patch():
             (20, 0x0000),
             (22, 0x0563),
         ):
-            patch['Changes']['Constants'][constant_key].append({
+            add_to_array(patch, ('Changes', 'Constants', f'Pendulum Room Wall Tiles ({stage_name})'), {
                 'Index': index,
                 'Value': '{:04X}'.format(value),
             })
@@ -346,22 +303,11 @@ def get_prevent_softlocks_at_pendulum_room_wall_patch():
     return result
 
 def get_prevent_softlocks_at_left_gear_room_wall_patch():
-    patch = {
-        'Description': 'Prevent softlocks at Left Gear Room Wall',
-        'Authors': [
-            'Sestren',
-        ],
-        'Changes': {
-            'Constants': {},
-            'Pokes': [],
-        },
-    }
+    patch = get_base_patch('Prevent softlocks at Left Gear Room Wall', ['Sestren'])
     for stage_name in (
         'Clock Tower',
         'Reverse Clock Tower',
     ):
-        constant_key = f'Left Gear Room Wall Tiles ({stage_name})'
-        patch['Changes']['Constants'][constant_key] = []
         for (index, value) in (
             (1, 0x0565),
             (3, 0x056D),
@@ -376,7 +322,7 @@ def get_prevent_softlocks_at_left_gear_room_wall_patch():
             (21, 0x0575),
             (23, 0x057D),
         ):
-            patch['Changes']['Constants'][constant_key].append({
+            add_to_array(patch, ('Changes', 'Constants', f'Left Gear Room Wall Tiles ({stage_name})'), {
                 'Index': index,
                 'Value': '{:04X}'.format(value),
             })
@@ -384,6 +330,7 @@ def get_prevent_softlocks_at_left_gear_room_wall_patch():
     return result
 
 def get_normalize_jewel_sword_passageway_patch():
+    patch = get_base_patch('Normalize Jewel Sword passageway', ['Sestren'])
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
@@ -423,77 +370,66 @@ def get_normalize_jewel_sword_passageway_patch():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Jewel Sword passageway',
-        'Authors': [
-            'Sestren',
-        ],
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance',
-                    'Room': 'Castle Entrance, Merman Room',
-                    'Layer': 'Foreground',
-                    'Top': 16,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance',
-                    'Room': 'Castle Entrance, Merman Room',
-                    'Layer': 'Background',
-                    'Top': 16,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance Revisited',
-                    'Room': 'Castle Entrance Revisited, Merman Room',
-                    'Layer': 'Foreground',
-                    'Top': 16,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance Revisited',
-                    'Room': 'Castle Entrance Revisited, Merman Room',
-                    'Layer': 'Background',
-                    'Top': 16,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Entrance',
-                    'Room': 'Reverse Entrance, Merman Room',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 32,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Entrance',
-                    'Room': 'Reverse Entrance, Merman Room',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 32,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance',
+            'Room': 'Castle Entrance, Merman Room',
+            'Layer': 'Foreground',
+            'Top': 16,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-    }
-    patch['Changes']['Constants'] = {}
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance',
+            'Room': 'Castle Entrance, Merman Room',
+            'Layer': 'Background',
+            'Top': 16,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance Revisited',
+            'Room': 'Castle Entrance Revisited, Merman Room',
+            'Layer': 'Foreground',
+            'Top': 16,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance Revisited',
+            'Room': 'Castle Entrance Revisited, Merman Room',
+            'Layer': 'Background',
+            'Top': 16,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Entrance',
+            'Room': 'Reverse Entrance, Merman Room',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 32,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Entrance',
+            'Room': 'Reverse Entrance, Merman Room',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 32,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
     for stage_name in (
         'Castle Entrance',
         'Castle Entrance Revisited',
     ):
-        constant_key = f'Breakable Wall in Merman Room ({stage_name})'
-        patch['Changes']['Constants'][constant_key] = []
         for (index, value) in (
             # Column 0
             (27, 0x030B),
@@ -517,11 +453,10 @@ def get_normalize_jewel_sword_passageway_patch():
             (43, 0x06BD),
             (44, 0x06C1),
         ):
-            patch['Changes']['Constants'][constant_key].append({
+            add_to_array(patch, ('Changes', 'Constants', f'Breakable Wall in Merman Room ({stage_name})'), {
                 'Index': index,
                 'Value': '{:04X}'.format(value),
             })
-    pokes = []
     # Eliminate left-most column of passage to Jewel Sword Room in Merman Room
     # TODO(sestren): Figure out how to patch the entity and array in Reverse Entrance
     for (base, context) in (
@@ -534,23 +469,30 @@ def get_normalize_jewel_sword_passageway_patch():
             (0x0D0, 's16', 0x006, 'slti v0,a1,$6'),
             (0x0E8, 's16', 0x3F0, 'addiu a2,t0,$3F0'),
         ):
-            pokes.append((value, data_type, base + offset, [context, note]))
-    patch['Changes']['Pokes'] = []
-    for (value, data_type, offset, notes) in pokes:
-        value_format = '{:08X}' if data_type == 'u32' else '{:04X}'
-        poke = {
-            'Gamedata Address': '{:08X}'.format(offset),
-            'Data Type': data_type,
-            'Value': value_format.format(value),
-            'Notes': []
-        }
-        for note in notes:
-            poke['Notes'].append(note)
-        patch['Changes']['Pokes'].append(poke)
+            value_format = '{:08X}' if data_type == 'u32' else '{:04X}'
+            add_to_array(patch, ('Changes', 'Pokes'), {
+                'Gamedata Address': '{:08X}'.format(base + offset),
+                'Data Type': data_type,
+                'Value': value_format.format(value),
+                'Notes': [
+                    context,
+                    note,
+                ],
+            })
     result = patch
     return result
 
 def get_normalize_tall_stairwell_bottom_passage():
+    patch = get_base_patch('Normalize Tall Stairwell, Bottom Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Underground Caverns, Tall Stairwell': {
+            'Nodes': {
+                'Bottom Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... 0234 0235 0000 .... .... .... .... .... .... .... .... .... .... ....',
@@ -562,49 +504,40 @@ def get_normalize_tall_stairwell_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Tall Stairwell, Bottom Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Underground Caverns, Tall Stairwell': {
-                    'Nodes': {
-                        'Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Tall Stairwell',
+            'Layer': 'Foreground',
+            'Top': 138,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Tall Stairwell',
-                    'Layer': 'Foreground',
-                    'Top': 138,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Tall Stairwell',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Tall Stairwell',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
         },
-    }
+    ])
     result = patch
     return result
 
 def get_normalize_ice_floe_room_top_passage():
+    patch = get_base_patch('Normalize Ice Floe Room, Top Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Underground Caverns, Ice Floe Room': {
+            'Nodes': {
+                'Top Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... 0001 0000 .... .... 0000 0001 .... .... .... .... ....',
@@ -616,67 +549,58 @@ def get_normalize_ice_floe_room_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Ice Floe Room, Top Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Underground Caverns, Ice Floe Room': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Ice Floe Room',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 128,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Ice Floe Room',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 128,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Ice Floe Room',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 128,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Ice Floe Room',
-                    'Layer': 'Foreground',
-                    'Top': 30,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Ice Floe Room',
-                    'Layer': 'Background',
-                    'Top': 30,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Ice Floe Room',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 128,
+            'Tiles': tilemaps['Background'],
         },
-    }
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Ice Floe Room',
+            'Layer': 'Foreground',
+            'Top': 30,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Ice Floe Room',
+            'Layer': 'Background',
+            'Top': 30,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_long_drop_bottom_passage():
+    patch = get_base_patch('Normalize Long Drop, Bottom Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Underground Caverns, Long Drop': {
+            'Nodes': {
+                'Bottom Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... 01A5 01A1 01A4 .... .... .... .... .... .... .... 01A8 01A9 01AA ....',
@@ -688,49 +612,40 @@ def get_normalize_long_drop_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Long Drop, Bottom Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Underground Caverns, Long Drop': {
-                    'Nodes': {
-                        'Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Long Drop',
+            'Layer': 'Foreground',
+            'Top': 170,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Long Drop',
-                    'Layer': 'Foreground',
-                    'Top': 170,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Long Drop',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Long Drop',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
         },
-    }
+    ])
     result = patch
     return result
 
 def get_normalize_underground_caverns_exit_to_castle_entrance():
+    patch = get_base_patch('Normalize UC-CE Exit, Bottom Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Underground Caverns, Exit to Castle Entrance': {
+            'Nodes': {
+                'Bottom Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... .... .... .... .... .... 0000 .... .... .... ....',
@@ -756,67 +671,58 @@ def get_normalize_underground_caverns_exit_to_castle_entrance():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize UC-CE Exit, Bottom Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Underground Caverns, Exit to Castle Entrance': {
-                    'Nodes': {
-                        'Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Exit to Castle Entrance',
+            'Layer': 'Foreground',
+            'Top': 10,
+            'Left': 16,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Exit to Castle Entrance',
-                    'Layer': 'Foreground',
-                    'Top': 10,
-                    'Left': 16,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Exit to Castle Entrance',
-                    'Layer': 'Background',
-                    'Top': 4,
-                    'Left': 16,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Exit to Castle Entrance',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Exit to Castle Entrance',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Exit to Castle Entrance',
+            'Layer': 'Background',
+            'Top': 4,
+            'Left': 16,
+            'Tiles': tilemaps['Background'],
         },
-    }
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Exit to Castle Entrance',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Exit to Castle Entrance',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_underground_caverns_left_ferryman_route_top_passage():
+    patch = get_base_patch('Normalize Left Ferryman Route, Top Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Underground Caverns, Left Ferryman Route': {
+            'Nodes': {
+                'Top Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             ".... .... .... .... 0001 0001 .... .... 0000 0000 .... .... .... .... .... ....",
@@ -835,67 +741,58 @@ def get_normalize_underground_caverns_left_ferryman_route_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Left Ferryman Route, Top Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Underground Caverns, Left Ferryman Route': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Left Ferryman Route',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 128,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Left Ferryman Route',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 128,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Left Ferryman Route',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 128,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Left Ferryman Route',
-                    'Layer': 'Foreground',
-                    'Top': 28,
-                    'Left': 64,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Left Ferryman Route',
-                    'Layer': 'Background',
-                    'Top': 25,
-                    'Left': 64,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Left Ferryman Route',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 128,
+            'Tiles': tilemaps['Background'],
         },
-    }
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Left Ferryman Route',
+            'Layer': 'Foreground',
+            'Top': 28,
+            'Left': 64,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Left Ferryman Route',
+            'Layer': 'Background',
+            'Top': 25,
+            'Left': 64,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_hidden_crystal_entrance_top_passage():
+    patch = get_base_patch('Normalize Hidden Crystal Entrance, Top Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Underground Caverns, Hidden Crystal Entrance': {
+            'Nodes': {
+                'Top Passage': {
+                    'Type': '######....######'
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... ..... .... .... .... 0001 .... .... .... .... 0001 0001 .... .... .... ....',
@@ -908,155 +805,137 @@ def get_normalize_hidden_crystal_entrance_top_passage():
         ]
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Hidden Crystal Entrance, Top Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Underground Caverns, Hidden Crystal Entrance': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######'
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Hidden Crystal Entrance',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Hidden Crystal Entrance',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Hidden Crystal Entrance',
-                    'Layer': 'Foreground',
-                    'Top': 41,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Hidden Crystal Entrance',
+            'Layer': 'Foreground',
+            'Top': 41,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
         },
-    }
+    ])
     result = patch
     return result
 
 def get_normalize_secret_bookcase_rooms():
-    patch = {
-        'Description': 'Normalize Secret Bookcase rooms',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Long Library, Holy Rod Room': {
-                    'Nodes': {
-                        'Left Passage': {
-                            'Type': '######....######'
-                        },
-                    },
-                },
-                'Long Library, Secret Bookcase Room': {
-                    'Nodes': {
-                        'Right Passage': {
-                            'Type': '######....######'
-                        },
-                    },
+    patch = get_base_patch('Normalize Secret Bookcase rooms', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Long Library, Holy Rod Room': {
+            'Nodes': {
+                'Left Passage': {
+                    'Type': '######....######'
                 },
             },
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Long Library',
-                    'Room': 'Long Library, Holy Rod Room',
-                    'Layer': 'Foreground',
-                    'Top': 3,
-                    'Left': 0,
-                    'Tiles': [
-                        '028C 028D 028E',
-                        '0294 028C 028E',
-                        '029F 029E 029B',
-                        '0339 0339 035E',
-                        '.... .... ....',
-                        '.... .... ....',
-                        '.... .... ....',
-                        '0285 0284 028B',
-                        '028D 028C 028E',
-                    ],
+        'Long Library, Secret Bookcase Room': {
+            'Nodes': {
+                'Right Passage': {
+                    'Type': '######....######'
                 },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Long Library',
-                    'Room': 'Long Library, Secret Bookcase Room',
-                    'Layer': 'Foreground',
-                    'Top': 4,
-                    'Left': 15,
-                    'Tiles': [
-                        '02A4',
-                        '02A3',
-                        '....',
-                        '....',
-                        '....',
-                        '....',
-                        '0451',
-                        '02A9',
-                    ],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Forbidden Library',
-                    'Room': 'Forbidden Library, Holy Rod Room',
-                    'Layer': 'Foreground',
-                    'Top': 4,
-                    'Left': 13,
-                    'Tiles': [
-                        '028E 028C 028D',
-                        '028B 0284 0285',
-                        '.... .... ....',
-                        '.... .... ....',
-                        '.... .... ....',
-                        '035E 0339 0339',
-                        '029B 029E 029F',
-                        '028E 0296 0297',
-                        '028E 028D 028C',
-                    ],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Forbidden Library',
-                    'Room': 'Forbidden Library, Secret Bookcase Room',
-                    'Layer': 'Foreground',
-                    'Top': 4,
-                    'Left': 0,
-                    'Tiles': [
-                        '02A9',
-                        '0451',
-                        '....',
-                        '....',
-                        '....',
-                        '....',
-                        '02A3',
-                        '02A4',
-                    ],
-                },
+            },
+        },
+    })
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Long Library',
+            'Room': 'Long Library, Holy Rod Room',
+            'Layer': 'Foreground',
+            'Top': 3,
+            'Left': 0,
+            'Tiles': [
+                '028C 028D 028E',
+                '0294 028C 028E',
+                '029F 029E 029B',
+                '0339 0339 035E',
+                '.... .... ....',
+                '.... .... ....',
+                '.... .... ....',
+                '0285 0284 028B',
+                '028D 028C 028E',
             ],
         },
-    }
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Long Library',
+            'Room': 'Long Library, Secret Bookcase Room',
+            'Layer': 'Foreground',
+            'Top': 4,
+            'Left': 15,
+            'Tiles': [
+                '02A4',
+                '02A3',
+                '....',
+                '....',
+                '....',
+                '....',
+                '0451',
+                '02A9',
+            ],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Forbidden Library',
+            'Room': 'Forbidden Library, Holy Rod Room',
+            'Layer': 'Foreground',
+            'Top': 4,
+            'Left': 13,
+            'Tiles': [
+                '028E 028C 028D',
+                '028B 0284 0285',
+                '.... .... ....',
+                '.... .... ....',
+                '.... .... ....',
+                '035E 0339 0339',
+                '029B 029E 029F',
+                '028E 0296 0297',
+                '028E 028D 028C',
+            ],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Forbidden Library',
+            'Room': 'Forbidden Library, Secret Bookcase Room',
+            'Layer': 'Foreground',
+            'Top': 4,
+            'Left': 0,
+            'Tiles': [
+                '02A9',
+                '0451',
+                '....',
+                '....',
+                '....',
+                '....',
+                '02A3',
+                '02A4',
+            ],
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_underground_caverns_room_id_09_bottom_passage():
+    patch = get_base_patch('Normalize Room ID 09, Bottom Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Underground Caverns, Room ID 09': {
+            'Nodes': {
+                'Bottom Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '0023 00E1 0328 010A 07C1 07C2 07B7 07C0 .... .... .... .... .... .... .... ....',
@@ -1068,49 +947,40 @@ def get_normalize_underground_caverns_room_id_09_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Room ID 09, Bottom Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Underground Caverns, Room ID 09': {
-                    'Nodes': {
-                        'Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Room ID 09',
+            'Layer': 'Foreground',
+            'Top': 10,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Room ID 09',
-                    'Layer': 'Foreground',
-                    'Top': 10,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Room ID 09',
-                    'Layer': 'Foreground',
-                    'Top': 00,
-                    'Left': 16,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Room ID 09',
+            'Layer': 'Foreground',
+            'Top': 00,
+            'Left': 16,
+            'Tiles': reverse_tilemaps['Foreground'],
         },
-    }
+    ])
     result = patch
     return result
 
 def get_normalize_underground_caverns_room_id_10_top_passage():
+    patch = get_base_patch('Normalize Room ID 10, Top Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Underground Caverns, Room ID 10': {
+            'Nodes': {
+                'Top Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... 0000 0000 0000 .... 0001 0001 0001 .... .... ....',
@@ -1132,67 +1002,58 @@ def get_normalize_underground_caverns_room_id_10_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Room ID 10, Top Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Underground Caverns, Room ID 10': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Room ID 10',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Room ID 10',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Room ID 10',
-                    'Layer': 'Background',
-                    'Top': 6,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Room ID 10',
-                    'Layer': 'Foreground',
-                    'Top': 6,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Room ID 10',
-                    'Layer': 'Background',
-                    'Top': 6,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Room ID 10',
+            'Layer': 'Background',
+            'Top': 6,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
         },
-    }
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Room ID 10',
+            'Layer': 'Foreground',
+            'Top': 6,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Room ID 10',
+            'Layer': 'Background',
+            'Top': 6,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_dk_bridge_bottom_passage():
+    patch = get_base_patch('Normalize DK Bridge, Bottom Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Underground Caverns, DK Bridge': {
+            'Nodes': {
+                'Bottom Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... .... 039A 03BF 03CA 0000 .... .... .... .... .... .... .... .... ....',
@@ -1203,67 +1064,58 @@ def get_normalize_dk_bridge_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize DK Bridge, Bottom Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Underground Caverns, DK Bridge': {
-                    'Nodes': {
-                        'Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, DK Bridge',
+            'Layer': 'Foreground',
+            'Top': 14,
+            'Left': 48,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, DK Bridge',
-                    'Layer': 'Foreground',
-                    'Top': 14,
-                    'Left': 48,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, DK Bridge',
-                    'Layer': 'Background',
-                    'Top': 14,
-                    'Left': 48,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, DK Bridge',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, DK Bridge',
-                    'Layer': 'Background',
-                    'Top': 1,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, DK Bridge',
+            'Layer': 'Background',
+            'Top': 14,
+            'Left': 48,
+            'Tiles': tilemaps['Background'],
         },
-    }
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, DK Bridge',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, DK Bridge',
+            'Layer': 'Background',
+            'Top': 1,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_underground_caverns_exit_to_abandoned_mine_top_passage():
+    patch = get_base_patch('Normalize UC-AM, Top Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Underground Caverns, Exit to Abandoned Mine': {
+            'Nodes': {
+                'Top Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... 0000 .... .... .... .... .... .... .... .... ....',
@@ -1285,67 +1137,58 @@ def get_normalize_underground_caverns_exit_to_abandoned_mine_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize UC-AM, Top Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Underground Caverns, Exit to Abandoned Mine': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Exit to Abandoned Mine',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Exit to Abandoned Mine',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Exit to Abandoned Mine',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Exit to Abandoned Mine',
-                    'Layer': 'Foreground',
-                    'Top': 9,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Exit to Abandoned Mine',
-                    'Layer': 'Background',
-                    'Top': 9,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Exit to Abandoned Mine',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
         },
-    }
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Exit to Abandoned Mine',
+            'Layer': 'Foreground',
+            'Top': 9,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Exit to Abandoned Mine',
+            'Layer': 'Background',
+            'Top': 9,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_underground_caverns_small_stairwell_top_passage():
+    patch = get_base_patch('Normalize Small Stairwell, Top Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Underground Caverns, Small Stairwell': {
+            'Nodes': {
+                'Top Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... 0000 0000 0000 0000 0001 0001 0001 .... .... ....',
@@ -1365,67 +1208,58 @@ def get_normalize_underground_caverns_small_stairwell_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Small Stairwell, Top Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Underground Caverns, Small Stairwell': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Small Stairwell',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Small Stairwell',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Small Stairwell',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Small Stairwell',
-                    'Layer': 'Foreground',
-                    'Top': 26,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Small Stairwell',
-                    'Layer': 'Background',
-                    'Top': 26,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Small Stairwell',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
         },
-    }
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Small Stairwell',
+            'Layer': 'Foreground',
+            'Top': 26,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Small Stairwell',
+            'Layer': 'Background',
+            'Top': 26,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_underground_caverns_plaque_room_bottom_passage():
+    patch = get_base_patch('Normalize Plaque Room, Top Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Underground Caverns, Plaque Room With Life Max-Up': {
+            'Nodes': {
+                'Bottom Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... 0023 00E1 0328 001E 001F 0020 0021 0036 003E 003F 0040 01BE .... .... ....',
@@ -1436,71 +1270,55 @@ def get_normalize_underground_caverns_plaque_room_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Plaque Room, Top Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Underground Caverns, Plaque Room With Life Max-Up': {
-                    'Nodes': {
-                        'Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Plaque Room With Life Max-Up',
+            'Layer': 'Foreground',
+            'Top': 11,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Plaque Room With Life Max-Up',
-                    'Layer': 'Foreground',
-                    'Top': 11,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Plaque Room With Life Max-Up',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Plaque Room With Life Max-Up',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
         },
-    }
+    ])
     result = patch
     return result
 
 def get_simple_patch(description, pokes):
-    patch = {
-        'Description': description,
-        'Changes': {
-            'Pokes': [],
-        },
-    }
+    patch = get_base_patch(description, ['Sestren'])
     for (offset, data_type, value, note) in pokes:
-        patch['Changes']['Pokes'].append(
-            {
-                'Gamedata Address': '{:08X}'.format(offset),
-                'Data Type': data_type,
-                'Value': '{:08X}'.format(value),
-                'Notes':
-                [
-                    note,
-                ]
-            }
-        )
+        add_to_array(patch, ('Changes', 'Pokes'), {
+            'Gamedata Address': '{:08X}'.format(offset),
+            'Data Type': data_type,
+            'Value': '{:08X}'.format(value),
+            'Notes':
+            [
+                note,
+            ]
+        })
     result = patch
     return result
 
 def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
+    patch = get_base_patch('Normalize Hidden Crystal Entrance, Bottom Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Underground Caverns, Hidden Crystal Entrance': {
+            'Nodes': {
+                'Bottom Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... .... .... 0549 0000 .... .... .... .... .... .... .... .... .... ....',
@@ -1520,70 +1338,48 @@ def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Hidden Crystal Entrance, Bottom Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Underground Caverns, Hidden Crystal Entrance': {
-                    'Nodes': {
-                        'Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Hidden Crystal Entrance',
+            'Layer': 'Foreground',
+            'Top': 42,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Hidden Crystal Entrance',
-                    'Layer': 'Foreground',
-                    'Top': 42,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Hidden Crystal Entrance',
-                    'Layer': 'Background',
-                    'Top': 42,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Hidden Crystal Entrance',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Hidden Crystal Entrance',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Hidden Crystal Entrance',
+            'Layer': 'Background',
+            'Top': 42,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
         },
-    }
-    patch['Changes']['Constants'] = {}
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Hidden Crystal Entrance',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Hidden Crystal Entrance',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
     for stage_name in (
         'Underground Caverns',
         'Reverse Caverns',
     ):
-        constant_key = f'Crystal Floor Tiles ({stage_name})'
-        patch['Changes']['Constants'][constant_key] = []
         for (index, value) in enumerate((
             # Phase 0
             0x05F0, 0x054D, 0x054E,
@@ -1598,11 +1394,10 @@ def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
             0x05F0, 0x0000, 0x0000,
             0x060C, 0x0000, 0x0000,
         )):
-            patch['Changes']['Constants'][constant_key].append({
+            add_to_array(patch, ('Changes', 'Constants', f'Crystal Floor Tiles ({stage_name})'), {
                 'Index': index,
                 'Value': '{:04X}'.format(value),
             })
-    patch['Changes']['Pokes'] = []
     for (offset, data_type, value) in (
         (0x0429FF64, 's16', 0x02C6),
         (0x042A006C, 's16', 0x02C6),
@@ -1610,12 +1405,12 @@ def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
         (0x0480CF1C, 's16', 0x0039),
         (0x0480D02C, 's16', 0x0039),
     ):
-        patch['Changes']['Pokes'].append({
+        add_to_array(patch, ('Changes', 'Pokes'), {
             'Gamedata Address': '{:08X}'.format(offset),
             'Data Type': data_type,
             'Value': '{:08X}'.format(value),
         })
-    patch['Changes']['Entity Layouts'] = [
+    extend_array(patch, ('Changes', 'Entity Layouts'), [
         {
             'Add To': {
                 'Room': 'Underground Caverns, Hidden Crystal Entrance',
@@ -1644,11 +1439,21 @@ def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
             },
             'Stage': 'Reverse Caverns',
         },
-    ]
+    ])
     result = patch
     return result
 
 def get_normalize_alchemy_laboratory_entryway_top_passage():
+    patch = get_base_patch('Normalize Alchemy Lab Entryway, Top Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Alchemy Laboratory, Entryway': {
+            'Nodes': {
+                'Top Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... .... .... .... 0000 004C 0050 .... .... .... ....',
@@ -1659,49 +1464,40 @@ def get_normalize_alchemy_laboratory_entryway_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Alchemy Lab Entryway, Top Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Alchemy Laboratory, Entryway': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Entryway',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 16,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Alchemy Laboratory',
-                    'Room': 'Alchemy Laboratory, Entryway',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 16,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Necromancy Laboratory',
-                    'Room': 'Necromancy Laboratory, Entryway',
-                    'Layer': 'Foreground',
-                    'Top': 11,
-                    'Left': 16,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Necromancy Laboratory',
+            'Room': 'Necromancy Laboratory, Entryway',
+            'Layer': 'Foreground',
+            'Top': 11,
+            'Left': 16,
+            'Tiles': reverse_tilemaps['Foreground'],
         },
-    }
+    ])
     result = patch
     return result
 
 def get_normalize_alchemy_laboratory_glass_vats_bottom_passage():
+    patch = get_base_patch('Normalize Glass Vats, Left-Bottom Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Alchemy Laboratory, Glass Vats': {
+            'Nodes': {
+                'Left-Bottom Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
               "0034 0020 0033 0034 004C 0050 0031 0032 0005 0006 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 004C 0050 0033 0034",
@@ -1723,91 +1519,92 @@ def get_normalize_alchemy_laboratory_glass_vats_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Glass Vats, Left-Bottom Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Alchemy Laboratory, Glass Vats': {
-                    'Nodes': {
-                        'Left-Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
-        },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Alchemy Laboratory',
-                    'Room': 'Alchemy Laboratory, Glass Vats',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Necromancy Laboratory',
-                    'Room': 'Necromancy Laboratory, Glass Vats',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
-        },
-    }
-    patch['Changes']['Object Layouts'] = [
+    extend_array(patch, ('Changes', 'Tilemaps'), [
         {
+            'Type': 'Tile ID-Based',
             'Stage': 'Alchemy Laboratory',
             'Room': 'Alchemy Laboratory, Glass Vats',
-            'Object Layout ID': 0,
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Necromancy Laboratory',
+            'Room': 'Necromancy Laboratory, Glass Vats',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+    ])
+    extend_array(patch, ('Changes', 'Entity Layouts'), [
+        {
+            'Update': {
+                'Room': 'Alchemy Laboratory, Glass Vats',
+                'Entity Layout ID': 0,
+            },
             'Properties': {
                 'X': 192,
             },
+            'Stage': 'Alchemy Laboratory',
         },
         {
-            'Stage': 'Alchemy Laboratory',
-            'Room': 'Alchemy Laboratory, Glass Vats',
-            'Object Layout ID': 1,
+            'Update': {
+                'Room': 'Alchemy Laboratory, Glass Vats',
+                'Entity Layout ID': 1,
+            },
             'Properties': {
                 'X': 240,
             },
+            'Stage': 'Alchemy Laboratory',
         },
         {
-            'Stage': 'Alchemy Laboratory',
-            'Room': 'Alchemy Laboratory, Glass Vats',
-            'Object Layout ID': 2,
+            'Update': {
+                'Room': 'Alchemy Laboratory, Glass Vats',
+                'Entity Layout ID': 2,
+            },
             'Properties': {
                 'X': 288,
             },
+            'Stage': 'Alchemy Laboratory',
         },
         {
-            'Stage': 'Alchemy Laboratory',
-            'Room': 'Alchemy Laboratory, Glass Vats',
-            'Object Layout ID': 3,
+            'Update': {
+                'Room': 'Alchemy Laboratory, Glass Vats',
+                'Entity Layout ID': 3,
+            },
             'Properties': {
                 'X': 336,
             },
+            'Stage': 'Alchemy Laboratory',
         },
         {
-            'Stage': 'Alchemy Laboratory',
-            'Room': 'Alchemy Laboratory, Glass Vats',
-            'Object Layout ID': 4,
+            'Update': {
+                'Room': 'Alchemy Laboratory, Glass Vats',
+                'Entity Layout ID': 4,
+            },
             'Properties': {
                 'X': 384,
             },
+            'Stage': 'Alchemy Laboratory',
         },
-    ]
+    ])
     result = patch
     return result
 
 def get_normalize_alchemy_laboratory_red_skeleton_lift_room_top_passage():
+    patch = get_base_patch('Normalize Red Skeleton Lift Room, Top Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Alchemy Laboratory, Red Skeleton Lift Room': {
+            'Nodes': {
+                'Top Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             ".... 0020 0033 0034 0001 0013 0000 0000 0000 0000 001B 0002 0006 0001 0002 0003 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 0004 0005 0006 0033 0034 0020 0033 0034 0020 0033 0034 0020 0033 0034",
@@ -1826,49 +1623,40 @@ def get_normalize_alchemy_laboratory_red_skeleton_lift_room_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Red Skeleton Lift Room, Top Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Alchemy Laboratory, Red Skeleton Lift Room': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Red Skeleton Lift Room',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Alchemy Laboratory',
-                    'Room': 'Alchemy Laboratory, Red Skeleton Lift Room',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Necromancy Laboratory',
-                    'Room': 'Necromancy Laboratory, Red Skeleton Lift Room',
-                    'Layer': 'Foreground',
-                    'Top': 19,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Necromancy Laboratory',
+            'Room': 'Necromancy Laboratory, Red Skeleton Lift Room',
+            'Layer': 'Foreground',
+            'Top': 19,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
         },
-    }
+    ])
     result = patch
     return result
 
 def get_normalize_alchemy_laboratory_red_skeleton_lift_room_bottom_passage():
+    patch = get_base_patch('Normalize Red Skeleton Lift Room, Bottom Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Alchemy Laboratory, Red Skeleton Lift Room': {
+            'Nodes': {
+                'Bottom Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... .... .... .... 0000 0048 0045 .... .... .... ....',
@@ -1882,49 +1670,40 @@ def get_normalize_alchemy_laboratory_red_skeleton_lift_room_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Red Skeleton Lift Room, Bottom Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Alchemy Laboratory, Red Skeleton Lift Room': {
-                    'Nodes': {
-                        'Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Red Skeleton Lift Room',
+            'Layer': 'Foreground',
+            'Top': 24,
+            'Left': 32,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Alchemy Laboratory',
-                    'Room': 'Alchemy Laboratory, Red Skeleton Lift Room',
-                    'Layer': 'Foreground',
-                    'Top': 24,
-                    'Left': 32,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Necromancy Laboratory',
-                    'Room': 'Necromancy Laboratory, Red Skeleton Lift Room',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Necromancy Laboratory',
+            'Room': 'Necromancy Laboratory, Red Skeleton Lift Room',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
         },
-    }
+    ])
     result = patch
     return result
 
 def get_normalize_underground_caverns_crystal_bend_top_passage():
+    patch = get_base_patch('Normalize Red Skeleton Lift Room, Bottom Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Underground Caverns, Crystal Bend': {
+            'Nodes': {
+                'Top Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... .... .... 0001 0001 0000 0000 0000 0000 .... .... .... .... .... ....',
@@ -1948,67 +1727,58 @@ def get_normalize_underground_caverns_crystal_bend_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Crystal Bend, Top Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Underground Caverns, Crystal Bend': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Crystal Bend',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Crystal Bend',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Underground Caverns',
-                    'Room': 'Underground Caverns, Crystal Bend',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Crystal Bend',
-                    'Layer': 'Foreground',
-                    'Top': 24,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Reverse Caverns',
-                    'Room': 'Reverse Caverns, Crystal Bend',
-                    'Layer': 'Background',
-                    'Top': 24,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Underground Caverns',
+            'Room': 'Underground Caverns, Crystal Bend',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
         },
-    }
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Crystal Bend',
+            'Layer': 'Foreground',
+            'Top': 24,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Reverse Caverns',
+            'Room': 'Reverse Caverns, Crystal Bend',
+            'Layer': 'Background',
+            'Top': 24,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_alchemy_laboratory_tall_zig_zag_room_bottom_passage():
+    patch = get_base_patch('Normalize Tall Zig Zag Room, Bottom Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Alchemy Laboratory, Tall Zig Zag Room': {
+            'Nodes': {
+                'Lower Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... 003B 05B8 05B8 003B .... .... .... .... .... ....',
@@ -2018,46 +1788,26 @@ def get_normalize_alchemy_laboratory_tall_zig_zag_room_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Tall Zig Zag Room, Bottom Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Alchemy Laboratory, Tall Zig Zag Room': {
-                    'Nodes': {
-                        'Lower Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Tall Zig Zag Room',
+            'Layer': 'Foreground',
+            'Top': 44,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Alchemy Laboratory',
-                    'Room': 'Alchemy Laboratory, Tall Zig Zag Room',
-                    'Layer': 'Foreground',
-                    'Top': 44,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Necromancy Laboratory',
-                    'Room': 'Necromancy Laboratory, Tall Zig Zag Room',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Necromancy Laboratory',
+            'Room': 'Necromancy Laboratory, Tall Zig Zag Room',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
         },
-    }
-    patch['Changes']['Pokes'] = []
+    ])
     for (offset, data_type, value) in (
         (0x049EFFD8, 's16', 0x02C7), # Alchemy Laboratory - 0x02E7 -> 0x02C7
         (0x049F008C, 's16', 0x02C7), # Alchemy Laboratory - 0x02E7 -> 0x02C7
@@ -2065,45 +1815,46 @@ def get_normalize_alchemy_laboratory_tall_zig_zag_room_bottom_passage():
         (0x04DACB0C, 's16', 0x0038), # Necromancy Laboratory - 0x0018 -> 0x02C7
         (0x04DACBCC, 's16', 0x0038), # Necromancy Laboratory - 0x0018 -> 0x02C7
     ):
-        patch['Changes']['Pokes'].append({
+        add_to_array(patch, ('Changes', 'Pokes'), {
             'Gamedata Address': '{:08X}'.format(offset),
             'Data Type': data_type,
             'Value': '{:08X}'.format(value),
         })
-    patch['Changes']['Object Layouts'] = [
+    extend_array(patch, ('Changes', 'Entity Layouts'), [
         {
-            'Stage': 'Alchemy Laboratory',
-            'Room': 'Alchemy Laboratory, Tall Zig Zag Room',
-            'Object Layout ID': 4,
+            'Update': {
+                'Room': 'Alchemy Laboratory, Tall Zig Zag Room',
+                'Entity Layout ID': 4,
+            },
             'Properties': {
                 'X': 128,
                 'Y': 720,
             },
+            'Stage': 'Alchemy Laboratory',
         },
         {
-            'Stage': 'Necromancy Laboratory',
-            'Room': 'Necromancy Laboratory, Tall Zig Zag Room',
-            'Object Layout ID': 5,
+            'Update': {
+                'Room': 'Necromancy Laboratory, Tall Zig Zag Room',
+                'Entity Layout ID': 5,
+            },
             'Properties': {
                 'X': 128,
                 'Y': 48,
             },
+            'Stage': 'Necromancy Laboratory',
         },
-    ]
-    patch['Changes']['Constants'] = {}
+    ])
     for stage_name in (
         'Alchemy Laboratory',
         'Necromancy Laboratory',
     ):
-        constant_key = f'Laboratory Floor Tiles ({stage_name})'
-        patch['Changes']['Constants'][constant_key] = []
         for (index, value) in (
             (12, 0x0224),
             (13, 0x024C),
             (14, 0x022A),
             (15, 0x0250),
         ):
-            patch['Changes']['Constants'][constant_key].append({
+            add_to_array(patch, ('Changes', 'Constants', f'Laboratory Floor Tiles ({stage_name})'), {
                 'Index': index,
                 'Value': '{:04X}'.format(value),
             })
@@ -2111,6 +1862,16 @@ def get_normalize_alchemy_laboratory_tall_zig_zag_room_bottom_passage():
     return result
 
 def get_normalize_alchemy_laboratory_secret_life_max_up_room_top_passage():
+    patch = get_base_patch('Normalize Secret Life Max-Up Room, Top Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Alchemy Laboratory, Secret Life Max-Up Room': {
+            'Nodes': {
+                'Top Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... 026C .... .... 0276 .... .... .... .... .... ....',
@@ -2120,49 +1881,40 @@ def get_normalize_alchemy_laboratory_secret_life_max_up_room_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Secret Life Max-Up Room, Top Passage',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Alchemy Laboratory, Secret Life Max-Up Room': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Alchemy Laboratory',
+            'Room': 'Alchemy Laboratory, Secret Life Max-Up Room',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Alchemy Laboratory',
-                    'Room': 'Alchemy Laboratory, Secret Life Max-Up Room',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Necromancy Laboratory',
-                    'Room': 'Necromancy Laboratory, Secret Life Max-Up Room',
-                    'Layer': 'Foreground',
-                    'Top': 28,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Necromancy Laboratory',
+            'Room': 'Necromancy Laboratory, Secret Life Max-Up Room',
+            'Layer': 'Foreground',
+            'Top': 28,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
         },
-    }
+    ])
     result = patch
     return result
 
 def get_normalize_marble_gallery_stopwatch_room_bottom_passage():
+    patch = get_base_patch('Normalize Marble Gallery Stopwatch Room', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Marble Gallery, Stopwatch Room': {
+            'Nodes': {
+                'Bottom Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... 0597 0597 0597 0597 .... .... .... .... .... ....',
@@ -2171,55 +1923,35 @@ def get_normalize_marble_gallery_stopwatch_room_bottom_passage():
             '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
         ],
     }
-    patch = {
-        'Description': 'Normalize Marble Gallery Stopwatch Room',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Marble Gallery, Stopwatch Room': {
-                    'Nodes': {
-                        'Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Marble Gallery',
+            'Room': 'Marble Gallery, Stopwatch Room',
+            'Layer': 'Foreground',
+            'Top': 12,
+            'Left': 16,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Marble Gallery',
-                    'Room': 'Marble Gallery, Stopwatch Room',
-                    'Layer': 'Foreground',
-                    'Top': 12,
-                    'Left': 16,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Black Marble Gallery',
-                    'Room': 'Black Marble Gallery, Stopwatch Room',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 16,
-                    'Tiles': [
-                        '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
-                        '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
-                        '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
-                        '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
-                    ],
-                },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Black Marble Gallery',
+            'Room': 'Black Marble Gallery, Stopwatch Room',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 16,
+            'Tiles': [
+                '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+                '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+                '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
+                '.... .... .... .... .... .... 0000 0000 0000 0000 .... .... .... .... .... ....',
             ],
         },
-    }
-    patch['Changes']['Pokes'] = []
+    ])
     for (offset, data_type, value) in (
         (0x03FCE06C, 's16', 0x0001), # Marble Gallery - 0x0003 -> 0x0001
     ):
-        patch['Changes']['Pokes'].append({
+        add_to_array(patch, ('Changes', 'Pokes'), {
             'Gamedata Address': '{:08X}'.format(offset),
             'Data Type': data_type,
             'Value': '{:08X}'.format(value),
@@ -2228,46 +1960,47 @@ def get_normalize_marble_gallery_stopwatch_room_bottom_passage():
     return result
 
 def get_normalize_marble_gallery_beneath_left_trapdoor_top_passage():
+    patch = get_base_patch('Normalize MG Beneath Left Trapdoor, Top Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Marble Gallery, Beneath Left Trapdoor': {
+            'Nodes': {
+                'Top Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
             '.... .... .... .... .... .... 0000 0000 .... .... .... .... .... .... .... ....',
         ],
     }
-    patch = {
-        'Description': 'Normalize Marble Gallery Stopwatch Room',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Marble Gallery, Beneath Left Trapdoor': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Marble Gallery',
+            'Room': 'Marble Gallery, Beneath Left Trapdoor',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Marble Gallery',
-                    'Room': 'Marble Gallery, Beneath Left Trapdoor',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-            ],
-        },
-    }
+    ])
     result = patch
     return result
 
 def get_normalize_marble_gallery_beneath_right_trapdoor_top_passage():
+    patch = get_base_patch('Normalize MG Beneath Right Trapdoor, Top Passage', ['Sestren'])
+    define_object(patch, ('Mapper', 'Rooms'), {
+        'Marble Gallery, Beneath Right Trapdoor': {
+            'Nodes': {
+                'Top Passage': {
+                    'Type': '######....######',
+                },
+            },
+        },
+    })
     tilemaps = {
         'Foreground': [
             '.... .... .... .... 02D5 02D5 .... .... 0000 0000 .... .... .... .... .... ....',
@@ -2289,64 +2022,45 @@ def get_normalize_marble_gallery_beneath_right_trapdoor_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Marble Gallery Beneath Right Trapdoor',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Marble Gallery, Beneath Right Trapdoor': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Marble Gallery',
+            'Room': 'Marble Gallery, Beneath Right Trapdoor',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Marble Gallery',
-                    'Room': 'Marble Gallery, Beneath Right Trapdoor',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Marble Gallery',
-                    'Room': 'Marble Gallery, Beneath Right Trapdoor',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Black Marble Gallery',
-                    'Room': 'Black Marble Gallery, Beneath Right Trapdoor',
-                    'Layer': 'Foreground',
-                    'Top': 9,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Black Marble Gallery',
-                    'Room': 'Black Marble Gallery, Beneath Right Trapdoor',
-                    'Layer': 'Background',
-                    'Top': 9,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Marble Gallery',
+            'Room': 'Marble Gallery, Beneath Right Trapdoor',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
         },
-    }
-    patch['Changes']['Object Layouts'] = [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Black Marble Gallery',
+            'Room': 'Black Marble Gallery, Beneath Right Trapdoor',
+            'Layer': 'Foreground',
+            'Top': 9,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Black Marble Gallery',
+            'Room': 'Black Marble Gallery, Beneath Right Trapdoor',
+            'Layer': 'Background',
+            'Top': 9,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
+    extend_array(patch, ('Changes', 'Object Layouts'), [
         {
             'Stage': 'Marble Gallery',
             'Room': 'Marble Gallery, Beneath Right Trapdoor',
@@ -2355,6 +2069,9 @@ def get_normalize_marble_gallery_beneath_right_trapdoor_top_passage():
                 'X': 129 + 32,
                 'Y': 8,
             },
+            'Notes': [
+                "Marble Gallery's Entity Layout treatment is buggy, so this is being handled the old Object Layout way",
+            ],
         },
         # {
         #     'Stage': 'Black Marble Gallery',
@@ -2365,11 +2082,13 @@ def get_normalize_marble_gallery_beneath_right_trapdoor_top_passage():
         #         'Y': 999,
         #     },
         # },
-    ]
+    ])
     result = patch
     return result
 
 def get_normalize_marble_gallery_slinger_staircase_right_bottom_passage():
+    patch = get_base_patch('Normalize Marble Gallery Slinger Staircase', ['Sestren'])
+    define_constant(patch, ('Mapper', 'Rooms', 'Marble Gallery, Slinger Staircase', 'Nodes', 'Right-Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... 02EE 02EE 031A 031B .... .... 0000 0000 031B .... .... .... .... ....',
@@ -2381,81 +2100,57 @@ def get_normalize_marble_gallery_slinger_staircase_right_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Marble Gallery Slinger Staircase',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Marble Gallery, Slinger Staircase': {
-                    'Nodes': {
-                        'Right-Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
-        },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Marble Gallery',
-                    'Room': 'Marble Gallery, Slinger Staircase',
-                    'Layer': 'Foreground',
-                    'Top': 16 + 10,
-                    'Left': 32,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Black Marble Gallery',
-                    'Room': 'Black Marble Gallery, Slinger Staircase',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
-        },
-    }
-    patch['Changes']['Pokes'] = []
+    add_to_array(patch, ('Changes', 'Tilemaps'), {
+        'Type': 'Tile ID-Based',
+        'Stage': 'Marble Gallery',
+        'Room': 'Marble Gallery, Slinger Staircase',
+        'Layer': 'Foreground',
+        'Top': 16 + 10,
+        'Left': 32,
+        'Tiles': tilemaps['Foreground'],
+    })
+    add_to_array(patch, ('Changes', 'Tilemaps'), {
+        'Type': 'Tile ID-Based',
+        'Stage': 'Black Marble Gallery',
+        'Room': 'Black Marble Gallery, Slinger Staircase',
+        'Layer': 'Foreground',
+        'Top': 0,
+        'Left': 0,
+        'Tiles': reverse_tilemaps['Foreground'],
+    })
     for (offset, data_type, value) in (
         (0x03FCE06C, 's16', 0x0001), # Marble Gallery - 0x0003 -> 0x0001
     ):
-        patch['Changes']['Pokes'].append({
+        add_to_array(patch, ('Changes', 'Pokes'), {
             'Gamedata Address': '{:08X}'.format(offset),
             'Data Type': data_type,
             'Value': '{:08X}'.format(value),
         })
-    patch['Changes']['Object Layouts'] = [
-        {
-            'Stage': 'Marble Gallery',
-            'Room': 'Marble Gallery, Slinger Staircase',
-            'Object Layout ID': 11,
-            'Properties': {
-                'X': 608 + 32,
-                'Y': 476,
-            },
+    add_to_array(patch, ('Changes', 'Object Layouts'), {
+        'Stage': 'Marble Gallery',
+        'Room': 'Marble Gallery, Slinger Staircase',
+        'Object Layout ID': 11,
+        'Properties': {
+            'X': 608 + 32,
+            'Y': 476,
         },
-        {
-            'Stage': 'Black Marble Gallery',
-            'Room': 'Black Marble Gallery, Slinger Staircase',
-            'Object Layout ID': 5,
-            'Properties': {
-                'X': 160,
-                'Y': 36,
-            },
+        'Notes': [
+            "Marble Gallery's Entity Layout treatment is buggy, so this is being handled the old Object Layout way",
+        ],
+    })
+    add_to_array(patch, ('Changes', 'Object Layouts'), {
+        'Stage': 'Black Marble Gallery',
+        'Room': 'Black Marble Gallery, Slinger Staircase',
+        'Object Layout ID': 5,
+        'Properties': {
+            'X': 160,
+            'Y': 36,
         },
-    ]
-    patch['Changes']['Constants'] = {}
-    constant_key = f'Trapdoor Offsets (Marble Gallery)'
-    patch['Changes']['Constants'][constant_key] = []
+    })
     for (index, value) in (
         (2, 0x0566),
        ):
-        patch['Changes']['Constants'][constant_key].append({
+        add_to_array(patch, ('Changes', 'Constants', 'Trapdoor Offsets (Marble Gallery)'), {
             'Index': index,
             'Value': '{:04X}'.format(value),
         })
@@ -2463,6 +2158,8 @@ def get_normalize_marble_gallery_slinger_staircase_right_bottom_passage():
     return result
 
 def get_normalize_olroxs_quarters_tall_shaft_top_passage():
+    patch = get_base_patch("Normalize Olrox's Quarters Tall Shaft", ['Sestren'])
+    define_constant(patch, ('Mapper', 'Rooms', "Olrox's Quarters, Tall Shaft", 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... 06B4 06B4 06B4 06B4 0000 0000 0000 0000 06B4 06B4 06B4 .... .... ....',
@@ -2662,123 +2359,118 @@ def get_normalize_olroxs_quarters_tall_shaft_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': "Normalize Olrox's Quarters Tall Shaft",
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                "Olrox's Quarters, Tall Shaft": {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
-        },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Olrox's Quarters",
-                    'Room': "Olrox's Quarters, Tall Shaft",
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Olrox's Quarters",
-                    'Room': "Olrox's Quarters, Tall Shaft",
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Death Wing's Lair",
-                    'Room': "Death Wing's Lair, Tall Shaft",
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Death Wing's Lair",
-                    'Room': "Death Wing's Lair, Tall Shaft",
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
-        },
-    }
-    patch['Changes']['Object Layouts'] = [
+    extend_array(patch, ('Changes', 'Tilemaps'), [
         {
+            'Type': 'Tile ID-Based',
             'Stage': "Olrox's Quarters",
             'Room': "Olrox's Quarters, Tall Shaft",
-            'Object Layout ID': 0,
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Olrox's Quarters",
+            'Room': "Olrox's Quarters, Tall Shaft",
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Death Wing's Lair",
+            'Room': "Death Wing's Lair, Tall Shaft",
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Death Wing's Lair",
+            'Room': "Death Wing's Lair, Tall Shaft",
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
+    extend_array(patch, ('Changes', 'Entity Layouts'), [
+        {
+            'Update': {
+                'Room': "Olrox's Quarters, Tall Shaft",
+                'Entity Layout ID': 0,
+            },
             'Properties': {
                 'X': 95 - 32,
                 'Y': 1039,
             },
+            'Stage': "Olrox's Quarters",
         },
         {
-            'Stage': "Olrox's Quarters",
-            'Room': "Olrox's Quarters, Tall Shaft",
-            'Object Layout ID': 1,
+            'Update': {
+                'Room': "Olrox's Quarters, Tall Shaft",
+                'Entity Layout ID': 1,
+            },
             'Properties': {
                 'X': 95 - 32,
                 'Y': 911,
             },
+            'Stage': "Olrox's Quarters",
         },
         {
-            'Stage': "Olrox's Quarters",
-            'Room': "Olrox's Quarters, Tall Shaft",
-            'Object Layout ID': 2,
+            'Update': {
+                'Room': "Olrox's Quarters, Tall Shaft",
+                'Entity Layout ID': 2,
+            },
             'Properties': {
                 'X': 95 - 32,
                 'Y': 399,
             },
+            'Stage': "Olrox's Quarters",
         },
         {
-            'Stage': "Death Wing's Lair",
-            'Room': "Death Wing's Lair, Tall Shaft",
-            'Object Layout ID': 1,
+            'Update': {
+                'Room': "Death Wing's Lair, Tall Shaft",
+                'Entity Layout ID': 1,
+            },
             'Properties': {
                 'X': 161 + 32,
                 'Y': 497,
             },
+            'Stage': "Death Wing's Lair",
         },
         {
-            'Stage': "Death Wing's Lair",
-            'Room': "Death Wing's Lair, Tall Shaft",
-            'Object Layout ID': 2,
+            'Update': {
+                'Room': "Death Wing's Lair, Tall Shaft",
+                'Entity Layout ID': 2,
+            },
             'Properties': {
                 'X': 161 + 32,
                 'Y': 625,
             },
+            'Stage': "Death Wing's Lair",
         },
         {
-            'Stage': "Death Wing's Lair",
-            'Room': "Death Wing's Lair, Tall Shaft",
-            'Object Layout ID': 3,
+            'Update': {
+                'Room': "Death Wing's Lair, Tall Shaft",
+                'Entity Layout ID': 3,
+            },
             'Properties': {
                 'X': 161 + 32,
                 'Y': 1137,
             },
+            'Stage': "Death Wing's Lair",
         },
-    ]
+    ])
     result = patch
     return result
 
 def get_normalize_olroxs_quarters_prison_right_bottom_passage():
+    patch = get_base_patch("Normalize Olrox's Quarters Prison Right Bottom", ['Sestren'])
+    define_constant(patch, ('Mapper', 'Rooms', "Olrox's Quarters, Prison", 'Nodes', 'Right-Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... 039D 0401 0000 0000 0000 .... 0404 040D 03FF .... .... ....',
@@ -2794,67 +2486,50 @@ def get_normalize_olroxs_quarters_prison_right_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': "Normalize Olrox's Quarters Prison Right Bottom",
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                "Olrox's Quarters, Prison": {
-                    'Nodes': {
-                        'Right-Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Olrox's Quarters",
+            'Room': "Olrox's Quarters, Prison",
+            'Layer': 'Foreground',
+            'Top': 12,
+            'Left': 80,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Olrox's Quarters",
-                    'Room': "Olrox's Quarters, Prison",
-                    'Layer': 'Foreground',
-                    'Top': 12,
-                    'Left': 80,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Olrox's Quarters",
-                    'Room': "Olrox's Quarters, Prison",
-                    'Layer': 'Background',
-                    'Top': 12,
-                    'Left': 80,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Death Wing's Lair",
-                    'Room': "Death Wing's Lair, Prison",
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Death Wing's Lair",
-                    'Room': "Death Wing's Lair, Prison",
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Olrox's Quarters",
+            'Room': "Olrox's Quarters, Prison",
+            'Layer': 'Background',
+            'Top': 12,
+            'Left': 80,
+            'Tiles': tilemaps['Background'],
         },
-    }
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Death Wing's Lair",
+            'Room': "Death Wing's Lair, Prison",
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Death Wing's Lair",
+            'Room': "Death Wing's Lair, Prison",
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_olroxs_quarters_prison_left_bottom_passage():
+    patch = get_base_patch("Normalize Olrox's Quarters Prison Left Bottom", ['Sestren'])
+    define_constant(patch, ('Mapper', 'Rooms', "Olrox's Quarters, Prison", 'Nodes', 'Left-Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... 039D 0401 0000 0000 0000 0000 0404 040D 03FF .... .... ....',
@@ -2870,67 +2545,50 @@ def get_normalize_olroxs_quarters_prison_left_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': "Normalize Olrox's Quarters Prison Left Bottom",
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                "Olrox's Quarters, Prison": {
-                    'Nodes': {
-                        'Left-Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Olrox's Quarters",
+            'Room': "Olrox's Quarters, Prison",
+            'Layer': 'Foreground',
+            'Top': 12,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Olrox's Quarters",
-                    'Room': "Olrox's Quarters, Prison",
-                    'Layer': 'Foreground',
-                    'Top': 12,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Olrox's Quarters",
-                    'Room': "Olrox's Quarters, Prison",
-                    'Layer': 'Background',
-                    'Top': 12,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Death Wing's Lair",
-                    'Room': "Death Wing's Lair, Prison",
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 80,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Death Wing's Lair",
-                    'Room': "Death Wing's Lair, Prison",
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 80,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Olrox's Quarters",
+            'Room': "Olrox's Quarters, Prison",
+            'Layer': 'Background',
+            'Top': 12,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
         },
-    }
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Death Wing's Lair",
+            'Room': "Death Wing's Lair, Prison",
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 80,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Death Wing's Lair",
+            'Room': "Death Wing's Lair, Prison",
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 80,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_olroxs_quarters_open_courtyard_top_passage():
+    patch = get_base_patch("Normalize Olrox's Quarters Open Courtyard Top", ['Sestren'])
+    define_constant(patch, ('Mapper', 'Rooms', "Olrox's Quarters, Open Courtyard", 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '06B4 06B4 06B4 06B4 06B4 06B4 0000 0000 0000 0000 06B4 06B4 06B4 06B4 06B4 06B4',
@@ -2940,49 +2598,32 @@ def get_normalize_olroxs_quarters_open_courtyard_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': "Normalize Olrox's Quarters Open Courtyard Top",
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                "Olrox's Quarters, Open Courtyard": {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Olrox's Quarters",
+            'Room': "Olrox's Quarters, Open Courtyard",
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 80,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Olrox's Quarters",
-                    'Room': "Olrox's Quarters, Open Courtyard",
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 80,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Death Wing's Lair",
-                    'Room': "Death Wing's Lair, Open Courtyard",
-                    'Layer': 'Foreground',
-                    'Top': 48 + 12,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Death Wing's Lair",
+            'Room': "Death Wing's Lair, Open Courtyard",
+            'Layer': 'Foreground',
+            'Top': 48 + 12,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
         },
-    }
+    ])
     result = patch
     return result
 
 def get_normalize_olroxs_quarters_catwalk_crypt_left_top_passage():
+    patch = get_base_patch("Normalize Olrox's Quarters Catwalk Crypt Left Top", ['Sestren'])
+    define_constant(patch, ('Mapper', 'Rooms', "Olrox's Quarters, Catwalk Crypt", 'Nodes', 'Left-Top Passage', 'Type'), '######....######')
     # NOTE(sestren): In Death Wing's Lair, it is possible to clip through the barrier when flying upward from underneath
     tilemaps = {
         'Foreground': [
@@ -2992,52 +2633,30 @@ def get_normalize_olroxs_quarters_catwalk_crypt_left_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': "Normalize Olrox's Quarters Catwalk Crypt Left Top",
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                "Olrox's Quarters, Catwalk Crypt": {
-                    'Nodes': {
-                        'Left-Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Olrox's Quarters",
+            'Room': "Olrox's Quarters, Catwalk Crypt",
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 16,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Olrox's Quarters",
-                    'Room': "Olrox's Quarters, Catwalk Crypt",
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 16,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Death Wing's Lair",
-                    'Room': "Death Wing's Lair, Catwalk Crypt",
-                    'Layer': 'Foreground',
-                    'Top': 13,
-                    'Left': 80,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Death Wing's Lair",
+            'Room': "Death Wing's Lair, Catwalk Crypt",
+            'Layer': 'Foreground',
+            'Top': 13,
+            'Left': 80,
+            'Tiles': reverse_tilemaps['Foreground'],
         },
-    }
-    patch['Changes']['Constants'] = {}
+    ])
     for stage_name in (
         "Olrox's Quarters",
         "Death Wing's Lair",
     ):
-        constant_key = f'Breakable Ceiling Tiles ({stage_name})'
-        patch['Changes']['Constants'][constant_key] = []
         for (index, value) in enumerate((
             # Closed
             0x0027, 0x0027, 0x002A, 0x002B,
@@ -3046,7 +2665,7 @@ def get_normalize_olroxs_quarters_catwalk_crypt_left_top_passage():
             0x0027, 0x0027, 0x002A, 0x002B,
             0x0021, 0x0022, 0x0049, 0x004A,
         )):
-            patch['Changes']['Constants'][constant_key].append({
+            add_to_array(patch, ('Changes', 'Constants', f'Breakable Ceiling Tiles ({stage_name})'), {
                 'Index': index,
                 'Value': '{:04X}'.format(value),
             })
@@ -3054,6 +2673,8 @@ def get_normalize_olroxs_quarters_catwalk_crypt_left_top_passage():
     return result
 
 def get_normalize_olroxs_quarters_sword_card_room_bottom_passage():
+    patch = get_base_patch("Normalize Olrox's Quarters Sword Card Room Bottom", ['Sestren'])
+    define_constant(patch, ('Mapper', 'Rooms', "Olrox's Quarters, Sword Card Room", 'Nodes', 'Left-Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... 03C1 03C1 04EA 04ED .... .... .... .... .... ....',
@@ -3063,49 +2684,33 @@ def get_normalize_olroxs_quarters_sword_card_room_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': "Normalize Olrox's Quarters Sword Card Room Bottom",
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                "Olrox's Quarters, Sword Card Room": {
-                    'Nodes': {
-                        'Left-Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Olrox's Quarters",
+            'Room': "Olrox's Quarters, Sword Card Room",
+            'Layer': 'Foreground',
+            'Top': 12,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Olrox's Quarters",
-                    'Room': "Olrox's Quarters, Sword Card Room",
-                    'Layer': 'Foreground',
-                    'Top': 12,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Death Wing's Lair",
-                    'Room': "Death Wing's Lair, Sword Card Room",
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 16,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Death Wing's Lair",
+            'Room': "Death Wing's Lair, Sword Card Room",
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 16,
+            'Tiles': reverse_tilemaps['Foreground'],
         },
-    }
+    ])
     result = patch
     return result
 
 def get_normalize_castle_entrance_after_drawbridge_bottom_passage():
+    patch = get_base_patch("Normalize Castle Entrance After Drawbridge Bottom", ['Sestren'])
+    define_constant(patch, ('Mapper', 'Rooms', "Castle Entrance, After Drawbridge", 'Nodes', 'Bottom Passage', 'Type'), '######....######')
+    define_constant(patch, ('Mapper', 'Rooms', "Castle Entrance Revisited, After Drawbridge", 'Nodes', 'Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... 0127 0129 0132 0128 .... .... .... .... .... ....',
@@ -3125,65 +2730,42 @@ def get_normalize_castle_entrance_after_drawbridge_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': "Normalize Castle Entrance After Drawbridge Bottom",
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Castle Entrance, After Drawbridge': {
-                    'Nodes': {
-                        'Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-                'Castle Entrance Revisited, After Drawbridge': {
-                    'Nodes': {
-                        'Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance',
+            'Room': 'Castle Entrance, After Drawbridge',
+            'Layer': 'Foreground',
+            'Top': 32 + 10,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance',
-                    'Room': 'Castle Entrance, After Drawbridge',
-                    'Layer': 'Foreground',
-                    'Top': 32 + 10,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance Revisited',
-                    'Room': 'Castle Entrance Revisited, After Drawbridge',
-                    'Layer': 'Foreground',
-                    'Top': 32 + 10,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Reverse Entrance",
-                    'Room': 'Reverse Entrance, After Drawbridge',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 16,
-                    'Tiles': reverse_tilemaps['Foreground (Reverse Entrance)'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance Revisited',
+            'Room': 'Castle Entrance Revisited, After Drawbridge',
+            'Layer': 'Foreground',
+            'Top': 32 + 10,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-    }
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Reverse Entrance",
+            'Room': 'Reverse Entrance, After Drawbridge',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 16,
+            'Tiles': reverse_tilemaps['Foreground (Reverse Entrance)'],
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_castle_entrance_drop_under_portcullis_top_passage():
+    patch = get_base_patch("Normalize Castle Entrance Under Portcullis Top", ['Sestren'])
+    define_constant(patch, ('Mapper', 'Rooms', "Castle Entrance, Drop Under Portcullis", 'Nodes', 'Top Passage', 'Type'), '######....######')
+    define_constant(patch, ('Mapper', 'Rooms', "Castle Entrance Revisited, Drop Under Portcullis", 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... 02D8 0000 .... .... 0000 0309 .... .... .... .... ....',
@@ -3209,92 +2791,69 @@ def get_normalize_castle_entrance_drop_under_portcullis_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': "Normalize Castle Entrance Under Portcullis Top",
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Castle Entrance, Drop Under Portcullis': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-                'Castle Entrance Revisited, Drop Under Portcullis': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance',
+            'Room': 'Castle Entrance, Drop Under Portcullis',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance',
-                    'Room': 'Castle Entrance, Drop Under Portcullis',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance',
-                    'Room': 'Castle Entrance, Drop Under Portcullis',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance Revisited',
-                    'Room': 'Castle Entrance Revisited, Drop Under Portcullis',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance Revisited',
-                    'Room': 'Castle Entrance Revisited, Drop Under Portcullis',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Reverse Entrance",
-                    'Room': 'Reverse Entrance, Drop Under Portcullis',
-                    'Layer': 'Foreground',
-                    'Top': 16 + 7,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Reverse Entrance",
-                    'Room': 'Reverse Entrance, Drop Under Portcullis',
-                    'Layer': 'Background',
-                    'Top': 16 + 7,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance',
+            'Room': 'Castle Entrance, Drop Under Portcullis',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
         },
-    }
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance Revisited',
+            'Room': 'Castle Entrance Revisited, Drop Under Portcullis',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance Revisited',
+            'Room': 'Castle Entrance Revisited, Drop Under Portcullis',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Reverse Entrance",
+            'Room': 'Reverse Entrance, Drop Under Portcullis',
+            'Layer': 'Foreground',
+            'Top': 16 + 7,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Reverse Entrance",
+            'Room': 'Reverse Entrance, Drop Under Portcullis',
+            'Layer': 'Background',
+            'Top': 16 + 7,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_castle_entrance_attic_entrance_bottom_passage():
+    patch = get_base_patch("Normalize Castle Entrance Attic Entrance Bottom", ['Sestren'])
+    define_constant(patch, ('Mapper', 'Rooms', "Castle Entrance, Attic Entrance", 'Nodes', 'Bottom Passage', 'Type'), '######....######')
+    define_constant(patch, ('Mapper', 'Rooms', "Castle Entrance Revisited, Attic Entrance", 'Nodes', 'Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
@@ -3334,92 +2893,69 @@ def get_normalize_castle_entrance_attic_entrance_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': "Normalize Castle Entrance Attic Entrance Bottom",
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Castle Entrance, Attic Entrance': {
-                    'Nodes': {
-                        'Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-                'Castle Entrance Revisited, Attic Entrance': {
-                    'Nodes': {
-                        'Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance',
+            'Room': 'Castle Entrance, Attic Entrance',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance',
-                    'Room': 'Castle Entrance, Attic Entrance',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance',
-                    'Room': 'Castle Entrance, Attic Entrance',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance Revisited',
-                    'Room': 'Castle Entrance Revisited, Attic Entrance',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance Revisited',
-                    'Room': 'Castle Entrance Revisited, Attic Entrance',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Reverse Entrance",
-                    'Room': 'Reverse Entrance, Attic Entrance',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Reverse Entrance",
-                    'Room': 'Reverse Entrance, Attic Entrance',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance',
+            'Room': 'Castle Entrance, Attic Entrance',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
         },
-    }
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance Revisited',
+            'Room': 'Castle Entrance Revisited, Attic Entrance',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance Revisited',
+            'Room': 'Castle Entrance Revisited, Attic Entrance',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Reverse Entrance",
+            'Room': 'Reverse Entrance, Attic Entrance',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Reverse Entrance",
+            'Room': 'Reverse Entrance, Attic Entrance',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_castle_entrance_merman_room_top_passage():
+    patch = get_base_patch("Normalize Castle Entrance Merman Room Top", ['Sestren'])
+    define_constant(patch, ('Mapper', 'Rooms', "Castle Entrance, Merman Room", 'Nodes', 'Top Passage', 'Type'), '######....######')
+    define_constant(patch, ('Mapper', 'Rooms', "Castle Entrance Revisited, Merman Room", 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... .... .... 0000 0000 .... .... .... .... .... ....',
@@ -3433,112 +2969,92 @@ def get_normalize_castle_entrance_merman_room_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': "Normalize Castle Entrance Merman Room Top",
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Castle Entrance, Merman Room': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-                'Castle Entrance Revisited, Merman Room': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
-        },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance',
-                    'Room': 'Castle Entrance, Merman Room',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance',
-                    'Room': 'Castle Entrance, Merman Room',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance Revisited',
-                    'Room': 'Castle Entrance Revisited, Merman Room',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Castle Entrance Revisited',
-                    'Room': 'Castle Entrance Revisited, Merman Room',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Reverse Entrance",
-                    'Room': 'Reverse Entrance, Merman Room',
-                    'Layer': 'Foreground',
-                    'Top': 16 + 13,
-                    'Left': 32,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': "Reverse Entrance",
-                    'Room': 'Reverse Entrance, Merman Room',
-                    'Layer': 'Background',
-                    'Top': 16 + 13,
-                    'Left': 32,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
-        },
-    }
-    patch['Changes']['Object Layouts'] = [
+    extend_array(patch, ('Changes', 'Tilemaps'), [
         {
+            'Type': 'Tile ID-Based',
             'Stage': 'Castle Entrance',
             'Room': 'Castle Entrance, Merman Room',
-            'Object Layout ID': 7,
-            'Properties': {
-                'X': 144 + 24,
-                'Y': 56,
-            },
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
         {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance',
+            'Room': 'Castle Entrance, Merman Room',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
+        },
+        {
+            'Type': 'Tile ID-Based',
             'Stage': 'Castle Entrance Revisited',
             'Room': 'Castle Entrance Revisited, Merman Room',
-            'Object Layout ID': 6,
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Castle Entrance Revisited',
+            'Room': 'Castle Entrance Revisited, Merman Room',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Reverse Entrance",
+            'Room': 'Reverse Entrance, Merman Room',
+            'Layer': 'Foreground',
+            'Top': 16 + 13,
+            'Left': 32,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': "Reverse Entrance",
+            'Room': 'Reverse Entrance, Merman Room',
+            'Layer': 'Background',
+            'Top': 16 + 13,
+            'Left': 32,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
+    extend_array(patch, ('Changes', 'Entity Layouts'), [
+        {
+            'Update': {
+                'Room': 'Castle Entrance, Merman Room',
+                'Entity Layout ID': 7,
+            },
             'Properties': {
                 'X': 144 + 24,
                 'Y': 56,
             },
+            'Stage': 'Castle Entrance',
         },
-    ]
+        {
+            'Update': {
+                'Room': 'Castle Entrance Revisited, Merman Room',
+                'Entity Layout ID': 6,
+            },
+            'Properties': {
+                'X': 144 + 24,
+                'Y': 56,
+            },
+            'Stage': 'Castle Entrance Revisited',
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_marble_gallery_three_paths_top_passage():
+    patch = get_base_patch("Normalize Marble Gallery Three Paths Top", ['Sestren'])
+    define_constant(patch, ('Mapper', 'Rooms', "Marble Gallery, Three Paths", 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... 068A 0000 .... .... 0000 0689 .... .... .... .... ....',
@@ -3554,67 +3070,50 @@ def get_normalize_marble_gallery_three_paths_top_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Marble Gallery Three Paths Top',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Marble Gallery, Three Paths': {
-                    'Nodes': {
-                        'Top Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Marble Gallery',
+            'Room': 'Marble Gallery, Three Paths',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Marble Gallery',
-                    'Room': 'Marble Gallery, Three Paths',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Marble Gallery',
-                    'Room': 'Marble Gallery, Three Paths',
-                    'Layer': 'Background',
-                    'Top': 0,
-                    'Left': 0,
-                    'Tiles': tilemaps['Background'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Black Marble Gallery',
-                    'Room': 'Black Marble Gallery, Three Paths',
-                    'Layer': 'Foreground',
-                    'Top': 16 + 12,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Black Marble Gallery',
-                    'Room': 'Black Marble Gallery, Three Paths',
-                    'Layer': 'Background',
-                    'Top': 16 + 12,
-                    'Left': 0,
-                    'Tiles': reverse_tilemaps['Background'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Marble Gallery',
+            'Room': 'Marble Gallery, Three Paths',
+            'Layer': 'Background',
+            'Top': 0,
+            'Left': 0,
+            'Tiles': tilemaps['Background'],
         },
-    }
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Black Marble Gallery',
+            'Room': 'Black Marble Gallery, Three Paths',
+            'Layer': 'Foreground',
+            'Top': 16 + 12,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Foreground'],
+        },
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Black Marble Gallery',
+            'Room': 'Black Marble Gallery, Three Paths',
+            'Layer': 'Background',
+            'Top': 16 + 12,
+            'Left': 0,
+            'Tiles': reverse_tilemaps['Background'],
+        },
+    ])
     result = patch
     return result
 
 def get_normalize_marble_gallery_gravity_boots_room_bottom_passage():
+    patch = get_base_patch("Normalize Marble Gallery Gravity Boots Bottom", ['Sestren'])
+    define_constant(patch, ('Mapper', 'Rooms', "Marble Gallery, Gravity Boots Room", 'Nodes', 'Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... 06C6 0520 .... .... 0520 06CB .... .... .... .... ....',
@@ -3623,90 +3122,54 @@ def get_normalize_marble_gallery_gravity_boots_room_bottom_passage():
         ],
     }
     reverse_tilemaps = reverse_tilemap_changes(tilemaps)
-    patch = {
-        'Description': 'Normalize Marble Gallery Gravity Boots Bottom',
-        'Authors': [
-            'Sestren',
-        ],
-        'Mapper': {
-            'Rooms': {
-                'Marble Gallery, Gravity Boots Room': {
-                    'Nodes': {
-                        'Bottom Passage': {
-                            'Type': '######....######',
-                        },
-                    },
-                },
-            },
+    extend_array(patch, ('Changes', 'Tilemaps'), [
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Marble Gallery',
+            'Room': 'Marble Gallery, Gravity Boots Room',
+            'Layer': 'Foreground',
+            'Top': 13,
+            'Left': 32,
+            'Tiles': tilemaps['Foreground'],
         },
-        'Changes': {
-            'Tilemaps': [
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Marble Gallery',
-                    'Room': 'Marble Gallery, Gravity Boots Room',
-                    'Layer': 'Foreground',
-                    'Top': 13,
-                    'Left': 32,
-                    'Tiles': tilemaps['Foreground'],
-                },
-                {
-                    'Type': 'Tile ID-Based',
-                    'Stage': 'Black Marble Gallery',
-                    'Room': 'Black Marble Gallery, Gravity Boots Room',
-                    'Layer': 'Foreground',
-                    'Top': 0,
-                    'Left': 32,
-                    'Tiles': reverse_tilemaps['Foreground'],
-                },
-            ],
+        {
+            'Type': 'Tile ID-Based',
+            'Stage': 'Black Marble Gallery',
+            'Room': 'Black Marble Gallery, Gravity Boots Room',
+            'Layer': 'Foreground',
+            'Top': 0,
+            'Left': 32,
+            'Tiles': reverse_tilemaps['Foreground'],
         },
-    }
+    ])
     result = patch
     return result
 
 def get_normalize_confessional_chime_sound():
-    patch = {
-        'Description': 'Relocate sound entity that turns off chime',
-        'Authors': [
-            'Sestren',
-        ],
-        'Changes': {
-            'Entity Layouts': [
-                {
-                    'Add Relative To': {
-                        'Room': 'Royal Chapel, Confessional Booth',
-                        'Node': 'Left Passage',
-                        'X Offset': 0,
-                        'Y Offset': 0,
-                    },
-                    'Delete From': {
-                        'Entity Layout ID': 47,
-                        'Room': 'Royal Chapel, Left Tower',
-                    },
-                    'Stage': 'Royal Chapel',
-                },
-            ],
+    patch = get_base_patch("Relocate sound entity that turns off chime", ['Sestren'])
+    add_to_array(patch, ('Changes', 'Entity Layouts'), {
+        'Add Relative To': {
+            'Room': 'Royal Chapel, Confessional Booth',
+            'Node': 'Left Passage',
+            'X Offset': 0,
+            'Y Offset': 0,
         },
-    }
+        'Delete From': {
+            'Entity Layout ID': 47,
+            'Room': 'Royal Chapel, Left Tower',
+        },
+        'Stage': 'Royal Chapel',
+    })
     result = patch
     return result
 
 def get_normalize_olroxs_quarters_secret_onyx_room_rubble():
-    patch = {
-        'Description': 'Relocate rubble in Secret Onyx Room',
-        'Authors': [
-            'Sestren',
-        ],
-        'Changes': {
-            'Entity Layouts': [],
-        },
-    }
+    patch = get_base_patch("Relocate rubble in Secret Onyx Room", ['Sestren'])
     for (stage_name, node_name, x_offset, entity_layout_id) in (
         ("Olrox's Quarters", 'Lower-Right Passage', 8, 0),
         ("Death Wing's Lair", 'Lower-Right Passage', -8, 6),
     ):
-        entity_layout = {
+        add_to_array(patch, ('Changes', 'Entity Layouts'), {
             'Add Relative To': {
                 'Room': f'{stage_name}, Grand Staircase',
                 'Node': node_name,
@@ -3719,40 +3182,26 @@ def get_normalize_olroxs_quarters_secret_onyx_room_rubble():
                 'Room': f'{stage_name}, Secret Onyx Room',
             },
             'Stage': f'{stage_name}',
-        }
-        patch['Changes']['Entity Layouts'].append(entity_layout)
+        })
     result = patch
     return result
 
 def get_normalize_waterfall_roar_sound():
-    patch = {
-        'Description': 'Relocate sound entities that fade waterfall roar',
-        'Authors': [
-            'Sestren',
-        ],
-        'Changes': {
-            'Constants': {},
-            'Entity Layouts': [],
-        },
-    }
+    patch = get_base_patch("Relocate sound entities that fade waterfall roar", ['Sestren'])
     for (stage_name, node_name, index) in (
         ('Underground Caverns', 'Upper-Left Passage', 8),
         ('Underground Caverns', 'Lower-Left Passage', 12),
         ('Reverse Caverns', 'Upper-Right Passage', 0),
         ('Reverse Caverns', 'Lower-Right Passage', 4),
     ):
-        constant_name = f'Waterfall Sound Parameters ({stage_name})'
-        if constant_name not in patch['Changes']['Constants']:
-            patch['Changes']['Constants'][constant_name] = []
-        constant = {
+        add_to_array(patch, ('Changes', 'Constants', f'Waterfall Sound Parameters ({stage_name})'), {
             'Index': index,
             'Value Relative From': {
                 'Room': f'{stage_name}, Waterfall',
                 'Node': node_name,
                 'Property': 'X'
             },
-        }
-        patch['Changes']['Constants'][constant_name].append(constant)
+        })
     for (stage_name, node_name, room_name, x_offset, entity_layout_id) in (
         ('Underground Caverns', 'Upper-Left Passage', 'DK Button', -128, 0),
         ('Underground Caverns', 'Upper-Right Passage', 'Pentagram Room', 128, 7),
@@ -3763,7 +3212,7 @@ def get_normalize_waterfall_roar_sound():
         ('Reverse Caverns', 'Lower-Left Passage', 'Room ID 19', 128, 1),
         ('Reverse Caverns', 'Lower-Right Passage', 'Room ID 18', -128, 2),
     ):
-        entity_layout = {
+        add_to_array(patch, ('Changes', 'Entity Layouts'), {
             'Add Relative To': {
                 'Room': f'{stage_name}, Waterfall',
                 'Node': node_name,
@@ -3776,8 +3225,55 @@ def get_normalize_waterfall_roar_sound():
                 'Room': f'{stage_name}, {room_name}',
             },
             'Stage': f'{stage_name}',
-        }
-        patch['Changes']['Entity Layouts'].append(entity_layout)
+        })
+    result = patch
+    return result
+
+def get_assign_power_of_wolf_relic_a_unique_id():
+    patch = get_base_patch("Prevent Trapdoor from deleting Power of Wolf", ['Eldritch', 'Mottzilla'])
+    add_to_array(patch, ('Changes', 'Entity Layouts'), {
+        'Update': {
+            'Room': 'Castle Entrance, After Drawbridge',
+            'Entity Layout ID': 9,
+        },
+        'Properties': {
+            'Entity Room Index': 18,
+        },
+        'Stage': 'Castle Entrance',
+    })
+    add_to_array(patch, ('Changes', 'Entity Layouts'), {
+        'Update': {
+            'Room': 'Castle Entrance Revisited, After Drawbridge',
+            'Entity Layout ID': 11,
+        },
+        'Properties': {
+            'Entity Room Index': 18,
+        },
+        'Stage': 'Castle Entrance Revisited',
+    })
+    result = patch
+    return result
+
+def get_prevent_palette_glitches_related_to_zombie_hallway():
+    patch = get_base_patch("Prevent palette glitches related to Zombie Hallway", ['Sestren'])
+    add_to_array(patch, ('Changes', 'Entity Layouts'), {
+        'Add Relative To': {
+            'Room': 'Castle Entrance, Zombie Hallway',
+            'Entity Layout ID': 180,
+            'Node': 'Left Passage',
+        },
+        'Properties': {
+            'Entity Room Index': 180,
+        },
+        'Delete From': {
+            'Entity Layout ID': 2,
+            'Room': 'Castle Entrance, Merman Room',
+        },
+        'Stage': 'Castle Entrance',
+        'Notes': [
+            'Relocate Entity that controls lightning and lighting effects',
+        ],
+    })
     result = patch
     return result
 
@@ -3793,12 +3289,12 @@ if __name__ == '__main__':
     parser.add_argument('build_dir', help='Input a filepath to a folder that will contain the build files', type=str)
     args = parser.parse_args()
     for (file_name, patch) in (
-        ('normalize-confessional-chime-sound', get_normalize_confessional_chime_sound()),
-        ('normalize-waterfall-roar-sound', get_normalize_waterfall_roar_sound()),
+        ('assign-power-of-wolf-relic-a-unique-id', get_assign_power_of_wolf_relic_a_unique_id()),
         ('clock-hands-display-minutes-and-seconds', get_clock_hands_patch()),
         ('enable-debug-mode', get_simple_patch("Enables the game's hidden debug mode", [
             (0x000D9364, 'u32', 0xAC258850, 'sw a1, -$77B0(at)'), # Original instruction was sw 0, -$77B0(at)
         ])),
+        ('normalize-confessional-chime-sound', get_normalize_confessional_chime_sound()),
         ('normalize-dk-bridge-bottom-passage', get_normalize_dk_bridge_bottom_passage()),
         ('normalize-ferryman-gate', get_simple_patch('Normalize Ferryman Gate', [
             # 0x801C5C7C - EntityFerrymanController
@@ -3895,6 +3391,8 @@ if __name__ == '__main__':
         ('normalize-underground-caverns-room-id-09-bottom-passage', get_normalize_underground_caverns_room_id_09_bottom_passage()),
         ('normalize-underground-caverns-room-id-10-top-passage', get_normalize_underground_caverns_room_id_10_top_passage()),
         ('normalize-underground-caverns-small-stairwell-top-passage', get_normalize_underground_caverns_small_stairwell_top_passage()),
+        ('normalize-waterfall-roar-sound', get_normalize_waterfall_roar_sound()),
+        ('prevent-palette-glitches-related-to-zombie-hallway', get_prevent_palette_glitches_related_to_zombie_hallway()),
         ('prevent-softlocks-after-defeating-scylla', get_prevent_softlocks_after_defeating_scylla()),
         ('prevent-softlocks-at-demon-switch-wall', get_prevent_softlocks_at_demon_switch_wall_patch()),
         ('prevent-softlocks-at-left-gear-room-wall', get_prevent_softlocks_at_left_gear_room_wall_patch()),

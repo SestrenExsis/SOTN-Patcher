@@ -267,6 +267,9 @@ def assemble_patch(args, extract, main_patch, data):
     result = Patch()
     # Apply common patches
     for (option_name, patch_file_names) in (
+        ('Assign Power of Wolf relic a unique ID', (
+            'assign-power-of-wolf-relic-a-unique-id',
+        )),
         ('Clock hands show minutes and seconds instead of hours and minutes', (
             'clock-hands-display-minutes-and-seconds',
         )),
@@ -291,8 +294,9 @@ def assemble_patch(args, extract, main_patch, data):
         ('Normalize Ferryman Gate', (
             'normalize-ferryman-gate',
         )),
-        ('Normalize particle effects', (
+        ('Normalize special effects', (
             'normalize-olroxs-quarters-secret-onyx-room-rubble',
+            'prevent-palette-glitches-related-to-zombie-hallway',
         )),
         ('Normalize sounds', (
             'normalize-confessional-chime-sound',
@@ -814,109 +818,6 @@ def assemble_patch(args, extract, main_patch, data):
                     offset += 1
         result.patch_value(0xFF, 'u8', extract_metadata['Start'] + offset)
         assert offset <= extract_metadata['Footprint']
-    # Patch entity layouts
-    deletes = {}
-    entity_layouts = {}
-    for change in changes.get('Entity Layouts', []):
-        stage_name = change['Stage']
-        if stage_name not in entity_layouts:
-            entity_layouts[stage_name] = copy.deepcopy(extract['Entity Layouts'][stage_name]['Data'])
-        target_entity = {}
-        for (key, value) in change.get('Properties', {}).items():
-            target_entity[key] = value
-        if 'Delete From' in change:
-            source_room_name = change['Delete From']['Room']
-            entity_layout_row = aliases['Rooms'][source_room_name]['Entity Layout Row']
-            entity_layout_id = change['Delete From']['Entity Layout ID']
-            for (key, value) in entity_layouts[stage_name][entity_layout_row][entity_layout_id].items():
-                if key not in target_entity:
-                    target_entity[key] = value
-            if (stage_name, entity_layout_row) not in deletes:
-                deletes[(stage_name, entity_layout_row)] = set()
-            deletes[(stage_name, entity_layout_row)].add(entity_layout_id)
-        if 'Add To' in change:
-            target_room_name = change['Add To']['Room']
-            entity_layout_row = aliases['Rooms'][target_room_name]['Entity Layout Row']
-            entity_layouts[stage_name][entity_layout_row].append(target_entity)
-        if 'Add Relative To' in change:
-            source_room_name = change['Add Relative To']['Room']
-            source_node_name = change['Add Relative To']['Node']
-            target_room = main_patch['Shuffler']['Nodes'][source_room_name][source_node_name]
-            target_room_name = target_room['Target Room Name']
-            entity_layout_row = aliases['Rooms'][target_room_name]['Entity Layout Row']
-            target_entity['X'] = target_room.get('X', 0) + change['Add Relative To'].get('X Offset', 0)
-            target_entity['Y'] = target_room.get('Y', 0) + change['Add Relative To'].get('Y Offset', 0)
-            if 'Entity Room Index' in change['Add Relative To']:
-                target_entity['Entity Room Index'] = change['Add Relative To']['Entity Room Index']
-            entity_layouts[stage_name][entity_layout_row].append(target_entity)
-    for (stage_name, entity_layout_row) in deletes:
-        for entity_layout_id in reversed(sorted(deletes[(stage_name, entity_layout_row)])):
-            entity_layouts[stage_name][entity_layout_row].pop(entity_layout_id)
-    sentinel_start_template = {
-        'Entity Room Index': 0,
-        'Entity Type ID': 0,
-        'Params': 0,
-        'X': -2,
-        'Y': -2,
-    }
-    sentinel_end_template = {
-        'Entity Room Index': 0,
-        'Entity Type ID': 0,
-        'Params': 0,
-        'X': -1,
-        'Y': -1,
-    }
-    for (stage_name, entity_layout_table) in entity_layouts.items():
-        stage_extract = extract['Entity Layouts'][stage_name]
-        layout_extract = extract['Constants']['Entity Layout'][stage_name]
-        horizontal_layout_start = layout_extract['Horizontal Layout']['Start']
-        horizontal_layout_value = layout_extract['Horizontal Layout']['Value']
-        vertical_layout_start = layout_extract['Vertical Layout']['Start']
-        vertical_layout_value = layout_extract['Vertical Layout']['Value']
-        # NOTE(sestren): entity_row is the "row" of the entity layout table, entity_col is the "column" within that row
-        entity_offset = 0
-        entity_size = stage_extract['Metadata']['Size']
-        for (entity_row, entity_layout_row) in enumerate(entity_layout_table):
-            # Adjust addresses pointing to start of row
-            for (layout_id, layout_index) in enumerate(layout_extract['Layout Indexes']):
-                if layout_extract['Row Indexes'].index(layout_index) != entity_row:
-                    continue
-                if layout_extract['Row Indexes'][entity_row] != entity_offset:
-                    result.patch_value(horizontal_layout_value + 10 * entity_offset, 'u32', horizontal_layout_start + 4 * layout_id)
-                    result.patch_value(vertical_layout_value + 10 * entity_offset, 'u32', vertical_layout_start + 4 * layout_id)
-            sentinel_start = dict(sentinel_start_template)
-            sentinel_start['Params'] = stage_extract['Metadata']['Row Params'][entity_row]
-            sentinel_end = dict(sentinel_end_template)
-            # Sort both horizontal and vertical layouts, bookending them with sentinel values
-            horizontal_entity_layout_row = [sentinel_start] + list(sorted(entity_layout_row,
-                key=lambda x: (x['X'], x['Horizontal Sort'], x['Y'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
-            )) + [sentinel_end]
-            vertical_entity_layout_row = [sentinel_start] + list(sorted(entity_layout_row,
-                key=lambda y: (y['Y'], y['Vertical Sort'], y['X'], y['Entity Room Index'], y['Entity Type ID'], y['Params'])
-            )) + [sentinel_end]
-            assert len(horizontal_entity_layout_row) == len(vertical_entity_layout_row)
-            # Adjust the entity layouts for the entire row
-            for entity_col in range(len(horizontal_entity_layout_row)):
-                for field_name in (
-                    'Entity Room Index',
-                    'Entity Type ID',
-                    'Params',
-                    'X',
-                    'Y',
-                ):
-                    if horizontal_entity_layout_row[entity_col][field_name] != stage_extract['Flattened Horizontal Data'][entity_offset][field_name]:
-                        result.patch_value(
-                            horizontal_entity_layout_row[entity_col][field_name],
-                            stage_extract['Metadata']['Fields'][field_name]['Type'],
-                            layout_extract['Horizontal Table Start'] + entity_offset * entity_size + stage_extract['Metadata']['Fields'][field_name]['Offset'],
-                        )
-                    if vertical_entity_layout_row[entity_col][field_name] != stage_extract['Flattened Vertical Data'][entity_offset][field_name]:
-                        result.patch_value(
-                            vertical_entity_layout_row[entity_col][field_name],
-                            stage_extract['Metadata']['Fields'][field_name]['Type'],
-                            layout_extract['Vertical Table Start'] + entity_offset * entity_size + stage_extract['Metadata']['Fields'][field_name]['Offset'],
-                        )
-                entity_offset += 1
     # Patch object layouts
     object_layouts = {}
     for object_layout in changes.get('Object Layouts', {}):
@@ -930,13 +831,6 @@ def assemble_patch(args, extract, main_patch, data):
         object_layout_id = object_layout['Object Layout ID']
         for (property_key, property_value) in object_layout.get('Properties', {}).items():
             object_layouts[(stage_name, room_name)][object_layout_id][property_key] = property_value
-    # Option - Assign Power of Wolf relic a unique ID
-    power_of_wolf_patch = changes.get('Options', {}).get('Assign Power of Wolf relic a unique ID', False)
-    if power_of_wolf_patch:
-        if 'Quest Rewards' not in changes:
-            changes['Quest Rewards'] = {}
-        if 'Location - Castle Entrance, After Drawbridge (Power of Wolf)' not in changes['Quest Rewards']:
-            changes['Quest Rewards']['Location - Castle Entrance, After Drawbridge (Power of Wolf)'] = 'Relic - Power of Wolf'
     # Color Palettes
     for (palette_index, rgba32) in enumerate(changes.get('Castle Map Color Palette', [])):
         red = get_value(rgba32[1:3]) // 8
@@ -946,29 +840,61 @@ def assemble_patch(args, extract, main_patch, data):
         value = (alpha << 15) + (blue << 10) + (green << 5) + red
         array_extract_meta = extract['Constants']['Castle Map Color Palette']['Metadata']
         result.patch_value(value, 'u16', array_extract_meta['Start'] + palette_index * array_extract_meta['Size'])
-    # Quest Rewards - Part 1
+    # Quest Rewards - Process (including adding to Entity Layouts if needed)
+    if 'Entity Layouts' not in changes:
+        changes['Entity Layouts'] = []
     for location_name in sorted(changes.get('Quest Rewards', {})):
         reward_name = changes['Quest Rewards'][location_name]
         reward_type = reward_name.split(' - ')[0]
         reward_data = aliases['Quest Rewards'][location_name]
         for data_element in reward_data[reward_type + ' Data']:
-            if data_element['Type'] == 'Object Layout':
+            if data_element['Type'] == 'Entity Layout':
                 stage_name = data_element['Stage']
                 room_name = data_element['Room']
-                if (stage_name, room_name) not in object_layouts:
-                    room_id = str(aliases['Rooms'].get(room_name, {}).get('Room Index', None))
-                    room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
-                    object_extract = room_extract['Object Layout - Horizontal']['Data'][1:-1]
-                    object_layouts[(stage_name, room_name)] = copy.deepcopy(object_extract)
-                object_layout_id = data_element['Object Layout ID']
+                entity_layout = {
+                    'Update': {
+                        'Room': data_element['Room'],
+                        'Entity Layout ID': data_element['Entity Layout ID'],
+                    },
+                    'Properties': {},
+                    'Stage': data_element['Stage'],
+                }
                 for (property_key, property_value) in aliases['Entities'].get(reward_name, {}).items():
                     if property_value is None:
                         continue
-                    object_layouts[(stage_name, room_name)][object_layout_id][property_key] = property_value
-                if power_of_wolf_patch and location_name == 'Location - Castle Entrance, After Drawbridge (Power of Wolf)':
-                    object_layouts[(stage_name, room_name)][object_layout_id]['Entity Room Index'] = 18
+                    entity_layout['Properties'][property_key] = property_value
                 if 'Params' in data_element:
-                    object_layouts[(stage_name, room_name)][object_layout_id]['Params'] = data_element['Params']
+                    entity_layout['Properties']['Params'] = data_element['Params']
+                changes['Entity Layouts'].append(entity_layout)
+            elif data_element['Type'] == 'Object Layout':
+                stage_name = data_element['Stage']
+                room_name = data_element['Room']
+                room_id = str(aliases['Rooms'].get(room_name, {}).get('Room Index', None))
+                room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
+                horizontal_object_extract = room_extract['Object Layout - Horizontal']
+                vertical_object_extract = room_extract['Object Layout - Vertical']
+                horizontal_object_layout_id = data_element['Horizontal Object Layout ID']
+                vertical_object_layout_id = data_element['Vertical Object Layout ID']
+                for (property_key, property_value) in aliases['Entities'].get(reward_name, {}).items():
+                    if (
+                        property_value is None or
+                        property_key not in horizontal_object_extract['Metadata']['Fields'].keys()
+                    ):
+                        continue
+                    object_extract = horizontal_object_extract
+                    result.patch_value(
+                        property_value,
+                        object_extract['Metadata']['Fields'][property_key]['Type'],
+                        object_extract['Metadata']['Start'] + (1 + horizontal_object_layout_id) * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][property_key]['Offset'],
+                    )
+                    # NOTE(sestren): Add +1 to the object layout IDs to get the extract ID
+                    # NOTE(sestren): This accounts for the sentinel entity at the start of every entity list
+                    object_extract = vertical_object_extract
+                    result.patch_value(
+                        property_value,
+                        object_extract['Metadata']['Fields'][property_key]['Type'],
+                        object_extract['Metadata']['Start'] + (1 + vertical_object_layout_id) * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][property_key]['Offset'],
+                    )
             elif data_element['Type'] == 'Stage Item Drop':
                 constant_name = data_element['Constant']
                 item_drop_index = data_element['Item Drop Index']
@@ -1029,28 +955,97 @@ def assemble_patch(args, extract, main_patch, data):
                 value = transformed_value(value, data_element.get('Transformations', []))
                 assert value >= 0
                 result.patch_value(value, data_element['Data Type'], data_element['Address'])
-    # TODO(sestren): Instead of checksums for tests, output the address writes for comparison
-    # Quest Rewards - Part 2
-    for ((stage_name, room_name), object_layout) in object_layouts.items():
-        horizontal_object_layout = list(sorted(object_layout,
-            key=lambda x: (x['X'], x['Y'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
-        ))
-        vertical_object_layout = list(sorted(object_layout,
-            key=lambda y: (y['Y'], y['X'], y['Entity Room Index'], y['Entity Type ID'], y['Params'])
-        ))
-        assert len(horizontal_object_layout) == len(vertical_object_layout)
-        for (sort_method, sorted_object_layout) in (
-            ('Horizontal', horizontal_object_layout),
-            ('Vertical', vertical_object_layout),
-        ):
-            room_id = str(aliases['Rooms'].get(room_name, {}).get('Room Index', None))
-            room_extract = extract['Stages'][stage_name]['Rooms'][room_id]
-            object_extract = room_extract['Object Layout - ' + sort_method]
-            for object_layout_id in range(len(sorted_object_layout)):
-                sorted_object_layout[object_layout_id]
-                # NOTE(sestren): Add +1 to the object layout ID to get the extract ID
-                # NOTE(sestren): This accounts for the sentinel entity at the start of every entity list
-                extract_id = object_layout_id + 1
+    # Entity Layouts - Process changes
+    deletes = {}
+    entity_layouts = {}
+    for change in changes.get('Entity Layouts', []):
+        stage_name = change['Stage']
+        if stage_name not in entity_layouts:
+            entity_layouts[stage_name] = copy.deepcopy(extract['Entity Layouts'][stage_name]['Data'])
+        target_entity = {}
+        for (key, value) in change.get('Properties', {}).items():
+            target_entity[key] = value
+        if 'Delete From' in change:
+            source_room_name = change['Delete From']['Room']
+            entity_layout_row = aliases['Rooms'][source_room_name]['Entity Layout Row']
+            entity_layout_id = change['Delete From']['Entity Layout ID']
+            for (key, value) in entity_layouts[stage_name][entity_layout_row][entity_layout_id].items():
+                if key not in target_entity:
+                    target_entity[key] = value
+            if (stage_name, entity_layout_row) not in deletes:
+                deletes[(stage_name, entity_layout_row)] = set()
+            deletes[(stage_name, entity_layout_row)].add(entity_layout_id)
+        if 'Update' in change:
+            target_room_name = change['Update']['Room']
+            entity_layout_row = aliases['Rooms'][target_room_name]['Entity Layout Row']
+            entity_layout_id = change['Update']['Entity Layout ID']
+            for (property_key, property_value) in target_entity.items():
+                entity_layouts[stage_name][entity_layout_row][entity_layout_id][property_key] = property_value
+        elif 'Add To' in change:
+            target_room_name = change['Add To']['Room']
+            entity_layout_row = aliases['Rooms'][target_room_name]['Entity Layout Row']
+            entity_layouts[stage_name][entity_layout_row].append(target_entity)
+        elif 'Add Relative To' in change:
+            source_room_name = change['Add Relative To']['Room']
+            source_node_name = change['Add Relative To']['Node']
+            target_room = main_patch['Shuffler']['Nodes'][source_room_name][source_node_name]
+            target_room_name = target_room['Target Room Name']
+            entity_layout_row = aliases['Rooms'][target_room_name]['Entity Layout Row']
+            target_entity['X'] = target_room.get('X', 0) + change['Add Relative To'].get('X Offset', 0)
+            target_entity['Y'] = target_room.get('Y', 0) + change['Add Relative To'].get('Y Offset', 0)
+            if 'Entity Room Index' in change['Add Relative To']:
+                target_entity['Entity Room Index'] = change['Add Relative To']['Entity Room Index']
+            entity_layouts[stage_name][entity_layout_row].append(target_entity)
+    # Entity Layouts - Perform deletes
+    for (stage_name, entity_layout_row) in deletes:
+        for entity_layout_id in reversed(sorted(deletes[(stage_name, entity_layout_row)])):
+            entity_layouts[stage_name][entity_layout_row].pop(entity_layout_id)
+    sentinel_start_template = {
+        'Entity Room Index': 0,
+        'Entity Type ID': 0,
+        'Params': 0,
+        'X': -2,
+        'Y': -2,
+    }
+    sentinel_end_template = {
+        'Entity Room Index': 0,
+        'Entity Type ID': 0,
+        'Params': 0,
+        'X': -1,
+        'Y': -1,
+    }
+    # Entity Layouts - Resort horizontally and vertically, then patch
+    for (stage_name, entity_layout_table) in entity_layouts.items():
+        stage_extract = extract['Entity Layouts'][stage_name]
+        layout_extract = extract['Constants']['Entity Layout'][stage_name]
+        horizontal_layout_start = layout_extract['Horizontal Layout']['Start']
+        horizontal_layout_value = layout_extract['Horizontal Layout']['Value']
+        vertical_layout_start = layout_extract['Vertical Layout']['Start']
+        vertical_layout_value = layout_extract['Vertical Layout']['Value']
+        # NOTE(sestren): entity_row is the "row" of the entity layout table, entity_col is the "column" within that row
+        entity_offset = 0
+        entity_size = stage_extract['Metadata']['Size']
+        for (entity_row, entity_layout_row) in enumerate(entity_layout_table):
+            # Adjust addresses pointing to start of row
+            for (layout_id, layout_index) in enumerate(layout_extract['Layout Indexes']):
+                if layout_extract['Row Indexes'].index(layout_index) != entity_row:
+                    continue
+                if layout_extract['Row Indexes'][entity_row] != entity_offset:
+                    result.patch_value(horizontal_layout_value + 10 * entity_offset, 'u32', horizontal_layout_start + 4 * layout_id)
+                    result.patch_value(vertical_layout_value + 10 * entity_offset, 'u32', vertical_layout_start + 4 * layout_id)
+            sentinel_start = dict(sentinel_start_template)
+            sentinel_start['Params'] = stage_extract['Metadata']['Row Params'][entity_row]
+            sentinel_end = dict(sentinel_end_template)
+            # Sort both horizontal and vertical layouts, bookending them with sentinel values
+            horizontal_entity_layout_row = [sentinel_start] + list(sorted(entity_layout_row,
+                key=lambda x: (x['X'], x['Horizontal Sort'], x['Y'], x['Entity Room Index'], x['Entity Type ID'], x['Params'])
+            )) + [sentinel_end]
+            vertical_entity_layout_row = [sentinel_start] + list(sorted(entity_layout_row,
+                key=lambda y: (y['Y'], y['Vertical Sort'], y['X'], y['Entity Room Index'], y['Entity Type ID'], y['Params'])
+            )) + [sentinel_end]
+            assert len(horizontal_entity_layout_row) == len(vertical_entity_layout_row)
+            # Adjust the entity layouts for the entire row
+            for entity_col in range(len(horizontal_entity_layout_row)):
                 for field_name in (
                     'Entity Room Index',
                     'Entity Type ID',
@@ -1058,13 +1053,19 @@ def assemble_patch(args, extract, main_patch, data):
                     'X',
                     'Y',
                 ):
-                    if sorted_object_layout[object_layout_id][field_name] == object_extract['Data'][extract_id][field_name]:
-                        continue
-                    result.patch_value(
-                        sorted_object_layout[object_layout_id][field_name],
-                        object_extract['Metadata']['Fields'][field_name]['Type'],
-                        object_extract['Metadata']['Start'] + extract_id * object_extract['Metadata']['Size'] + object_extract['Metadata']['Fields'][field_name]['Offset'],
-                    )
+                    if horizontal_entity_layout_row[entity_col][field_name] != stage_extract['Flattened Horizontal Data'][entity_offset][field_name]:
+                        result.patch_value(
+                            horizontal_entity_layout_row[entity_col][field_name],
+                            stage_extract['Metadata']['Fields'][field_name]['Type'],
+                            layout_extract['Horizontal Table Start'] + entity_offset * entity_size + stage_extract['Metadata']['Fields'][field_name]['Offset'],
+                        )
+                    if vertical_entity_layout_row[entity_col][field_name] != stage_extract['Flattened Vertical Data'][entity_offset][field_name]:
+                        result.patch_value(
+                            vertical_entity_layout_row[entity_col][field_name],
+                            stage_extract['Metadata']['Fields'][field_name]['Type'],
+                            layout_extract['Vertical Table Start'] + entity_offset * entity_size + stage_extract['Metadata']['Fields'][field_name]['Offset'],
+                        )
+                entity_offset += 1
     # Familiar events
     for familiar_event in changes.get('Familiar Events', {}):
         # NOTE(sestren): Familiar events exist as a complete copy in 7 different locations, one for each familiar in the code
@@ -1179,6 +1180,7 @@ def assemble_patch(args, extract, main_patch, data):
     # Patch pokes or direct writes
     for poke in changes.get('Pokes', []):
         result.patch_value(get_value(poke['Value']), poke['Data Type'], get_value(poke['Gamedata Address']))
+    # TODO(sestren): Instead of checksums for tests, output the address writes for comparison
     return result
 
 # Intended for hex-strings or integers
