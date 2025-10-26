@@ -1,5 +1,5 @@
 70da74c9324a1f9495910603949239ee70d5cd0a *build/ppf/allow-all-possible-outer-wall-fish-spawns.ppf
-eeb307d75af13f82fc0067edef74dc4c0e302eae *build/ppf/assign-power-of-wolf-relic-a-unique-id.ppf
+f3fc3e810cb650b7fd1f0a39892208a9082407a9 *build/ppf/assign-power-of-wolf-relic-a-unique-id.ppf
 15d410ef25bec8941099be0aa33a9e4dc1da3e0e *build/ppf/clock-hands-mod.ppf
 4bed16166ab695d3a9d584735e3e50af0931736a *build/ppf/customized-castle-map-reveals.ppf
 acffe21a5576c6d448088299dce6f9c450740e4c *build/ppf/customized-color-palettes.ppf
@@ -9,7 +9,7 @@ acffe21a5576c6d448088299dce6f9c450740e4c *build/ppf/customized-color-palettes.pp
 cc27ae98f9fe9bf8231da2eb3081224085b63206 *build/ppf/enable-debug-mode.ppf
 3225a08d99028351d3862f87e147ad041f13eeb5 *build/ppf/fix-confessional-bell-sound.ppf
 61332c6d4c553844e810d8bd7e1923d9ad452cb8 *build/ppf/fix-palette-darkening-in-castle-entrance.ppf
-17daeb89906abd78570fb8c9e07355ab6c1d682a *build/ppf/fix-secret-room-map-pixels.ppf
+e6233d484727c5d9ec0f1b60f466ac57ab181e67 *build/ppf/fix-secret-room-map-pixels.ppf
 223ab27c187d1d6d12019c1e2033b682f57903d2 *build/ppf/fix-waterfall-sound.ppf
 3c1754ff1279d55190a784a57ebae6a2554befb4 *build/ppf/improve-normalized-room-visuals.ppf
 7f180e76c98aeccdc816f86e1d0cf5e46353c3d0 *build/ppf/mix-items-and-relics.ppf
@@ -30,7 +30,7 @@ d9283aad7bbdffdbaecd011ec57b0091f8dc05c8 *build/ppf/prevent-softlocks-at-pendulu
 6f025191bfd7928400369a06a9bf7dd79241619f *build/ppf/randomized-items.ppf
 f5731a6441008dc78d142eb8b9d7c28f3c23f166 *build/ppf/randomized-relics.ppf
 dee9d21b5efa7afdd4570972ff25a4a9a2b08c9f *build/ppf/sample-entity-layout.ppf
-f10ed773c78e7fc063cc9b7a8da7267899926186 *build/ppf/sample-randomized-map.ppf
+fa84ef2891496c2b4d92416cfd818bd7d29b7aaa *build/ppf/sample-randomized-map.ppf
 0a52d52ed1d6c329d084f047918db748ec598316 *build/ppf/shop-relic-name.ppf
 5cad450299828d41629acc3034725fac76bece05 *build/ppf/shuffle-spike-room.ppf
 0c18b44bbab522502ed75164605332692509be01 *build/ppf/shuffle-starting-gear.ppf
