@@ -3834,7 +3834,7 @@ def get_assign_power_of_wolf_relic_a_unique_id():
                         'Entity Layout ID': 9,
                     },
                     'Properties': {
-                        'Entity Room Index': 180,
+                        'Entity Room Index': 18,
                     },
                     'Stage': 'Castle Entrance',
                 },
@@ -3844,7 +3844,7 @@ def get_assign_power_of_wolf_relic_a_unique_id():
                         'Entity Layout ID': 11,
                     },
                     'Properties': {
-                        'Entity Room Index': 180,
+                        'Entity Room Index': 18,
                     },
                     'Stage': 'Castle Entrance Revisited',
                 },
