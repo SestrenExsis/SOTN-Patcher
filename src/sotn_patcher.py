@@ -26,14 +26,6 @@ def extend_array(patch, path, object_array):
     for object in object_array:
         add_to_array(patch, path, object)
 
-def define_object(patch, path, object):
-    context = patch
-    for key in path[:-1]:
-        if key not in context:
-            context[key] = {}
-        context = context[key]
-    context[path[-1]] = object
-
 def define_constant(patch, path, constant):
     context = patch
     for key in path[:-1]:
@@ -484,15 +476,7 @@ def get_normalize_jewel_sword_passageway_patch():
 
 def get_normalize_tall_stairwell_bottom_passage():
     patch = get_base_patch('Normalize Tall Stairwell, Bottom Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Underground Caverns, Tall Stairwell': {
-            'Nodes': {
-                'Bottom Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Underground Caverns, Tall Stairwell', 'Nodes', 'Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... 0234 0235 0000 .... .... .... .... .... .... .... .... .... .... ....',
@@ -529,15 +513,7 @@ def get_normalize_tall_stairwell_bottom_passage():
 
 def get_normalize_ice_floe_room_top_passage():
     patch = get_base_patch('Normalize Ice Floe Room, Top Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Underground Caverns, Ice Floe Room': {
-            'Nodes': {
-                'Top Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Underground Caverns, Ice Floe Room', 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... 0001 0000 .... .... 0000 0001 .... .... .... .... ....',
@@ -592,15 +568,7 @@ def get_normalize_ice_floe_room_top_passage():
 
 def get_normalize_long_drop_bottom_passage():
     patch = get_base_patch('Normalize Long Drop, Bottom Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Underground Caverns, Long Drop': {
-            'Nodes': {
-                'Bottom Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Underground Caverns, Long Drop', 'Nodes', 'Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... 01A5 01A1 01A4 .... .... .... .... .... .... .... 01A8 01A9 01AA ....',
@@ -637,15 +605,7 @@ def get_normalize_long_drop_bottom_passage():
 
 def get_normalize_underground_caverns_exit_to_castle_entrance():
     patch = get_base_patch('Normalize UC-CE Exit, Bottom Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Underground Caverns, Exit to Castle Entrance': {
-            'Nodes': {
-                'Bottom Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Underground Caverns, Exit to Castle Entrance', 'Nodes', 'Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... .... .... .... .... .... 0000 .... .... .... ....',
@@ -714,15 +674,7 @@ def get_normalize_underground_caverns_exit_to_castle_entrance():
 
 def get_normalize_underground_caverns_left_ferryman_route_top_passage():
     patch = get_base_patch('Normalize Left Ferryman Route, Top Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Underground Caverns, Left Ferryman Route': {
-            'Nodes': {
-                'Top Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Underground Caverns, Left Ferryman Route', 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             ".... .... .... .... 0001 0001 .... .... 0000 0000 .... .... .... .... .... ....",
@@ -784,15 +736,7 @@ def get_normalize_underground_caverns_left_ferryman_route_top_passage():
 
 def get_normalize_hidden_crystal_entrance_top_passage():
     patch = get_base_patch('Normalize Hidden Crystal Entrance, Top Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Underground Caverns, Hidden Crystal Entrance': {
-            'Nodes': {
-                'Top Passage': {
-                    'Type': '######....######'
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Underground Caverns, Hidden Crystal Entrance', 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... ..... .... .... .... 0001 .... .... .... .... 0001 0001 .... .... .... ....',
@@ -830,22 +774,8 @@ def get_normalize_hidden_crystal_entrance_top_passage():
 
 def get_normalize_secret_bookcase_rooms():
     patch = get_base_patch('Normalize Secret Bookcase rooms', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Long Library, Holy Rod Room': {
-            'Nodes': {
-                'Left Passage': {
-                    'Type': '######....######'
-                },
-            },
-        },
-        'Long Library, Secret Bookcase Room': {
-            'Nodes': {
-                'Right Passage': {
-                    'Type': '######....######'
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Long Library, Holy Rod Room', 'Nodes', 'Left Passage', 'Type'), '######....######')
+    define_constant(patch, ('Mapper', 'Rooms', 'Long Library, Secret Bookcase Room', 'Nodes', 'Right Passage', 'Type'), '######....######')
     extend_array(patch, ('Changes', 'Tilemaps'), [
         {
             'Type': 'Tile ID-Based',
@@ -927,15 +857,7 @@ def get_normalize_secret_bookcase_rooms():
 
 def get_normalize_underground_caverns_room_id_09_bottom_passage():
     patch = get_base_patch('Normalize Room ID 09, Bottom Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Underground Caverns, Room ID 09': {
-            'Nodes': {
-                'Bottom Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Underground Caverns, Room ID 09', 'Nodes', 'Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '0023 00E1 0328 010A 07C1 07C2 07B7 07C0 .... .... .... .... .... .... .... ....',
@@ -972,21 +894,13 @@ def get_normalize_underground_caverns_room_id_09_bottom_passage():
 
 def get_normalize_underground_caverns_room_id_10_top_passage():
     patch = get_base_patch('Normalize Room ID 10, Top Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Underground Caverns, Room ID 10': {
-            'Nodes': {
-                'Top Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Underground Caverns, Room ID 10', 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... 0000 0000 0000 .... 0001 0001 0001 .... .... ....',
             '.... .... .... .... .... 0053 0011 0014 002E .... 003B 000C 000B .... .... ....',
-            '.... .... .... .... .... .... .... .... .... .... 0033 0034 0035 0346 0007 0008',
-            '.... .... .... .... .... .... .... .... .... .... 003B 003C 0028 0348 000D 000E',
+            '.... .... .... .... .... .... .... .... .... 0037 0033 0034 0035 0346 0007 0008',
+            '.... .... .... .... .... .... .... .... .... 007E 003B 003C 0028 0348 000D 000E',
             '.... .... .... .... .... .... .... .... 01E7 01E8 01E8 01E8 .... .... .... ....',
             '.... 0023 00E1 01DC 007B 07AF 007B .... .... .... .... .... .... .... .... ....',
             '.... .... 00E7 00E4 00E5 0000 0000 0000 .... .... .... .... .... .... .... ....',
@@ -1045,15 +959,7 @@ def get_normalize_underground_caverns_room_id_10_top_passage():
 
 def get_normalize_dk_bridge_bottom_passage():
     patch = get_base_patch('Normalize DK Bridge, Bottom Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Underground Caverns, DK Bridge': {
-            'Nodes': {
-                'Bottom Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Underground Caverns, DK Bridge', 'Nodes', 'Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... 039A 03BF 03CA 0000 .... .... .... .... .... .... .... .... ....',
@@ -1107,23 +1013,15 @@ def get_normalize_dk_bridge_bottom_passage():
 
 def get_normalize_underground_caverns_exit_to_abandoned_mine_top_passage():
     patch = get_base_patch('Normalize UC-AM, Top Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Underground Caverns, Exit to Abandoned Mine': {
-            'Nodes': {
-                'Top Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Underground Caverns, Exit to Abandoned Mine', 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... 0000 .... .... .... .... .... .... .... .... ....',
             '.... .... .... .... .... 03CF 0000 .... .... .... .... .... .... .... .... ....',
             '.... .... .... .... 037A 03E7 0000 .... .... .... .... .... .... .... .... ....',
-            '.... .... .... .... 037D 037E 0383 .... .... .... .... .... .... .... .... ....',
-            '.... .... .... .... 03AB 0A74 038A 03BA .... .... .... .... .... .... .... ....',
-            '.... .... .... 0370 03AC 0372 0AD0 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... 037D 037E 0395 .... .... .... .... .... .... .... .... ....',
+            '.... .... .... .... 03AB 0A74 03EC 03BA .... .... .... .... .... .... .... ....',
+            '.... .... .... 0370 03AC 0372 0AD7 .... .... .... .... .... .... .... .... ....',
             '.... .... .... 0374 0375 0000 .... .... .... .... .... .... .... .... .... ....',
         ],
         'Background': [
@@ -1180,15 +1078,7 @@ def get_normalize_underground_caverns_exit_to_abandoned_mine_top_passage():
 
 def get_normalize_underground_caverns_small_stairwell_top_passage():
     patch = get_base_patch('Normalize Small Stairwell, Top Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Underground Caverns, Small Stairwell': {
-            'Nodes': {
-                'Top Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Underground Caverns, Small Stairwell', 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... 0000 0000 0000 0000 0001 0001 0001 .... .... ....',
@@ -1251,15 +1141,7 @@ def get_normalize_underground_caverns_small_stairwell_top_passage():
 
 def get_normalize_underground_caverns_plaque_room_bottom_passage():
     patch = get_base_patch('Normalize Plaque Room, Top Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Underground Caverns, Plaque Room With Life Max-Up': {
-            'Nodes': {
-                'Bottom Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Underground Caverns, Plaque Room With Life Max-Up', 'Nodes', 'Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... 0023 00E1 0328 001E 001F 0020 0021 0036 003E 003F 0040 01BE .... .... ....',
@@ -1310,15 +1192,7 @@ def get_simple_patch(description, pokes):
 
 def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
     patch = get_base_patch('Normalize Hidden Crystal Entrance, Bottom Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Underground Caverns, Hidden Crystal Entrance': {
-            'Nodes': {
-                'Bottom Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Underground Caverns, Hidden Crystal Entrance', 'Nodes', 'Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... 0549 0000 .... .... .... .... .... .... .... .... .... ....',
@@ -1445,15 +1319,7 @@ def get_normalize_underground_caverns_hidden_crystal_entrance_bottom_passage():
 
 def get_normalize_alchemy_laboratory_entryway_top_passage():
     patch = get_base_patch('Normalize Alchemy Lab Entryway, Top Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Alchemy Laboratory, Entryway': {
-            'Nodes': {
-                'Top Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Alchemy Laboratory, Entryway', 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... .... .... .... 0000 004C 0050 .... .... .... ....',
@@ -1489,15 +1355,7 @@ def get_normalize_alchemy_laboratory_entryway_top_passage():
 
 def get_normalize_alchemy_laboratory_glass_vats_bottom_passage():
     patch = get_base_patch('Normalize Glass Vats, Left-Bottom Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Alchemy Laboratory, Glass Vats': {
-            'Nodes': {
-                'Left-Bottom Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Alchemy Laboratory, Glass Vats', 'Nodes', 'Left-Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
               "0034 0020 0033 0034 004C 0050 0031 0032 0005 0006 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 004C 0050 0033 0034",
@@ -1596,15 +1454,7 @@ def get_normalize_alchemy_laboratory_glass_vats_bottom_passage():
 
 def get_normalize_alchemy_laboratory_red_skeleton_lift_room_top_passage():
     patch = get_base_patch('Normalize Red Skeleton Lift Room, Top Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Alchemy Laboratory, Red Skeleton Lift Room': {
-            'Nodes': {
-                'Top Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Alchemy Laboratory, Red Skeleton Lift Room', 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             ".... 0020 0033 0034 0001 0013 0000 0000 0000 0000 001B 0002 0006 0001 0002 0003 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 0001 0002 0003 0004 0005 0006 0004 0005 0006 0033 0034 0020 0033 0034 0020 0033 0034 0020 0033 0034",
@@ -1648,15 +1498,7 @@ def get_normalize_alchemy_laboratory_red_skeleton_lift_room_top_passage():
 
 def get_normalize_alchemy_laboratory_red_skeleton_lift_room_bottom_passage():
     patch = get_base_patch('Normalize Red Skeleton Lift Room, Bottom Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Alchemy Laboratory, Red Skeleton Lift Room': {
-            'Nodes': {
-                'Bottom Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Alchemy Laboratory, Red Skeleton Lift Room', 'Nodes', 'Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... .... .... .... 0000 0048 0045 .... .... .... ....',
@@ -1695,15 +1537,7 @@ def get_normalize_alchemy_laboratory_red_skeleton_lift_room_bottom_passage():
 
 def get_normalize_underground_caverns_crystal_bend_top_passage():
     patch = get_base_patch('Normalize Red Skeleton Lift Room, Bottom Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Underground Caverns, Crystal Bend': {
-            'Nodes': {
-                'Top Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Underground Caverns, Crystal Bend', 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... 0001 0001 0000 0000 0000 0000 .... .... .... .... .... ....',
@@ -1770,15 +1604,7 @@ def get_normalize_underground_caverns_crystal_bend_top_passage():
 
 def get_normalize_alchemy_laboratory_tall_zig_zag_room_bottom_passage():
     patch = get_base_patch('Normalize Tall Zig Zag Room, Bottom Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Alchemy Laboratory, Tall Zig Zag Room': {
-            'Nodes': {
-                'Lower Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Alchemy Laboratory, Tall Zig Zag Room', 'Nodes', 'Lower Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... 003B 05B8 05B8 003B .... .... .... .... .... ....',
@@ -1863,15 +1689,7 @@ def get_normalize_alchemy_laboratory_tall_zig_zag_room_bottom_passage():
 
 def get_normalize_alchemy_laboratory_secret_life_max_up_room_top_passage():
     patch = get_base_patch('Normalize Secret Life Max-Up Room, Top Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Alchemy Laboratory, Secret Life Max-Up Room': {
-            'Nodes': {
-                'Top Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Alchemy Laboratory, Secret Life Max-Up Room', 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... 026C .... .... 0276 .... .... .... .... .... ....',
@@ -1906,15 +1724,7 @@ def get_normalize_alchemy_laboratory_secret_life_max_up_room_top_passage():
 
 def get_normalize_marble_gallery_stopwatch_room_bottom_passage():
     patch = get_base_patch('Normalize Marble Gallery Stopwatch Room', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Marble Gallery, Stopwatch Room': {
-            'Nodes': {
-                'Bottom Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Marble Gallery, Stopwatch Room', 'Nodes', 'Bottom Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... 0597 0597 0597 0597 .... .... .... .... .... ....',
@@ -1961,15 +1771,7 @@ def get_normalize_marble_gallery_stopwatch_room_bottom_passage():
 
 def get_normalize_marble_gallery_beneath_left_trapdoor_top_passage():
     patch = get_base_patch('Normalize MG Beneath Left Trapdoor, Top Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Marble Gallery, Beneath Left Trapdoor': {
-            'Nodes': {
-                'Top Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Marble Gallery, Beneath Left Trapdoor', 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... .... .... .... .... .... .... .... .... .... .... .... ....',
@@ -1992,15 +1794,7 @@ def get_normalize_marble_gallery_beneath_left_trapdoor_top_passage():
 
 def get_normalize_marble_gallery_beneath_right_trapdoor_top_passage():
     patch = get_base_patch('Normalize MG Beneath Right Trapdoor, Top Passage', ['Sestren'])
-    define_object(patch, ('Mapper', 'Rooms'), {
-        'Marble Gallery, Beneath Right Trapdoor': {
-            'Nodes': {
-                'Top Passage': {
-                    'Type': '######....######',
-                },
-            },
-        },
-    })
+    define_constant(patch, ('Mapper', 'Rooms', 'Marble Gallery, Beneath Right Trapdoor', 'Nodes', 'Top Passage', 'Type'), '######....######')
     tilemaps = {
         'Foreground': [
             '.... .... .... .... 02D5 02D5 .... .... 0000 0000 .... .... .... .... .... ....',
