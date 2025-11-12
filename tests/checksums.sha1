@@ -9,14 +9,14 @@ acffe21a5576c6d448088299dce6f9c450740e4c *build/ppf/customized-color-palettes.pp
 cc27ae98f9fe9bf8231da2eb3081224085b63206 *build/ppf/enable-debug-mode.ppf
 3225a08d99028351d3862f87e147ad041f13eeb5 *build/ppf/fix-confessional-bell-sound.ppf
 61332c6d4c553844e810d8bd7e1923d9ad452cb8 *build/ppf/fix-palette-darkening-in-castle-entrance.ppf
-e6233d484727c5d9ec0f1b60f466ac57ab181e67 *build/ppf/fix-secret-room-map-pixels.ppf
+a59ecc577380366c0b01e05ac2f882856e4526f0 *build/ppf/fix-secret-room-map-pixels.ppf
 223ab27c187d1d6d12019c1e2033b682f57903d2 *build/ppf/fix-waterfall-sound.ppf
-3c1754ff1279d55190a784a57ebae6a2554befb4 *build/ppf/improve-normalized-room-visuals.ppf
+09b953f5ea6cd28edc8e1a856a96e32b24256771 *build/ppf/improve-normalized-room-visuals.ppf
 7f180e76c98aeccdc816f86e1d0cf5e46353c3d0 *build/ppf/mix-items-and-relics.ppf
 0636a5b8e8c3e8bcb4e24773f54d7327b1d8d4c8 *build/ppf/move-drawbridge-room-vertically.ppf
 21f24f3f8c3741097be288c08e0e7f2e34a4c53e *build/ppf/normalize-ferryman-gate.ppf
 c050765727f3e08e090809116ba1003a9c84d6fd *build/ppf/normalize-particle-effects.ppf
-1d6077532c6040d0be48f013ceab5af903ffe9f3 *build/ppf/normalize-room-connections.ppf
+73504a09eef4c4e2f62f528362ec8740af9d03ce *build/ppf/normalize-room-connections.ppf
 4c37704ad4d2501b4b16438affef9ae19fb5e791 *build/ppf/preserve-map-exploration.ppf
 b25bb386a77fed72a06410052cb863e52ce514ef *build/ppf/preserve-map-revelation.ppf
 ac26ea1238f47895fc3c57ccb192d0727c9162ab *build/ppf/prevent-death-meeting-softlocks.ppf
@@ -30,7 +30,7 @@ d9283aad7bbdffdbaecd011ec57b0091f8dc05c8 *build/ppf/prevent-softlocks-at-pendulu
 6f025191bfd7928400369a06a9bf7dd79241619f *build/ppf/randomized-items.ppf
 f5731a6441008dc78d142eb8b9d7c28f3c23f166 *build/ppf/randomized-relics.ppf
 dee9d21b5efa7afdd4570972ff25a4a9a2b08c9f *build/ppf/sample-entity-layout.ppf
-fa84ef2891496c2b4d92416cfd818bd7d29b7aaa *build/ppf/sample-randomized-map.ppf
+68d776e9bd08db4e2d9842e2e484032164ee2baa *build/ppf/sample-randomized-map.ppf
 0a52d52ed1d6c329d084f047918db748ec598316 *build/ppf/shop-relic-name.ppf
 5cad450299828d41629acc3034725fac76bece05 *build/ppf/shuffle-spike-room.ppf
 0c18b44bbab522502ed75164605332692509be01 *build/ppf/shuffle-starting-gear.ppf
