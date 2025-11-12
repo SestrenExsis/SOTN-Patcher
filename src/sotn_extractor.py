@@ -7,9 +7,10 @@ import os
 import sotn_address
 
 class BIN:
-    def __init__(self, binary_file, stage_offset: int=0):
+    def __init__(self, binary_file, stage_offset: int=0, sector_ind: bool=True):
         self.binary_file = binary_file
         self.cursor = sotn_address.Address(stage_offset, 'GAMEDATA')
+        self.sector_ind = sector_ind
     
     def clone(self, offset: int=0):
         result = BIN(self.binary_file, self.cursor.address + offset)
@@ -24,8 +25,13 @@ class BIN:
     def read(self, offset, byte_count, endianness, sign):
         bytes = []
         for i in range(byte_count):
-            binary_file.seek(self.cursor.to_disc_address(offset + i))
-            byte = binary_file.read(1)
+            seek_target = 0
+            if self.sector_ind:
+                seek_target = self.cursor.to_disc_address(offset + i)
+            else:
+                seek_target = offset + i
+            self.binary_file.seek(seek_target)
+            byte = self.binary_file.read(1)
             bytes.append(int.from_bytes(byte))
         # self.cursor.address += byte_count
         result = int.from_bytes(bytes, byteorder=endianness, signed=sign)
