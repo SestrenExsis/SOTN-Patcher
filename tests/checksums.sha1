@@ -2,14 +2,14 @@
 f3fc3e810cb650b7fd1f0a39892208a9082407a9 *build/ppf/assign-power-of-wolf-relic-a-unique-id.ppf
 15d410ef25bec8941099be0aa33a9e4dc1da3e0e *build/ppf/clock-hands-mod.ppf
 4bed16166ab695d3a9d584735e3e50af0931736a *build/ppf/customized-castle-map-reveals.ppf
-acffe21a5576c6d448088299dce6f9c450740e4c *build/ppf/customized-color-palettes.ppf
+3d5d73c55d254e729f35dfeff1fd18fac5cabbbf *build/ppf/customized-color-palettes.ppf
 86273332910759b6db2ff29d10587639c5c39fe1 *build/ppf/customized-enemy-drops.ppf
 64214a3117fd6d376519b843176326110ae42966 *build/ppf/debug-sound-normalization.ppf
 3d574c88510214fd8d66e9e37fde5022033b827e *build/ppf/disable-clipping-on-one-way-walls.ppf
 cc27ae98f9fe9bf8231da2eb3081224085b63206 *build/ppf/enable-debug-mode.ppf
 3225a08d99028351d3862f87e147ad041f13eeb5 *build/ppf/fix-confessional-bell-sound.ppf
 61332c6d4c553844e810d8bd7e1923d9ad452cb8 *build/ppf/fix-palette-darkening-in-castle-entrance.ppf
-a59ecc577380366c0b01e05ac2f882856e4526f0 *build/ppf/fix-secret-room-map-pixels.ppf
+8dcb3f6b3cbc6edd5dfa26849d1b3336b573252b *build/ppf/fix-secret-room-map-pixels.ppf
 223ab27c187d1d6d12019c1e2033b682f57903d2 *build/ppf/fix-waterfall-sound.ppf
 09b953f5ea6cd28edc8e1a856a96e32b24256771 *build/ppf/improve-normalized-room-visuals.ppf
 7f180e76c98aeccdc816f86e1d0cf5e46353c3d0 *build/ppf/mix-items-and-relics.ppf
@@ -30,7 +30,7 @@ d9283aad7bbdffdbaecd011ec57b0091f8dc05c8 *build/ppf/prevent-softlocks-at-pendulu
 6f025191bfd7928400369a06a9bf7dd79241619f *build/ppf/randomized-items.ppf
 f5731a6441008dc78d142eb8b9d7c28f3c23f166 *build/ppf/randomized-relics.ppf
 dee9d21b5efa7afdd4570972ff25a4a9a2b08c9f *build/ppf/sample-entity-layout.ppf
-68d776e9bd08db4e2d9842e2e484032164ee2baa *build/ppf/sample-randomized-map.ppf
+ede62a02825d92f7b937a5c045ede7f4394ddb19 *build/ppf/sample-randomized-map.ppf
 0a52d52ed1d6c329d084f047918db748ec598316 *build/ppf/shop-relic-name.ppf
 5cad450299828d41629acc3034725fac76bece05 *build/ppf/shuffle-spike-room.ppf
 0c18b44bbab522502ed75164605332692509be01 *build/ppf/shuffle-starting-gear.ppf

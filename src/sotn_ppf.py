@@ -838,8 +838,12 @@ def assemble_patch(args, extract, main_patch, data):
         blue = get_value(rgba32[5:7]) // 8
         alpha = get_value(rgba32[7:9]) // 128
         value = (alpha << 15) + (blue << 10) + (green << 5) + red
-        array_extract_meta = extract['Constants']['Castle Map Color Palette']['Metadata']
-        result.patch_value(value, 'u16', array_extract_meta['Start'] + palette_index * array_extract_meta['Size'])
+        for overlay_name in (
+            'DRA',
+            'RIC',
+        ):
+            array_extract_meta = extract['Constants'][f'Castle Map Color Palette ({overlay_name})']['Metadata']
+            result.patch_value(value, 'u16', array_extract_meta['Start'] + palette_index * array_extract_meta['Size'])
     # Quest Rewards - Process (including adding to Entity Layouts if needed)
     if 'Entity Layouts' not in changes:
         changes['Entity Layouts'] = []
