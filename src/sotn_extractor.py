@@ -991,7 +991,8 @@ if __name__ == '__main__':
             (0x04258D9C, 's16', 16, 'Waterfall Sound Parameters (Underground Caverns)'),
             (0x047C4CE8, 's16', 16, 'Waterfall Sound Parameters (Reverse Caverns)'),
             # Castle Map Color Palette
-            (0x03128800, 'rgba32', 16, 'Castle Map Color Palette'),
+            (0x03128800, 'rgba32', 16, 'Castle Map Color Palette (DRA)'),
+            (0x0316A800, 'rgba32', 16, 'Castle Map Color Palette (RIC)'),
             # Shop Relic IDs
             (0x03E60CD4, 'u16', 2, 'Shop Relic IDs'),
             # Secret Map Tile Reveals
