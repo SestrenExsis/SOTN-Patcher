@@ -600,8 +600,6 @@ def assemble_patch(args, extract, main_patch, data):
                                 object_meta['Start'] + dependent['Warp Index'] * object_meta['Size'] + object_meta['Fields'][target_field_name]['Offset'],
                             )
                     elif dependent['Type'] == 'Familiar Event':
-                        # NOTE(sestren): Familiar events exist as a complete copy in 7 different locations, one for each familiar in the code
-                        # TODO(sestren): Replace this hacky way of doing it with a better approach
                         familiar_event_id = dependent['Familiar Event ID']
                         sign = -1 if dependent['Inverted'] else 1
                         if 'Familiar Events' not in changes:
