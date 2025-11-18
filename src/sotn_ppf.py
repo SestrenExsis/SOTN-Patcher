@@ -1182,6 +1182,20 @@ def assemble_patch(args, extract, main_patch, data):
     # Patch pokes or direct writes
     for poke in changes.get('Pokes', []):
         result.patch_value(get_value(poke['Value']), poke['Data Type'], get_value(poke['Gamedata Address']))
+    # Patch base drop rates
+    for current_change in changes.get('Base Drop Rates', []):
+        stage_names = []
+        if current_change['Stage'] == 'Global':
+            stage_names = list(sorted(extract['Base Drop Rates'].keys()))
+        else:
+            stage_names.append(current_change['Stage'])
+        for stage_name in stage_names:
+            current_meta = extract['Base Drop Rates'][stage_name]['Metadata']
+            result.patch_value(
+                current_change['Value'],
+                current_meta['Type'],
+                current_meta['Start'] + current_change['Index'] * current_meta['Size'],
+            )
     # TODO(sestren): Instead of checksums for tests, output the address writes for comparison
     return result
 

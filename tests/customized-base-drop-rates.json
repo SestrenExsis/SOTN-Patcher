@@ -1,0 +1,37 @@
+{
+    "Base Drop Rates": [
+        {
+            "Stage": "Global",
+            "Index": 1,
+            "Value": 255
+        },
+        {
+            "Stage": "Global",
+            "Index": 2,
+            "Value": 128
+        },
+        {
+            "Stage": "Global",
+            "Index": 3,
+            "Value": 64
+        },
+        {
+            "Stage": "Castle Entrance Revisited",
+            "Index": 1,
+            "Value": 4
+        },
+        {
+            "Stage": "Castle Entrance Revisited",
+            "Index": 2,
+            "Value": 2
+        },
+        {
+            "Stage": "Castle Entrance Revisited",
+            "Index": 3,
+            "Value": 1
+        }
+    ],
+    "Options": {
+        "Enable debug mode": true
+    }
+}
