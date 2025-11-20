@@ -1356,10 +1356,56 @@ if __name__ == '__main__':
                     #     'Offset': 0x23,
                     #     'Type': 'u8',
                     # },
-                    # 'Flags': {
-                    #     'Offset': 0x24,
-                    #     'Type': 's32',
-                    # },
+                    'Flags': {
+                        # TODO(sestren): Base Drop Rate Index has a value, the others are lists of flags that are set only
+                        'Offset': 0x24,
+                        'Type': 'u32',
+                        'Elements': {
+                            'Unknown 4': { # Involves weapon-related sound effects? Dragon Rider and Discus Lord do NOT have this set
+                                'Shift': 4,
+                                'Mask': 0b1,
+                                'Type': 'boolean',
+                            },
+                            'Dead': {
+                                'Shift': 8,
+                                'Mask': 0b1,
+                                'Type': 'boolean',
+                            },
+                            'Base Drop Rate Index': {
+                                'Shift': 10,
+                                'Mask': 0b11,
+                            },
+                            'Counts as Kill': {
+                                'Shift': 12,
+                                'Mask': 0b1,
+                                'Type': 'boolean',
+                            },
+                            'Unknown 20': { # Involves another entity somehow?
+                                'Shift': 20,
+                                'Mask': 0b1,
+                                'Type': 'boolean',
+                            },
+                            'Unknown 22': { # Involves stun frames somehow? A lot of bosses have this flag set
+                                'Shift': 22,
+                                'Mask': 0b1,
+                                'Type': 'boolean',
+                            },
+                            'Hide Nameplate': {
+                                'Shift': 24,
+                                'Mask': 0b1,
+                                'Type': 'boolean',
+                            },
+                            'Keep Alive When Off-Camera': {
+                                'Shift': 26,
+                                'Mask': 0b1,
+                                'Type': 'boolean',
+                            },
+                        },
+                        #                               abcd e-g-   i-k- mnop   qrs- --w-   yzA- CDEF
+                        #                               ---- -f-h   -j-l ----   ---t uu-x   ---B ----
+                        # Blood Skeleton    AA00 0010   1010 1010   0000 0000   0000 0000   0001 0000
+                        # Bone Scimitar     A800 1410   1010 1000   0000 0000   0001 0100   0001 0000
+                    },
                 },
             },
             'Data': [],
@@ -1369,10 +1415,18 @@ if __name__ == '__main__':
             data = {}
             for (field_name, field) in enemy_definitions['Metadata']['Fields'].items():
                 data[field_name] = enemy_def_cursor.indirect(field['Offset'], field['Type'], False)
-                if 'Secondary Type' in field:
+                if 'Secondary Type' in field and 'Secondary Offset' in field:
                     secondary_offset = data[field_name] + field.get('Secondary Offset', 0)
                     secondary_cursor = BIN(binary_file, secondary_offset)
                     data[field_name] = secondary_cursor.indirect(0, field['Secondary Type'], False)
+                if 'Elements' in field:
+                    value = data[field_name]
+                    data[field_name] = {}
+                    data[field_name]['Value'] = value
+                    for (element_name, element) in field['Elements'].items():
+                        data[field_name][element_name] = element['Mask'] & (value >> element['Shift'])
+                        if element.get('Type', 'u32') == 'boolean':
+                            data[field_name][element_name] = (data[field_name][element_name] > 0)
             enemy_definitions['Data'].append(data)
         # Extract Warp Room coordinates list
         cursor = BIN(binary_file, 0x04D12E5C)
