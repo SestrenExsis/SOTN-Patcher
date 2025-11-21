@@ -600,8 +600,6 @@ def assemble_patch(args, extract, main_patch, data):
                                 object_meta['Start'] + dependent['Warp Index'] * object_meta['Size'] + object_meta['Fields'][target_field_name]['Offset'],
                             )
                     elif dependent['Type'] == 'Familiar Event':
-                        # NOTE(sestren): Familiar events exist as a complete copy in 7 different locations, one for each familiar in the code
-                        # TODO(sestren): Replace this hacky way of doing it with a better approach
                         familiar_event_id = dependent['Familiar Event ID']
                         sign = -1 if dependent['Inverted'] else 1
                         if 'Familiar Events' not in changes:
@@ -1184,6 +1182,20 @@ def assemble_patch(args, extract, main_patch, data):
     # Patch pokes or direct writes
     for poke in changes.get('Pokes', []):
         result.patch_value(get_value(poke['Value']), poke['Data Type'], get_value(poke['Gamedata Address']))
+    # Patch base drop rates
+    for current_change in changes.get('Base Drop Rates', []):
+        stage_names = []
+        if current_change['Stage'] == 'Global':
+            stage_names = list(sorted(extract['Base Drop Rates'].keys()))
+        else:
+            stage_names.append(current_change['Stage'])
+        for stage_name in stage_names:
+            current_meta = extract['Base Drop Rates'][stage_name]['Metadata']
+            result.patch_value(
+                current_change['Value'],
+                current_meta['Type'],
+                current_meta['Start'] + current_change['Index'] * current_meta['Size'],
+            )
     # TODO(sestren): Instead of checksums for tests, output the address writes for comparison
     return result
 
