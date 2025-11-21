@@ -1356,55 +1356,55 @@ if __name__ == '__main__':
                     #     'Offset': 0x23,
                     #     'Type': 'u8',
                     # },
-                    'Flags': {
-                        # TODO(sestren): Base Drop Rate Index has a value, the others are lists of flags that are set only
+                    'Base Drop Rate Index': {
+                        # This value is actually part of the Flags field below, but it comprises a 2-bit index value
                         'Offset': 0x24,
                         'Type': 'u32',
-                        'Elements': {
-                            'Unknown 4': { # Involves weapon-related sound effects? Dragon Rider and Discus Lord do NOT have this set
-                                'Shift': 4,
-                                'Mask': 0b1,
-                                'Type': 'boolean',
-                            },
-                            'Dead': {
-                                'Shift': 8,
-                                'Mask': 0b1,
-                                'Type': 'boolean',
-                            },
-                            'Base Drop Rate Index': {
-                                'Shift': 10,
-                                'Mask': 0b11,
-                            },
-                            'Counts as Kill': {
-                                'Shift': 12,
-                                'Mask': 0b1,
-                                'Type': 'boolean',
-                            },
-                            'Unknown 20': { # Involves another entity somehow?
-                                'Shift': 20,
-                                'Mask': 0b1,
-                                'Type': 'boolean',
-                            },
-                            'Unknown 22': { # Involves stun frames somehow? A lot of bosses have this flag set
-                                'Shift': 22,
-                                'Mask': 0b1,
-                                'Type': 'boolean',
-                            },
-                            'Hide Nameplate': {
-                                'Shift': 24,
-                                'Mask': 0b1,
-                                'Type': 'boolean',
-                            },
-                            'Keep Alive When Off-Camera': {
-                                'Shift': 26,
-                                'Mask': 0b1,
-                                'Type': 'boolean',
-                            },
+                        'Shift': 10,
+                        'Mask': 0b11,
+                    },
+                    'Flags': {
+                        'Offset': 0x24,
+                        'Type': 'u32',
+                        'Masks': {
+                            'Flag 00': 0x00000001,
+                            'Flag 01': 0x00000002,
+                            'Flag 02': 0x00000004,
+                            'Flag 03': 0x00000008,
+                            'Flag 04': 0x00000010, # Involves weapon-related sound effects?
+                                # Dragon Rider and Discus Lord are one of the few enemies that do NOT have Flag 04
+                            'Flag 05': 0x00000020,
+                            'Flag 06': 0x00000040,
+                            'Flag 07': 0x00000080,
+                            'Flag 08': 0x00000100, # Dead indicator?
+                            'Flag 09': 0x00000200,
+                                # Lesser Demon, White Dragon, Discus Lord, Stone Rose, Bone Musket, Grave Keeper, Spectral Sword, Poltergeist, ...
+                            # 'Flag 10': 0x00000400, # Base Drop Rate 1
+                            # 'Flag 11': 0x00000800, # Base Drop Rate Index 2
+                            'Kill Count': 0x00001000,
+                            'Flag 13': 0x00002000,
+                            'Flag 14': 0x00004000,
+                            'Flag 15': 0x00008000,
+                            'Flag 16': 0x00010000,
+                            'Flag 17': 0x00020000,
+                            'Flag 18': 0x00040000, # Position Player-Locked?
+                            'Flag 19': 0x00080000,
+                            'Flag 20': 0x00100000, # Involves another entity somehow?
+                            'Flag 21': 0x00200000,
+                                # Dragon Rider, Discus Lord, Gorgon, Oruburos, Olrox, Dracula, and Greater Demon have Flag 21
+                            'Flag 22': 0x00400000, # Involves stun frames somehow?
+                                # A lot of bosses have Flag 22 set
+                            'Flag 23': 0x00800000, # Has Primitives?
+                            'Hide Nameplate': 0x01000000,
+                            'Flag 25': 0x02000000,
+                                # Axe Knight, Flying Zombie, Merman, Dark Octopus, Flea Man, Flea Armor, Wereskeleton, etc., have Flag 25
+                            'Flag 26': 0x04000000, # Keep Alive When Off-Camera?
+                            'Flag 27': 0x08000000, # Position Camera-Locked?
+                            'Flag 28': 0x10000000,
+                            'Flag 29': 0x20000000,
+                            'Flag 30': 0x40000000, # Destroy If Barely Off-Camera?
+                            'Flag 31': 0x80000000, # Destroy If Off-Camera?
                         },
-                        #                               abcd e-g-   i-k- mnop   qrs- --w-   yzA- CDEF
-                        #                               ---- -f-h   -j-l ----   ---t uu-x   ---B ----
-                        # Blood Skeleton    AA00 0010   1010 1010   0000 0000   0000 0000   0001 0000
-                        # Bone Scimitar     A800 1410   1010 1000   0000 0000   0001 0100   0001 0000
                     },
                 },
             },
@@ -1415,18 +1415,19 @@ if __name__ == '__main__':
             data = {}
             for (field_name, field) in enemy_definitions['Metadata']['Fields'].items():
                 data[field_name] = enemy_def_cursor.indirect(field['Offset'], field['Type'], False)
-                if 'Secondary Type' in field and 'Secondary Offset' in field:
+                if 'Shift' in field or 'Mask' in field:
+                    data[field_name] = field['Mask'] & (data[field_name] >> field['Shift'])
+                elif 'Secondary Type' in field and 'Secondary Offset' in field:
                     secondary_offset = data[field_name] + field.get('Secondary Offset', 0)
                     secondary_cursor = BIN(binary_file, secondary_offset)
                     data[field_name] = secondary_cursor.indirect(0, field['Secondary Type'], False)
-                if 'Elements' in field:
+                elif 'Masks' in field:
                     value = data[field_name]
-                    data[field_name] = {}
-                    data[field_name]['Value'] = value
-                    for (element_name, element) in field['Elements'].items():
-                        data[field_name][element_name] = element['Mask'] & (value >> element['Shift'])
-                        if element.get('Type', 'u32') == 'boolean':
-                            data[field_name][element_name] = (data[field_name][element_name] > 0)
+                    data[field_name] = []
+                    for (mask_name, mask) in field['Masks'].items():
+                        if (mask & value) > 0:
+                            data[field_name].append(mask_name)
+                    pass
             enemy_definitions['Data'].append(data)
         # Extract Warp Room coordinates list
         cursor = BIN(binary_file, 0x04D12E5C)
