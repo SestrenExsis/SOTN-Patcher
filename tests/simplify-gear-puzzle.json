@@ -1,0 +1,43 @@
+{
+    "Options": {
+        "Enable debug mode": true
+    },
+    "Constants": {
+        "Gear Puzzle Target Rotations (Clock Tower)": [
+            {
+                "Index": 0,
+                "Value": "0100"
+            },
+            {
+                "Index": 1,
+                "Value": "0100"
+            },
+            {
+                "Index": 2,
+                "Value": "0100"
+            },
+            {
+                "Index": 3,
+                "Value": "0100"
+            }
+        ],
+        "Gear Puzzle Target Rotations (Reverse Clock Tower)": [
+            {
+                "Index": 0,
+                "Value": "0100"
+            },
+            {
+                "Index": 1,
+                "Value": "0100"
+            },
+            {
+                "Index": 2,
+                "Value": "0100"
+            },
+            {
+                "Index": 3,
+                "Value": "0100"
+            }
+        ]
+    }
+}

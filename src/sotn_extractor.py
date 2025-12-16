@@ -1169,6 +1169,9 @@ if __name__ == '__main__':
             # Death Stolen Items
             # NOTE(sestren): Unused for now, using direct writes instead
             # (0x041A92D4, 'u16', 6, 'Death Stolen Items'),
+            # Gear Puzzle Target Rotations
+            (0x04A67FD4, 'u16', 4, 'Gear Puzzle Target Rotations (Clock Tower)'),
+            (0x04E22F70, 'u16', 4, 'Gear Puzzle Target Rotations (Reverse Clock Tower)'),
         ):
             # NOTE(sestren): Only handling specific formats for now
             assert data_type in ('u8', 'u16', 's16', 'rgba32')

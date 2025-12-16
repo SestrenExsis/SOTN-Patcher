@@ -43,6 +43,7 @@ python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/sample-randomized
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/shop-relic-name.json" --ppf="build/ppf/shop-relic-name.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/shuffle-spike-room.json" --ppf="build/ppf/shuffle-spike-room.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/shuffle-starting-gear.json" --ppf="build/ppf/shuffle-starting-gear.ppf" || goto :error
+python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/simplify-gear-puzzle.json" --ppf="build/ppf/simplify-gear-puzzle.ppf" || goto :error
 python src/sotn_ppf.py %BUILD% --data="data/" --changes="tests/skip-maria-cutscene-in-alchemy-laboratory.json" --ppf="build/ppf/skip-maria-cutscene-in-alchemy-laboratory.ppf" || goto :error
 
 sha1sum -c tests/checksums.sha1
