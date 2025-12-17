@@ -59,7 +59,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     with open(os.path.join(os.path.normpath(args.ppf)), 'br') as ppf_file:
         bin = sotn_extractor.BIN(ppf_file, 0, False)
-        ppf = PPF(bin)
+        ppf = ParsedPPF(bin)
         print('header:', ppf.header)
         print('encoding_method:', ppf.encoding_method)
         print('description:', ppf.description)

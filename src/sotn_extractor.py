@@ -1219,6 +1219,11 @@ if __name__ == '__main__':
             (0x03ACF0B4, 'Message - Richter Mode Instructions 1', 'string'), # 'Input "RICHTER" to play'
             (0x03ACF0D4, 'Message - Richter Mode Instructions 2', 'string'), # 'as Richter Belmont.'
             (0x03E8C888, 'Message - Shop Item Name 1', 'shifted-string'), # 'Jewel of Open'
+            # Gear Puzzle
+            (0x04A8F974, 'Gear Puzzle Rotation Duration (Clock Tower)', 's16'), # 16
+            (0x04E4A294, 'Gear Puzzle Rotation Duration (Reverse Clock Tower)', 's16'), # 16
+            (0x04A8F9EC, 'Gear Puzzle Rotation Speed (Clock Tower)', 's16'), # 16
+            (0x04E4A2D0, 'Gear Puzzle Rotation Speed (Reverse Clock Tower)', 's16'), # 16
         ):
             cursor = BIN(binary_file, constant_address)
             constants[constant_name] = cursor.indirect(0, constant_data_type, True)

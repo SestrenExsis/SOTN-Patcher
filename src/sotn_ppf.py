@@ -1177,6 +1177,9 @@ def assemble_patch(args, extract, main_patch, data):
                 null_char = NULL_CHAR if i > 0 else NULL_CHAR_SHIFTED
                 result.patch_value(null_char, 'u8', constant_extract['Start'] + offset)
                 offset += 1
+        elif constant_extract['Type'] in ('u8', 's8', 'u16', 's16', 'u32', 's32'):
+            value = get_value(changes['Constants'][constant_name])
+            result.patch_value(value, constant_extract['Type'], constant_extract['Start'])
         else:
             raise Exception('Unhandled case when processing changes in Constants')
     # Patch pokes or direct writes
